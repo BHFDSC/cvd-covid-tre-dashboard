@@ -86,17 +86,25 @@ class conversionChecks:
     def get_codes_not_mapped(input_df, 
                              input_df_column, 
                              mapped_df, 
-                             mapped_df_column):
+                             mapped_df_column,
+                             map_flag_col):
         
-        lost_codes = input_df[~input_df[input_df_column].isin(mapped_df[mapped_df_column].unique())]
+#         lost_codes = input_df[~input_df[input_df_column].isin(mapped_df[mapped_df_column].unique())]
+        lost_codes = mapped_df.loc[mapped_df[map_flag_col] == 0]
+        
+#         input_df = input_df.loc[input_df[map_flag_col] == 1]
+        mapped_df =  mapped_df.loc[mapped_df[map_flag_col] == 1]
+        
         
         print(f'''
-        Successfully mapped {input_df[input_df_column].nunique()} from input_df of 
-        {mapped_df[mapped_df_column].nunique()} codes from the output_df 
+        
+        Successfully mapped {mapped_df[mapped_df_column].nunique()} codes from mapped_file of 
+         {input_df[input_df_column].nunique()} codes found in the input_df 
         
         ''')
 
         if len(lost_codes) > 0:
+            print(f'{len(lost_codes)} not mapped.')
             print(f'''Printing codes that did not map:
                     {lost_codes}''')
         else:
@@ -155,7 +163,7 @@ class snowmedToGdpprLookUp():
             suffixes = ['_project_codelist','_gdppr'], how='left', indicator=True)
     
         
-        map_snowmed_to_gdppr_df['GPDDR_MAP_FLAG'] = (map_snowmed_to_gdppr_df['Active_in_Refset']
+        map_snowmed_to_gdppr_df['GDPPR_MAP_FLAG'] = (map_snowmed_to_gdppr_df['Active_in_Refset']
                                                      .where(map_snowmed_to_gdppr_df['Active_in_Refset']
                                                             .isnull(), 1)
                                                      .fillna(0)
