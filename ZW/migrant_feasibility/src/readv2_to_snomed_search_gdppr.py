@@ -187,6 +187,6 @@ class snomedToGdpprLookUp():
                 ascending=False))
 
         sort_effective_date_and_assured_df = (sort_effective_date_and_assured_df .drop_duplicates([
-                                              'read_term', 'ConceptId'], keep='first'))
+                                              'read_term', 'ConceptId','MapId'], keep='first'))
 
         return sort_effective_date_and_assured_df
