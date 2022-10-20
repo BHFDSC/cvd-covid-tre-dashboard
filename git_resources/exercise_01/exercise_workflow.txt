@@ -1,0 +1,35 @@
+Step 1: Clone the BHF_DSC_HDS repository into a GitHub Folder on machine.
+Example :
+mkdir GitHub
+cd GitHub
+git clone https://github.com/BHFDSC/BHF_DSC_HDS.git
+
+Step 2: Create a new branch 
+Example :
+(git branch BHF_DSC_HDS-zw-reproducible_data_science_as_image)
+(git checkout BHF_DSC_HDS-zw-reproducible_data_science_as_image)
+
+Step 3: Add a folder <initials> in git_resources/exercise_01/reproducible_data_science_as_image
+Example :
+cd git_resources/exercise_01/reproducible_data_science_as_image/
+mkdir zw
+
+Step 4:
+Add an image that you feel describes reproducible_data_science
+Example :
+cd zw 
+Move image file into initials folder
+git add <image_file.png>
+
+Step 5:
+Add a commit message
+git commit -m 'zw adding mad pandas doing chemistry - DALL-E'
+
+Step 6:
+Check status (of staged commits) and fetch (check differences in remote) before pushing (copying data to local repository)
+Example :
+git status
+git fetch
+git push
+
+Merging to main... To be continued...
