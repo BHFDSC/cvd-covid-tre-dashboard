@@ -6,7 +6,7 @@ git clone https://github.com/BHFDSC/BHF_DSC_HDS.git
 
 Step 2: Create a new branch 
 Example :
-(git branch BHF_DSC_HDS-zw-reproducible_data_science_as_image)
+(git branch BHF_DSC_HDS-zw-reproducible_data_science_as_image) 
 (git checkout BHF_DSC_HDS-zw-reproducible_data_science_as_image)
 
 Step 3: Add a folder <initials> in git_resources/exercise_01/reproducible_data_science_as_image
@@ -31,5 +31,8 @@ Example :
 git status
 git fetch
 git push
+
+You might have to set upstream origin 
+git push --set-upstream origin BHF_DSC_HDS-zw-reproducible_data_science_as_image
 
 Merging to main... To be continued...
