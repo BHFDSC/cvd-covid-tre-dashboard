@@ -52,7 +52,8 @@ def main(project_csv,
         snomed_to_gdppr_df)
     print(snomed_to_gdppr_df.nunique())
 
-    print('For snomedct_to_gdppr mapping')
+    print('''For snomedct_to_gdppr mapping 
+                adding a change''')
     conversionChecks.get_codes_not_mapped(
         project_read_to_snomed_df,
         mapped_snomed_project_codelist_column,
