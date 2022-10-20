@@ -1,9 +1,13 @@
+git fetch
+git pull
+
 git branch <branch-name>
 git checkout <branch-name>
+
 git status
-git pull
+git log --oneline --graph --decorate 
+
 git add <file-name>
 git commit -m 'slick commit message'
-git status 
-git push 
-git merge <main-branch>
+
+git push
