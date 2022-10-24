@@ -159,13 +159,13 @@ def prepare_mapping_file(data_dir='mapping_files'):
 
 
 # Pass through arg_parse: see ccu_dq repo for an example
-main(project_csv=get_project_code_list_1(),
+main(project_csv=get_project_code_list_2(),
      project_codelist_column='read_code',
      mapping_file=prepare_mapping_file(),
      mapping_file_codelist_column='read_term_map',
      mapped_snomed_project_codelist_column='ConceptId',
      mapping_file_gdppr_codelist_column='ConceptId',
-     output_prefix='table_1')
+     output_prefix='table_2')
 
 # main(project_csv = get_project_code_list_2(),
 #      project_codelist_column='read_code',

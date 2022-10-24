@@ -179,7 +179,7 @@ class snomedToGdpprLookUp():
     def sort_effective_date_and_assured(self, snomed_gddppr_map_df):
         sort_effective_date_and_assured_df = (
             snomed_gddppr_map_df .where(
-                (snomed_gddppr_map_df.IS_ASSURED == 1) | (snomed_gddppr_map_df.IS_ASSURED == 0) & (
+                (snomed_gddppr_map_df.IS_ASSURED == 1) & (
                     snomed_gddppr_map_df.MapStatus == 1)) .sort_values(
                 [
                     'read_code',
