@@ -1,0 +1,77 @@
+﻿Group,Title,Dataset,Nation,Key
+Primary,GDPPR,gdppr_date,England,Dataset available 
+Secondary Care,HES - Admitted Patient Care,hes_apc,England,Dataset available 
+Secondary Care,HES - Outpatient,hes_out,England,Dataset available 
+Secondary Care,HES - Critical Care,hes_cc,England,Dataset available 
+Secondary Care,HES - Accident & Emergency,hes_ae,England,Dataset available 
+Secondary Care,SUS,sus,England,Dataset available 
+Secondary Care,Uncurated Low Latency Hospital Data,test1,England,Dataset available 
+Secondary Care,Emergency Care Data Set,test2,England,Dataset available 
+Covid-19 Lab Tests,"SGSS (Pillar 1, 2 – positive results only)",test3,England,Dataset available 
+Covid-19 Lab Tests,Pillar 2 Antigen (positive and negative),test4,England,Dataset available 
+Covid-19 Lab Tests,Pillar 3 Antibody (positive and negative),test5,England,Dataset available 
+Covid-19 Lab Tests,Variant strain data (COG-UK),test6,England,Dataset requested
+Covid-19 Vaccinations,Covid-19 vaccination events,test7,England,Dataset available 
+Covid-19 Vaccinations,Covid-19 vaccination adverse reactions,test8,England,Dataset available 
+Deaths,Civil Registry Deaths,test9,England,Dataset available 
+ITU,ICNARC COVID,test10,England,Dataset available 
+ITU/HDU Admissions,(COVID-19 SARI-Watch - formerly CHESS),test11,England,Dataset available 
+Prescribing/Dispensing,NHS BSA Dispensed Medicines,test12,England,Dataset available 
+Prescribing/Dispensing,Secondary care prescribed medicines,test13,England,Dataset available 
+NICOR CVD Audits,"PCI, MINAP, NHFA, NCHDA, NACRM, NACSA",test14,England,Dataset available 
+NICOR CVD Audits,TAVI,test15,England,Dataset requested
+Stroke Audit,SSNAP,test16,England,Dataset available 
+National Vascular Registry,NVR,test17,England,Dataset requested
+Other,Improving Access to Psychological Therapies (IAPT v2.0),test18,England,Dataset available 
+Other,Maternity Services Data Set,test19,England,Dataset requested
+Other,Mental Health Data Set,test20,England,Dataset requested
+Other,Mental Health of Children and Young People,test21,England,Dataset requested
+Other,Patient Reported Outcome Measures,test22,England,Dataset requested
+Primary,Primary Care,test23,Scotland,Dataset available 
+Secondary Care,Outpatient Appointments / Attendances - Scottish Morbidity Record (SMR00),test24,Scotland,Dataset available 
+Secondary Care,General Acute Inpatient and Day Case - Scottish Morbidity Record (SMR01),test25,Scotland,Dataset available 
+Secondary Care,Accident & Emergency,test26,Scotland,Dataset available 
+Covid-19 Lab Tests,COVID Tests (lab/lighthouse testing),test27,Scotland,Dataset available 
+Covid-19 Lab Tests,(ECOSS),test28,Scotland,Dataset available 
+Covid-19 Lab Tests,Variant strain data (COG-UK),test29,Scotland,Dataset available 
+Covid-19 Vaccinations,Vaccination Data,test30,Scotland,Dataset available 
+Deaths,Deaths,test31,Scotland,Dataset available 
+ITU,"SICSAG Daily, Episodes",test32,Scotland,Dataset available 
+Prescribing/Dispensing,"PIS: Dispensed, Prescribed, Paid",test33,Scotland,Dataset available 
+Prescribing/Dispensing,ePrescribing,test34,Scotland,Dataset requested
+Stroke Audit,Scottish Stroke Care Audit (SSCA),test35,Scotland,Dataset available 
+Other,Diabetes Covariates,test36,Scotland,Dataset available 
+Other,Scottish Renal Registry,test37,Scotland,Dataset available 
+Other,Maternity Inpatient and Day Case - Scottish Morbidity Record (SMR02),test38,Scotland,Dataset requested
+Primary,General Practice Monthly/Daily COVID,test39,Wales,Dataset available 
+Secondary Care,Critical Care Dataset,test40,Wales,Dataset available 
+Secondary Care,Emergency Department Daily/Monthly,test41,Wales,Dataset available 
+Secondary Care,Outpatient Dataset for Wales,test42,Wales,Dataset available 
+Secondary Care,Outpatient Referral Dataset,test43,Wales,Dataset available 
+Secondary Care,Patient Episode Dataset,test44,Wales,Dataset available 
+Covid-19 Lab Tests,"LIMS (Pillar 1, 2, 3)",test45,Wales,Dataset available 
+Covid-19 Lab Tests,ONS COVID-19 Infection Survey*,test46,Wales,Dataset requested
+Covid-19 Lab Tests,"Test, Trace & Protect",test47,Wales,Dataset available 
+Covid-19 Lab Tests,Shielded People,test48,Wales,Dataset available 
+Covid-19 Lab Tests,Variant strain data (COG-UK)*,test49,Wales,Dataset available 
+Covid-19 Vaccinations,Covid Vaccination Dataset,test50,Wales,Dataset available 
+Deaths,Annual District Death Daily/Monthly,test51,Wales,Dataset available 
+Deaths,Consolidated Death Data Source,test52,Wales,Dataset available 
+ITU,ICNARC Quarterly/Weekly COVID,test53,Wales,Dataset available 
+Prescribing/Dispensing,Wales Dispensing Dataset,test54,Wales,Dataset available 
+NICOR CVD Audits,NICOR Audits and Registers (pending approvals),test55,Wales,Dataset requested
+Stroke Audit,HQIP Stroke Audit (pending approvals),test56,Wales,Dataset requested
+National Vascular Registry,NVR (pending approvals),test57,Wales,Dataset requested
+Other,Annual District Birth Extract,test58,Wales,Dataset available 
+Other,Care Homes Index,test59,Wales,Dataset available 
+Other,Maternity Indicators Dataset,test60,Wales,Dataset available 
+Other,Congenital Anomaly Register (CARIS),test61,Wales,Dataset available 
+Other,National Community Child Health,test62,Wales,Dataset available 
+Other,ONS Census (2011)*,test63,Wales,Dataset available 
+Other,Referral to Treatment Times,test64,Wales,Dataset available 
+Other,SAIL Dementia e-Cohort,test65,Wales,Dataset available 
+Other,Welsh Ambulance Service Dataset,test66,Wales,Dataset available 
+Other,Wales Results Reporting Service,test67,Wales,Dataset available 
+Other,Welsh Demographic Service,test68,Wales,Dataset available 
+,,,,
+,,,,
