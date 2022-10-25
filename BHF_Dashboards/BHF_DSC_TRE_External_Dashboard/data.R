@@ -1,6 +1,6 @@
 library(tidyverse)
 
-current_dir_data = '/Users/fionnachalmers/Documents/github/BHF_TRE_Dashboard_External'
+current_dir_data = '/Users/fionnachalmers/Documents/github/BHF_DSC_HDS/BHF_Dashboards/BHF_DSC_TRE_External_Dashboard'
 #dirname(rstudioapi::getSourceEditorContext()$path)
 
 # TRE Dataset Provisioning Dashboard
