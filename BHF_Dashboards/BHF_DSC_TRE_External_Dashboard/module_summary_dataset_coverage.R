@@ -1,17 +1,18 @@
 # Module UI
-module_ui <- function(id){
+datasetCoverageUI <- function(id){
   ns <- NS(id)
   tagList(
+
     fluidRow(
       
       #Inputs
       column(3,
-             
+
              selectInput(inputId = ns("frequency_coverage"),
                          label = "Frequency:",
                          choices = frequency_options
              ),
-
+            
              
              sliderInput(inputId = ns("date_range_coverage"),
                          label = "Date Range:",
@@ -34,6 +35,7 @@ module_ui <- function(id){
       ),
       
       #Outputs
+      
       column(9,style=(style='padding-right:80px;padding-left:80px;padding-top:20px;
                                      margin-top:-4.0%;'),
              tabsetPanel(
@@ -54,19 +56,20 @@ module_ui <- function(id){
 
 
 # Module Server    
-module_server <- function(id) {
+datasetCoverageServer <- function(id, dataset_summary, nation_summary) {
   moduleServer(
     id,
     function(input, output, session) {
       
       test_dataset = reactive({test_dataset_static %>%
-          #filter(table_name==$dataset_summary) %>%
-          #filter(table_name=="hes_ae") %>%
+          filter(table_name==dataset_summary()) %>%
           filter(date_y==2021) %>%
           filter(freq==input$frequency_coverage) %>%
           filter(Type %in% input$count_coverage)
+                 
       })
-      
+
+    
       summary_coverage_plot = reactive({
         ggplot(
           data = test_dataset(), 
