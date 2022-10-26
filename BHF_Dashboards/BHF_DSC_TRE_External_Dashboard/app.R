@@ -14,7 +14,7 @@ library(scales)
 library(ggiraph)
 library(patchwork)
 library(fontawesome)
-
+devtools::install_github("gadenbuie/shinyThings")
 
 #External Sources
 source('bhf_dsc_hds_designkit.R')
@@ -25,10 +25,8 @@ source('common_functions.R')
 #Modules
 source('module_summary_dataset_coverage.R')
 source('module_summary_global.R')
-source('module_appendix.R')
-source('module_summary_dataset_overview.R')
 
-# Main App Global Input Choices ################################################
+# Global Input Choices #########################################################
 
 
 
@@ -58,36 +56,18 @@ ui = fluidPage(
     
     ## Dataset Summary Tab =====================================================
     tabPanel("Summary",
-
+             
              ### Global Input ==================================================
-
-             fluidRow(
-             column(3,style = bhf_global_options_column_style_left,
-                    div(id = "nation_css",
-                        class = "nation_css",
-                        selectInput(inputId = "nation_summary",
-                                    label = shiny::HTML("<p></p><span style='color: white'>Nation:</span>"),
-                                    choices = nations_options))
-             ),                            
-             
-             column(6,style = bhf_global_options_column_style_middle,
-                    div(id = "dataset_css",
-                        class = "dataset_css",
-                        selectInput(inputId = "dataset_summary",
-                                    label = shiny::HTML("<p></p><span style='color: white'>Dataset:</span>"),
-                                    width = '100%',
-                                    choices = NULL))
-             ),
-             
-             
-             column(3,style = bhf_global_options_column_style_right
-             )
-    ),
+             fluidRow(module_global_ui("test")),
     
              ### Dataset Overview ==============================================
              titlePanel(h3(id = 'section_heading',"Dataset Overview")),
              
-             datasetOverviewUI(id = "data_overview_module"),
+             #### Value Boxes ==================================================
+             fluidRow(class = "dashboard_css",
+                      valueBoxOutput("registrations", width = 4),
+                      valueBoxOutput("batch_summary", width = 4)
+                      ),
              
              ### Data Dictionary ===============================================
              hr(),
@@ -100,7 +80,7 @@ ui = fluidPage(
              hr(),
              titlePanel(h3(id = 'section_heading',"Data Coverage")),
              
-             datasetCoverageUI(id = "data_coverage_module"),
+             module_ui(id = "data_coverage_module"),
              
              ### Data Completeness =============================================
              hr(),
@@ -128,7 +108,19 @@ ui = fluidPage(
     ## Appendix Tab =======================================================================================
     tabPanel("Appendix",
              fluidRow(
-               appendixOutput(id = "appendix")
+               #Outputs
+               column(12,style=appendix_css,
+                      
+                      h4("Holding Text"),
+                      h5("Sub Title",style="padding-bottom:4px;"),
+                      p(span("Some text: ", style = "font-weight: bold;"),
+                        "as an example",
+                        style=paste0("color:,",colour_bhf_darkred,";margin-bottom:2px;")),
+                      p(span("blah blah", style = "font-weight: bold;"),
+                        "and blah",
+                        style=paste0("color:,",colour_bhf_darkred,";margin-bottom:2px;")),
+                      
+               ),
              )
     ),
     
@@ -136,8 +128,6 @@ ui = fluidPage(
     ## Footer ==================================================================
     hr(),
     print(div(id="version_css",paste("Version",Version)))
-    
-    
     
   )
 )
@@ -147,14 +137,9 @@ ui = fluidPage(
 
 server = function(input, output, session) {
   
-  
   ## Dataset Summary Tab =======================================================
   
   ### Global Input =============================================================
-  #Define global input from main app that can be passed to modules
-  global_dataset_summary <- reactive(input$dataset_summary)
-  global_nation_summary <- reactive(input$nation_summary)
-
   #Dynamic Dataset options depending on Nation selected
   datasets_available = reactive({
     req(input$nation_summary)
@@ -165,33 +150,40 @@ server = function(input, output, session) {
       inputId = "dataset_summary",
       choices = datasets_available())
   })
-
   
-  ### Data Dictionary ==========================================================
+  #### Value Boxes =============================================================
+  output$registrations = renderValueBox({
+    customValueBox(
+      title = "Registrations",
+      icon = icon("user"),
+      subtitle = "",
+      value = HTML(paste(paste0(names(count_options),":"),collapse = '<br/>')),
+      color = colour_bhf_darkred,
+      background = customValueBox_global_colour,
+      border = customValueBox_border_colour,
+      href = NULL
+    )
+  })
   
-  
-  ### Dataset Overview =========================================================
-  datasetOverviewServer(id = "data_overview_module", 
-                        dataset_summary=global_dataset_summary, 
-                        nation_summary=global_nation_summary) 
+  output$batch_summary = renderValueBox({
+    customValueBox(
+      title = "Batch Summary",
+      icon = icon("file"),
+      subtitle = "",
+      value = HTML(paste("Batch ID:", "Production Date:", "&nbsp", sep="<br/>")),
+      color = colour_bhf_darkred,
+      background = customValueBox_global_colour,
+      border = customValueBox_border_colour,
+      href = NULL
+    )
+  })
   
   
   ### Dataset Coverage =========================================================
-  datasetCoverageServer(id = "data_coverage_module", 
-                dataset_summary=global_dataset_summary, 
-                nation_summary=global_nation_summary) 
-  
-  
-  ### Dataset Completeness =====================================================
-  
-  ### Dataset Validity =========================================================
-  
-  
+  module_server(id = "data_coverage_module") 
   
   
 }
-
-
 
 
 
