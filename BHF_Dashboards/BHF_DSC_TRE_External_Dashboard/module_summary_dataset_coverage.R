@@ -1,22 +1,24 @@
 # Module UI
-module_ui <- function(id){
+datasetCoverageUI <- function(id){
   ns <- NS(id)
   tagList(
+
     fluidRow(
       
       #Inputs
       column(3,
-             
+
              selectInput(inputId = ns("frequency_coverage"),
                          label = "Frequency:",
                          choices = frequency_options
              ),
-
+            
              
              sliderInput(inputId = ns("date_range_coverage"),
                          label = "Date Range:",
-                         min = 2018, max = 2022, 
-                         value = c(2018,2022), 
+                         #initialise values
+                         min = 2020, max = 2021, 
+                         value = c(2020,2021), 
                          step=1, sep = ""
              ),
              
@@ -34,6 +36,7 @@ module_ui <- function(id){
       ),
       
       #Outputs
+      
       column(9,style=(style='padding-right:80px;padding-left:80px;padding-top:20px;
                                      margin-top:-4.0%;'),
              tabsetPanel(
@@ -54,23 +57,53 @@ module_ui <- function(id){
 
 
 # Module Server    
-module_server <- function(id) {
+datasetCoverageServer <- function(id, dataset_summary, nation_summary) {
   moduleServer(
     id,
     function(input, output, session) {
       
-      test_dataset = reactive({test_dataset_static %>%
-          #filter(table_name==$dataset_summary) %>%
-          #filter(table_name=="hes_ae") %>%
-          filter(date_y==2021) %>%
+      test_dataset_old = reactive({test_dataset_static %>%
+          filter(table_name==dataset_summary()) %>%
           filter(freq==input$frequency_coverage) %>%
-          filter(Type %in% input$count_coverage)
+          filter(Type %in% input$count_coverage) %>%
+          mutate(N_tooltip = format(.data$N, nsmall=1, big.mark=","))
+                 
       })
       
+      #observe min and max years available for slider input
+      date_range_coverage_extremum = reactive({
+        test_dataset_old() %>%
+        summarise(min = min(.data$date_y),
+                  max = max(.data$date_y)) %>%
+          pivot_longer(cols=c(min,max),names_to="extremum",values_to="year")
+      })
+      
+      date_range_coverage_min = reactive({date_range_coverage_extremum() %>% filter(.data$extremum=="min") %>% pull(year)})
+      date_range_coverage_max = reactive({date_range_coverage_extremum() %>% filter(.data$extremum=="max") %>% pull(year)})
+      
+      observe({
+        updateSliderInput(session, "date_range_coverage",
+                          min = date_range_coverage_min(),
+                          max = date_range_coverage_max(),
+                          value = c(
+                            date_range_coverage_min(),
+                            date_range_coverage_max()
+                          ),
+                          step=1
+                          )
+        })
+
+      
+      test_dataset = reactive({
+        test_dataset_old() %>%
+          filter(.data$date_y>=input$date_range_coverage[1] & .data$date_y<=input$date_range_coverage[2])
+      })
+
+    
       summary_coverage_plot = reactive({
         ggplot(
           data = test_dataset(), 
-          aes(x = .data$date,
+          aes(x = .data$date_format,
               y = .data$N,
               color = .data$Type,
               #data_id = .data$DateType,
@@ -80,7 +113,7 @@ module_server <- function(id) {
           geom_line_interactive(size = 3,
                                 alpha = 0.4) +
           geom_point_interactive(
-            aes(tooltip = .data$N),
+            aes(tooltip = .data$N_tooltip),
             fill = "white",
             size = 3,
             stroke = 1.5,
