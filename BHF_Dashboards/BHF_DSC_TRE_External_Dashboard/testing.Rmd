@@ -10,10 +10,13 @@ library(tidyverse)
 
 
 test_dataset_static %>%
-  filter(freq=="Weekly") %>%
+  filter(freq=="Monthly") %>%
   filter(table_name=="gdppr_date") %>%
   filter(Type == "N_distinct_id") %>%
-  arrange(date_format)
+  arrange(date_format) %>%
+  summarise(min = min(date_y),
+            max = max(date_y)) %>%
+  pivot_longer(cols=c(min,max),names_to="extremum",values_to="year") %>% filter(extremum=="min") %>% pull(year)
 
 
 ```
