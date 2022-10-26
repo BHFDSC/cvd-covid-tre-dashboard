@@ -63,9 +63,10 @@ datasetCoverageServer <- function(id, dataset_summary, nation_summary) {
       
       test_dataset = reactive({test_dataset_static %>%
           filter(table_name==dataset_summary()) %>%
-          filter(date_y==2021) %>%
+          filter(date_y>input$date_range_coverage[1]) %>%
           filter(freq==input$frequency_coverage) %>%
-          filter(Type %in% input$count_coverage)
+          filter(Type %in% input$count_coverage) %>%
+          mutate(N_tooltip = format(.data$N, nsmall=1, big.mark=","))
                  
       })
 
@@ -73,7 +74,7 @@ datasetCoverageServer <- function(id, dataset_summary, nation_summary) {
       summary_coverage_plot = reactive({
         ggplot(
           data = test_dataset(), 
-          aes(x = .data$date,
+          aes(x = .data$date_format,
               y = .data$N,
               color = .data$Type,
               #data_id = .data$DateType,
@@ -83,7 +84,7 @@ datasetCoverageServer <- function(id, dataset_summary, nation_summary) {
           geom_line_interactive(size = 3,
                                 alpha = 0.4) +
           geom_point_interactive(
-            aes(tooltip = .data$N),
+            aes(tooltip = .data$N_tooltip),
             fill = "white",
             size = 3,
             stroke = 1.5,
