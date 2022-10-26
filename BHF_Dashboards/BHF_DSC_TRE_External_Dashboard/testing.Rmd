@@ -9,4 +9,11 @@ library(tidyverse)
 
 
 
+test_dataset_static %>%
+  filter(freq=="Weekly") %>%
+  filter(table_name=="gdppr_date") %>%
+  filter(Type == "N_distinct_id") %>%
+  arrange(date_format)
+
+
 ```
