@@ -1,5 +1,6 @@
 library(tidyverse)
 
+
 current_dir_data = dirname(rstudioapi::getSourceEditorContext()$path)
 
 # TRE Dataset Provisioning Dashboard
@@ -37,4 +38,7 @@ test_dataset_static = t.monthly_grouped_gdppr_date %>%
 t.data_dictionary = readxl::read_excel((paste0(current_dir_data,'/Data/TRE_DD_391419_j3w9t.xlsx')))
 data_dictionary = read_excel_allsheets(paste0(current_dir_data,
                                               '/Data/TRE_DD_391419_j3w9t.xlsx'), tibble = FALSE, except_sheet_no = 1, skip = 2)
+
+dataset_desc <- read.csv(paste0(current_dir_data,'/Data/TRE_dataset_descriptions_test.csv'))
+
                                        
