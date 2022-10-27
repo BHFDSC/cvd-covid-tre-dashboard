@@ -10,13 +10,21 @@ library(tidyverse)
 
 
 test_dataset_static %>%
-  filter(freq=="Monthly") %>%
+  #filter(freq=="Monthly") %>%
   filter(table_name=="gdppr_date") %>%
   filter(Type == "N_distinct_id") %>%
   arrange(date_format) %>%
-  summarise(min = min(date_y),
-            max = max(date_y)) %>%
-  pivot_longer(cols=c(min,max),names_to="extremum",values_to="year") %>% filter(extremum=="min") %>% pull(year)
+  mutate(date_name = if_else(freq=="Weekly",
+                             paste0("Week ",date,": "),
+                     if_else(freq=="Monthly",
+                             paste0(month.name[date],": "),
+                     as.character(NA)))) %>%
+  filter(date_format == max(date_format))
+
+
+
+as.data.frame(count_options) %>% rename(Type=count_options) %>% rownames_to_column("count_options")
+
 
 
 ```
