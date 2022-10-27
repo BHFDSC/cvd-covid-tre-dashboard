@@ -26,7 +26,6 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
   moduleServer(
     id,
     function(input, output, session){
-      dataset_desc <- read.csv("TRE_dataset_descriptions_test.csv")
       output$description <- renderText({
         paste(dataset_desc$Description[dataset_desc$Dataset == input$dataset])})
     }

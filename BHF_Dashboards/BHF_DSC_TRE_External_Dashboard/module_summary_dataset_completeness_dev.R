@@ -1,3 +1,6 @@
+
+current_dir_example = dirname(rstudioapi::getSourceEditorContext()$path)
+
 source(paste0((current_dir_example),'/data.R'))
 source(paste0((current_dir_example),'/inputs.R'))
 source(paste0((current_dir_example),'/common_functions.R'))
@@ -14,10 +17,28 @@ library(scales)
 library(ggiraph)
 library(patchwork)
 library(fontawesome)
+library(ggtext)
 
 
 ui = fluidPage(
   
+  
+  fluidRow(
+    
+    #Inputs - Plots
+    column(3,checkboxInput("test", "Test")),
+    #Ouputs
+    column(9,
+           tabsetPanel(
+             tabPanel("Plot", value="eda_plot",
+                      tags$div(plotOutput("completeness_plot",
+                                          width='100%'))),
+             tabPanel("Summary", value="completeness_summary",
+                      tags$div(tableOutput("")))
+           )),
+    
+    
+  )
   
 )
 
@@ -33,9 +54,10 @@ server =
       mutate(completeness = round(runif(nrow(.))*100,2))
     })
     
-    ggplot(data=completeness_test_data() %>%
-             mutate(answer = fct_relevel(.data$answer, (multiple_choice_proportions() %>% pull(answer)))), 
-           aes(x=.data$answer, y=.data$proportion_vols)) +
+output$completeness_plot = renderPlot({ ggplot(data=completeness_test_data(),
+           #%>%
+           #mutate(answer = fct_relevel(.data$display_name_label, (() %>% pull()))), 
+           aes(x=.data$display_name_label, y=.data$completeness)) +
       geom_bar(stat="identity",fill = "red", alpha = 0.3) +
       coord_flip(clip = 'off')  +
       labs(x="",y="BLAH") +
@@ -53,7 +75,8 @@ server =
         axis.ticks.x = element_blank(),
         plot.margin = margin(0,30,0,0)
       ) +
-      geom_text(aes(label=paste0(round(proportion_vols)," %")), hjust=-0.2)
+      geom_text(aes(label=paste0(round(completeness)," %")), hjust=-0.2)
+})
     
   }
 
