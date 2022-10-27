@@ -24,6 +24,7 @@ source('common_functions.R')
 
 #Modules
 source('module_summary_dataset_coverage.R')
+source('module_summary_dataset_completeness.R')
 source('module_summary_global.R')
 source('module_appendix.R')
 source('module_summary_dataset_overview.R')
@@ -108,7 +109,7 @@ ui = fluidPage(
              hr(),
              titlePanel(h3(id='section_heading',"Data Completeness")),
              
-             #datasetCompletenessUI(id = "data_completeness_module"),
+             datasetCompletenessUI(id = "data_completeness_module"),
              
              ### Data Validity =================================================
              hr(),
@@ -190,9 +191,9 @@ server = function(input, output, session) {
   
   ### Dataset Completeness =====================================================
   
-  # datasetCompletenessServer(id = "data_completeness_module",
-  #                       dataset_summary=global_dataset_summary, 
-  #                       nation_summary=global_nation_summary)
+  datasetCompletenessServer(id = "data_completeness_module",
+                        dataset_summary=global_dataset_summary,
+                        nation_summary=global_nation_summary)
   
   ### Dataset Validity =========================================================
   
