@@ -106,7 +106,7 @@ ui = fluidPage(
              hr(),
              titlePanel(h3(id='section_heading',"Data Completeness")),
              
-             fluidRow(),
+             datasetCompletenessUI(id = "data_completeness_module"),
              
              ### Data Validity =================================================
              hr(),
@@ -183,6 +183,10 @@ server = function(input, output, session) {
   
   
   ### Dataset Completeness =====================================================
+  
+  datasetCompletenessServer(id = "data_completeness_module",
+                        dataset_summary=global_dataset_summary, 
+                        nation_summary=global_nation_summary)
   
   ### Dataset Validity =========================================================
   
