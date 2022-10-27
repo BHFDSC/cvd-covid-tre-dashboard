@@ -31,3 +31,10 @@ test_dataset_static = t.monthly_grouped_gdppr_date %>%
                                      paste0(month.name[date],": "),
                                      as.character(NA))))
 
+
+
+# TRE Data Dictionary
+t.data_dictionary = readxl::read_excel((paste0(current_dir_data,'/Data/TRE_DD_391419_j3w9t.xlsx')))
+data_dictionary = read_excel_allsheets(paste0(current_dir_data,
+                                              '/Data/TRE_DD_391419_j3w9t.xlsx'), tibble = FALSE, except_sheet_no = 1, skip = 2)
+                                       
