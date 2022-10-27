@@ -65,8 +65,8 @@ datasetCoverageServer <- function(id, dataset_summary, nation_summary) {
       test_dataset_old = reactive({test_dataset_static %>%
           filter(table_name==dataset_summary()) %>%
           filter(freq==input$frequency_coverage) %>%
-          filter(Type %in% input$count_coverage) %>%
-          mutate(N_tooltip = format(.data$N, nsmall=1, big.mark=","))
+          mutate(N_tooltip = format(.data$N, nsmall=1, big.mark=",")) %>%
+          mutate(N_tooltip_date = paste0(date_name,N_tooltip))
                  
       })
       
@@ -96,14 +96,15 @@ datasetCoverageServer <- function(id, dataset_summary, nation_summary) {
       
       test_dataset = reactive({
         test_dataset_old() %>%
-          filter(.data$date_y>=input$date_range_coverage[1] & .data$date_y<=input$date_range_coverage[2])
+          filter(.data$date_y>=input$date_range_coverage[1] & .data$date_y<=input$date_range_coverage[2]) %>%
+          filter(Type %in% input$count_coverage)
       })
 
     
       summary_coverage_plot = reactive({
         ggplot(
           data = test_dataset(), 
-          aes(x = .data$date_format,
+          aes(x = .data$date_format + 10,
               y = .data$N,
               color = .data$Type,
               #data_id = .data$DateType,
@@ -113,12 +114,27 @@ datasetCoverageServer <- function(id, dataset_summary, nation_summary) {
           geom_line_interactive(size = 3,
                                 alpha = 0.4) +
           geom_point_interactive(
-            aes(tooltip = .data$N_tooltip),
+            aes(tooltip = .data$N_tooltip_date),
             fill = "white",
             size = 3,
             stroke = 1.5,
             shape = 20) +
-          # geom_text_interactive() +
+          geom_text_interactive(
+            data = (
+              test_dataset() %>% filter(date_format == max(date_format)) %>%
+                left_join(as.data.frame(count_options) %>% rename(Type=count_options) %>% rownames_to_column("count_options"),
+                          by="Type")
+            ),
+            aes(x = .data$date_format,
+                y = .data$N + (
+                  #nudge up a 30th of difference between max and min
+                  (((test_dataset() %>% filter(N == max(N)) %>% pull(N)) - (test_dataset() %>% filter(N == min(N)) %>% pull(N))) /30) 
+                  ),
+                color = .data$Type,
+                label = .data$count_options
+            ),
+            size=6,
+            check_overlap = T) +
         labs(x = NULL, y = NULL) +
           theme_minimal() +
           theme(

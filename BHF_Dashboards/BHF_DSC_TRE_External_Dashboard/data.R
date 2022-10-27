@@ -1,7 +1,6 @@
 library(tidyverse)
 
-current_dir_data = '/Users/fionnachalmers/Documents/github/BHF_DSC_HDS/BHF_Dashboards/BHF_DSC_TRE_External_Dashboard'
-#dirname(rstudioapi::getSourceEditorContext()$path)
+current_dir_data = dirname(rstudioapi::getSourceEditorContext()$path)
 
 # TRE Dataset Provisioning Dashboard
 t.dataset_dashboard = read.csv(paste0(current_dir_data,'/Data/TRE_dataset_provisioning_dashboard.csv'))
@@ -25,5 +24,10 @@ test_dataset_static = t.monthly_grouped_gdppr_date %>%
   bind_rows(t.weekly_grouped_hes_ae) %>%
   mutate(date_format = if_else(freq=="Monthly",as.Date(paste(date_y, date, 1, sep="-"), "%Y-%m-%d"),
                        if_else(freq=="Weekly",as.Date(paste(date_y, date, 1, sep="-"), "%Y-%U-%u"),
-                              as.Date(NA))))
+                              as.Date(NA)))) %>%
+  mutate(date_name = if_else(freq=="Weekly",
+                             paste0("Week ",date,": "),
+                             if_else(freq=="Monthly",
+                                     paste0(month.name[date],": "),
+                                     as.character(NA))))
 

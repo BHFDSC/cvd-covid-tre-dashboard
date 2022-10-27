@@ -6,9 +6,9 @@
 #libraries - they need only be sourced in the main app.
 current_dir_example = dirname(rstudioapi::getSourceEditorContext()$path)
 
-source(paste0(dirname(current_dir_example),'/data.R'))
-source(paste0(dirname(current_dir_example),'/inputs.R'))
-source(paste0(dirname(current_dir_example),'/common_functions.R'))
+source(paste0((current_dir_example),'/data.R'))
+source(paste0((current_dir_example),'/inputs.R'))
+source(paste0((current_dir_example),'/common_functions.R'))
 
 library(shiny)
 library(bslib)
