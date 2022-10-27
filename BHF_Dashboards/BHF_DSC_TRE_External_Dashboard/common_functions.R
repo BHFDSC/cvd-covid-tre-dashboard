@@ -1,4 +1,5 @@
 library(tidyverse)
+library(readxl)
 
 dataset_dashboard_list = function(nation,key="Dataset available"){
   
@@ -21,6 +22,23 @@ dataset_dashboard_list = function(nation,key="Dataset available"){
   
   return(nation_datasets_list)
   
+}
+
+
+read_excel_allsheets <- function(filename, tibble = FALSE, except_sheet_no = NA, skip = 0, collate = TRUE) {
+  # reading all the names of the sheets
+  sheets <- readxl::excel_sheets(filename)
+  # applying any exceptions eg cover sheets  
+  if (!is.na(except_sheet_no)){
+    sheets <- sheets[-except_sheet_no]
+  }
+  x <- lapply(sheets, function(X) readxl::read_excel(filename, sheet = X, skip = skip))
+  if(!tibble) x <- lapply(x, as.data.frame)
+  names(x) <- sheets
+  if (collate){
+    x <- dplyr::  bind_rows(x)
+  }
+  x
 }
 
 
