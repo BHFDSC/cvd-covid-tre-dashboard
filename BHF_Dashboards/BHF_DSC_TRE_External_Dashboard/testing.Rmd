@@ -7,24 +7,11 @@ date: "2022-10-20"
 ```{r}
 library(tidyverse)
 
-
-
-test_dataset_static %>%
-  #filter(freq=="Monthly") %>%
-  filter(table_name=="gdppr_date") %>%
-  filter(Type == "N_distinct_id") %>%
-  arrange(date_format) %>%
-  mutate(date_name = if_else(freq=="Weekly",
-                             paste0("Week ",date,": "),
-                     if_else(freq=="Monthly",
-                             paste0(month.name[date],": "),
-                     as.character(NA)))) %>%
-  filter(date_format == max(date_format))
-
-
-
-as.data.frame(count_options) %>% rename(Type=count_options) %>% rownames_to_column("count_options")
-
-
+# pull the variable names from a chosen dataset to use as test data
+completeness_test_data = data_dictionary %>%
+  filter(table=="hes_ae_{fyear}_dars_nic_391419_j3w9t") %>%
+  #this will be reactive and table names need aligned to input table names in addition to the table names used when data downloaded from TRE in aggreagate
+  select(display_name_label) %>%
+  mutate(completeness = round(runif(nrow(.))*100,2))
 
 ```

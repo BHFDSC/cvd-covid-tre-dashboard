@@ -27,6 +27,8 @@ source('module_summary_dataset_coverage.R')
 source('module_summary_global.R')
 source('module_appendix.R')
 source('module_summary_dataset_overview.R')
+source('module_summary_data_dictionary.R')
+source('module_summary_dataset_description.R')
 
 # Main App Global Input Choices ################################################
 
@@ -87,13 +89,13 @@ ui = fluidPage(
              ### Dataset Overview ==============================================
              titlePanel(h3(id = 'section_heading',"Dataset Overview")),
              
-             datasetOverviewUI(id = "data_overview_module"),
+             dataDescriptionUI(id = "data_description"),
              
              ### Data Dictionary ===============================================
              hr(),
              titlePanel(h3(id = 'section_heading',"Data Dictionary")),
              
-             fluidRow(),
+             dataDictionaryUI(id = "data_dictionary"),
              
              
              ### Data Coverage =================================================            
@@ -106,7 +108,7 @@ ui = fluidPage(
              hr(),
              titlePanel(h3(id='section_heading',"Data Completeness")),
              
-             datasetCompletenessUI(id = "data_completeness_module"),
+             #datasetCompletenessUI(id = "data_completeness_module"),
              
              ### Data Validity =================================================
              hr(),
@@ -166,14 +168,18 @@ server = function(input, output, session) {
       choices = datasets_available())
   })
 
-  
-  ### Data Dictionary ==========================================================
+
   
   
   ### Dataset Overview =========================================================
-  datasetOverviewServer(id = "data_overview_module", 
+  dataDescriptionServer(id = "data_description", 
                         dataset_summary=global_dataset_summary, 
                         nation_summary=global_nation_summary) 
+
+  ### Data Dictionary ==========================================================
+  dataDictionaryServer(id = "data_dictionary", 
+                       dataset_summary=global_dataset_summary, 
+                       nation_summary=global_nation_summary)
   
   
   ### Dataset Coverage =========================================================
@@ -184,9 +190,9 @@ server = function(input, output, session) {
   
   ### Dataset Completeness =====================================================
   
-  datasetCompletenessServer(id = "data_completeness_module",
-                        dataset_summary=global_dataset_summary, 
-                        nation_summary=global_nation_summary)
+  # datasetCompletenessServer(id = "data_completeness_module",
+  #                       dataset_summary=global_dataset_summary, 
+  #                       nation_summary=global_nation_summary)
   
   ### Dataset Validity =========================================================
   
