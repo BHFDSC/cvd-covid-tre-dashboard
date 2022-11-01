@@ -13,11 +13,14 @@ library(readxl)
 #getwd()
 
 
-data_dictionary = read_excel("C:/RProjects/BHF_DSC_HDS/BHF_Dashboards/BHF_DSC_TRE_External_Dashboard/Lars_module/TRE_DD_391419_j3w9t.xlsx", sheet = "gdppr", skip = 2)
+routefolder <- getwd()
+dictionarypath <- paste0(routefolder, "/TRE_DD_391419_j3w9t.xlsx")
 
-filename <- "C:/RProjects/BHF_DSC_HDS/BHF_Dashboards/BHF_DSC_TRE_External_Dashboard/Lars_module/TRE_DD_391419_j3w9t.xlsx"
+#data_dictionary = read_excel("C:/RProjects/BHF_DSC_HDS/BHF_Dashboards/BHF_DSC_TRE_External_Dashboard/Lars_module/TRE_DD_391419_j3w9t.xlsx", sheet = "gdppr", skip = 2)
 
-sheets <- readxl::excel_sheets(filename)
+#filename <- "C:/RProjects/BHF_DSC_HDS/BHF_Dashboards/BHF_DSC_TRE_External_Dashboard/Lars_module/TRE_DD_391419_j3w9t.xlsx"
+
+sheets <- readxl::excel_sheets(dictionarypath)
 
 read_excel_allsheets <- function(filename, tibble = FALSE, except_sheet_no = NA, skip = 0, collate = TRUE) {
 # reading all the names of the sheets
@@ -35,7 +38,7 @@ read_excel_allsheets <- function(filename, tibble = FALSE, except_sheet_no = NA,
   x
 }
 
-data_dictionary <- read_excel_allsheets(filename, tibble = FALSE, except_sheet_no = 1, skip = 2)
+data_dictionary <- read_excel_allsheets(filename = dictionarypath, tibble = FALSE, except_sheet_no = 1, skip = 2)
 
 
 shinyApp(
