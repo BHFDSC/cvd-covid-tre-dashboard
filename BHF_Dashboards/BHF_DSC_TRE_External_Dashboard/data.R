@@ -1,15 +1,30 @@
 library(tidyverse)
 
-
 current_dir_data = dirname(rstudioapi::getSourceEditorContext()$path)
 
-# TRE Dataset Provisioning Dashboard
-t.dataset_dashboard = read.csv(paste0(current_dir_data,'/Data/TRE_dataset_provisioning_dashboard.csv'))
+# TRE Dataset Provisioning Dashboard -------------------------------------------
+t.dataset_dashboard = read.csv(paste0(current_dir_data,
+                                      '/Data/TRE_dataset_provisioning_dashboard.csv'))
 
 datasets_available = t.dataset_dashboard %>%
   mutate(across(everything(), .fn=~str_trim(.,side="both")))
 
-# Test Dataset using GDPPR Date and HES AE
+# TRE Data Dictionary ----------------------------------------------------------
+t.data_dictionary = readxl::read_excel((paste0(current_dir_data,
+                                               '/Data/TRE_DD_391419_j3w9t.xlsx')))
+data_dictionary = read_excel_allsheets(paste0(current_dir_data,
+                                              '/Data/TRE_DD_391419_j3w9t.xlsx'),
+                                       tibble = FALSE,
+                                       except_sheet_no = 1,
+                                       skip = 2)
+
+# Dataset Descriptions ---------------------------------------------------------
+dataset_desc <- read.csv(paste0(current_dir_data,
+                                '/Data/TRE_dataset_descriptions_test.csv'))
+
+
+
+# Test Dataset using GDPPR Date and HES AE -------------------------------------
 t.monthly_grouped_gdppr_date = read.csv(paste0(current_dir_data,'/Data/monthly_grouped_gdppr_date.csv')) %>% 
   mutate(freq="Monthly") %>% rename(date=date_m)
 t.weekly_grouped_gdppr_date = read.csv(paste0(current_dir_data,'/Data/weekly_grouped_gdppr_date.csv')) %>% 
@@ -34,11 +49,6 @@ test_dataset_static = t.monthly_grouped_gdppr_date %>%
 
 
 
-# TRE Data Dictionary
-t.data_dictionary = readxl::read_excel((paste0(current_dir_data,'/Data/TRE_DD_391419_j3w9t.xlsx')))
-data_dictionary = read_excel_allsheets(paste0(current_dir_data,
-                                              '/Data/TRE_DD_391419_j3w9t.xlsx'), tibble = FALSE, except_sheet_no = 1, skip = 2)
 
-dataset_desc <- read.csv(paste0(current_dir_data,'/Data/TRE_dataset_descriptions_test.csv'))
 
                                        
