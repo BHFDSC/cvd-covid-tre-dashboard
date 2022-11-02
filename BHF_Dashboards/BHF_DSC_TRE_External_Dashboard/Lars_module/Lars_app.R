@@ -50,7 +50,7 @@ shinyApp(
   ui = fluidPage(DTOutput('tbl')),
   server = function(input, output) {
     output$tbl = renderDT(
-      data_dictionary, options = list(lengthChange = FALSE)
+      data_dictionary_Scot, options = list(lengthChange = FALSE)
     )
   }
 )
