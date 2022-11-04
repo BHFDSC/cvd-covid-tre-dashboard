@@ -1,5 +1,3 @@
-library(tidyverse)
-
 current_dir_data = dirname(rstudioapi::getSourceEditorContext()$path)
 
 # TRE Dataset Provisioning Dashboard -------------------------------------------
@@ -18,37 +16,21 @@ data_dictionary = read_excel_allsheets(paste0(current_dir_data,
                                        except_sheet_no = 1,
                                        skip = 2)
 
-# Dataset Descriptions ---------------------------------------------------------
-dataset_desc <- read.csv(paste0(current_dir_data,
-                                '/Data/TRE_dataset_descriptions_test.csv'))
 
 
+# Data Collection Start Dates --------------------------------------------------
+t.dataset_start_dates = read.csv(paste0(current_dir_data,
+                                        '/Data/TRE_dataset_collection_start_dates.csv')) %>%
+  suppressWarnings()
 
-# Test Dataset using GDPPR Date and HES AE -------------------------------------
-t.monthly_grouped_gdppr_date = read.csv(paste0(current_dir_data,'/Data/monthly_grouped_gdppr_date.csv')) %>% 
-  mutate(freq="Monthly") %>% rename(date=date_m)
-t.weekly_grouped_gdppr_date = read.csv(paste0(current_dir_data,'/Data/weekly_grouped_gdppr_date.csv')) %>% 
-  mutate(freq="Weekly") %>% rename(date=date_w)
-t.monthly_grouped_hes_ae = read.csv(paste0(current_dir_data,'/Data/monthly_grouped_hes_ae.csv')) %>% 
-  mutate(freq="Monthly") %>% rename(date=date_m)
-t.weekly_grouped_hes_ae = read.csv(paste0(current_dir_data,'/Data/weekly_grouped_hes_ae.csv')) %>% 
-  mutate(freq="Weekly") %>% rename(date=date_w)
+# Data Coverage Pre Processed from data_preprocessing
+t.data_coverage = read_rds("Data/data_coverage")
 
-test_dataset_static = t.monthly_grouped_gdppr_date %>%
-  bind_rows(t.weekly_grouped_gdppr_date) %>%
-  bind_rows(t.monthly_grouped_hes_ae) %>%
-  bind_rows(t.weekly_grouped_hes_ae) %>%
-  mutate(date_format = if_else(freq=="Monthly",as.Date(paste(date_y, date, 1, sep="-"), "%Y-%m-%d"),
-                       if_else(freq=="Weekly",as.Date(paste(date_y, date, 1, sep="-"), "%Y-%U-%u"),
-                              as.Date(NA)))) %>%
-  mutate(date_name = if_else(freq=="Weekly",
-                             paste0("Week ",date,": "),
-                             if_else(freq=="Monthly",
-                                     paste0(month.name[date],": "),
-                                     as.character(NA))))
+# Datset Descriptions ----------------------------------------------------------
+dataset_desc = read.csv(paste0(current_dir_data,
+                               '/Data/TRE_dataset_descriptions_test.csv')) 
+
+t.dataset_overview = read.csv(paste0(current_dir_data,
+                               '/Data/TRE_dataset_overview.csv')) 
 
 
-
-
-
-                                       
