@@ -47,6 +47,10 @@ bhf_dsc_hds_css = "
   position: relative;
 }
 
+.label-primary{
+background-color: #c110a0;
+}
+
 .selectize-input { word-wrap : break-word;}
 .selectize-input { word-break: break-word;}
 .selectize-dropdown {word-wrap : break-word;}
@@ -241,6 +245,8 @@ border: 1px solid transparent !important;
 
 
 
+
+
 /*REFRESH*/
 #refresh_sourceData{
 background-color:var(--colour_bhf_darkred);
@@ -408,15 +414,20 @@ global_row_header_styling = fluidRow(column(12,titlePanel(h6(id='global_heading'
                                             tags$style(HTML("#global_heading{color:#1D2F5D;margin-top:-20px;}"))))
 
 bhf_global_options_column_style_left = paste("background-color:",colour_global_options,";",
-                                                 "height:",global_options_row_height,";",
-                                                 "border:",global_options_row_height,"; /*Round Edges*/
-                                                 border-top-left-radius: 10px !important; /*Round Edges*/
-                                                 border-bottom-left-radius: 10px !important; /*Round Edges*/")
+                                             "border-color:","green",";",
+                                             "border-width: thick;",
+                                             "height:",global_options_row_height,";",
+                                             "border:",global_options_row_height,";",
+                                              "border-top-left-radius: 10px !important; /*Round Edges*/
+                                               border-bottom-left-radius: 10px !important; /*Round Edges*/")
 
 
 
 bhf_global_options_column_style_middle = paste("background-color:",colour_global_options,";",
-                                                 "height:",global_options_row_height,";")
+                                               "border-color:","green",";",
+                                               "border-width: thick;",
+                                               "height:",global_options_row_height,";",
+                                               "border:",global_options_row_height,";")
 
 
 

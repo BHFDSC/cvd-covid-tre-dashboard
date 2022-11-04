@@ -4,6 +4,7 @@ Version = "1.1.0"
 #Libraries
 library(shiny)
 library(bslib)
+library(tidyverse)
 library(shinydashboard)
 library(shinyWidgets)
 library(shinyBS)
@@ -14,7 +15,10 @@ library(scales)
 library(ggiraph)
 library(patchwork)
 library(fontawesome)
+library(ggtext)
 
+library("htmltools")
+library("bsplus")
 
 #External Sources
 source('bhf_dsc_hds_designkit.R')
@@ -23,6 +27,7 @@ source('inputs.R')
 source('common_functions.R')
 
 #Modules
+#source('module_data.R')
 source('module_summary_dataset_coverage.R')
 source('module_summary_dataset_completeness.R')
 source('module_summary_global.R')
@@ -30,6 +35,7 @@ source('module_appendix.R')
 source('module_summary_dataset_overview.R')
 source('module_summary_data_dictionary.R')
 source('module_summary_dataset_description.R')
+source('module_summary_dataset_overview.R')
 
 # Main App Global Input Choices ################################################
 
@@ -70,8 +76,10 @@ ui = fluidPage(
                         class = "nation_css",
                         selectInput(inputId = "nation_summary",
                                     label = shiny::HTML("<p></p><span style='color: white'>Nation:</span>"),
-                                    choices = nations_options))
-             ),                            
+                                    choices = nations_options) )
+                    
+             ),     
+
              
              column(6,style = bhf_global_options_column_style_middle,
                     div(id = "dataset_css",
@@ -86,11 +94,12 @@ ui = fluidPage(
              column(3,style = bhf_global_options_column_style_right
              )
     ),
-    
+
              ### Dataset Overview ==============================================
              titlePanel(h3(id = 'section_heading',"Dataset Overview")),
              
              dataDescriptionUI(id = "data_description"),
+             datasetOverviewUI(id = "data_overview"),
              
              ### Data Dictionary ===============================================
              hr(),
@@ -150,7 +159,6 @@ ui = fluidPage(
 
 server = function(input, output, session) {
   
-  
   ## Dataset Summary Tab =======================================================
   
   ### Global Input =============================================================
@@ -170,12 +178,19 @@ server = function(input, output, session) {
   })
 
 
-  
+  ### Source Data ==============================================================
+  dataServer(id = "data_source", 
+                        dataset_summary=global_dataset_summary, 
+                        nation_summary=global_nation_summary)  
   
   ### Dataset Overview =========================================================
   dataDescriptionServer(id = "data_description", 
                         dataset_summary=global_dataset_summary, 
                         nation_summary=global_nation_summary) 
+  datasetOverviewServer(id = "data_overview", 
+                        dataset_summary=global_dataset_summary, 
+                        nation_summary=global_nation_summary) 
+  
 
   ### Data Dictionary ==========================================================
   dataDictionaryServer(id = "data_dictionary", 
@@ -184,9 +199,9 @@ server = function(input, output, session) {
   
   
   ### Dataset Coverage =========================================================
-  datasetCoverageServer(id = "data_coverage_module", 
-                dataset_summary=global_dataset_summary, 
-                nation_summary=global_nation_summary) 
+  datasetCoverageServer(id = "data_coverage_module",
+                dataset_summary=global_dataset_summary,
+                nation_summary=global_nation_summary)
   
   
   ### Dataset Completeness =====================================================
