@@ -1,6 +1,6 @@
 nations_options = c("England","Scotland","Wales")
 
-count_options = c("Rows"="N_row","Valid IDs"="N_valid_id","Distinct IDs"="N_distinct_id")
-count_options_selected = "N_distinct_id"
+count_options = c("Records"="n","Valid IDs"="n_id","Distinct IDs"="n_id_distinct")
+count_options_selected = "n_id_distinct"
 
 frequency_options = c("Monthly","Weekly")
