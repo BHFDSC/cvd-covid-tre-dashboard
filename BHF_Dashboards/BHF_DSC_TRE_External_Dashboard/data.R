@@ -34,3 +34,7 @@ t.dataset_overview = read.csv(paste0(current_dir_data,
                                '/Data/TRE_dataset_overview.csv')) 
 
 
+dataset_desc <- read.csv(paste0(current_dir_data,'/Data/TRE_dataset_descriptions.csv'))
+
+
+
