@@ -10,7 +10,10 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
     id,
     function(input, output, session){
       output$tbl = renderDT(
-        data_dictionary, options = list(lengthChange = FALSE, pageLength = 5)
+        data_dictionary %>%
+          left_join(linkage, by=c("table"="dict")) %>%
+          filter(dataset == dataset_summary())
+        , options = list(lengthChange = FALSE, pageLength = 5)
       )
     }
   )

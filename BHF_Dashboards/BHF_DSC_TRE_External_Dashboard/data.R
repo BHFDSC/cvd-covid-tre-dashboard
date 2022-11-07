@@ -35,4 +35,6 @@ t.dataset_overview = read.csv(paste0(current_dir_data,
 dataset_desc <- read.csv(paste0(current_dir_data,'/Data/TRE_dataset_descriptions.csv'))
 
 
+linkage = read.csv(paste0(current_dir_data,'/Data/linkage.csv'))
+
 
