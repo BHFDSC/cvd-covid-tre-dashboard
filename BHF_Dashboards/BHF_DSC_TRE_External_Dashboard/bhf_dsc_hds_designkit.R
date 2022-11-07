@@ -3,7 +3,7 @@
 ###############################################################################
 #Colour Dictionary
 
-colour_bhf_darkred = '#8C0032'
+colour_bhf_darkred = '#A0003C'
 colour_bhf_lightred = '#FF001F'
 colour_bhf_neonred = '#EC2154'
 
@@ -26,15 +26,26 @@ bhf_dsc_hds_bootstrap_theme = bs_theme(version = 5, bootswatch = "flatly",
 bhf_navbar_line = hr(style=paste0("color:",colour_bhf_darkred,"!important;"))
 
 #CSS External File that overrides flatly themes
+
+
 bhf_dsc_hds_css = "
 
 :root{
---colour_bhf_darkred:#8C0032;
+--colour_bhf_darkred:#A0003C;
 --colour_bhf_lightred:#FF001F;
 --colour_bhf_background_lightgrey:#F3F2F4;
 --colour_bhf_neonred:#F51344;
 --customValueBox_border_colour:#A95EF4;
 }
+
+/*DT Table*/
+table.dataTable thead tr {
+  background-color: var(--colour_bhf_darkred);
+  color: white;
+}
+
+
+
 
 /*The colour of nonactive tabs*/
 .navbar .navbar-nav li > a{
@@ -90,6 +101,25 @@ max-height:40px !important;
 margin-top:15px;
 }
 
+/*Prompter Tooltips*/
+.hint--error:after {
+          background: none var(--colour_bhf_neonred);
+          opacity: 0.95 !important;
+          color: #FFFFFF;
+          text-shadow: none;
+        }
+        .hint--error.hint--bottom:before {
+          border-bottom-color: var(--colour_bhf_neonred)
+        }
+        .hint--error.hint--left:before {
+          border-left-color: var(--colour_bhf_neonred)
+        }
+        .hint--error.hint--top:before {
+          border-top-color: var(--colour_bhf_neonred)
+        }
+        .hint--error.hint--right:before {
+          border-right-color: var(--colour_bhf_neonred)
+        }
 
 /*Plot/Summary Active Tab*/
 .nav-tabs .nav-link.active,
@@ -146,7 +176,6 @@ border-top-right-radius: 10px !important; /*Round Edges*/
 border-bottom-right-radius: 10px !important; /*Round Edges*/
 padding-bottom:20px;
 }
-
 
 
 /*Hover Colour on DT Rows*/
@@ -407,6 +436,16 @@ margin-left:-10px;
 
 
 #Global Options FluidRow
+wellpanel_style = "background: white; border-color: white;margin-top:-1%;"
+bhf_global_options_style = "
+background: linear-gradient(to right, #e30020, #ed1f54);
+border-top-left-radius: 10px !important; /*Round Edges*/
+border-bottom-left-radius: 10px !important; /*Round Edges*/
+border-top-right-radius: 10px !important; /*Round Edges*/
+border-bottom-right-radius: 10px !important; /*Round Edges*/
+"
+
+
 global_options_row_height = "110px"
 
 global_row_header = FALSE #change to TRUE if want a "Global Options" header
