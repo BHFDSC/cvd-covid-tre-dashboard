@@ -16,6 +16,7 @@ library(ggiraph)
 library(patchwork)
 library(fontawesome)
 library(ggtext)
+library(prompter)
 
 library("htmltools")
 library("bsplus")
@@ -48,20 +49,19 @@ ui = fluidPage(
   useShinyjs(),
   #App Theme
   theme = bhf_dsc_hds_bootstrap_theme,
+  # Load the dependencies for promter
+  use_prompt(),
   #CSS Theme Overrides
   tags$head(tags$style(HTML(bhf_dsc_hds_css))),
-
   
   ## Navigation Bar ############################################################
   navbarPage(
     bhf_navbar_line,
     #BHF HDS Logo
     title = div(img(src = "bhf_dsc_logo.png",
-                    style = "margin-top:38px !important;
+                    style = "margin-top:17% !important;
                         justify-content: center !important;
-                        align-items: center !important;
-                               padding-right:10px;
-                               padding-bottom:0px;",
+                        align-items: center !important;",
                     height = 70)),
 
     
@@ -70,18 +70,19 @@ ui = fluidPage(
 
              ### Global Input ==================================================
 
-             fluidRow(
-             column(3,style = bhf_global_options_column_style_left,
+             wellPanel(style = wellpanel_style,
+fluidRow(style = bhf_global_options_style,
+             column(3,
                     div(id = "nation_css",
                         class = "nation_css",
                         selectInput(inputId = "nation_summary",
                                     label = shiny::HTML("<p></p><span style='color: white'>Nation:</span>"),
-                                    choices = nations_options) )
+                                    choices = nations_options))
                     
              ),     
 
              
-             column(6,style = bhf_global_options_column_style_middle,
+             column(6,
                     div(id = "dataset_css",
                         class = "dataset_css",
                         selectInput(inputId = "dataset_summary",
@@ -91,7 +92,7 @@ ui = fluidPage(
              ),
              
              
-             column(3,style = bhf_global_options_column_style_right
+             column(3,
              )
     ),
 
@@ -127,7 +128,7 @@ ui = fluidPage(
              fluidRow(),
              
              
-             ),
+             )),
     
   
     
