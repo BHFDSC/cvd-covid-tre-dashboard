@@ -330,106 +330,25 @@ font-size: 15px;
 
 
 
-#download_agesex_plot{
-background-color:white;
-border-color:white;
-color:#3C3C3C;
-outline: none !important;
-box-shadow: none;
-margin-left:-10px;
-}
 
-#download_agesex_plot:hover{
+/*Css Tags in Modules access - downloads*/
+#data_coverage_module-download_summary_coverage_plot:hover{
 background-color:white;
 border-color:white;
 color:var(--colour_bhf_neonred);
 outline: none !important;
 box-shadow: none;
-margin-left:-10px;
+margin-left:-4%;
 }
 
-
-
-#download_agesex_summary{
+#data_coverage_module-download_summary_coverage_plot{
 background-color:white;
 border-color:white;
 color:#3C3C3C;
 outline: none !important;
 box-shadow: none;
-margin-left:-10px;
+margin-left:-4%;
 }
-
-#download_agesex_summary:hover{
-background-color:white;
-border-color:white;
-color:var(--colour_bhf_neonred);
-outline: none !important;
-box-shadow: none;
-margin-left:-10px;
-}
-
-
-
-#download_srt_summary{
-background-color:white;
-border-color:white;
-color:#3C3C3C;
-outline: none !important;
-box-shadow: none;
-margin-left:-10px;
-}
-
-#download_srt_summary:hover{
-background-color:white;
-border-color:white;
-color:var(--colour_bhf_neonred);
-outline: none !important;
-box-shadow: none;
-margin-left:-10px;
-}
-
-
-
-#download_srt_plot{
-background-color:white;
-border-color:white;
-color:#3C3C3C;
-outline: none !important;
-box-shadow: none;
-margin-left:-10px;
-}
-
-#download_srt_plot:hover{
-background-color:white;
-border-color:white;
-color:var(--colour_bhf_neonred);
-outline: none !important;
-box-shadow: none;
-margin-left:-10px;
-}
-
-
-
-#download_portal_timeseries{
-background-color:white;
-border-color:white;
-color:#3C3C3C;
-outline: none !important;
-box-shadow: none;
-margin-left:-10px;
-}
-
-#download_portal_timeseries:hover{
-background-color:white;
-border-color:white;
-color:var(--colour_bhf_neonred);
-outline: none !important;
-box-shadow: none;
-margin-left:-10px;
-}
-
-
-
 
 
 "
