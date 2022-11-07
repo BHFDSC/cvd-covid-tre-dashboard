@@ -7,7 +7,7 @@ datasetCoverageUI <- function(id){
       
       #Inputs
       column(3,
- 
+
              sliderInput(inputId = ns("date_range_coverage"),
                          label = "Date Range:",
                          #initialise values
@@ -16,8 +16,12 @@ datasetCoverageUI <- function(id){
                          step=1, sep = ""
              ),
 
-             prettySwitch(inputId = ns("all_records"), label = "Show all records", fill = TRUE),
-             #checkboxInput(inputId = ns("all_records"), label = "Show all records"),
+             prettySwitch(inputId = ns("all_records"), label = "Show extreme dates", fill = TRUE)  %>% 
+               add_prompt(
+                 message = "Select records recorded outwith data collection start date and current date",
+                 position = "right", type = "error", 
+                 size = "small", rounded = TRUE
+               ),
              
              checkboxGroupInput(inputId = ns("count_coverage"),
                                 label = "Count:",
@@ -38,15 +42,14 @@ datasetCoverageUI <- function(id){
                                      margin-top:-4.0%;'),
              tabsetPanel(
                id = "tab_selected_summary_coverage",
-               tabPanel(title = "Plot", 
+               tabPanel(title = "Full Plot", 
                         value = "summary_coverage_plot",
                         class = "one",
-                        #tags$div(tableOutput(ns("agesex_summary"))),
                         tags$div(girafeOutput(ns("summary_coverage_plot_girafe"),
                                               width = '100%', height = '85%')),
                ),
-               tabPanel(title = "Summary", 
-                        value = "coverage_summary", 
+               tabPanel(title = "Compare Plot", 
+                        value = "compare_plot", 
                         class = "one")
              )),
       
