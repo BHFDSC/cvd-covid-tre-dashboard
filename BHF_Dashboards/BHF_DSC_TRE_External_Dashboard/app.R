@@ -17,6 +17,7 @@ library(patchwork)
 library(fontawesome)
 library(ggtext)
 library(prompter)
+library(readxl)
 
 library("htmltools")
 library("bsplus")
