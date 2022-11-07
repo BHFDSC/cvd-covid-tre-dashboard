@@ -7,216 +7,77 @@ date: "2022-10-20"
 ```{r}
 library(tidyverse)
 
-# pull the variable names from a chosen dataset to use as test data
-completeness_test_data = data_dictionary %>%
-  filter(table=="hes_ae_{fyear}_dars_nic_391419_j3w9t") %>%
-  #this will be reactive and table names need aligned to input table names in addition to the table names used when data downloaded from TRE in aggreagate
-  select(display_name_label) %>%
-  mutate(completeness = round(runif(nrow(.))*100,2))
 
-
-#test_dataset_static =
-  
-  t.data_coverage %>%
-  mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
-  #remove null dates
-  filter(!is.na(date_ym)) %>%
-  separate(date_ym, c("date_y", "date_m"), remove=FALSE, sep = '-') %>%
-  mutate(date_format = as.Date(paste(date_ym, 1, sep="-"), "%Y-%m-%d")) %>%
-  mutate(across(.cols = c(date_y, date_m), .fn = ~ as.numeric(.))) %>%
-  mutate(date_name = paste0(month.name[date_m],": ")) %>%
-  arrange(date_y,date_m) %>%
-  arrange(date_y,date_m)
-
-
-testing = t.data_coverage %>%
-  mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
-  #remove null dates
-  filter(!is.na(date_ym)) %>%
-  separate(date_ym, c("date_y", "date_m"), remove=FALSE, sep = '-') %>%
-  mutate(across(.cols = c(date_y, date_m), .fn = ~ as.numeric(.))) %>%
-  #expand to include all dates in between where counts=0
-  group_by(dataset) %>%
-  expand(date_y=min(date_y):max(date_y),date_m=1:12) %>%
-  ungroup() %>%
-  mutate(date_ym = paste0(str_pad(date_y,width=4,pad=0,side="left"),
-                          "-",
-                          str_pad(date_m,width=2,pad=0,side="left"))) %>%
-  left_join(t.data_coverage, by = c("date_ym","dataset")) %>%
-  mutate(across(.cols = starts_with('n'),
-                .fn = ~ replace_na(.,0))) %>%
-  group_by(dataset) %>%
-  arrange(dataset,date_y,date_m) %>%
-  mutate(across(.cols = starts_with("n"),
-                .names = "{.col}_cum",
-                .fn = ~ cumsum(.))) %>%
-  filter(!if_all(ends_with("cum"), ~ . == 0)) %>%
-  select(!ends_with("cum")) %>%
-  #date month names for plot annotation
-  mutate(date_name = paste0(month.name[date_m]," ", date_y, ": ")) %>%
-  pivot_longer(cols=starts_with("n"), names_to="Type",values_to="N") %>%
-  mutate(date_format = as.Date(paste(date_ym, 1, sep="-"), "%Y-%m-%d"))
-   
-write_rds(testing, "testing")
-read_rds("testing")
-testing
-
-
-      test_dataset_old = test_dataset_static %>%
-          filter(dataset=="gdppr") %>%
-          mutate(N_tooltip = format(N, nsmall=0, big.mark=",", trim=TRUE)) %>%
-          mutate(N_tooltip_date = paste0(date_name,N_tooltip))
-                 
-      })
-      
-      #observe min and max years available for slider input
-      date_range_coverage_extremum =
-        test_dataset_old %>%
-        summarise(min = min(date_y),
-                  max = max(date_y)) %>%
-          pivot_longer(cols=c(min,max),names_to="extremum",values_to="year")
-
+      completeness_test_data = data_dictionary %>%
+          filter(table=="hes_ae_{fyear}_dars_nic_391419_j3w9t") %>%
+          #this will be reactive and table names need aligned to input table names in addition to the table names used when data downloaded from TRE in aggreagate
+          select(display_name_label) %>%
+          mutate(completeness = round(runif(nrow(.))*100,2))
 
       
-date_range_coverage_min = date_range_coverage_extremum %>% filter(extremum=="min") %>% pull(year)
-      date_range_coverage_max = date_range_coverage_extremum %>% filter(extremum=="max") %>% pull(year)
-      
-      observe({
-        updateSliderInput(session, "date_range_coverage",
-                          min = date_range_coverage_min(),
-                          max = date_range_coverage_max(),
-                          value = c(
-                            date_range_coverage_min(),
-                            date_range_coverage_max()
-                          ),
-                          step=1
-                          )
-        })
-
-      
-      test_dataset = 
-        test_dataset_old %>%
-          #filter(date_y>=2020 & .data$date_y<=2022) %>%
-          filter(Type %in% c("n"))
-      
-ggplot(
-          data = test_dataset, 
-          aes(x = date_format,
-              y = N,
-              color = Type,
-              #data_id = .data$DateType,
-              group = Type
-          )
-        ) +
-          geom_line_interactive(size = 3,
-                                alpha = 0.4) +
-          geom_point_interactive(
-            aes(tooltip = N_tooltip_date),
-            fill = "white",
-            size = 3,
-            stroke = 1.5,
-            shape = 20) +
-          geom_text_interactive(
-            data = (
-              test_dataset %>% filter(date_format == max(date_format)) %>%
-                left_join(as.data.frame(count_options) %>% rename(Type=count_options) %>% rownames_to_column("count_options"),
-                          by="Type")
-            ),
-            aes(x = date_format,
-                y = N + (
-                  #nudge up a 30th of difference between max and min
-                  (((test_dataset %>% filter(N == max(N)) %>% pull(N)) - (test_dataset %>% filter(N == min(N)) %>% distinct(N) %>% pull(N))) /30) 
-                  ),
-                color = Type,
-                label = count_options
-            ),
-            size=6,
-            check_overlap = T) +
-        labs(x = NULL, y = NULL) +
-          theme_minimal() +
+      completeness_plot = ggplot(data=completeness_test_data,
+                                                     #%>%
+                                                     #mutate(answer = fct_relevel(.data$display_name_label, (() %>% pull()))), 
+                                                     aes(x=reorder(display_name_label, completeness), 
+                                                     y=completeness,
+                                                     fill = as.factor(completeness),
+                                                     tooltip = completeness,
+                                                     data_id = display_name_label)) +
+          geom_bar_interactive(stat="identity") +
+          coord_flip(clip = 'off')  +
+          labs(x="",y="BLAH") +
           theme(
-            panel.grid = element_blank(),
-            plot.margin = margin(0,50,0,0),
-            plot.background = element_rect(color=NA),
-            panel.background = element_rect(color = NA),
-            axis.ticks = element_blank(),
-            axis.text.y = element_blank(),
-            axis.text.x = element_text(size = 14, face = "bold"),
-            legend.position = "none"
-          ) + 
-          coord_cartesian(clip = "off") + 
-          # scale_x_date(date_breaks = "1 month", 
-          #              date_labels = "%B",
-          #              #expand on rhs to fit in text
-          #              expand = expansion(mult = c(0, 0.1))) +
-          scale_colour_manual(values = c(
-            "n"="#F8AEB3",
-            "n_id"="#F88350",
-            "n_id_distinct"="#b388eb"))
-
-    
-min = test %>% select(date_format) %>% filter(date_format == min(date_format)) %>% pull(date_format)
-max = test %>% select(date_format) %>% filter(date_format == max(date_format)) %>% pull(date_format)
-
-
-as.numeric(
-  (test %>% select(date_format) %>% filter(date_format == max(date_format)) %>% pull(date_format)) - 
-    (test %>% select(date_format) %>% filter(date_format == min(date_format)) %>% pull(date_format))
-  )/10
-
-test %>% filter(date_format == min(date_format)) %>% distinct(date_format) %>% pull(date_format)
-
-read_rds("testing")
-testing
-
-
-t.data_coverage %>%
-          left_join(t.dataset_start_dates,by = "dataset") %>%
-  filter(dataset=="gdppr") %>%
-  mutate(start_date = as.Date(paste(start_date, 1, sep="-"), "%Y-%m-%d")) %>%
-  #using current month but this should be updated to use production ym in future
-  mutate(current_date = as.Date(paste(format(Sys.Date(), "%Y-%m"), 1, sep="-"), "%Y-%m-%d")) %>%
-  filter(!start_date >= date_format) %>%
-  filter(date_format <= current_date)
-
-
-format(Sys.Date(), "%Y-%m")
-
-
-paste(dataset_desc$Description[dataset_desc$Dataset == "gdppr"])
-
-nrow(t.data_coverage)
-
-
-      dataset_overview =
-        t.dataset_overview %>%
-        filter(dataset == "gdppr")
-      })
+            plot.title = element_markdown(size = 11, lineheight = 1.2),
+            plot.subtitle = element_markdown(size = 11, lineheight = 1.2),
+            legend.position = "none",
+            plot.title.position = 'plot', #align to outer margin; applies to subtitle too
+            #panel.grid.minor = element_blank(),
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.background = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.text.x = element_blank(),
+            axis.ticks.x = element_blank(),
+            plot.margin = margin(0,30,0,0)
+          )
       
-      #### Value Boxes =============================================================
-      output$registrations = renderValueBox({
-        customValueBox(
-          title = "Records",
-          icon = icon("user"),
-          subtitle = "",
-          value = HTML(paste(paste0("<b>",names(count_options),":</b>"),collapse = '<br/>')),
-          color = colour_bhf_darkred,
-          background = customValueBox_global_colour,
-          border = customValueBox_border_colour,
-          href = NULL
-        )
-      })
       
-dataset_overview %>% select(n,n_id,n_id_distinct) %>% pivot_longer(everything()) %>% pull(value)
 
-paste0(paste(paste0("<b>",c("Batch ID","Production Date"),":</b>"),
-      dataset_overview %>% select(batch,production_date) %>% pivot_longer(everything()) %>% pull(value),
-      collapse = '<br/>'),"<br/>&nbsp")
+        ggiraph::girafe(ggobj = (completeness_plot)) %>%
+          girafe_options(opts_hover(css = ""), #want shape to inherit the underlying aes on hover whilst other shapes go inv
+                         opts_hover_inv(css = "opacity:0.3;"),
+                         opts_tooltip(
+                           opacity = .95,
+                           css = "background-color:#1D2F5D;
+                   color:white;font-size:10pt;font-style:italic;
+                   padding:5px;border-radius:10px 10px 10px 10px;"
+                         ),
+                   opts_toolbar(saveaspng = FALSE),
+                   opts_selection(type="none"))
+        
+set.seed(1)        
+test = data_dictionary %>%
+          filter(table=="gdppr_dars_nic_391419_j3w9t") %>%
+          #this will be reactive and table names need aligned to input table names in addition to the table names used when data downloaded from TRE in aggreagate
+          select(display_name_label) %>%
+          mutate(display_name_label = trimws(display_name_label)) %>%
+          mutate(completeness = round(runif(nrow(.))*100,2)) %>%
+          arrange(desc(completeness))
+          
 
-paste("<b>Batch ID:</b>", "<b>Production Date:</b>", "&nbsp", sep="<br/>")
 
-paste0(paste(paste0("<b>",c("Batch ID","Production Date"),":</b>"),
-                                    collapse = '<br/>'),"<br/>&nbsp")
+setNames(
+  colorCompleteness(nrow(test)),
+  (test %>% select(display_name_label) %>% pull())
+)
+
+
+colorCompleteness = colorRampPalette(c("#94409F", "#BC366C", "#E1324C", "#F82D2E", "#FC7F47", "#FEB958"))
+colfunc(nrow(test))
+
+
+
+
 ```
 
 

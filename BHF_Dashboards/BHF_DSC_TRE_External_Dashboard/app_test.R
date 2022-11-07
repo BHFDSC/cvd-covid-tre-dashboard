@@ -1,44 +1,45 @@
 library(shiny)
-library(shinyBS)
-shinyApp(
-  ui =
-    fluidPage(
-      sidebarLayout(
-        sidebarPanel(
-          sliderInput("bins",
-                      "Number of bins:",
-                      min = 1,
-                      max = 50,
-                      value = 30),
-          bsTooltip("bins", "The wait times will be broken into this many equally spaced bins",
-                    "right", options = list(container = "body"))
-        ),
-        mainPanel(
-          plotOutput("distPlot")
-        )
-      )
-    ),
-  server =
-    function(input, output, session) {
-      output$distPlot <- renderPlot({
-        
-        # generate bins based on input$bins from ui.R
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
-        
-        # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = 'darkgray', border = 'white')
-        
-      })
-      addPopover(session, "distPlot", "Data", content = paste0("
-Waiting time between ",
-"eruptions and the duration of the eruption for the Old Faithful geyser ",
-"in Yellowstone National Park, Wyoming, USA.
 
-Azzalini, A. and ",
-"Bowman, A. W. (1990). A look at some data on the Old Faithful geyser. ",
-"Applied Statistics 39, 357-365.
+ui <- shinyUI(fluidPage(
 
-"), trigger = 'click')
-    }
-)
+  titlePanel("Hello Shiny!"),
+  
+  wellPanel(style = "background: white; border: white;
+",
+fluidRow(style = "background: rgb(2,0,36);
+background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
+border-top-left-radius: 10px !important; /*Round Edges*/
+border-bottom-left-radius: 10px !important; /*Round Edges*/
+border-top-right-radius: 10px !important; /*Round Edges*/
+border-bottom-right-radius: 10px !important; /*Round Edges*/
+",
+    column(3,
+           selectInput(inputId = "nation_summary",
+                       label = shiny::HTML("<p></p><span style='color: white'>Nation:</span>"),
+                       choices = c("Country1","Country2"))),
+    
+    column(3,
+           selectInput(inputId = "dataset_summary",
+                       label = shiny::HTML("<p></p><span style='color: white'>Nation:</span>"),
+                       choices = c("Test1","Test2")))
+),
+
+    fluidRow(
+      plotOutput("distPlot")
+    
+  )
+)))
+
+
+server <- shinyServer(function(input, output) {
+  
+  output$distPlot <- renderPlot({
+    x    <- faithful[, 2]  # Old Faithful Geyser data
+    bins <- seq(min(x), max(x), length.out = 10 + 1)
+    
+    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+  })
+  
+})
+
+shinyApp(ui=ui,server=server)

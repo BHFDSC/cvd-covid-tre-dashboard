@@ -2,13 +2,6 @@
 ##### Dataset description module ######
 #######################################
 
-#library(shiny)
-
-# test file including dataset descriptions
-#dataset_desc <- read.csv("Anna_module/TRE_dataset_descriptions_test.csv")
-
-# real file - not populated yet
-# dataset_desc <- read.csv("Anna_module/TRE_dataset_descriptions.csv")
 
 # module
 dataDescriptionUI <- function(id){
