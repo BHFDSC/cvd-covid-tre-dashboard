@@ -1,7 +1,7 @@
 dataDictionaryUI <- function(id){
   ns <- NS(id)
   tagList(
-    fluidPage(DTOutput(ns('tbl')))
+    fluidRow(DTOutput(ns('tbl')))
   )
 }
 
@@ -15,3 +15,4 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
     }
   )
 }
+

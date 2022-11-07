@@ -13,17 +13,23 @@ library(readxl)
 #getwd()
 
 
-data_dictionary = read_excel("C:/RProjects/BHF_DSC_HDS/BHF_Dashboards/BHF_DSC_TRE_External_Dashboard/Lars_module/TRE_DD_391419_j3w9t.xlsx", sheet = "gdppr", skip = 2)
+routefolder <- getwd()
+routefolder <- "C:/Users/LarsMurdock/Documents/Repo/BHF_DSC_HDS/BHF_Dashboards/BHF_DSC_TRE_External_Dashboard/Lars_module"
 
-filename <- "C:/RProjects/BHF_DSC_HDS/BHF_Dashboards/BHF_DSC_TRE_External_Dashboard/Lars_module/TRE_DD_391419_j3w9t.xlsx"
+dictionarypath_Eng <- paste0(routefolder, "/TRE_DD_391419_j3w9t.xlsx")
+dictionarypath_Scot <- paste0(routefolder, "/DD_Scotland.xlsx")
 
-sheets <- readxl::excel_sheets(filename)
+sheets_Eng <- readxl::excel_sheets(dictionarypath_Eng)
+sheets_Eng
+sheets_Scot <- readxl::excel_sheets(dictionarypath_Scot)
+sheets_Scot
+
 
 read_excel_allsheets <- function(filename, tibble = FALSE, except_sheet_no = NA, skip = 0, collate = TRUE) {
 # reading all the names of the sheets
   sheets <- readxl::excel_sheets(filename)
 # applying any exceptions eg cover sheets  
-  if (!is.na(except_sheet_no)){
+  if (!sum(is.na(except_sheet_no))){
     sheets <- sheets[-except_sheet_no]
   }
   x <- lapply(sheets, function(X) readxl::read_excel(filename, sheet = X, skip = skip))
@@ -35,14 +41,16 @@ read_excel_allsheets <- function(filename, tibble = FALSE, except_sheet_no = NA,
   x
 }
 
-data_dictionary <- read_excel_allsheets(filename, tibble = FALSE, except_sheet_no = 1, skip = 2)
+data_dictionary_Eng <- read_excel_allsheets(filename = dictionarypath_Eng, tibble = FALSE, except_sheet_no = 1, skip = 2)
+
+data_dictionary_Scot <- read_excel_allsheets(filename = dictionarypath_Scot, tibble = FALSE, except_sheet_no = c(1,2), skip = 0, collate = TRUE)
 
 
 shinyApp(
   ui = fluidPage(DTOutput('tbl')),
   server = function(input, output) {
     output$tbl = renderDT(
-      data_dictionary, options = list(lengthChange = FALSE)
+      data_dictionary_Scot, options = list(lengthChange = FALSE)
     )
   }
 )

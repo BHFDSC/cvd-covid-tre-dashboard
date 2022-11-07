@@ -1,5 +1,3 @@
-source('bhf_dsc_hds_designkit.R')
-
 datasetOverviewUI <- function(id){
   ns <- NS(id)
   tagList(
@@ -20,13 +18,36 @@ datasetOverviewServer <- function(id, dataset_summary, nation_summary) {
     id,
     function(input, output, session) {
       
+      dataset_overview = reactive({
+        t.dataset_overview %>%
+        filter(dataset == dataset_summary())
+      })
+      
       #### Value Boxes =============================================================
-      output$registrations = renderValueBox({
+      output$registrations <- renderValueBox({
+        if (nrow(dataset_overview())>1){
+          return(customValueBox(
+            title = "Records",
+            icon = icon("user"),
+            subtitle = "",
+            value = HTML(paste(paste0("<b>",names(count_options),":</b>"),
+                               collapse = '<br/>')),
+            color = colour_bhf_darkred,
+            background = customValueBox_global_colour,
+            border = customValueBox_border_colour,
+            href = NULL
+          ))
+        }
         customValueBox(
-          title = "Registrations",
+          title = "Records",
           icon = icon("user"),
           subtitle = "",
-          value = HTML(paste(paste0(names(count_options),":"),collapse = '<br/>')),
+          value = HTML(paste(paste0("<b>",names(count_options),":</b>"),
+                              dataset_overview() %>% 
+                                select(n,n_id,n_id_distinct) %>% 
+                                pivot_longer(everything()) %>% 
+                                pull(value),
+                              collapse = '<br/>')),
           color = colour_bhf_darkred,
           background = customValueBox_global_colour,
           border = customValueBox_border_colour,
@@ -34,19 +55,38 @@ datasetOverviewServer <- function(id, dataset_summary, nation_summary) {
         )
       })
       
+      
       output$batch_summary = renderValueBox({
+        if (nrow(dataset_overview())>1){
+          return(customValueBox(
+            title = "Batch Summary",
+            icon = icon("file"),
+            subtitle = "",
+            value = HTML(paste0(paste(paste0("<b>",c("Batch ID","Production Date"),":</b>"),
+                                      collapse = '<br/>'),"<br/>&nbsp")),
+            color = colour_bhf_darkred,
+            background = customValueBox_global_colour,
+            border = customValueBox_border_colour,
+            href = NULL
+          ))
+        }
         customValueBox(
           title = "Batch Summary",
           icon = icon("file"),
           subtitle = "",
-          value = HTML(paste("Batch ID:", "Production Date:", "&nbsp", sep="<br/>")),
+          value = HTML(paste0(paste(paste0("<b>",c("Batch ID","Production Date"),":</b>"),
+                                    dataset_overview() %>% 
+                                      select(batch,production_date) %>% 
+                                      pivot_longer(everything()) %>% 
+                                      pull(value),
+                                    collapse = '<br/>'),"<br/>&nbsp")),
           color = colour_bhf_darkred,
           background = customValueBox_global_colour,
           border = customValueBox_border_colour,
           href = NULL
-        )
+          )
       })
-      
+        
     }
   )
 }
