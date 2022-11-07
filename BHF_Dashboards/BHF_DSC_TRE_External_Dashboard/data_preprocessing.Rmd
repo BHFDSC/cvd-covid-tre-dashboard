@@ -9,10 +9,12 @@ date: "2022-11-03"
 ```{r}
 
 # NHS Digital TRE Data Coverage ------------------------------------------------
+current_dir_data = dirname(rstudioapi::getSourceEditorContext()$path)
+
 t.data_coverage_source = read.csv(paste0(current_dir_data,
                                   '/Data/export_dashboard_NHSD_20221102_data_coverage.csv'))
 
-data_coverage = t.data_coverage_source %>%
+data_coverage = t.data_coverage_source %>% # as.data.frame() %>% 
   mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
   #remove null dates
   filter(!is.na(date_ym)) %>%
@@ -25,7 +27,7 @@ data_coverage = t.data_coverage_source %>%
   mutate(date_ym = paste0(str_pad(date_y,width=4,pad=0,side="left"),
                           "-",
                           str_pad(date_m,width=2,pad=0,side="left"))) %>%
-  left_join(t.data_coverage, by = c("date_ym","dataset")) %>%
+  left_join(t.data_coverage_source, by = c("date_ym","dataset")) %>%
   mutate(across(.cols = starts_with('n'),
                 .fn = ~ replace_na(.,0))) %>%
   group_by(dataset) %>%

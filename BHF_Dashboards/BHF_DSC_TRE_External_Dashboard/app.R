@@ -181,10 +181,7 @@ server = function(input, output, session) {
 
 
   ### Source Data ==============================================================
-  dataServer(id = "data_source", 
-                        dataset_summary=global_dataset_summary, 
-                        nation_summary=global_nation_summary)  
-  
+
   ### Dataset Overview =========================================================
   dataDescriptionServer(id = "data_description", 
                         dataset_summary=global_dataset_summary, 
