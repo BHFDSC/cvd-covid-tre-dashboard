@@ -6,7 +6,13 @@ datasetCompletenessUI <- function(id){
     fluidRow(
       
       #Inputs - Plots
-      column(3,checkboxInput(ns("test"), "Test")),
+      column(3,radioButtons(
+        inputId = ns("order_complete"),
+        label = "Order:",
+        selected = "value",
+        choices = c("Alphabetically"="alpha", "Value"="value"),
+        
+      )),
       #Ouputs
       column(9,girafeOutput(ns("completeness_plot_girafe"), height = "45%"))
              ))
@@ -23,7 +29,8 @@ datasetCompletenessServer <- function(id, dataset_summary, nation_summary) {
       set.seed(1)
       # pull the variable names from a chosen dataset to use as test data
       completeness_test_data = reactive({data_dictionary %>%
-          filter(table=="gdppr_dars_nic_391419_j3w9t") %>%
+          left_join(linkage, by=c("table"="dict")) %>%
+          filter(.data$dataset==dataset_summary()) %>%
           #this will be reactive and table names need aligned to input table names in addition to the table names used when data downloaded from TRE in aggreagate
           select(display_name_label) %>%
           mutate(display_name_label = trimws(display_name_label)) %>%
@@ -44,8 +51,9 @@ datasetCompletenessServer <- function(id, dataset_summary, nation_summary) {
       
       completeness_plot = reactive({ ggplot(data=completeness_test_data(),
                                                      aes(
-                                                       x=forcats::fct_rev(reorder(display_name_label,display_name_label)),
-                                                       #x=reorder(display_name_label, completeness), 
+                                                       if(input$order_complete=="alpha"){
+                                                         x=forcats::fct_rev(reorder(display_name_label,display_name_label))
+                                                         } else {x=reorder(display_name_label, completeness)}, 
                                                      y=completeness,
                                                      fill = display_name_label,
                                                      tooltip = completeness_tooltip,
