@@ -27,8 +27,6 @@ t.dataset_start_dates = read.csv(paste0(current_dir_data,
 t.data_coverage = read_rds("Data/data_coverage")
 
 # Datset Descriptions ----------------------------------------------------------
-dataset_desc = read.csv(paste0(current_dir_data,
-                               '/Data/TRE_dataset_descriptions_test.csv')) 
 
 t.dataset_overview = read.csv(paste0(current_dir_data,
                                '/Data/TRE_dataset_overview.csv')) 
