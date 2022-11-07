@@ -23,10 +23,11 @@ library("htmltools")
 library("bsplus")
 
 #External Sources
+source('common_functions.R')
 source('bhf_dsc_hds_designkit.R')
 source('data.R')
 source('inputs.R')
-source('common_functions.R')
+
 
 #Modules
 #source('module_data.R')
