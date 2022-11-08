@@ -22,7 +22,7 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
       
 
       dataset_desc_filter = reactive({
-        dataset_desc %>%
+        datasets_available %>%
         filter(.data$Dataset == dataset_summary())
       })
 

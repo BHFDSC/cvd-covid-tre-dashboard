@@ -66,7 +66,7 @@ datasetCoverageServer <- function(id, dataset_summary, nation_summary, coverage_
       
       coverage_data_all_records =  reactive({
         t.data_coverage %>%
-          left_join(t.dataset_start_dates,by = "dataset") %>%
+          left_join(datasets_available,by = c("dataset"="Dataset")) %>%
           filter(.data$dataset==dataset_summary()) %>%
           #tooltips for plot
           mutate(N_tooltip = format(.data$N, nsmall=0, big.mark=",", trim=TRUE)) %>%
