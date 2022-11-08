@@ -21,6 +21,7 @@ dictionarypath_Scot <- paste0(routefolder, "/DD_Scotland.xlsx")
 
 sheets_Eng <- readxl::excel_sheets(dictionarypath_Eng)
 sheets_Eng
+write.csv(sheets_Eng , paste0( routefolder, "/Tablenames.csv")  )
 sheets_Scot <- readxl::excel_sheets(dictionarypath_Scot)
 sheets_Scot
 
@@ -41,7 +42,7 @@ read_excel_allsheets <- function(filename, tibble = FALSE, except_sheet_no = NA,
   x
 }
 
-data_dictionary_Eng <- read_excel_allsheets(filename = dictionarypath_Eng, tibble = FALSE, except_sheet_no = 1, skip = 2)
+data_dictionary_Eng <- read_excel_allsheets(filename = dictionarypath_Eng, tibble = FALSE, except_sheet_no = 1, skip = 2, collate = FALSE)
 
 data_dictionary_Scot <- read_excel_allsheets(filename = dictionarypath_Scot, tibble = FALSE, except_sheet_no = c(1,2), skip = 0, collate = TRUE)
 
