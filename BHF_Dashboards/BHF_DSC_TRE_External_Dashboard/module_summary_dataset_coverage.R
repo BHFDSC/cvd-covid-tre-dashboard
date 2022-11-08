@@ -42,13 +42,13 @@ datasetCoverageUI <- function(id){
                                      margin-top:-4.0%;'),
              tabsetPanel(
                id = "tab_selected_summary_coverage",
-               tabPanel(title = "Full Plot", 
+               tabPanel(title = "Trend", 
                         value = "summary_coverage_plot",
                         class = "one",
                         tags$div(girafeOutput(ns("summary_coverage_plot_girafe"),
                                               width = '100%', height = '85%')),
                ),
-               tabPanel(title = "Compare Plot", 
+               tabPanel(title = "Seasonality", 
                         value = "compare_plot", 
                         class = "one")
              )),
@@ -190,8 +190,8 @@ datasetCoverageServer <- function(id, dataset_summary, nation_summary, coverage_
             plot.background = element_rect(color=NA),
             panel.background = element_rect(color = NA),
             axis.ticks = element_blank(),
-            axis.text.y = element_blank(),
             axis.text.x = element_text(size = 14, face = "bold"),
+            axis.text.y = element_text(size = 14, face = "bold"),
             legend.position = "none"
           ) +
           coord_cartesian(clip = "off") +
@@ -240,7 +240,7 @@ datasetCoverageServer <- function(id, dataset_summary, nation_summary, coverage_
                                          dpi = 300, device = "png")}
       )
       
-       output$agesex_summary = renderTable({coverage_data_filtered()})
+
     }
   )
 }
