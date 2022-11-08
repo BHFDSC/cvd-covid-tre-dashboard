@@ -2,19 +2,27 @@
 datasetCompletenessUI <- function(id){
   ns <- NS(id)
   tagList(
-    
+  
     fluidRow(
-      
+
       #Inputs - Plots
-      column(3,radioButtons(
-        inputId = ns("order_complete"),
-        label = "Order:",
-        selected = "value",
-        choices = c("Alphabetically"="alpha", "Value"="value"),
-        
-      )),
-      #Ouputs
-      column(9,girafeOutput(ns("completeness_plot_girafe"), height = "45%"))
+
+      column(3,
+             
+             prettyRadioButtons(
+               inputId = ns("order_complete"),
+               shape = "curve",
+               label = "Order:",
+               selected = "value",
+               choices = c("Alphabetically"="alpha", "Value"="value")),
+             
+             downloadButton(outputId = ns("download_summary_completeness_plot"), 
+                                             label = "Download PNG",
+                                             icon = icon("file-image"))
+             ),
+      #Outputs
+      column(9,
+             girafeOutput(ns("completeness_plot_girafe")))
              ))
 
 }
@@ -25,6 +33,7 @@ datasetCompletenessServer <- function(id, dataset_summary, nation_summary) {
   moduleServer(
     id,
     function(input, output, session) {
+
       
       set.seed(1)
       # pull the variable names from a chosen dataset to use as test data
@@ -63,7 +72,10 @@ datasetCompletenessServer <- function(id, dataset_summary, nation_summary) {
           labs(x=""
                ,y=""
                ) +
-          scale_fill_manual(values = colour_values()) +
+          scale_fill_manual(values = alpha(colour_values(),0.9)) +
+          scale_y_continuous(
+                             labels = function(i) {return(paste0(i,"%"))}) +
+        
           theme(
             plot.title = element_markdown(size = 11, lineheight = 1.2),
             plot.subtitle = element_markdown(size = 11, lineheight = 1.2),
@@ -74,10 +86,10 @@ datasetCompletenessServer <- function(id, dataset_summary, nation_summary) {
             panel.grid.minor = element_blank(),
             panel.background = element_blank(),
             axis.ticks.y = element_blank(),
-            axis.text.x = element_blank(),
+            axis.text.x = element_text(size = 8, face = "bold"),
             axis.text.y = element_text(size = 6),
             axis.ticks.x = element_blank(),
-            plot.margin = margin(0,30,0,0)
+            plot.margin = margin(0,0,0,0)
           )
       })
       
@@ -88,7 +100,7 @@ datasetCompletenessServer <- function(id, dataset_summary, nation_summary) {
                         
                         options = list(opts_hover(css = ""), #want shape to inherit the underlying aes on hover whilst other shapes go inv
                                        opts_hover_inv(css = "opacity:0.3;"),
-                                       #opts_sizing(rescale = FALSE),
+                                       opts_sizing(rescale = TRUE, width = 1),
                                        opts_tooltip(
                                          opacity = .95,
                                          css = "background-color:#EC2154;
@@ -96,67 +108,31 @@ datasetCompletenessServer <- function(id, dataset_summary, nation_summary) {
             padding:5px;border-radius:10px 10px 10px 10px;"
                                        ),
             opts_toolbar(saveaspng = FALSE),
-            opts_selection(type="none"))
+            opts_selection(type="none")),
+            
+            width_svg  = 9
             
             )
       })
       
       
-      # location_barplot = reactive({
-      #   ggplot(location_data() 
-      #          #%>% mutate(Name=str_pad(Name, 28, "left", pad="0"))
-      #          ,
-      #          aes(x = reorder(Name, count), 
-      #              y = count,
-      #              fill = as.factor(count),
-      #              tooltip = count,
-      #              data_id = Name
-      #          )) +
-      #     geom_col_interactive(size = 0.2) +
-      #     theme_minimal() +
-      #     scale_y_continuous(breaks=c(0,max(location_data()$count)), limits = c(0,500)) +
-      #     #scale_x_discrete(labels = function(i){str_pad(i, 25, "left")}) +
-      #     #scale_x_discrete(labels = function(i){format(i, width = 25, justify = "right")}) +
-      #     scale_fill_manual(values=map_colours()) +
-      #     theme(
-      #       aspect.ratio = 1.7,
-      #       panel.grid = element_blank(),
-      #       plot.margin = margin(0,0,0,0),
-      #       plot.background = element_rect(color=NA),
-      #       panel.background = element_rect(color = NA),
-      #       axis.ticks = element_blank(),
-      #       axis.text.y = element_text(size = 5),
-      #       axis.text.x = element_text(size = 6),
-      #       legend.position = "none"
-      #     ) +
-      #     ylab("") +
-      #     xlab("") +
-      #     coord_flip()
-      # })
-      
-      #Join plots together
-      # location_plots_merge_girafe = reactive({location_sf() + location_barplot()})
-      # 
-      # output$location_plots_merge = renderGirafe({
-      #   ggiraph::girafe(ggobj = (location_plots_merge_girafe() + plot_layout(widths = c(2.0, 1))
-      #   )) %>%
-      #     girafe_options(opts_hover(css = ""), #want shape to inherit the underlying aes on hover whilst other shapes go inv
-      #                    opts_hover_inv(css = "opacity:0.3;"),
-      #                    opts_tooltip(
-      #                      opacity = .95,
-      #                      css = "background-color:#1D2F5D;
-      #              color:white;font-size:10pt;font-style:italic;
-      #              padding:5px;border-radius:10px 10px 10px 10px;"
-      #                    ),
-      #              opts_toolbar(saveaspng = FALSE),
-      #              opts_selection(type="none"))
-      # })     
-      
-      
-      
+      output$download_summary_completeness_plot = downloadHandler(
+        filename = function() {paste(Sys.Date(), "completeness.png")},
+        content = function(file) {ggsave(file, plot = (completeness_plot()) + theme(plot.margin = margin(20,50,20,50)),
+                                         #ensure width and height are same as ggiraph
+                                         #width_svg and height_svg to ensure png not cut off
+                                         width = 9, units = "in",
+                                         bg = "transparent",
+                                         dpi = 300, device = "png")}
+      )
       
       
       
     }
   )
 }
+
+
+
+
+

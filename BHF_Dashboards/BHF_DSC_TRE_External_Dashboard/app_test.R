@@ -1,45 +1,61 @@
 library(shiny)
 
+# Define UI for application that draws a histogram
 ui <- shinyUI(fluidPage(
-
-  titlePanel("Hello Shiny!"),
   
-  wellPanel(style = "background: white; border: white;
-",
-fluidRow(style = "background: rgb(2,0,36);
-background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
-border-top-left-radius: 10px !important; /*Round Edges*/
-border-bottom-left-radius: 10px !important; /*Round Edges*/
-border-top-right-radius: 10px !important; /*Round Edges*/
-border-bottom-right-radius: 10px !important; /*Round Edges*/
-",
-    column(3,
-           selectInput(inputId = "nation_summary",
-                       label = shiny::HTML("<p></p><span style='color: white'>Nation:</span>"),
-                       choices = c("Country1","Country2"))),
+  # Application title
+  titlePanel("Old Faithful Geyser Data"),
+  
+  # Sidebar with a slider input for number of bins 
+  sidebarLayout(
+    sidebarPanel(
+      tags$head(tags$script('
+                                var dimension = [0, 0];
+                                $(document).on("shiny:connected", function(e) {
+                                    dimension[0] = window.innerWidth;
+                                    dimension[1] = window.innerHeight;
+                                    Shiny.onInputChange("dimension", dimension);
+                                });
+                                $(window).resize(function(e) {
+                                    dimension[0] = window.innerWidth;
+                                    dimension[1] = window.innerHeight;
+                                    Shiny.onInputChange("dimension", dimension);
+                                });
+                            ')),
+      sliderInput("bins",
+                  "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30)
+    ),
     
-    column(3,
-           selectInput(inputId = "dataset_summary",
-                       label = shiny::HTML("<p></p><span style='color: white'>Nation:</span>"),
-                       choices = c("Test1","Test2")))
-),
-
-    fluidRow(
+    # Show a plot of the generated distribution
+    mainPanel(
+      verbatimTextOutput("dimension_display"),
       plotOutput("distPlot")
+    ),
+
+    
     
   )
-)))
+))
 
-
+# Define server logic required to draw a histogram
 server <- shinyServer(function(input, output) {
-  
-  output$distPlot <- renderPlot({
-    x    <- faithful[, 2]  # Old Faithful Geyser data
-    bins <- seq(min(x), max(x), length.out = 10 + 1)
-    
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+  output$dimension_display <- renderText({
+    paste(input$dimension[1], input$dimension[2], input$dimension[2]/input$dimension[1])
   })
   
+  output$distPlot <- renderPlot({
+    # generate bins based on input$bins from ui.R
+    x    <- faithful[, 2] 
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    
+    # draw the histogram with the specified number of bins
+    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+    height=input$dimension[2]/input$dimension[1]
+  })
 })
 
-shinyApp(ui=ui,server=server)
+# Run the application 
+shinyApp(ui = ui, server = server)
