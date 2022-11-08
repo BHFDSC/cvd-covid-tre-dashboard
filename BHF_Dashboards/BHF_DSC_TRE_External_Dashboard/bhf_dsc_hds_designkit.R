@@ -46,6 +46,13 @@ table.dataTable thead tr {
 
 
 
+/* CSS for the checked checkboxes */
+.pretty.p-default input:checked~.state label:after {
+  background-color: #000000 !important;
+}
+
+
+
 
 /*The colour of nonactive tabs*/
 .navbar .navbar-nav li > a{
@@ -244,11 +251,11 @@ border: 1px solid transparent !important;
 /*SINGULAR INPUTS WITH IDS*/
 
 
-#volunteer_css .selectize-input {
+#dataset_css .selectize-input {
   height:38px;
 }
 
-#survey_css .selectize-input {
+#nation_css .selectize-input {
   height:38px;
 }
 
@@ -350,6 +357,24 @@ box-shadow: none;
 margin-left:-4%;
 }
 
+
+#data_completeness_module-download_summary_completeness_plot:hover{
+background-color:white;
+border-color:white;
+color:var(--colour_bhf_neonred);
+outline: none !important;
+box-shadow: none;
+margin-left:-4%;
+}
+
+#data_completeness_module-download_summary_completeness_plot{
+background-color:white;
+border-color:white;
+color:#3C3C3C;
+outline: none !important;
+box-shadow: none;
+margin-left:-4%;
+}
 
 "
 
