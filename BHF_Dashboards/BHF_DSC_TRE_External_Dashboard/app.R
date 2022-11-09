@@ -19,13 +19,13 @@ library(ggtext)
 library(prompter)
 library(readxl)
 
-library("htmltools")
-library("bsplus")
+library(htmltools)
+library(bsplus)
 
 #External Sources
 source('common_functions.R')
 source('bhf_dsc_hds_designkit.R')
-source('data.R')
+source('data.R')  # file path specified here
 source('inputs.R')
 
 
