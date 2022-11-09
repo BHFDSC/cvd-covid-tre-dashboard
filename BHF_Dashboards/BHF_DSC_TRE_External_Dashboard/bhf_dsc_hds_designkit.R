@@ -14,6 +14,7 @@ customValueBox_border_colour = '#F3F2F4'
 
 ###############################################################################
 #Boostrap and CSS Theme
+library(bslib)
 
 #The booststrap main theme uses flaty as a basis
 bhf_dsc_hds_bootstrap_theme = bs_theme(version = 5, bootswatch = "flatly",
