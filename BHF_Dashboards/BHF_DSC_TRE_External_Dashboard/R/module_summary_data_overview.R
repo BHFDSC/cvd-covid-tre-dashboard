@@ -1,9 +1,8 @@
-datasetOverviewUI <- function(id){
+dataOverviewUI <- function(id){
   ns <- NS(id)
   tagList(
-    
-    
-    #### Value Boxes ==================================================
+
+    # Outputs ------------------------------------------------------------------
     fluidRow(class = "dashboard_css",
              valueBoxOutput(ns("registrations"), width = 4),
              valueBoxOutput(ns("batch_summary"), width = 4)
@@ -13,7 +12,7 @@ datasetOverviewUI <- function(id){
 }
 
 
-datasetOverviewServer <- function(id, dataset_summary, nation_summary) {
+dataOverviewServer <- function(id, dataset_summary, nation_summary) {
   moduleServer(
     id,
     function(input, output, session) {
