@@ -47,6 +47,13 @@ table.dataTable thead tr {
 
 
 
+/* CSS for the checked checkboxes */
+.pretty.p-default input:checked~.state label:after {
+  background-color: #000000 !important;
+}
+
+
+
 
 /*The colour of nonactive tabs*/
 .navbar .navbar-nav li > a{
@@ -245,11 +252,11 @@ border: 1px solid transparent !important;
 /*SINGULAR INPUTS WITH IDS*/
 
 
-#volunteer_css .selectize-input {
+#dataset_css .selectize-input {
   height:38px;
 }
 
-#survey_css .selectize-input {
+#nation_css .selectize-input {
   height:38px;
 }
 
@@ -331,107 +338,44 @@ font-size: 15px;
 
 
 
-#download_agesex_plot{
-background-color:white;
-border-color:white;
-color:#3C3C3C;
-outline: none !important;
-box-shadow: none;
-margin-left:-10px;
-}
 
-#download_agesex_plot:hover{
+/*Css Tags in Modules access - downloads*/
+#data_coverage_module-download_summary_coverage_plot:hover{
 background-color:white;
 border-color:white;
 color:var(--colour_bhf_neonred);
 outline: none !important;
 box-shadow: none;
-margin-left:-10px;
+margin-left:-4%;
 }
 
-
-
-#download_agesex_summary{
+#data_coverage_module-download_summary_coverage_plot{
 background-color:white;
 border-color:white;
 color:#3C3C3C;
 outline: none !important;
 box-shadow: none;
-margin-left:-10px;
+margin-left:-4%;
 }
 
-#download_agesex_summary:hover{
+
+#data_completeness_module-download_summary_completeness_plot:hover{
 background-color:white;
 border-color:white;
 color:var(--colour_bhf_neonred);
 outline: none !important;
 box-shadow: none;
-margin-left:-10px;
+margin-left:-4%;
 }
 
-
-
-#download_srt_summary{
+#data_completeness_module-download_summary_completeness_plot{
 background-color:white;
 border-color:white;
 color:#3C3C3C;
 outline: none !important;
 box-shadow: none;
-margin-left:-10px;
+margin-left:-4%;
 }
-
-#download_srt_summary:hover{
-background-color:white;
-border-color:white;
-color:var(--colour_bhf_neonred);
-outline: none !important;
-box-shadow: none;
-margin-left:-10px;
-}
-
-
-
-#download_srt_plot{
-background-color:white;
-border-color:white;
-color:#3C3C3C;
-outline: none !important;
-box-shadow: none;
-margin-left:-10px;
-}
-
-#download_srt_plot:hover{
-background-color:white;
-border-color:white;
-color:var(--colour_bhf_neonred);
-outline: none !important;
-box-shadow: none;
-margin-left:-10px;
-}
-
-
-
-#download_portal_timeseries{
-background-color:white;
-border-color:white;
-color:#3C3C3C;
-outline: none !important;
-box-shadow: none;
-margin-left:-10px;
-}
-
-#download_portal_timeseries:hover{
-background-color:white;
-border-color:white;
-color:var(--colour_bhf_neonred);
-outline: none !important;
-box-shadow: none;
-margin-left:-10px;
-}
-
-
-
-
 
 "
 

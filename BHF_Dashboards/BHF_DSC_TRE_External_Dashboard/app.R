@@ -56,15 +56,17 @@ ui = fluidPage(
   #CSS Theme Overrides
   tags$head(tags$style(HTML(bhf_dsc_hds_css))),
   
+  
   ## Navigation Bar ############################################################
   navbarPage(
     bhf_navbar_line,
     #BHF HDS Logo
-    title = div(img(src = "bhf_dsc_logo.png",
-                    style = "margin-top:17% !important;
+    title = tags$a(img(src = "bhf_dsc_logo.png",
+                    style = "margin-top:7% !important;
                         justify-content: center !important;
                         align-items: center !important;",
-                    height = 70)),
+                    height = 70), 
+                   href="https://www.hdruk.ac.uk/helping-with-health-data/bhf-data-science-centre/"),
 
     
     ## Dataset Summary Tab =====================================================
@@ -115,6 +117,7 @@ fluidRow(style = bhf_global_options_style,
              hr(),
              titlePanel(h3(id = 'section_heading',"Data Coverage")),
              
+
              datasetCoverageUI(id = "data_coverage_module"),
              
              ### Data Completeness =============================================
@@ -150,9 +153,9 @@ fluidRow(style = bhf_global_options_style,
     
     ## Footer ==================================================================
     hr(),
-    print(div(id="version_css",paste("Version",Version)))
-    
-    
+    tags$footer(htmltools::tags$span("Test", icon("square")))
+
+
     
   )
 )
