@@ -78,6 +78,43 @@ colfunc(nrow(test))
 
 
 
+t.dataset_dashboard_new = read.csv(paste0(current_dir_data,
+                                      '/Data/TRE_dataset_link.csv'))
+
+
+datasets_available = t.dataset_dashboard_new %>%
+  mutate(across(-c("Description"), .fn=~str_trim(.,side="both"))) %>%
+  mutate(across(everything(), .fn=~na_if(.,""))) %>%
+  filter(!is.na(Dataset))
+
+  nation_datasets = datasets_available %>%
+    filter(Key==key & Nation==nation) %>%
+    filter(!is.na(Dataset))
+  
+  nation_datasets_list = list()
+  
+  groups = pull(distinct(nation_datasets,Group))
+  
+  for(i in 1:length(groups)){
+    nation_datasets_list[[i]]=
+      setNames(
+        pull(filter(nation_datasets,Group==groups[i]),Dataset),
+        pull(filter(nation_datasets,Group==groups[i]),Title)
+      )
+  }
+  
+  names(nation_datasets_list) = groups
+
+  
+data_dictionary %>%
+          left_join(datasets_available, by=c("table")) %>%
+          filter(Dataset == "gdppr") %>%
+          #this will be reactive and table names need aligned to input table names in addition to the table names used when data downloaded from TRE in aggregate
+          select(display_name_label) %>%
+          mutate(display_name_label = trimws(display_name_label)) %>%
+          mutate(completeness = round(runif(nrow(.))*100,2)) %>%
+          mutate(completeness_tooltip = paste(completeness,"%")) %>%
+          arrange(desc(completeness))
 ```
 
 
