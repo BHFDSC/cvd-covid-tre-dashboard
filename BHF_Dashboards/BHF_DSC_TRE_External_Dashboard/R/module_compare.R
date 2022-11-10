@@ -12,13 +12,19 @@ compareUI <- function(id){
                        
                        column(3,
                               
-                              wellPanel(style = wellpanel_style,
+                              h5("Choose datasets:"),
+                              
+                              wellPanel(box(style = wellpanel_style,
+                                        
+                                        prettySwitch(inputId = ns("multi_nation"), label = "Multi nation comparison", fill = TRUE),
                                         fluidRow(style = bhf_global_options_style,
+
                                         
                               div(id = "nation2_css",
                                     class = "nation2_css",
                                     selectInput(inputId = ns("nation_summary2"),
                                                 label = shiny::HTML("<p></p><span style='color: white'>Nation:</span>"),
+                                                selected = NULL,
                                                 choices = nations_options)),     
                        
                        
@@ -27,8 +33,43 @@ compareUI <- function(id){
                                     selectInput(inputId = ns("dataset_summary2"),
                                                 label = shiny::HTML("<p></p><span style='color: white'>Dataset:</span>"),
                                                 width = '100%',
-                                                choices = NULL))
-              )))),
+                                                choices = NULL)),
+              
+          
+              
+              
+              ))),
+              
+              h5("Choose plot features:"),
+
+              wellPanel(style = wellpanel_style,
+                        
+                    
+                        
+                        fluidRow(style = bhf_global_options_style,
+                                 
+                                 div(id = "nation2_css",
+                                     class = "nation2_css",
+                                     selectInput(inputId = ns("nation_summary2"),
+                                                 label = shiny::HTML("<p></p><span style='color: white'>Nation:</span>"),
+                                                 selected = NULL,
+                                                 choices = nations_options)),     
+                                 
+                                 
+                                 div(id = "dataset2_css",
+                                     class = "dataset2_css",
+                                     selectInput(inputId = ns("dataset_summary2"),
+                                                 label = shiny::HTML("<p></p><span style='color: white'>Dataset:</span>"),
+                                                 width = '100%',
+                                                 choices = NULL))
+                                 
+                                 
+                                 
+                                 
+                        )),
+              
+              
+              )),
               
 
               

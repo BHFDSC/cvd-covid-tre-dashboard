@@ -378,6 +378,16 @@ box-shadow: none;
 margin-left:-4%;
 }
 
+
+#compare_module-multi_nation{
+background-color:white !important;
+border-color:white !important;
+color:yellow !important;
+outline: none !important;
+box-shadow: none !important;
+margin-left:-4% !important;
+}
+
 "
 
 
