@@ -58,45 +58,18 @@ ui = fluidPage(
                     height = 70), 
                    href="https://www.hdruk.ac.uk/helping-with-health-data/bhf-data-science-centre/"),
 
-    
     ### Summary Tab ============================================================
-    wellPanel(style = wellpanel_style,
-              fluidRow(style = bhf_global_options_style,
-                       column(3,
-                              div(id = "nation_css",
-                                  class = "nation_css",
-                                  selectInput(inputId = "nation_summary",
-                                              label = shiny::HTML("<p></p><span style='color: white'>Nation:</span>"),
-                                              choices = nations_options))
-                              
-                       ),     
-                       
-                       
-                       column(6,
-                              div(id = "dataset_css",
-                                  class = "dataset_css",
-                                  selectInput(inputId = "dataset_summary",
-                                              label = shiny::HTML("<p></p><span style='color: white'>Dataset:</span>"),
-                                              width = '100%',
-                                              choices = NULL))
-                       ),
-                       
-                       
-                       column(3,
-                       )
-              ),
-             
-    ),
-    #tabPanel("Summary", summaryUI(id = "summary_module")),
+
+    tabPanel("Summary", summaryUI(id = "summary_module")),
     
     ### Compare Tab ============================================================
-    #tabPanel("Compare", compareUI(id = "compare_module")),
+    tabPanel("Compare", compareUI(id = "compare_module")),
     
     ### Insight Tab ============================================================
-    #tabPanel("Insight"),
+    tabPanel("Insight"),
     
     ### Appendix Tab ===========================================================
-    #tabPanel("Appendix",appendixOutput(id = "appendix"))
+    tabPanel("Appendix",appendixOutput(id = "appendix"))
     
     ),
     
@@ -109,26 +82,12 @@ ui = fluidPage(
 # Server -----------------------------------------------------------------------
 
 server = function(input, output, session) {
-  
-  global_dataset_summary <- reactive(input$dataset_summary)
-  global_nation_summary <- reactive(input$nation_summary)
-  
-  #Dynamic Dataset options depending on Nation selected
-  datasets_available_list = reactive({
-    req(input$nation_summary)
-    dataset_dashboard_list(nation=input$nation_summary)
-  })
-  observeEvent(datasets_available_list(), {
-    updateSelectInput(
-      inputId = "dataset_summary",
-      choices = datasets_available_list())
-  })
-  
+
   ### Summary Tab ============================================================
-  #summaryServer(id = "summary_module")
+  summaryServer(id = "summary_module")
   
   ### Compare Tab ============================================================
-  #compareServer(id = "compare_module")
+  compareServer(id = "compare_module")
   
   ### Insight Tab ============================================================
   
@@ -136,8 +95,6 @@ server = function(input, output, session) {
 
  
 }
-
-
 
 
 # Run the application ----------------------------------------------------------

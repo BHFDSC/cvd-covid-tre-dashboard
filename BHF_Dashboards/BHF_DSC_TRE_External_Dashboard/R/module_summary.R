@@ -82,16 +82,6 @@ summaryServer <- function(id) {
           inputId = "dataset_summary",
           choices = datasets_available_list())
       })
-      
-      # observe({
-      #   x <-datasets_available_list()
-      #   
-      #   updateSelectInput(
-      #     inputId = "dataset_summary",
-      #     choices = x)
-      #   
-      # })
-      
 
       
       ## Data Overview =========================================================
