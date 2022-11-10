@@ -2,6 +2,7 @@
 appendixOutput <- function(id){
   ns <- NS(id)
   tagList(
+      fluidRow(
       column(12,style=appendix_css,
        
        h4("Holding Text"),
@@ -13,6 +14,7 @@ appendixOutput <- function(id){
          "and blah",
          style=paste0("color:,",colour_bhf_darkred,";margin-bottom:2px;")),
       ),
+      )
   )
 }
 
