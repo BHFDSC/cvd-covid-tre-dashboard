@@ -1,7 +1,0 @@
-﻿Group,Title,Dataset,table,Nation,Key,Description,start_date
-Primary,GPES data for pandemic planning and research (GDPPR),gdppr,gdppr,England,Dataset available ,"To support the response to the coronavirus outbreak, NHS Digital has established a central collection of GP patient data for COVID-19 purposes for the duration of the coronavirus emergency period.",1998-01
-Secondary Care,HES1,hes_apc_all_years,hes_apc,England,Dataset available ,HJG,2022-03
-Secondary Care,HES2,hes_cc_all_years,hes_cc,England,Dataset available ,CUFT,2022-03
-Secondary Care,HES3,hes_ae_all_years,hes_ae,England,Dataset available ,GJUYFUJ,2022-03
-Secondary Care,HES4,hes_op_all_years,hes_op,England,Dataset available ,FUGYU,2022-03
-Primary,GPES data for pandemic planning and research (GDPPR),gdppr,test,Scotland,Dataset available ,kuhkh,1998-01
