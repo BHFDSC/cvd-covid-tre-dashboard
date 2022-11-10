@@ -1,22 +1,11 @@
-*Work in progress*
+# BHF Data Science Centre TRE Exploration Dashboard
 
-This md file will be used to describe the project.
+Accredited researchers, working on one or more of the consortium’s approved projects, can access routinely collected datasets across the whole population of the UK within secure trusted research environments (TREs) provided by NHS Digital in England, the National Data Safe Haven in Scotland, the SAIL Databank in Wales and the Honest Broker Service in Northern Ireland.
 
-In the meantime it can be used between the team to communicate dashboard design and how to navigate the project.
+Linkable datasets include those from primary and secondary care, COVID lab tests and vaccinations, deaths, critical care, prescribing/dispensing, cardiovascular and stroke audits, maternity services and mental health.
 
-Tutorial on how modules work:
-- see Dev/Modules Example.pptx
+This dashboard exists to allow exploration of the datasets available to the consortium in the respective TREs.
 
-Example of a module written before being put into main app production:
-- app_module_example.R
-- followed by this module being piped into the main app and the design kit formatting the input features; see module_summary_dataset_coverage
+---
 
-Example of modules written and put into main so far:
-- module_summary_dataset_coverage
-- module_summary_dataset_overview
-- module_summary_dataset_completeness
-
-Remember that if you are using the global variables in a module to add them as arguments in the module server. See Modules Example.pptx.
-
-
-Note: started adding Issues with labels and checking out branches from here.
+### Application Structure
