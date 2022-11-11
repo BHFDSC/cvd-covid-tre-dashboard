@@ -23,6 +23,7 @@ library(readxl)
 library(ggrepel)
 library(htmltools)
 library(bsplus)
+library(showtext)
 
 #External Sources
 source('external_common_functions.R')

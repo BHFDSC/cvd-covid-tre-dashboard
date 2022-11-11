@@ -75,6 +75,7 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
                              labels = function(i) {return(paste0(i,"%"))}) +
         
           theme(
+            text=element_text(family=family_lato),
             plot.title = element_markdown(size = 11, lineheight = 1.2),
             plot.subtitle = element_markdown(size = 11, lineheight = 1.2),
             legend.position = "none",
@@ -85,7 +86,7 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
             panel.background = element_blank(),
             axis.ticks.y = element_blank(),
             axis.text.x = element_text(size = 8, face = "bold"),
-            axis.text.y = element_text(size = 6),
+            axis.text.y = element_text(size = 6, hjust = 1),
             axis.ticks.x = element_blank(),
             plot.margin = margin(0,0,0,0)
           )
