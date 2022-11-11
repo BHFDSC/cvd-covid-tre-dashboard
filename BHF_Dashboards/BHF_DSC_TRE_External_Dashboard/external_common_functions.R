@@ -42,4 +42,4 @@ read_excel_allsheets <- function(filename, tibble = FALSE, except_sheet_no = NA,
 }
 
 
-
+shhh = function(x){suppressWarnings(suppressMessages(x))}
