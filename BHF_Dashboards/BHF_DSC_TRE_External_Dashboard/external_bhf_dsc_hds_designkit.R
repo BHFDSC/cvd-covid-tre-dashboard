@@ -144,6 +144,11 @@ color: var(--colour_bhf_lightred);
 background-color:white;
 }
 
+
+
+
+
+
 /*h3 headings*/
 h3 { 
   color:var(--colour_bhf_darkred);
@@ -380,14 +385,12 @@ margin-left:-4%;
 }
 
 
-#compare_module-multi_nation{
-background-color:white !important;
-border-color:white !important;
-color:yellow !important;
-outline: none !important;
-box-shadow: none !important;
-margin-left:-4% !important;
-}
+
+/*
+.state {color: white !important;}
+.state::before {background-color: #5A656B !important; color: #5A656B !important;}
+.pretty.p-switch .state label:after {background-color: #FFFFFF !important; color: #FFFFFF !important}
+*/
 
 "
 
@@ -400,6 +403,15 @@ border-top-left-radius: 10px !important; /*Round Edges*/
 border-bottom-left-radius: 10px !important; /*Round Edges*/
 border-top-right-radius: 10px !important; /*Round Edges*/
 border-bottom-right-radius: 10px !important; /*Round Edges*/
+"
+
+bhf_tab_panel_style = "
+background: var(--colour_bhf_darkred);
+border: var(--colour_bhf_darkred);
+border-top-left-radius: 0px !important; /*Round Edges*/
+border-bottom-left-radius: 0px !important; /*Round Edges*/
+border-top-right-radius: 0px !important; /*Round Edges*/
+border-bottom-right-radius: 0px !important; /*Round Edges*/
 "
 
 

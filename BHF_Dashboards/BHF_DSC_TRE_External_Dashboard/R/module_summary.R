@@ -28,7 +28,7 @@ summaryUI <- function(id){
               titlePanel(h3(id = 'section_heading',"Dataset Overview")),
               
               dataDescriptionUI(id = ns("data_description")),
-              dataOverviewUI(id = "data_overview"),
+              dataOverviewUI(id = ns("data_overview")),
 
               ## Data Dictionary ===============================================
               hr(),
