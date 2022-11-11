@@ -151,12 +151,15 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
             stroke = 1.5,
             shape = 20) +
           geom_text_repel_interactive(
+            
             data = (
               coverage_data_filtered() %>% filter(date_format == max(date_format)) %>%
                 left_join(as.data.frame(count_options) %>% rename(Type=count_options) %>% rownames_to_column("count_options"),
                           by="Type")
             ),
-            aes(x = .data$date_format + (
+            
+            aes(
+              x = .data$date_format + (
               as.numeric(
               (coverage_data_filtered() %>% filter(date_format == max(date_format)) %>% distinct(date_format) %>% pull(date_format)) -
                 (coverage_data_filtered() %>% filter(date_format == min(date_format)) %>% distinct(date_format) %>% pull(date_format))
@@ -175,6 +178,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
             ),
             size=6,
             direction = "y",
+            family=family_lato,
             segment.color = 'transparent') +
         labs(x = NULL, y = NULL) +
           # scale_x_date(limits=c(
@@ -183,6 +187,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
           #   )) +
           theme_minimal() +
           theme(
+            text=element_text(family=family_lato),
             panel.grid = element_blank(),
             plot.margin = margin(0,50,0,0),
             plot.background = element_rect(color=NA),
@@ -200,7 +205,8 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
           scale_colour_manual(values = c(
             "n"="#F8AEB3",
             "n_id"="#F88350",
-            "n_id_distinct"="#b388eb"))
+            "n_id_distinct"="#b388eb")) + 
+          scale_y_continuous(labels = scales::label_number_si())
       })
 
       output$summary_coverage_plot_girafe = renderGirafe({

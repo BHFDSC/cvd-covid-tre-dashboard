@@ -26,9 +26,19 @@ bhf_dsc_hds_bootstrap_theme = bs_theme(version = 5, bootswatch = "flatly",
 #line under navbar
 bhf_navbar_line = hr(style=paste0("color:",colour_bhf_darkred,"!important;"))
 
+#Google fonts for ggplots - in order of preference from flatly theme
+font_add_google("Lato", "lato")
+font_add_google("Noto Sans", "segoe_ui")
+font_add_google("Roboto", "helvetica_neue")
+showtext_auto()
+family_lato = "lato"
+family_segoe = "segoe_ui"
+family_helvetica = "helvetica_neue"
+
+
+
+
 #CSS External File that overrides flatly themes
-
-
 bhf_dsc_hds_css = "
 
 :root{
