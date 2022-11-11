@@ -3,11 +3,25 @@ dataOverviewUI <- function(id){
   tagList(
 
     # Outputs ------------------------------------------------------------------
-    fluidRow(class = "dashboard_css",
-             valueBoxOutput(ns("registrations"), width = 4),
-             valueBoxOutput(ns("batch_summary"), width = 4)
-    ),
+    fluidRow(class = "overview_css",
+             
+             column(4,
+  
+
+             valueBoxOutput(ns("registrations"), width="100%")
+             
+             ),
+             
+             
+             column(4, 
+
+               valueBoxOutput(ns("batch_summary"), width="100%")
+             
+             )
+             
+             )
     
+    #spsComps::heightMatcher(ns("test2"),ns("test1"))
   )
 }
 
@@ -19,7 +33,11 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
       
       dataset_overview = reactive({
         t.dataset_overview %>%
-        filter(dataset == dataset_summary())
+        mutate(across(c(n,n_id,n_id_distinct),.fn =~as.numeric(.))) %>%
+        mutate(across(c(n,n_id,n_id_distinct), .fn = ~ scales::comma(.))) %>%
+        mutate(across(c(n,n_id,n_id_distinct), .fn = ~ replace_na(.,"null"))) %>%
+        filter(dataset == dataset_summary()) %>%
+        shhh() #suppress warnings about coercing NAs
       })
       
       #### Value Boxes =============================================================
@@ -61,7 +79,7 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
             title = "Batch Summary",
             icon = icon("file"),
             subtitle = "",
-            value = HTML(paste0(paste(paste0("<b>",c("Batch ID","Production Date","Archived On"),":</b>"),
+            value = HTML(paste0(paste(paste0("<b>",c("Batch ID","Archived On"),":</b>"),
                                       collapse = '<br/>'))),
             color = colour_bhf_darkred,
             background = customValueBox_global_colour,
@@ -73,9 +91,9 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
           title = "Batch Summary",
           icon = icon("file"),
           subtitle = "",
-          value = HTML(paste0(paste(paste0("<b>",c("Batch ID","Production Date","Archived On"),":</b>"),
+          value = HTML(paste0(paste(paste0("<b>",c("Batch ID","Archived On"),":</b>"),
                                     dataset_overview() %>% 
-                                      select(batch,production_date) %>% 
+                                      select(BatchId,archived_on) %>% 
                                       pivot_longer(everything()) %>% 
                                       pull(value),
                                     collapse = '<br/>'))),
