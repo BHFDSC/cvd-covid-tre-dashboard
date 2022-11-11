@@ -50,10 +50,10 @@ summaryUI <- function(id){
               dataCompletenessUI(id = ns("data_completeness_module")),
 
               ## Data Validity =================================================
-              hr(),
-              titlePanel(h3(id='section_heading',"Data Validity")),
+              #hr(),
+              #titlePanel(h3(id='section_heading',"Data Validity")),
 
-              fluidRow()
+              #fluidRow()
               
               )
     

@@ -77,7 +77,10 @@ ui = fluidPage(
     
     ## Footer ==================================================================
     hr(),
-    tags$footer(htmltools::tags$span("Footer Test", icon("square")))
+    tags$footer(div(
+      class = "footer",
+      includeHTML("footer.html")
+    ))
   
 )
 
