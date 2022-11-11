@@ -5,10 +5,10 @@ account: hdruk-bhf-dsc
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 7558212
-bundleId: 6493720
+bundleId: 6498412
 url: https://hdruk-bhf-dsc.shinyapps.io/bhf_dsc_tre_external_dashboard/
-when: 1668001371.21658
-lastSyncTime: 1668001371.2166
+when: 1668087347.59452
+lastSyncTime: 1668087347.59453
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: app_b.R|app_module_example.R|app_test.R|deployment_script.R|Dev/~$Modules Example.pptx|Dev/module_template.R|Dev/Modules Example.pptx|Lars_module/DD_Scotland.xlsx|Lars_module/Lars_app.R|Lars_module/Tablenames.csv|Lars_module/TRE_DD_391419_j3w9t.xlsx|module_summary_data_dictionary_dev.R|module_summary_dataset_completeness_dev.R|module_summary_dataset_description_dev.R|module_summary_dataset_description_FC.R|testing.Rmd|www/test
+ignoredFiles: deployment_script.R|Dev/~$Modules Example.pptx|Dev/Modules Example.pptx|Archive
