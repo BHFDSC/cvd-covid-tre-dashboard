@@ -61,8 +61,8 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
             title = "Batch Summary",
             icon = icon("file"),
             subtitle = "",
-            value = HTML(paste0(paste(paste0("<b>",c("Batch ID","Production Date"),":</b>"),
-                                      collapse = '<br/>'),"<br/>&nbsp")),
+            value = HTML(paste0(paste(paste0("<b>",c("Batch ID","Production Date","Archived On"),":</b>"),
+                                      collapse = '<br/>'))),
             color = colour_bhf_darkred,
             background = customValueBox_global_colour,
             border = customValueBox_border_colour,
@@ -73,12 +73,12 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
           title = "Batch Summary",
           icon = icon("file"),
           subtitle = "",
-          value = HTML(paste0(paste(paste0("<b>",c("Batch ID","Production Date"),":</b>"),
+          value = HTML(paste0(paste(paste0("<b>",c("Batch ID","Production Date","Archived On"),":</b>"),
                                     dataset_overview() %>% 
                                       select(batch,production_date) %>% 
                                       pivot_longer(everything()) %>% 
                                       pull(value),
-                                    collapse = '<br/>'),"<br/>&nbsp")),
+                                    collapse = '<br/>'))),
           color = colour_bhf_darkred,
           background = customValueBox_global_colour,
           border = customValueBox_border_colour,
