@@ -9,10 +9,9 @@ date: "2022-11-03"
 ```{r}
 
 # NHS Digital TRE Data Coverage ------------------------------------------------
-current_dir_data = dirname(rstudioapi::getSourceEditorContext()$path)
+# current_dir_data = dirname(rstudioapi::getSourceEditorContext()$path)
 
-t.data_coverage_source = read.csv(paste0(current_dir_data,
-                                  '/Data/export_dashboard_NHSD_20221102_data_coverage.csv'))
+t.data_coverage_source = read.csv('export_dashboard_NHSD_20221102_data_coverage.csv')
 
 data_coverage = t.data_coverage_source %>% # as.data.frame() %>% 
   mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
@@ -42,6 +41,6 @@ data_coverage = t.data_coverage_source %>% # as.data.frame() %>%
   pivot_longer(cols=starts_with("n"), names_to="Type",values_to="N") %>%
   mutate(date_format = as.Date(paste(date_ym, 1, sep="-"), "%Y-%m-%d"))
    
-write_rds(data_coverage, "Data/data_coverage")
+write_rds(data_coverage, "data_coverage")
 ```
 
