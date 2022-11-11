@@ -11,6 +11,14 @@ Blank Rmd for debugging and troubleshooting
 library(tidyverse)
 
 
+t.dataset_overview %>%
+  mutate(across(c(n,n_id,n_id_distinct),.fn =~as.numeric(.))) %>%
+  mutate(across(c(n,n_id,n_id_distinct), .fn = ~ scales::comma(.))) %>%
+  mutate(across(c(n,n_id,n_id_distinct), .fn = ~ replace_na(.,"null")))
+        
+
+
+
 ```
 
 

@@ -202,6 +202,11 @@ padding-bottom:20px;
 }
 
 
+.overview_css{
+display: flex;
+}
+
+
 /*Hover Colour on DT Rows*/
 table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
 background-color: var(--colour_bhf_background_lightgrey) !important;}
@@ -499,6 +504,7 @@ customValueBox <- function (value, title, subtitle, icon = NULL, color, backgrou
                   padding-bottom:5px;
                   padding-right:10px;
                   margin-top:20px;
+                  height:100%;
                   border-style: solid; border-width: 1px; border-color: ", border, ";")
   
   boxContent = div(class = "small-box", 
