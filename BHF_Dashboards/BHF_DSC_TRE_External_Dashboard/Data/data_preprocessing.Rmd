@@ -7,7 +7,7 @@ date: "2022-11-03"
 # Data Coverage Wrangling
 
 ```{r}
-
+library(tidyverse)
 # NHS Digital TRE Data Coverage ------------------------------------------------
 # current_dir_data = dirname(rstudioapi::getSourceEditorContext()$path)
 
@@ -38,6 +38,8 @@ data_coverage = t.data_coverage_source %>% # as.data.frame() %>%
   select(!ends_with("cum")) %>%
   #date month names for plot annotation
   mutate(date_name = paste0(month.name[date_m]," ", date_y, ": ")) %>%
+  mutate(date_name_season = paste0(date_y, ": ")) %>%
+  mutate(date_m_name = paste0(month.name[date_m])) %>%
   pivot_longer(cols=starts_with("n"), names_to="Type",values_to="N") %>%
   mutate(date_format = as.Date(paste(date_ym, 1, sep="-"), "%Y-%m-%d"))
    

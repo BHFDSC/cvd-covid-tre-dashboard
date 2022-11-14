@@ -1,18 +1,19 @@
 dataCompletenessUI <- function(id){
   ns <- NS(id)
   tagList(
-  
+   
     fluidRow(
 
       # Inputs -----------------------------------------------------------------
       column(3,
              
+             div(id="complete_checkbox",class="complete_checkbox",
              prettyRadioButtons(
                inputId = ns("order_complete"),
                shape = "curve",
                label = "Order:",
                selected = "value",
-               choices = c("Alphabetically"="alpha", "Value"="value")),
+               choices = c("Alphabetically"="alpha", "Value"="value"))),
              
              downloadButton(outputId = ns("download_summary_completeness_plot"), 
                                              label = "Download PNG",
@@ -32,26 +33,28 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
     id,
     function(input, output, session) {
 
-      
-      set.seed(1)
       # pull the variable names from a chosen dataset to use as test data
-      completeness_test_data = reactive({data_dictionary %>%
-          left_join(datasets_available, by=c("table")) %>%
-          filter(Dataset == dataset_summary()) %>%
-          #this will be reactive and table names need aligned to input table names in addition to the table names used when data downloaded from TRE in aggregate
-          select(display_name_label) %>%
-          mutate(display_name_label = trimws(display_name_label)) %>%
-          mutate(completeness = round(runif(nrow(.))*100,2)) %>%
-          mutate(completeness_tooltip = paste(completeness,"%")) %>%
-          arrange(desc(completeness))
+      completeness_test_data = reactive({t.dataset_completeness %>%
+          filter(dataset == dataset_summary()) %>%
+          mutate(column_name = trimws(column_name)) %>%
+          mutate(completeness = round(completeness*100,2)) %>%
+          mutate(completeness_tooltip = paste0(column_name, ": ",format(.data$completeness, nsmall=0, big.mark=",", trim=TRUE),"%")) %>%
+          arrange(desc(completeness),column_name) %>%
+          mutate(value_name_order = row_number())
       })
       
       #colour gradient
       colorCompleteness = colorRampPalette(c("#94409F", "#BC366C", "#E1324C", "#F82D2E", "#FC7F47", "#FEB958"))
+      
+      colour_palette = reactive({completeness_test_data() %>% 
+        distinct(completeness) %>% bind_cols(
+          tibble(colours = colorCompleteness(nrow(completeness_test_data() %>% distinct(completeness))))) %>%
+        left_join(select(completeness_test_data(),c(completeness,column_name)),by = "completeness")})
+      
       colour_values = reactive({
         setNames(
-        colorCompleteness(nrow(completeness_test_data())),
-        (completeness_test_data() %>% select(display_name_label) %>% pull())
+          pull(select(colour_palette(),colours)),
+          pull(select(colour_palette(),column_name))
         )
       })
       
@@ -59,12 +62,12 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
       completeness_plot = reactive({ ggplot(data=completeness_test_data(),
                                                      aes(
                                                        if(input$order_complete=="alpha"){
-                                                         x=forcats::fct_rev(reorder(display_name_label,display_name_label))
-                                                         } else {x=reorder(display_name_label, completeness)}, 
+                                                         x=forcats::fct_rev(reorder(column_name,column_name))
+                                                         } else {x=reorder(column_name, desc(value_name_order))}, 
                                                      y=completeness,
-                                                     fill = display_name_label,
+                                                     fill = column_name,
                                                      tooltip = completeness_tooltip,
-                                                     data_id = display_name_label)) +
+                                                     data_id = column_name)) +
           geom_bar_interactive(stat="identity", width=0.9) +
           coord_flip(clip = 'off')  +
           labs(x=""
@@ -114,6 +117,7 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
             )
       })
       
+  
       
       output$download_summary_completeness_plot = downloadHandler(
         filename = function() {paste(Sys.Date(), "completeness.png")},

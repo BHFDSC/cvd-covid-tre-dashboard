@@ -28,8 +28,25 @@ dataCoverageUI <- function(id){
                                 selected = count_options_selected
              ),
              
+             
              conditionalPanel(condition = "input.tab_selected_summary_coverage == 'summary_coverage_plot'",
+                              
+                              
                               downloadButton(outputId = ns("download_summary_coverage_plot"), 
+                                             label = "Download PNG",
+                                             icon = icon("file-image"))
+             ),
+             
+             conditionalPanel(condition = "input.tab_selected_summary_coverage == 'compare_plot'",
+
+                              # prettyRadioButtons(
+                              #   inputId = ns("count_coverage_season"),
+                              #   shape = "curve",
+                              #   label = "Count:",
+                              #   selected = count_options_selected,
+                              #   choices = count_options),
+                              
+                              downloadButton(outputId = ns("download_summary_coverage_season_plot"), 
                                              label = "Download PNG",
                                              icon = icon("file-image"))
              )
@@ -49,7 +66,9 @@ dataCoverageUI <- function(id){
                ),
                tabPanel(title = "Seasonality", 
                         value = "compare_plot", 
-                        class = "one")
+                        class = "one",
+                        tags$div(girafeOutput(ns("summary_coverage_season_plot_girafe"),
+                                              width = '100%', height = '85%')))
              )),
       
     )
@@ -68,7 +87,8 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
           filter(.data$dataset==dataset_summary()) %>%
           #tooltips for plot
           mutate(N_tooltip = format(.data$N, nsmall=0, big.mark=",", trim=TRUE)) %>%
-          mutate(N_tooltip_date = paste0(date_name,N_tooltip))
+          mutate(N_tooltip_date = paste0(date_name,N_tooltip)) %>%
+          mutate(N_tooltip_date_season = paste0(date_name_season,N_tooltip))
         
       })
 
@@ -123,14 +143,17 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                           step=1
                           )
         })
-
-
+      
+    
+      #date filtered dataset
       coverage_data_filtered = reactive({
         coverage_data() %>%
           filter(.data$date_y>=input$date_range_coverage[1] & .data$date_y<=input$date_range_coverage[2]) %>%
           filter(Type %in% input$count_coverage)
       })
 
+      
+      ## Trend Plot ============================================================
 
       summary_coverage_plot = reactive({
         ggplot(
@@ -150,41 +173,8 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
             size = 3,
             stroke = 1.5,
             shape = 20) +
-          geom_text_repel_interactive(
-            
-            data = (
-              coverage_data_filtered() %>% filter(date_format == max(date_format)) %>%
-                left_join(as.data.frame(count_options) %>% rename(Type=count_options) %>% rownames_to_column("count_options"),
-                          by="Type")
-            ),
-            
-            aes(
-              x = .data$date_format + (
-              as.numeric(
-              (coverage_data_filtered() %>% filter(date_format == max(date_format)) %>% distinct(date_format) %>% pull(date_format)) -
-                (coverage_data_filtered() %>% filter(date_format == min(date_format)) %>% distinct(date_format) %>% pull(date_format))
-              )/10),
-                y = .data$N + (
-                  #nudge up a 30th of difference between max and min
-                  (
-                    (
-                      (
-                        coverage_data_filtered() %>% filter(N == max(N)) %>% distinct(N) %>% pull(N)) - (
-                          coverage_data_filtered() %>% filter(N == min(N)) %>% distinct(N) %>% pull(N))
-                      ) /30)
-                  ),
-                color = .data$Type,
-                label = .data$count_options
-            ),
-            size=6,
-            direction = "y",
-            family=family_lato,
-            segment.color = 'transparent') +
+
         labs(x = NULL, y = NULL) +
-          # scale_x_date(limits=c(
-          #   (coverage_data_filtered() %>% filter(.data$date_format == min(date_format)) %>% distinct(date_format) %>% pull(date_format)),
-          #   (coverage_data_filtered() %>% filter(.data$date_format == max(date_format)) %>% distinct(date_format) %>% pull(date_format))
-          #   )) +
           theme_minimal() +
           theme(
             text=element_text(family=family_lato),
@@ -198,19 +188,51 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
             legend.position = "none"
           ) +
           coord_cartesian(clip = "off") +
-          # scale_x_date(date_breaks = "1 month",
-          #              date_labels = "%B",
-          #              #expand on rhs to fit in text
-          #              expand = expansion(mult = c(0, 0.1))) +
           scale_colour_manual(values = c(
             "n"="#F8AEB3",
             "n_id"="#F88350",
             "n_id_distinct"="#b388eb")) + 
           scale_y_continuous(labels = scales::label_number_si())
       })
+      
 
       output$summary_coverage_plot_girafe = renderGirafe({
-        girafe(ggobj = summary_coverage_plot(),
+        girafe(ggobj = summary_coverage_plot() +
+                 
+                 (geom_text_repel_interactive(
+                   size = 6,
+                   data = (
+                     coverage_data_filtered() %>% 
+                       filter(date_format == max(date_format)) %>%
+                       left_join(as.data.frame(count_options) %>% 
+                                   rename(Type=count_options) %>% 
+                                   rownames_to_column("count_options"),by="Type")
+                   ),
+                   
+                   aes(
+                     x = .data$date_format + (
+                       as.numeric(
+                         (coverage_data_filtered() %>% filter(date_format == max(date_format)) %>% distinct(date_format) %>% pull(date_format)) -
+                           (coverage_data_filtered() %>% filter(date_format == min(date_format)) %>% distinct(date_format) %>% pull(date_format))
+                       )/10),
+                     y = .data$N + (
+                       #nudge up a 30th of difference between max and min
+                       (
+                         (
+                           (
+                             coverage_data_filtered() %>% filter(N == max(N)) %>% distinct(N) %>% pull(N)) - (
+                               coverage_data_filtered() %>% filter(N == min(N)) %>% distinct(N) %>% pull(N))
+                         ) /30)
+                     ),
+                     color = .data$Type,
+                     label = .data$count_options
+                   ),
+
+                   direction = "y",
+                   family=family_lato,
+                   segment.color = 'transparent'))
+               
+               ,
                width_svg = 16,
                height_svg = 9,
                options = list(
@@ -235,8 +257,188 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
 
 
       output$download_summary_coverage_plot = downloadHandler(
-        filename = function() {paste(Sys.Date(), "coverage.png")},
-        content = function(file) {ggsave(file, plot = (summary_coverage_plot()) + theme(plot.margin = margin(20,50,20,50)),
+        filename = function() {paste(Sys.Date(), "coverage_trend.png")},
+        content = function(file) {ggsave(file, plot = (summary_coverage_plot()) +
+                                           (geom_text_repel_interactive(
+                                             size = 12,
+                                             data = (
+                                               coverage_data_filtered() %>% 
+                                                 filter(date_format == max(date_format)) %>%
+                                                 left_join(as.data.frame(count_options) %>% 
+                                                             rename(Type=count_options) %>% 
+                                                             rownames_to_column("count_options"),by="Type")
+                                             ),
+                                             
+                                             aes(
+                                               x = .data$date_format + (
+                                                 as.numeric(
+                                                   (coverage_data_filtered() %>% filter(date_format == max(date_format)) %>% distinct(date_format) %>% pull(date_format)) -
+                                                     (coverage_data_filtered() %>% filter(date_format == min(date_format)) %>% distinct(date_format) %>% pull(date_format))
+                                                 )/10),
+                                               y = .data$N + (
+                                                 #nudge up a 30th of difference between max and min
+                                                 (
+                                                   (
+                                                     (
+                                                       coverage_data_filtered() %>% filter(N == max(N)) %>% distinct(N) %>% pull(N)) - (
+                                                         coverage_data_filtered() %>% filter(N == min(N)) %>% distinct(N) %>% pull(N))
+                                                   ) /30)
+                                               ),
+                                               color = .data$Type,
+                                               label = .data$count_options
+                                             ),
+                                             
+                                             direction = "y",
+                                             family=family_lato,
+                                             segment.color = 'transparent')) +
+                                           #new theme for download
+                                           theme(plot.margin = margin(20,50,20,50),
+                                                 axis.text.x = element_text(size = 34, face = "bold"),
+                                                 axis.text.y = element_text(size = 34, face = "bold")),
+                                         #ensure width and height are same as ggiraph
+                                         #width_svg and height_svg to ensure png not cut off
+                                         width = 16, height = 9, units = "in",
+                                         bg = "transparent",
+                                         dpi = 300, device = "png")}
+      )
+      
+      
+      
+      ## Season Plot ===========================================================
+      
+      summary_coverage_season_plot = reactive({
+        ggplot(
+          data = coverage_data_filtered() %>% mutate(date_y=as.character(date_y)),
+          aes(x = .data$date_m,
+              y = .data$N,
+              color = .data$date_y,
+              #data_id = .data$date_m,
+              group = .data$date_y
+          )
+        ) +
+          geom_line_interactive(size = 3,
+                                alpha = 0.4) +
+          geom_point_interactive(
+            aes(tooltip = .data$N_tooltip_date_season),
+            fill = "white",
+            size = 3,
+            stroke = 1.5,
+            shape = 20) +
+          
+          labs(x = NULL, y = NULL) +
+
+          theme_minimal() +
+          theme(
+            text=element_text(family=family_lato),
+            panel.grid = element_blank(),
+            plot.margin = margin(0,50,0,0),
+            plot.background = element_rect(color=NA),
+            panel.background = element_rect(color = NA),
+            axis.ticks = element_blank(),
+            axis.text.x = element_text(size = 14, face = "bold"),
+            axis.text.y = element_text(size = 14, face = "bold"),
+            legend.position = "none"
+          ) +
+          coord_cartesian(clip = "off") +
+
+          
+          scale_colour_manual(values = c(
+
+            setNames(
+              rep(rev(colour_stepped_palette), length.out=nrow(distinct(coverage_data(),date_y))),
+              pull(distinct(coverage_data(),date_y),date_y)
+            )
+            
+            )) +
+          
+          scale_y_continuous(labels = scales::label_number_si()) +
+          scale_x_continuous(breaks = c(1, 4, 7, 10),label = c("Jan", "Apr", "Jul", "Oct"))
+      })
+      
+      # test = reactive({(
+      #   functional::Curry(
+      #   geom_text_repel_interactive,
+      #   
+      #   data = (coverage_data_filtered() %>% 
+      #             group_by(date_y) %>% 
+      #             filter(date_m == max(date_m))),
+      #   
+      #   aes(x = .data$date_m,
+      #       y = .data$N,
+      #       color = as.factor(.data$date_y),
+      #       label = as.factor(.data$date_y)),
+      #   
+      #   direction = "y",
+      #   family=family_lato,
+      #   segment.color = 'transparent')
+      #   )})
+      
+      output$summary_coverage_season_plot_girafe = renderGirafe({
+        girafe(ggobj = summary_coverage_season_plot() +
+                 #add geom text layer separate for girafe object and download as different sizes needed
+                 geom_text_repel_interactive(
+                 size = 6,
+
+                 data = (coverage_data_filtered() %>%
+                           group_by(date_y) %>%
+                           filter(date_m == max(date_m))),
+
+                 aes(x = .data$date_m,
+                     y = .data$N,
+                     color = as.factor(.data$date_y),
+                     label = as.factor(.data$date_y)),
+
+                 direction = "y",
+                 family=family_lato,
+                 segment.color = 'transparent'),
+               
+               width_svg = 16,
+               height_svg = 9,
+               options = list(
+                 opts_tooltip(
+                   opacity = 0.95, #opacity of the background box
+                   css = "background-color:#EC2154;
+            color:white;font-size:10pt;font-style:italic;
+            padding:5px;border-radius:10px 10px 10px 10px;"
+                 ),
+            #to work - need data_id on
+            opts_hover_inv(
+              css = "stroke-width:3; opacity:0.6;"
+            ),
+            opts_hover(
+              css = "stroke-width: 4; opacity: 1;"
+            ),
+            #turn off save as png as will put this as a shiny command to match excel download
+            opts_toolbar(saveaspng = FALSE)
+               )
+        )
+      })
+      
+      
+      output$download_summary_coverage_season_plot = downloadHandler(
+        filename = function() {paste(Sys.Date(), "coverage_season.png")},
+        content = function(file) {ggsave(file, plot = (summary_coverage_season_plot()) +
+                                           #add geom text layer separate for girafe object and download as different sizes needed
+                                           geom_text_repel_interactive(
+                                             size = 12,
+                                             
+                                             data = (coverage_data_filtered() %>%
+                                                       group_by(date_y) %>%
+                                                       filter(date_m == max(date_m))),
+                                             
+                                             aes(x = .data$date_m,
+                                                 y = .data$N,
+                                                 color = as.factor(.data$date_y),
+                                                 label = as.factor(.data$date_y)),
+                                             
+                                             direction = "y",
+                                             family=family_lato,
+                                             segment.color = 'transparent') +
+                                           #custom theme for download
+                                           theme(plot.margin = margin(20,50,20,50),
+                                                 axis.text.x = element_text(size = 34, face = "bold"),
+                                                 axis.text.y = element_text(size = 34, face = "bold")
+                                                 ),
                                          #ensure width and height are same as ggiraph
                                          #width_svg and height_svg to ensure png not cut off
                                          width = 16, height = 9, units = "in",
