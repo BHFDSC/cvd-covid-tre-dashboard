@@ -49,6 +49,7 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
                                             stringi::stri_reverse(split_occurrence(column_name_rev,sep="_",n=1,keep="rhs")))) %>%
           arrange(column_name_order,num) %>%
           mutate(column_alpha_order = row_number()) %>%
+          #reset order for colour palette
           arrange(desc(completeness),column_name)
       })
       
