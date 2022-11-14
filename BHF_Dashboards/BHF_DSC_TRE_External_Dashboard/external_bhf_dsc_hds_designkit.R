@@ -276,6 +276,11 @@ color: red !important;
 }
 
 
+.dataTables_wrapper:after{
+color: red !important;
+}
+
+
 .paginate_button:not(.previous):not(.next){
 }
 
