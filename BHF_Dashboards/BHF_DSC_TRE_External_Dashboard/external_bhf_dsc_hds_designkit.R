@@ -12,6 +12,39 @@ colour_global_options = colour_bhf_darkred
 customValueBox_global_colour = '#F3F2F4'
 customValueBox_border_colour = '#F3F2F4'
 
+colour_stepped_palette = c(
+  #purple
+  "#a37cd6",
+  "#b388eb",
+  "#d59bf2",
+  "#e6a5f5",
+  "#f7aef8",
+  #orange
+  "#f25c54",
+  "#f27059",
+  "#f4845f",
+  "#f79d65",
+  "#f7b267",
+  #turquoise
+  "#07beb8",
+  "#3dccc7",
+  "#68d8d6",
+  "#9ceaef",
+  "#c4fff9",
+  #red
+  "#c42348",
+  "#d91e36",
+  "#da344d",
+  "#ec5766",
+  "#ef7674",
+  #blue
+  "#3D7CD9",
+  "#4B90F1",
+  "#63A0F3",
+  "#8DBCFF",
+  "#BDD6F6"
+)
+
 ###############################################################################
 #Boostrap and CSS Theme
 library(bslib)
@@ -380,6 +413,25 @@ box-shadow: none;
 margin-left:-4%;
 }
 
+#summary_module-data_coverage_module-download_summary_coverage_season_plot:hover{
+background-color:white;
+border-color:white;
+color:var(--colour_bhf_neonred);
+outline: none !important;
+box-shadow: none;
+margin-left:-4%;
+}
+
+
+#summary_module-data_coverage_module-download_summary_coverage_season_plot{ /*#data_coverage_module-download_summary_coverage_plot*/
+background-color:white;
+border-color:white;
+color:#3C3C3C;
+outline: none !important;
+box-shadow: none;
+margin-left:-4%;
+}
+
 
 #summary_module-data_completeness_module-download_summary_completeness_plot:hover{
 background-color:white;
@@ -406,6 +458,10 @@ margin-left:-4%;
 .state::before {background-color: #5A656B !important; color: #5A656B !important;}
 .pretty.p-switch .state label:after {background-color: #FFFFFF !important; color: #FFFFFF !important}
 */
+
+
+
+
 
 
 /*FOOTER CSS*/
