@@ -10,75 +10,8 @@ Blank Rmd for debugging and troubleshooting
 
 library(tidyverse)
 
-test = t.data_coverage %>%
-          left_join(datasets_available,by = c("dataset"="Dataset")) %>%
-          filter(.data$dataset=="gdppr") %>%
-          #tooltips for plot
-          mutate(N_tooltip = format(.data$N, nsmall=0, big.mark=",", trim=TRUE)) %>%
-          mutate(N_tooltip_date = paste0(date_name,N_tooltip)) %>%
-
-                #filter date range
-                mutate(start_date = as.Date(paste(start_date, 1, sep="-"), "%Y-%m-%d")) %>%
-                filter(!start_date >= date_format) %>%
-                #using current month but this should be updated to use production ym in future
-                mutate(current_date = as.Date(paste(format(Sys.Date(), "%Y-%m"), 1, sep="-"), "%Y-%m-%d")) %>%
-                filter(date_format <= current_date)
 
 
-
-
-colour_stepped_palette
-
-
-setNames(
-  pull(distinct(test,date_y),date_y),
-  rep(colour_stepped_palette, length.out=nrow(distinct(test,date_y)))
-)
-
-
-colour_stepped_palette[1:25]
-
-rep(colour_stepped_palette, length.out=nrow(distinct(test,date_y)))
-
-nrow(distinct(test,date_y))
-
-
-split_occurrence = function(x, sep, n, keep = "lhs") {
-  # Split by sep
-  split_all = str_split(x, sep)
-  # Take 1 to nth output on lhs and remaining on rhs
-  lhs = lapply(split_all, function(y) {y[1:n]})
-  rhs = lapply(split_all, function(y) {y[(n+1):length(y)]})
-  # Collapse
-  lhs_collapse = lapply(lhs, function(y) {paste(y, collapse = sep)})
-  rhs_collapse = lapply(rhs, function(y) {paste(y, collapse = sep)})
-  # Return unlisted
-  if (keep == "lhs") {
-    return(unlist(lhs_collapse))
-  } else if (keep == "rhs") {
-    return(unlist(rhs_collapse))
-  } else {
-    return(as.character(NA))
-  }
-}
-
-
-t.dataset_completeness %>%filter(dataset=="sus") %>%
-          mutate(column_name = trimws(column_name)) %>%
-          mutate(completeness = round(completeness*100,2)) %>%
-          mutate(completeness_tooltip = paste0(column_name, ": ",format(.data$completeness, nsmall=0, big.mark=",", trim=TRUE),"%")) %>%
-          arrange(desc(completeness),column_name) %>%
-          mutate(value_name_order = row_number())
-  mutate(column_name_rev = stringi::stri_reverse(column_name)) %>%
-  separate(column_name_rev, into="num", remove=FALSE) %>%
-  mutate(num = as.numeric(stringi::stri_reverse(num))) %>%
-  mutate(column_name_order = ifelse(is.na(num),column_name,
-                                    stringi::stri_reverse(split_occurrence(column_name_rev,sep="_",n=1,keep="rhs")))) %>%
-  arrange(column_name_order,num) %>%
-  mutate(column_alpha_order = row_number())
-  
-
-stringi::stri_reverse(paste(str_split("01_EDOC_SISONGAID_YRADNOCES","_",simplify=TRUE)[,-1],collapse="_"))
 ```
 
 

@@ -1,116 +1,66 @@
 library(shiny)
 
-
-LHSchoices <- c("X1", "X2", "X3", "X4")
-
-
-#------------------------------------------------------------------------------#
-
-# MODULE UI ----
-variablesUI <- function(id, number) {
-  
+row_ui <- function(id) {
   ns <- NS(id)
-  
-  tagList(
-    fluidRow(
-      column(6,
-             selectInput(ns("variable"),
-                         paste0("Select Variable ", number),
-                         choices = c("Choose" = "", LHSchoices)
-             )
-      ),
-      
-      column(6,
-             numericInput(ns("value.variable"),
-                          label = paste0("Value ", number),
-                          value = 0, min = 0
-             )
-      )
+  fluidRow(
+    column(3, 
+           selectInput(ns("type_chooser"), 
+                       label = "Choose Type:", 
+                       choices = c("text", "numeric"))
+    ),
+    column(9,
+           uiOutput(ns("ui_placeholder"))
     )
   )
-  
-}
+} 
 
-#------------------------------------------------------------------------------#
-
-# MODULE SERVER ----
-
-variables <- function(input, output, session, variable.number){
-  reactive({
-    
-    req(input$variable, input$value.variable)
-    
-    # Create Pair: variable and its value
-    df <- data.frame(
-      "variable.number" = variable.number,
-      "variable" = input$variable,
-      "value" = input$value.variable,
-      stringsAsFactors = FALSE
-    )
-    
-    return(df)
-    
+row_server <- function(input, output, session) {
+  return_value <- reactive({input$inner_element})
+  ns <- session$ns
+  output$ui_placeholder <- renderUI({
+    type <- req(input$type_chooser)
+    if(type == "text") {
+      textInput(ns("inner_element"), "Text:")
+    } else if (type == "numeric") {
+      numericInput(ns("inner_element"), "Value:", 0)
+    }
   })
+  
+  ## if we later want to do some more sophisticated logic
+  ## we can add reactives to this list
+  list(return_value = return_value) 
 }
 
-#------------------------------------------------------------------------------#
 
-# Shiny UI ----
 
-ui <- fixedPage(
-  verbatimTextOutput("test1"),
-  tableOutput("test2"),
-  variablesUI("var1", 1),
-  h5(""),
-  actionButton("insertBtn", "Add another line")
-  
+ui <- fluidPage(  
+  div(id="placeholder"),
+  actionButton("addLine", "Add Line"),
+  verbatimTextOutput("out")
 )
 
-# Shiny Server ----
-
-server <- function(input, output) {
+server <- function(input, output, session) {
+  handler <- reactiveVal(list())
   
-  add.variable <- reactiveValues()
-  
-  add.variable$df <- data.frame("variable.number" = numeric(0),
-                                "variable" = character(0),
-                                "value" = numeric(0),
-                                stringsAsFactors = FALSE)
-  
-  var1 <- callModule(variables, paste0("var", 1), 1)
-  
-  observe(add.variable$df[1, ] <- var1())
-  
-  observeEvent(input$insertBtn, {
-    
-    btn <- sum(input$insertBtn, 1)
-    
+  observeEvent(input$addLine, {
+    new_id <- paste("row", input$addLine, sep = "_")
     insertUI(
-      selector = "h5",
-      where = "beforeEnd",
-      ui = tagList(
-        variablesUI(paste0("var", btn), btn)
-      )
+      selector = "#placeholder",
+      where = "beforeBegin",
+      ui = row_ui(new_id)
     )
-    
-    newline <- callModule(variables, paste0("var", btn), btn)
-    
-    observeEvent(newline(), {
-      add.variable$df[btn, ] <- newline()
+    handler_list <- isolate(handler())
+    new_handler <- callModule(row_server, new_id)
+    handler_list <- c(handler_list, new_handler)
+    names(handler_list)[length(handler_list)] <- new_id
+    handler(handler_list)
+  })
+  
+  output$out <- renderPrint({
+    lapply(handler(), function(handle) {
+      handle()
     })
-    
   })
-  
-  output$test1 <- renderPrint({
-    print(add.variable$df)
-  })
-  
-  output$test2 <- renderTable({
-    add.variable$df
-  })
-  
 }
-
-#------------------------------------------------------------------------------#
 
 shinyApp(ui, server)
