@@ -2,7 +2,9 @@ dataDescriptionUI <- function(id){
   ns <- NS(id)
   tagList(
     # Outputs ------------------------------------------------------------------
-    textOutput(ns("description"))
+    textOutput(ns("description")),
+    br(),textOutput(ns("info")),
+    uiOutput(ns("tab"))
   )
 }
 
@@ -27,9 +29,23 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
         cat(dataset_desc_filter() %>%
           select(Description) %>%
             pull())
+      
+        
+      output$info <- renderText({
+        "For more information see:"})    
+      
+      url1 <- a("NHS Digital", 
+                href= datasets_available$nhsd_url[datasets_available$Dataset == dataset_summary()])
+      url2 <- a("Health Data Gateway", 
+                href= datasets_available$hdg_url[datasets_available$Dataset == dataset_summary()])
+      output$tab <- renderUI({
+        tagList(url1, "and",  url2)
+        
+          })
         })
       )
     }
   )
 }
+
 
