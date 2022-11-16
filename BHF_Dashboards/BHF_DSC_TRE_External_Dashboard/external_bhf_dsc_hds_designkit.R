@@ -51,10 +51,10 @@ library(bslib)
 
 #The booststrap main theme uses flaty as a basis
 bhf_dsc_hds_bootstrap_theme = bs_theme(version = 5, bootswatch = "flatly",
-                                   #override some defaults
-                                   primary = 'white',
-                                   secondary='white',
-                                   success = colour_bhf_lightred)
+                                       #override some defaults
+                                       primary = 'white',
+                                       secondary='white',
+                                       success = colour_bhf_lightred)
 
 #line under navbar
 bhf_navbar_line = hr(style=paste0("color:",colour_bhf_darkred,"!important;"))
@@ -173,6 +173,7 @@ margin-top:15px;
           border-right-color: var(--colour_bhf_neonred)
         }
 
+
 /*Plot/Summary Active Tab*/
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
@@ -186,6 +187,9 @@ margin-top:15px;
 color: var(--colour_bhf_lightred);
 background-color:white;
 }
+
+
+/*Compare Tab input tab panels in module_compare.R*/
 
 
 
@@ -296,7 +300,7 @@ border: 1px solid transparent !important;
 }
 
 
-/*Slider Inputs*/
+/*Slider Inputs - eg for Date pickers*/
 .irs-grid-pol.small {height: 0px;}.js-irs-0 
                          .irs-single, 
                          .js-irs-0 
@@ -340,6 +344,29 @@ border: 1px solid transparent !important;
   }
 
 
+/*COMPARE TAB - Nation and Dataste Inputs*/
+#compare_module-compare-nation_compare-label{
+  color:var(--colour_bhf_darkred) !important;
+}
+#compare_module-compare-dataset_compare-label{
+  color:var(--colour_bhf_darkred) !important;
+}
+#compare_module-add{
+  color:#474D5B!important;
+}
+#compare_module-remove{
+  color:#474D5B !important;
+}
+
+#selectize_div_all{
+  color:var(--colour_bhf_darkred) !important;
+}
+#compare_module-nation_compare_initial-label{
+  color:var(--colour_bhf_darkred) !important;
+}
+#compare_module-dataset_compare_initial-label{
+  color:var(--colour_bhf_darkred) !important;
+}
 
 
 
@@ -457,11 +484,12 @@ margin-left:-4%;
 }
 
 
-
+/*pretty switch*/
 /*
 .state {color: white !important;}
-.state::before {background-color: #5A656B !important; color: #5A656B !important;}
-.pretty.p-switch .state label:after {background-color: #FFFFFF !important; color: #FFFFFF !important}
+.state :not([class]){color: white !important;}
+.state::before{background-color: #5A656B !important; color: #5A656B !important;}
+.pretty.p-switch .state label:after{background-color: #FFFFFF !important; color: #FFFFFF !important}
 */
 
 
@@ -546,12 +574,13 @@ border-bottom-right-radius: 10px !important; /*Round Edges*/
 "
 
 bhf_tab_panel_style = "
-background: var(--colour_bhf_darkred);
-border: var(--colour_bhf_darkred);
-border-top-left-radius: 0px !important; /*Round Edges*/
-border-bottom-left-radius: 0px !important; /*Round Edges*/
-border-top-right-radius: 0px !important; /*Round Edges*/
-border-bottom-right-radius: 0px !important; /*Round Edges*/
+height:450px;overflow-y: scroll;
+background: var(--colour_bhf_background_lightgrey);
+border: var(--colour_bhf_background_lightgrey);
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 0px !important;
 "
 
 
@@ -566,7 +595,7 @@ bhf_global_options_column_style_left = paste("background-color:",colour_global_o
                                              "border-width: thick;",
                                              "height:",global_options_row_height,";",
                                              "border:",global_options_row_height,";",
-                                              "border-top-left-radius: 10px !important; /*Round Edges*/
+                                             "border-top-left-radius: 10px !important; /*Round Edges*/
                                                border-bottom-left-radius: 10px !important; /*Round Edges*/")
 
 
@@ -580,8 +609,8 @@ bhf_global_options_column_style_middle = paste("background-color:",colour_global
 
 
 bhf_global_options_column_style_right = paste("background-color:",colour_global_options,";",
-                                                  "height:",global_options_row_height,";",
-                                            "border:",global_options_row_height,"; /*Round Edges*/
+                                              "height:",global_options_row_height,";",
+                                              "border:",global_options_row_height,"; /*Round Edges*/
                                             border-top-right-radius: 10px !important; /*Round Edges*/
                                             border-bottom-right-radius: 10px !important; /*Round Edges*/")
 
@@ -635,7 +664,7 @@ customValueBox <- function (value, title, subtitle, icon = NULL, color, backgrou
   boxContent = div(class = "small-box", 
                    style = style,
                    if (!is.null(icon))
-                   div(class = "icon-large", h4(icon,title), style=""),
+                     div(class = "icon-large", h4(icon,title), style=""),
                    div(class = "inner", 
                        h6(value, style="line-height: 150%;"), 
                        p(subtitle,style="font-size: 25px;"), 
