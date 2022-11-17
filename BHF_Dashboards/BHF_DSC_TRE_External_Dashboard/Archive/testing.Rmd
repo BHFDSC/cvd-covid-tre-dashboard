@@ -10,7 +10,22 @@ Blank Rmd for debugging and troubleshooting
 
 library(tidyverse)
 
+      coverage_data_all_records =
+        t.data_coverage %>%
+          left_join(datasets_available,by = c("dataset"="Dataset")) %>%
+          filter(.data$dataset=="gdppr") %>%
+          #tooltips for plot
+          mutate(N_tooltip = format(N, nsmall=0, big.mark=",", trim=TRUE)) %>%
+          mutate(N_tooltip_date = paste0(date_name,N_tooltip)) %>%
+          mutate(N_tooltip_date_season = paste0(date_name_season,N_tooltip))
+        
 
+      
+      
+      season_colour_palette = setNames(
+        rep(rev(colour_stepped_palette), length.out=nrow(distinct(coverage_data_all_records,date_y))),
+        rev(pull(distinct(coverage_data_all_records,date_y),date_y))
+      )
 
 ```
 
