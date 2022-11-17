@@ -38,7 +38,7 @@ source('external_inputs.R')
 ui = fluidPage(
 
   ## UI Setup and Design #######################################################
-  useShinyjs(),
+  shinyjs::useShinyjs(),
   #App Theme
   theme = bhf_dsc_hds_bootstrap_theme,
   # Load the dependencies for promter
@@ -68,7 +68,7 @@ ui = fluidPage(
     tabPanel("Compare", compareUI(id = "compare_module")),
     
     ### Insight Tab ============================================================
-    tabPanel("Insight"),
+    #tabPanel("Insight"),
     
     ### Appendix Tab ===========================================================
     tabPanel("Appendix",appendixOutput(id = "appendix"))
@@ -87,6 +87,7 @@ ui = fluidPage(
 # Server -----------------------------------------------------------------------
 
 server = function(input, output, session) {
+
 
   ### Summary Tab ============================================================
   summaryServer(id = "summary_module")
