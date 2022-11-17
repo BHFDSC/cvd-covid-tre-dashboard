@@ -7,13 +7,19 @@ dataCompletenessUI <- function(id){
       # Inputs -----------------------------------------------------------------
       column(3,
              
-             div(id="complete_checkbox",class="complete_checkbox",
-             prettyRadioButtons(
+             # div(id="complete_checkbox",class="complete_checkbox",
+             # prettyRadioButtons(
+             #   inputId = ns("order_complete"),
+             #   shape = "curve",
+             #   label = "Order:",
+             #   selected = "value",
+             #   choices = c("Alphabetically"="alpha", "Value"="value"))),
+             
+             radioButtons(
                inputId = ns("order_complete"),
-               shape = "curve",
                label = "Order:",
                selected = "value",
-               choices = c("Alphabetically"="alpha", "Value"="value"))),
+               choices = c("Alphabetically"="alpha", "Value"="value")),
              
              downloadButton(outputId = ns("download_summary_completeness_plot"), 
                                              label = "Download PNG",
