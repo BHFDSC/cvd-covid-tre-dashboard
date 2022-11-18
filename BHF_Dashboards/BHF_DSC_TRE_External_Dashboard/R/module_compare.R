@@ -338,7 +338,7 @@ compareServer <- function(id) {
               group = .data$dataset
           )
         ) +
-          geom_line_interactive(size = 3,
+          geom_line(size = 3,
                                 alpha = 0.4) +
           geom_point_interactive(
             aes(tooltip = .data$N_tooltip_date),
