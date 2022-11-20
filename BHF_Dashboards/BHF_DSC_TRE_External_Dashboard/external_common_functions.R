@@ -29,9 +29,11 @@ read_excel_allsheets <- function(filename, tibble = FALSE, except_sheet_no = NA,
   # reading all the names of the sheets
   sheets <- readxl::excel_sheets(filename)
   # applying any exceptions eg cover sheets  
-  if (!is.na(except_sheet_no)){
+  if (!sum(is.na(except_sheet_no))){
     sheets <- sheets[-except_sheet_no]
   }
+  
+  
   x <- lapply(sheets, function(X) readxl::read_excel(filename, sheet = X, skip = skip))
   if(!tibble) x <- lapply(x, as.data.frame)
   names(x) <- sheets
