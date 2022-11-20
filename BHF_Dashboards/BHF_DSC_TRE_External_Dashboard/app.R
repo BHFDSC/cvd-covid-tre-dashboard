@@ -59,6 +59,12 @@ ui = fluidPage(
                         align-items: center !important;",
                     height = 70), 
                    href="https://www.hdruk.ac.uk/helping-with-health-data/bhf-data-science-centre/"),
+    
+    actionBttn(inputId='ab1', label="Provide Feedback", color = "success", 
+               # icon = icon("th"), 
+               style = "unite"  , 
+               onclick ="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=saxMhCdwY0Kdihj6pb8IOe1OSlBUSpBCq1NpVakPfMJURTY0TTZCRFlHOUEyMTM3QUJWTkxFR1AwUC4u',)"),
+    
 
     ### Summary Tab ============================================================
 
@@ -71,8 +77,11 @@ ui = fluidPage(
     #tabPanel("Insight"),
     
     ### Appendix Tab ===========================================================
-    tabPanel("Appendix",appendixOutput(id = "appendix"))
+    tabPanel("Appendix",appendixOutput(id = "appendix")) ,
     
+    tabPanel(a(href="https://forms.office.com/Pages/ResponsePage.aspx?id=saxMhCdwY0Kdihj6pb8IOe1OSlBUSpBCq1NpVakPfMJURTY0TTZCRFlHOUEyMTM3QUJWTkxFR1AwUC4u",
+               "Provide feedback"))
+
     ),
     
     ## Footer ==================================================================
@@ -99,7 +108,8 @@ server = function(input, output, session) {
   
   ### Appendix Tab ===========================================================
 
- 
+
+  
 }
 
 
