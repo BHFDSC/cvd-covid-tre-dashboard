@@ -19,6 +19,8 @@ data_coverage = t.data_coverage_source %>% # as.data.frame() %>%
   filter(!is.na(date_ym)) %>%
   separate(date_ym, c("date_y", "date_m"), remove=FALSE, sep = '-') %>%
   mutate(across(.cols = c(date_y, date_m), .fn = ~ as.numeric(.))) %>%
+  #remove future dates > this year + 1 (to reduce file size)
+  filter(date_y <= (as.numeric(format(Sys.Date(), "%Y"))+1)) %>%
   #expand to include all dates in between where counts=0
   group_by(dataset) %>%
   expand(date_y=min(date_y):max(date_y),date_m=1:12) %>%
@@ -44,5 +46,7 @@ data_coverage = t.data_coverage_source %>% # as.data.frame() %>%
   mutate(date_format = as.Date(paste(date_ym, 1, sep="-"), "%Y-%m-%d"))
    
 write_rds(data_coverage, "data_coverage")
+
+
 ```
 

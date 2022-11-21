@@ -51,6 +51,15 @@ colour_stepped_palette = c(
   "#FFD3FB"
 )
 
+
+compare_palette = c(
+  "#b388eb",
+  "#9F54A8",
+  "#F5484A",
+  "#FFC16A",
+  "#FDA361"
+)
+
 ###############################################################################
 #Boostrap and CSS Theme
 library(bslib)
