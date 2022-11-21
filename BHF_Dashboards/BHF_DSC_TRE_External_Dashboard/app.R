@@ -53,6 +53,9 @@ ui = fluidPage(
   navbarPage(
     bhf_navbar_line,
     #BHF HDS Logo
+    
+    
+    
     title = tags$a(img(src = "bhf_dsc_logo.png",
                     style = "margin-top:7% !important;
                         justify-content: center !important;
@@ -60,10 +63,6 @@ ui = fluidPage(
                     height = 70), 
                    href="https://www.hdruk.ac.uk/helping-with-health-data/bhf-data-science-centre/"),
     
-    actionBttn(inputId='ab1', label="Provide Feedback", color = "success", 
-               # icon = icon("th"), 
-               style = "unite"  , 
-               onclick ="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=saxMhCdwY0Kdihj6pb8IOe1OSlBUSpBCq1NpVakPfMJURTY0TTZCRFlHOUEyMTM3QUJWTkxFR1AwUC4u',)"),
     
 
     ### Summary Tab ============================================================
@@ -79,8 +78,22 @@ ui = fluidPage(
     ### Appendix Tab ===========================================================
     tabPanel("Appendix",appendixOutput(id = "appendix")) ,
     
-    tabPanel(a(href="https://forms.office.com/Pages/ResponsePage.aspx?id=saxMhCdwY0Kdihj6pb8IOe1OSlBUSpBCq1NpVakPfMJURTY0TTZCRFlHOUEyMTM3QUJWTkxFR1AwUC4u",
-               "Provide feedback"))
+    tabPanel(actionBttn(inputId='ab1', label="Provide Feedback", color = "success", 
+                        position = "right",
+                        # icon = icon("th"), 
+                        # size = lg ,
+                        style = "unite"  , 
+                        onclick ="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=saxMhCdwY0Kdihj6pb8IOe1OSlBUSpBCq1NpVakPfMJURTY0TTZCRFlHOUEyMTM3QUJWTkxFR1AwUC4u',)"))
+    
+    # tags$head(
+    #   tags$style(HTML(
+    #     ".tabbable ul li:nth-child(3) { float: right; }"
+    #   ))
+    # )
+    
+    
+    # tabPanel(a(href="https://forms.office.com/Pages/ResponsePage.aspx?id=saxMhCdwY0Kdihj6pb8IOe1OSlBUSpBCq1NpVakPfMJURTY0TTZCRFlHOUEyMTM3QUJWTkxFR1AwUC4u",
+    #            "Provide feedback"))
 
     ),
     
