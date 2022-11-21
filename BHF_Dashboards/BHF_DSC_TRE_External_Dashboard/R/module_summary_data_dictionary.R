@@ -9,14 +9,30 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
   moduleServer(
     id,
     function(input, output, session){
-      
+## England and Scotland reactive  - designed for table format
       data_dict = reactive({
-        data_dictionary %>%
-          left_join(select(datasets_available, c("table","Dataset")), by=c("table")) %>%
-          filter(Dataset == dataset_summary()) %>%
-          select(-Dataset,-table,-database)
-      })
+        
+        
+        if(nation_summary() == "Scotland"){
+             t.data_dictionaryScot %>% 
+             left_join(select(datasets_available, c("table","Dataset")), by=c("table")) %>%
+             filter(Dataset == dataset_summary())  %>%
+             select(-Dataset,-table)  %>% 
+             select_if(~!(all(is.na(.)) | all(. == "")))
+        }
+        
+        else if(nation_summary() == "England" ){
+        t.data_dictionaryEng %>%
+         left_join(select(datasets_available, c("table","Dataset")), by=c("table")) %>%
+         filter(Dataset == dataset_summary()) %>%
+         select(-Dataset,-table,-database) 
+            
+        }
+
+     })
       
+      
+
       output$tbl = renderDataTable(
         
         data_dict(),
