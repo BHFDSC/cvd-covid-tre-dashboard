@@ -333,7 +333,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
               group = .data$date_y
           )
         ) +
-          geom_line_interactive(size = 3,
+          geom_line(size = 3,
                                 alpha = 0.4) +
           geom_point_interactive(
             aes(tooltip = .data$N_tooltip_date_season),
