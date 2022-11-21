@@ -78,6 +78,8 @@ ui = fluidPage(
     ### Appendix Tab ===========================================================
     tabPanel("Appendix",appendixOutput(id = "appendix")) ,
     
+    ### Feedback Button ===========================================================
+    
     tabPanel(actionBttn(inputId='ab1', label="Provide Feedback", color = "success", 
                         position = "right",
                         # icon = icon("th"), 
@@ -85,15 +87,6 @@ ui = fluidPage(
                         style = "unite"  , 
                         onclick ="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=saxMhCdwY0Kdihj6pb8IOe1OSlBUSpBCq1NpVakPfMJURTY0TTZCRFlHOUEyMTM3QUJWTkxFR1AwUC4u',)"))
     
-    # tags$head(
-    #   tags$style(HTML(
-    #     ".tabbable ul li:nth-child(3) { float: right; }"
-    #   ))
-    # )
-    
-    
-    # tabPanel(a(href="https://forms.office.com/Pages/ResponsePage.aspx?id=saxMhCdwY0Kdihj6pb8IOe1OSlBUSpBCq1NpVakPfMJURTY0TTZCRFlHOUEyMTM3QUJWTkxFR1AwUC4u",
-    #            "Provide feedback"))
 
     ),
     
