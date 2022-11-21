@@ -27,7 +27,7 @@ dataCompletenessUI <- function(id){
              ),
       # Outputs ----------------------------------------------------------------
       column(9,
-             girafeOutput(ns("completeness_plot_girafe")))
+             girafeOutput(ns("completeness_plot_girafe"), height='100%'))
              ))
 
 }
@@ -85,7 +85,10 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
                                                      fill = column_name,
                                                      tooltip = completeness_tooltip,
                                                      data_id = column_name)) +
-          geom_bar_interactive(stat="identity", width=0.9) +
+          geom_bar_interactive(stat="identity"
+                               , size = 0.35
+                               #, width=0.9
+                               ) +
           coord_flip(clip = 'off')  +
           labs(x=""
                ,y=""

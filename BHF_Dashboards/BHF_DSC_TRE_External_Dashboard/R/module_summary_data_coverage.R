@@ -16,12 +16,14 @@ dataCoverageUI <- function(id){
                          step=1, sep = ""
              ),
 
-             prettySwitch(inputId = ns("all_records"), label = "Show extreme dates", fill = TRUE)  %>% 
-               add_prompt(
-                 message = "Select records recorded outwith data collection start date and current date",
-                 position = "right", type = "error", 
-                 size = "small", rounded = TRUE
-               ),
+             prettySwitch(inputId = ns("all_records"), label = "Show extreme dates", fill = TRUE)  
+             # %>% 
+             #   add_prompt(
+             #     message = "Select records recorded outwith data collection start date and current date",
+             #     position = "right", type = "error", 
+             #     size = "small", rounded = TRUE
+             #   )
+             ,
              
 
              
@@ -107,7 +109,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
               coverage_data_all_records() %>%
                 #filter date range
                 mutate(start_date = as.Date(paste(start_date, 1, sep="-"), "%Y-%m-%d")) %>%
-                filter(!start_date >= date_format) %>%
+                filter(!start_date > date_format) %>%
                 #using current month but this should be updated to use production ym in future
                 mutate(current_date = as.Date(paste(format(Sys.Date(), "%Y-%m"), 1, sep="-"), "%Y-%m-%d")) %>%
                 filter(date_format <= current_date)
@@ -146,8 +148,8 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                           min = date_range_coverage_min(),
                           max = date_range_coverage_max(),
                           value = c(
-                            date_range_coverage_min_start_date(),
-                            date_range_coverage_max_start_date()
+                            date_range_coverage_min(),
+                            date_range_coverage_max()
                           ),
                           step=1
                           )
@@ -180,7 +182,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
               group = .data$Type
           )
         ) +
-          geom_line_interactive(size = 3,
+          geom_line(size = 3,
                                 alpha = 0.4) +
           geom_point_interactive(
             aes(tooltip = .data$N_tooltip_date),

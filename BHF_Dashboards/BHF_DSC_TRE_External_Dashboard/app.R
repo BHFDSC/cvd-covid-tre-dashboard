@@ -36,6 +36,7 @@ source('external_inputs.R')
 # User Interface ---------------------------------------------------------------
 
 ui = fluidPage(
+  
 
   ## UI Setup and Design #######################################################
   shinyjs::useShinyjs(),
@@ -47,6 +48,7 @@ ui = fluidPage(
   tags$head(tags$style(HTML(bhf_dsc_hds_css))),
   #JS Script https://shiny.rstudio.com/articles/packaging-javascript.html
   tags$head(tags$script(src="bhf_dsc_design.js")),
+
   
 
   ## Navigation Bar ############################################################
