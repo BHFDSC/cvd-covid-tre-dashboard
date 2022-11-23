@@ -7,6 +7,7 @@ dataCoverageUI <- function(id){
       # Inputs -----------------------------------------------------------------
       column(3,
 
+
              sliderInput(inputId = ns("date_range_coverage"),
                          label = "Date Range:",
                          #initialise values
@@ -15,22 +16,28 @@ dataCoverageUI <- function(id){
                          step=1, sep = ""
              ),
 
-             prettySwitch(inputId = ns("all_records"), label = "Show extreme dates", fill = TRUE)  %>% 
-               add_prompt(
-                 message = "Select records recorded outwith data collection start date and current date",
-                 position = "right", type = "error", 
-                 size = "small", rounded = TRUE
-               ),
+             prettySwitch(inputId = ns("all_records"), label = "Show extreme dates", fill = TRUE)  
+             # %>% 
+             #   add_prompt(
+             #     message = "Select records recorded outwith data collection start date and current date",
+             #     position = "right", type = "error", 
+             #     size = "small", rounded = TRUE
+             #   )
+             ,
              
-             checkboxGroupInput(inputId = ns("count_coverage"),
-                                label = "Count:",
-                                choices = count_options,
-                                selected = count_options_selected
-             ),
+
+             
+             
+
              
              
              conditionalPanel(condition = "input.tab_selected_summary_coverage == 'summary_coverage_plot'",
                               
+                              checkboxGroupInput(inputId = ns("count_coverage"),
+                                                 label = "Count:",
+                                                 choices = count_options,
+                                                 selected = count_options_selected
+                              ),
                               
                               downloadButton(outputId = ns("download_summary_coverage_plot"), 
                                              label = "Download PNG",
@@ -39,12 +46,12 @@ dataCoverageUI <- function(id){
              
              conditionalPanel(condition = "input.tab_selected_summary_coverage == 'compare_plot'",
 
-                              # prettyRadioButtons(
-                              #   inputId = ns("count_coverage_season"),
-                              #   shape = "curve",
-                              #   label = "Count:",
-                              #   selected = count_options_selected,
-                              #   choices = count_options),
+
+                              radioButtons(inputId = ns("count_coverage_season"),
+                                           label = "Count:",
+                                           choices = count_options,
+                                           selected = count_options_selected
+                              ),
                               
                               downloadButton(outputId = ns("download_summary_coverage_season_plot"), 
                                              label = "Download PNG",
@@ -91,13 +98,18 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
           mutate(N_tooltip_date_season = paste0(date_name_season,N_tooltip))
         
       })
+      
+      season_colour_palette = reactive({setNames(
+        rep(rev(colour_stepped_palette), length.out=nrow(distinct(coverage_data_all_records(),date_y))),
+        rev(pull(distinct(coverage_data_all_records(),date_y),date_y))
+      )})
 
         coverage_data_start_date =
             reactive({
               coverage_data_all_records() %>%
                 #filter date range
                 mutate(start_date = as.Date(paste(start_date, 1, sep="-"), "%Y-%m-%d")) %>%
-                filter(!start_date >= date_format) %>%
+                filter(!start_date > date_format) %>%
                 #using current month but this should be updated to use production ym in future
                 mutate(current_date = as.Date(paste(format(Sys.Date(), "%Y-%m"), 1, sep="-"), "%Y-%m-%d")) %>%
                 filter(date_format <= current_date)
@@ -111,7 +123,6 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
         }
       })
 
-      #observe min and max years available for slider input
       date_range_coverage_extremum = reactive({
         coverage_data() %>%
         summarise(min = min(.data$date_y),
@@ -137,8 +148,8 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                           min = date_range_coverage_min(),
                           max = date_range_coverage_max(),
                           value = c(
-                            date_range_coverage_min_start_date(),
-                            date_range_coverage_max_start_date()
+                            date_range_coverage_min(),
+                            date_range_coverage_max()
                           ),
                           step=1
                           )
@@ -150,6 +161,12 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
         coverage_data() %>%
           filter(.data$date_y>=input$date_range_coverage[1] & .data$date_y<=input$date_range_coverage[2]) %>%
           filter(Type %in% input$count_coverage)
+      })
+      
+      coverage_data_filtered_season = reactive({
+        coverage_data() %>%
+          filter(.data$date_y>=input$date_range_coverage[1] & .data$date_y<=input$date_range_coverage[2]) %>%
+          filter(Type %in% input$count_coverage_season)
       })
 
       
@@ -165,7 +182,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
               group = .data$Type
           )
         ) +
-          geom_line_interactive(size = 3,
+          geom_line(size = 3,
                                 alpha = 0.4) +
           geom_point_interactive(
             aes(tooltip = .data$N_tooltip_date),
@@ -189,7 +206,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
           ) +
           coord_cartesian(clip = "off") +
           scale_colour_manual(values = c(
-            "n"="#F8AEB3",
+            "n"="#F5484A",
             "n_id"="#F88350",
             "n_id_distinct"="#b388eb")) + 
           scale_y_continuous(labels = scales::label_number_si())
@@ -308,7 +325,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
       
       summary_coverage_season_plot = reactive({
         ggplot(
-          data = coverage_data_filtered() %>% mutate(date_y=as.character(date_y)),
+          data = coverage_data_filtered_season() %>% mutate(date_y=as.character(date_y)),
           aes(x = .data$date_m,
               y = .data$N,
               color = .data$date_y,
@@ -316,7 +333,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
               group = .data$date_y
           )
         ) +
-          geom_line_interactive(size = 3,
+          geom_line(size = 3,
                                 alpha = 0.4) +
           geom_point_interactive(
             aes(tooltip = .data$N_tooltip_date_season),
@@ -344,10 +361,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
           
           scale_colour_manual(values = c(
 
-            setNames(
-              rep(rev(colour_stepped_palette), length.out=nrow(distinct(coverage_data(),date_y))),
-              pull(distinct(coverage_data(),date_y),date_y)
-            )
+          season_colour_palette()
             
             )) +
           
@@ -379,7 +393,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                  geom_text_repel_interactive(
                  size = 6,
 
-                 data = (coverage_data_filtered() %>%
+                 data = (coverage_data_filtered_season() %>%
                            group_by(date_y) %>%
                            filter(date_m == max(date_m))),
 
@@ -422,7 +436,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                                            geom_text_repel_interactive(
                                              size = 12,
                                              
-                                             data = (coverage_data_filtered() %>%
+                                             data = (coverage_data_filtered_season() %>%
                                                        group_by(date_y) %>%
                                                        filter(date_m == max(date_m))),
                                              

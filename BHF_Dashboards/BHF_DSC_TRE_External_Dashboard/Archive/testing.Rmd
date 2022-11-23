@@ -10,37 +10,8 @@ Blank Rmd for debugging and troubleshooting
 
 library(tidyverse)
 
-test = t.data_coverage %>%
-          left_join(datasets_available,by = c("dataset"="Dataset")) %>%
-          filter(.data$dataset=="gdppr") %>%
-          #tooltips for plot
-          mutate(N_tooltip = format(.data$N, nsmall=0, big.mark=",", trim=TRUE)) %>%
-          mutate(N_tooltip_date = paste0(date_name,N_tooltip)) %>%
-
-                #filter date range
-                mutate(start_date = as.Date(paste(start_date, 1, sep="-"), "%Y-%m-%d")) %>%
-                filter(!start_date >= date_format) %>%
-                #using current month but this should be updated to use production ym in future
-                mutate(current_date = as.Date(paste(format(Sys.Date(), "%Y-%m"), 1, sep="-"), "%Y-%m-%d")) %>%
-                filter(date_format <= current_date)
 
 
-
-
-colour_stepped_palette
-
-
-setNames(
-  pull(distinct(test,date_y),date_y),
-  rep(colour_stepped_palette, length.out=nrow(distinct(test,date_y)))
-)
-
-
-colour_stepped_palette[1:25]
-
-rep(colour_stepped_palette, length.out=nrow(distinct(test,date_y)))
-
-nrow(distinct(test,date_y))
 
 ```
 
