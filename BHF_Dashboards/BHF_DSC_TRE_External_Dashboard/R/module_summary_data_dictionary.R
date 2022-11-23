@@ -14,22 +14,31 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
         
         
         if(nation_summary() == "Scotland"){
-             t.data_dictionaryScot %>% 
-             left_join(select(datasets_available, c("table","Dataset")), by=c("table")) %>%
-             filter(Dataset == dataset_summary())  %>%
-             select(-Dataset,-table)  %>% 
-             select_if(~!(all(is.na(.)) | all(. == "")))
+          t.data_dictionaryScot %>% 
+            left_join(select(datasets_available, c("table","Dataset")), by=c("table")) %>%
+            filter(Dataset == dataset_summary())  %>%
+            select(-Dataset, -table)  %>% 
+            select_if(~!(all(is.na(.)) | all(. == "")))
         }
         
-        else if(nation_summary() == "England" ){
-        t.data_dictionaryEng %>%
-         left_join(select(datasets_available, c("table","Dataset")), by=c("table")) %>%
-         filter(Dataset == dataset_summary()) %>%
-         select(-Dataset,-table,-database) 
-            
+        else if(nation_summary() == "Wales" ){
+          t.data_dictionaryWales %>% 
+            left_join(select(datasets_available, c("table","Dataset")), by=c("table"))  %>% 
+            filter(Dataset == dataset_summary()) %>%
+            select(-Dataset, -table) 
+          
         }
-
-     })
+        
+        
+        else if(nation_summary() == "England" ){
+          t.data_dictionaryEng %>%
+            left_join(select(datasets_available, c("table","Dataset")), by=c("table")) %>%
+            filter(Dataset == dataset_summary()) %>%
+            select(-Dataset,-table,-database) 
+          
+        }
+        
+      })
       
       
 
