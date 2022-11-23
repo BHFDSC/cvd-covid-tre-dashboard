@@ -34,13 +34,25 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
       output$info <- renderText({
         "For more information see:"})    
       
-      url1 <- a("NHS Digital", 
-                href= datasets_available$nhsd_url[datasets_available$Dataset == dataset_summary()])
-      url2 <- a("Health Data Gateway", 
-                href= datasets_available$hdg_url[datasets_available$Dataset == dataset_summary()])
+      url1 <- a(ifelse(grepl("digital.nhs", 
+                             datasets_available$url1[datasets_available$Dataset == dataset_summary()]),"NHS Digital",
+                       ifelse(grepl("nicor", 
+                                    datasets_available$url1[datasets_available$Dataset == dataset_summary()]),"NICOR website",
+                              ifelse(grepl("scot", 
+                                           datasets_available$url1[datasets_available$Dataset == dataset_summary()]), "Public Health Scotland",
+                                     ""))),
+                href = datasets_available$url1[datasets_available$Dataset == dataset_summary()])
+                
+                
+      url2 <- a(ifelse(is.na(datasets_available$url2[datasets_available$Dataset == dataset_summary()]),
+                       "", "Health Data Gateway"), 
+                       href = datasets_available$url2[datasets_available$Dataset == dataset_summary()])
+      
       output$tab <- renderUI({
-        tagList(url1, "and",  url2)
-        
+       
+         tagList(url1, url2)
+      
+          
           })
         })
       )
