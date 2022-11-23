@@ -42,7 +42,22 @@ colour_stepped_palette = c(
   "#4B90F1",
   "#63A0F3",
   "#8DBCFF",
-  "#BDD6F6"
+  "#BDD6F6",
+  #pink
+  "#F9007F",
+  "#FE47A5",
+  "#FD6EB9",
+  "#FFA8D5",
+  "#FFD3FB"
+)
+
+
+compare_palette = c(
+  "#b388eb",
+  "#9F54A8",
+  "#F5484A",
+  "#FFC16A",
+  "#FDA361"
 )
 
 ###############################################################################
@@ -51,10 +66,10 @@ library(bslib)
 
 #The booststrap main theme uses flaty as a basis
 bhf_dsc_hds_bootstrap_theme = bs_theme(version = 5, bootswatch = "flatly",
-                                   #override some defaults
-                                   primary = 'white',
-                                   secondary='white',
-                                   success = colour_bhf_lightred)
+                                       #override some defaults
+                                       primary = 'white',
+                                       secondary='white',
+                                       success = colour_bhf_lightred)
 
 #line under navbar
 bhf_navbar_line = hr(style=paste0("color:",colour_bhf_darkred,"!important;"))
@@ -89,6 +104,8 @@ table.dataTable thead tr {
 }
 
 
+/*.paginate_button:not(.previous):not(.next){background-color: var(--colour_bhf_darkred);color: var(--colour_bhf_darkred);}*/
+
 
 
 /* CSS for the checked checkboxes */
@@ -97,6 +114,36 @@ table.dataTable thead tr {
 }
 
 
+/*Radio and Checkbox buttons*/
+.form-check-input, .shiny-input-container .checkbox input, .shiny-input-container .checkbox-inline input, .shiny-input-container .radio input, .shiny-input-container .radio-inline input
+{color: yellow !important; background-color: white !important; border:1px solid #C9C9C9 !important;}
+
+
+/*the highlight colour around inputs when you click on box*/
+.selectize-input.focus {
+    border:1px solid #B774FF !important;
+}
+
+
+/* unvisited link */
+a:link {
+  color: var(--colour_bhf_lightred);
+}
+
+/* visited link */
+a:visited {
+  color: var(--colour_bhf_lightred);
+}
+
+/* mouse over link */
+a:hover {
+  color: #9F54A8;
+}
+
+/* selected link */
+a:active {
+  color: #9F54A8;
+}
 
 
 /*The colour of nonactive tabs*/
@@ -173,6 +220,7 @@ margin-top:15px;
           border-right-color: var(--colour_bhf_neonred)
         }
 
+
 /*Plot/Summary Active Tab*/
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
@@ -186,6 +234,9 @@ margin-top:15px;
 color: var(--colour_bhf_lightred);
 background-color:white;
 }
+
+
+/*Compare Tab input tab panels in module_compare.R*/
 
 
 
@@ -276,6 +327,11 @@ color: red !important;
 }
 
 
+.dataTables_wrapper:after{
+color: red !important;
+}
+
+
 .paginate_button:not(.previous):not(.next){
 }
 
@@ -291,15 +347,21 @@ border: 1px solid transparent !important;
 }
 
 
-/*Slider Inputs*/
+/*Slider Inputs - eg for Date pickers*/
 .irs-grid-pol.small {height: 0px;}.js-irs-0 
                          .irs-single, 
                          .js-irs-0 
                          .irs-bar-edge, 
-                         .js-irs-0 .irs-bar {background: #FF001F;
-                                             border-top: 1px solid #FF001F ;
-                                             border-bottom: 1px solid #FF001F;}
-                           .irs-from, .irs-to, .irs-single { background: #8C0032 !important }
+                         .js-irs-0 .irs-bar {background: #FF001F !important;
+                                             border-top: 1px solid #FF001F !important;
+                                             border-bottom: 1px solid #FF001F !important;}
+                           .irs-from, .irs-to, .irs-single {background: #8C0032 !important;}
+
+
+
+.irs--shiny .irs-bar {background: var(--colour_bhf_lightred) !important; color: var(--colour_bhf_lightred) !important;
+border: 1px solid var(--colour_bhf_lightred) !important;
+}
 
 
 
@@ -314,10 +376,10 @@ border: 1px solid transparent !important;
   height:38px;
 }
 
-/*Volunteer Pathway Option Portal: All in Bold*/  
+/*Select Input: All in Bold
 .nation_css .option:first-child{
     font-weight:bold;
-}
+}*/
 
 #nation_css .selectize-input {
   height:38px;
@@ -335,7 +397,45 @@ border: 1px solid transparent !important;
   }
 
 
+/*COMPARE TAB - Nation and Dataste Inputs*/
+#compare_module-compare-nation_compare-label{
+  color:var(--colour_bhf_darkred) !important;
+}
+#compare_module-compare-dataset_compare-label{
+  color:var(--colour_bhf_darkred) !important;
+}
+#compare_module-add{
+  color:white!important;
+  background-color:var(--colour_bhf_darkred)!important;
+}
+#compare_module-add:hover{
+  color:white!important;
+  background-color:var(--colour_bhf_neonred)!important;
+}
+#compare_module-remove{
+  color:white!important;
+  background-color:var(--colour_bhf_darkred)!important;
+}
+#compare_module-remove:hover{
+  color:white!important;
+  background-color:var(--colour_bhf_neonred)!important;
+}
 
+#selectize_div_all{
+  color:var(--colour_bhf_darkred) !important;
+}
+#compare_module-nation_compare_initial-label{
+  color:var(--colour_bhf_darkred) !important;
+}
+#compare_module-dataset_compare_initial-label{
+  color:var(--colour_bhf_darkred) !important;
+}
+#compare_module-nation_compare_initial2-label{
+  color:var(--colour_bhf_darkred) !important;
+}
+#compare_module-dataset_compare_initial2-label{
+  color:var(--colour_bhf_darkred) !important;
+}
 
 
 /*REFRESH*/
@@ -452,11 +552,12 @@ margin-left:-4%;
 }
 
 
-
+/*pretty switch*/
 /*
 .state {color: white !important;}
-.state::before {background-color: #5A656B !important; color: #5A656B !important;}
-.pretty.p-switch .state label:after {background-color: #FFFFFF !important; color: #FFFFFF !important}
+.state :not([class]){color: white !important;}
+.state::before{background-color: #5A656B !important; color: #5A656B !important;}
+.pretty.p-switch .state label:after{background-color: #FFFFFF !important; color: #FFFFFF !important}
 */
 
 
@@ -486,22 +587,26 @@ margin-left:-4%;
   align-items: center;
   margin: 10px 0;
   flex-wrap: wrap;
+
 }
 
 .social-icon__item,
 .menu__item {
   list-style: none;
+
 }
 
 .social-icon__link {
   font-size: 2rem;
-  color: #fff;
+  color: #fff !important;
   margin: 0 10px;
   display: inline-block;
   transition: 0.5s;
+
 }
 .social-icon__link:hover {
   transform: translateY(-10px);
+  color: white !important
 }
 
 .menu__link {
@@ -513,10 +618,12 @@ margin-left:-4%;
   text-decoration: none;
   opacity: 0.75;
   font-weight: 300;
+
 }
 
 .menu__link:hover {
   opacity: 1;
+
 }
 
 .footer p {
@@ -541,13 +648,15 @@ border-bottom-right-radius: 10px !important; /*Round Edges*/
 "
 
 bhf_tab_panel_style = "
-background: var(--colour_bhf_darkred);
-border: var(--colour_bhf_darkred);
-border-top-left-radius: 0px !important; /*Round Edges*/
-border-bottom-left-radius: 0px !important; /*Round Edges*/
-border-top-right-radius: 0px !important; /*Round Edges*/
-border-bottom-right-radius: 0px !important; /*Round Edges*/
+min-height: 70vh; height: 70vh; overflow-y: scroll;
+background: var(--colour_bhf_background_lightgrey);
+border: var(--colour_bhf_background_lightgrey);
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 0px !important;
 "
+#overflow-y: scroll;
 
 
 global_options_row_height = "110px"
@@ -561,7 +670,7 @@ bhf_global_options_column_style_left = paste("background-color:",colour_global_o
                                              "border-width: thick;",
                                              "height:",global_options_row_height,";",
                                              "border:",global_options_row_height,";",
-                                              "border-top-left-radius: 10px !important; /*Round Edges*/
+                                             "border-top-left-radius: 10px !important; /*Round Edges*/
                                                border-bottom-left-radius: 10px !important; /*Round Edges*/")
 
 
@@ -575,8 +684,8 @@ bhf_global_options_column_style_middle = paste("background-color:",colour_global
 
 
 bhf_global_options_column_style_right = paste("background-color:",colour_global_options,";",
-                                                  "height:",global_options_row_height,";",
-                                            "border:",global_options_row_height,"; /*Round Edges*/
+                                              "height:",global_options_row_height,";",
+                                              "border:",global_options_row_height,"; /*Round Edges*/
                                             border-top-right-radius: 10px !important; /*Round Edges*/
                                             border-bottom-right-radius: 10px !important; /*Round Edges*/")
 
@@ -630,7 +739,7 @@ customValueBox <- function (value, title, subtitle, icon = NULL, color, backgrou
   boxContent = div(class = "small-box", 
                    style = style,
                    if (!is.null(icon))
-                   div(class = "icon-large", h4(icon,title), style=""),
+                     div(class = "icon-large", h4(icon,title), style=""),
                    div(class = "inner", 
                        h6(value, style="line-height: 150%;"), 
                        p(subtitle,style="font-size: 25px;"), 

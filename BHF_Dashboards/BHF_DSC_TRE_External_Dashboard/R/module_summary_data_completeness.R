@@ -7,13 +7,19 @@ dataCompletenessUI <- function(id){
       # Inputs -----------------------------------------------------------------
       column(3,
              
-             div(id="complete_checkbox",class="complete_checkbox",
-             prettyRadioButtons(
+             # div(id="complete_checkbox",class="complete_checkbox",
+             # prettyRadioButtons(
+             #   inputId = ns("order_complete"),
+             #   shape = "curve",
+             #   label = "Order:",
+             #   selected = "value",
+             #   choices = c("Alphabetically"="alpha", "Value"="value"))),
+             
+             radioButtons(
                inputId = ns("order_complete"),
-               shape = "curve",
                label = "Order:",
                selected = "value",
-               choices = c("Alphabetically"="alpha", "Value"="value"))),
+               choices = c("Alphabetically"="alpha", "Value"="value")),
              
              downloadButton(outputId = ns("download_summary_completeness_plot"), 
                                              label = "Download PNG",
@@ -21,7 +27,7 @@ dataCompletenessUI <- function(id){
              ),
       # Outputs ----------------------------------------------------------------
       column(9,
-             girafeOutput(ns("completeness_plot_girafe")))
+             girafeOutput(ns("completeness_plot_girafe"), height='100%'))
              ))
 
 }
@@ -40,7 +46,17 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
           mutate(completeness = round(completeness*100,2)) %>%
           mutate(completeness_tooltip = paste0(column_name, ": ",format(.data$completeness, nsmall=0, big.mark=",", trim=TRUE),"%")) %>%
           arrange(desc(completeness),column_name) %>%
-          mutate(value_name_order = row_number())
+          mutate(value_name_order = row_number()) %>%
+          #for alpha order ensure numeric columns ordered correctly too
+          mutate(column_name_rev = stringi::stri_reverse(column_name)) %>%
+          separate(column_name_rev, into="num", remove=FALSE) %>%
+          mutate(num = as.numeric(stringi::stri_reverse(num))) %>%
+          mutate(column_name_order = ifelse(is.na(num),column_name,
+                                            stringi::stri_reverse(split_occurrence(column_name_rev,sep="_",n=1,keep="rhs")))) %>%
+          arrange(column_name_order,num) %>%
+          mutate(column_alpha_order = row_number()) %>%
+          #reset order for colour palette
+          arrange(desc(completeness),column_name)
       })
       
       #colour gradient
@@ -62,13 +78,17 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
       completeness_plot = reactive({ ggplot(data=completeness_test_data(),
                                                      aes(
                                                        if(input$order_complete=="alpha"){
-                                                         x=forcats::fct_rev(reorder(column_name,column_name))
+                                                         #x=forcats::fct_rev(reorder(column_name,column_name))
+                                                         x=forcats::fct_rev(reorder(column_name,column_alpha_order))
                                                          } else {x=reorder(column_name, desc(value_name_order))}, 
                                                      y=completeness,
                                                      fill = column_name,
                                                      tooltip = completeness_tooltip,
                                                      data_id = column_name)) +
-          geom_bar_interactive(stat="identity", width=0.9) +
+          geom_bar_interactive(stat="identity"
+                               , size = 0.35
+                               #, width=0.9
+                               ) +
           coord_flip(clip = 'off')  +
           labs(x=""
                ,y=""

@@ -29,9 +29,11 @@ read_excel_allsheets <- function(filename, tibble = FALSE, except_sheet_no = NA,
   # reading all the names of the sheets
   sheets <- readxl::excel_sheets(filename)
   # applying any exceptions eg cover sheets  
-  if (!is.na(except_sheet_no)){
+  if (!sum(is.na(except_sheet_no))){
     sheets <- sheets[-except_sheet_no]
   }
+  
+  
   x <- lapply(sheets, function(X) readxl::read_excel(filename, sheet = X, skip = skip))
   if(!tibble) x <- lapply(x, as.data.frame)
   names(x) <- sheets
@@ -43,3 +45,23 @@ read_excel_allsheets <- function(filename, tibble = FALSE, except_sheet_no = NA,
 
 
 shhh = function(x){suppressWarnings(suppressMessages(x))}
+
+
+split_occurrence = function(x, sep, n, keep = "lhs") {
+  # Split by sep
+  split_all = str_split(x, sep)
+  # Take 1 to nth output on lhs and remaining on rhs
+  lhs = lapply(split_all, function(y) {y[1:n]})
+  rhs = lapply(split_all, function(y) {y[(n+1):length(y)]})
+  # Collapse
+  lhs_collapse = lapply(lhs, function(y) {paste(y, collapse = sep)})
+  rhs_collapse = lapply(rhs, function(y) {paste(y, collapse = sep)})
+  # Return unlisted
+  if (keep == "lhs") {
+    return(unlist(lhs_collapse))
+  } else if (keep == "rhs") {
+    return(unlist(rhs_collapse))
+  } else {
+    return(as.character(NA))
+  }
+}
