@@ -17,27 +17,30 @@ dataCoverageUI <- function(id){
              ),
 
              prettySwitch(inputId = ns("all_records"), label = "Show extreme dates", fill = TRUE)  
-             # %>% 
-             #   add_prompt(
-             #     message = "Select records recorded outwith data collection start date and current date",
-             #     position = "right", type = "error", 
-             #     size = "small", rounded = TRUE
-             #   )
+             %>%
+               add_prompt(
+                 message = extreme_dates_text,
+                 position = "right", type = "error",
+                 size = "small", rounded = TRUE
+               )
              ,
              
 
              
-             
-
-             
-             
              conditionalPanel(condition = "input.tab_selected_summary_coverage == 'summary_coverage_plot'",
                               
+                              fluidRow(
                               checkboxGroupInput(inputId = ns("count_coverage"),
                                                  label = "Count:",
                                                  choices = count_options,
                                                  selected = count_options_selected
-                              ),
+                              ) %>% 
+                                add_prompt(
+                                  message = type_text,
+                                  position = "right", type = "error",
+                                  size = "small", rounded = TRUE
+                                )),
+                              
                               
                               downloadButton(outputId = ns("download_summary_coverage_plot"), 
                                              label = "Download PNG",
@@ -47,11 +50,18 @@ dataCoverageUI <- function(id){
              conditionalPanel(condition = "input.tab_selected_summary_coverage == 'compare_plot'",
 
 
+                              fluidRow(
                               radioButtons(inputId = ns("count_coverage_season"),
                                            label = "Count:",
                                            choices = count_options,
                                            selected = count_options_selected
-                              ),
+                              ) %>%
+                                
+                                add_prompt(
+                                  message = type_text,
+                                  position = "right", type = "error",
+                                  size = "small", rounded = TRUE
+                                )),
                               
                               downloadButton(outputId = ns("download_summary_coverage_season_plot"), 
                                              label = "Download PNG",
@@ -148,8 +158,8 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                           min = date_range_coverage_min(),
                           max = date_range_coverage_max(),
                           value = c(
-                            date_range_coverage_min(),
-                            date_range_coverage_max()
+                            date_range_coverage_min_start_date(),
+                            date_range_coverage_max_start_date()
                           ),
                           step=1
                           )
