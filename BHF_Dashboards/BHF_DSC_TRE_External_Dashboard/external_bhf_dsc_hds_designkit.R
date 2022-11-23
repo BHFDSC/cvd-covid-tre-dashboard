@@ -104,14 +104,27 @@ table.dataTable thead tr {
 }
 
 
+#ab1{padding:4px; font-size:80%}
+
+
+
 /*.paginate_button:not(.previous):not(.next){background-color: var(--colour_bhf_darkred);color: var(--colour_bhf_darkred);}*/
 
 
+
+
+
+
+
+
+
+
+
 /*Compare - Add more data and trash*/
-#add {  color:white!important;
+#add{  color:white!important;
   background-color:var(--colour_bhf_darkred)!important;
 }
-#add:hover {  color:white!important;
+#add:hover{  color:white!important;
   background-color:var(--colour_bhf_neonred)!important;
 }
 
