@@ -68,11 +68,14 @@ ui = fluidPage(
     
 
     ### Summary Tab ============================================================
-
+  
     tabPanel("Summary", summaryUI(id = "summary_module")),
     
     ### Compare Tab ============================================================
-    tabPanel("Compare", compareUI(id = "compare_module")),
+    tabPanel("Compare",
+             #compareUI(id = "compare_module")
+             source("source_compareUI.R",local = TRUE)$value
+             ),
     
     ### Insight Tab ============================================================
     #tabPanel("Insight"),
@@ -110,7 +113,8 @@ server = function(input, output, session) {
   summaryServer(id = "summary_module")
   
   ### Compare Tab ============================================================
-  compareServer(id = "compare_module")
+  #compareServer(id = "compare_module")
+  source("source_compareServer.R",local = TRUE)$value
   
   ### Insight Tab ============================================================
   

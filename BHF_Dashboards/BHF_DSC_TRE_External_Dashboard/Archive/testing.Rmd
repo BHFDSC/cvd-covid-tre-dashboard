@@ -11,6 +11,22 @@ Blank Rmd for debugging and troubleshooting
 library(tidyverse)
 
 
+compare_palette = c(
+  "#b388eb",
+  "#9F54A8",
+  "#F5484A",
+  "#FFC16A",
+  "#FDA361"
+)
+
+table1 <- data.frame(nation=c("England","England","England","England","England","England","England"),
+                     dataset=c("gdppr","hes","sus","test","test1","test2","test3"))
+
+
+table1 %>% add_column(colours = rep(compare_palette, length.out=nrow(table1)))
+
+data.frame(input_no = 2:1000) %>%
+  add_column(colours = rep(compare_palette, length.out=nrow(.)))
 
 
 ```
