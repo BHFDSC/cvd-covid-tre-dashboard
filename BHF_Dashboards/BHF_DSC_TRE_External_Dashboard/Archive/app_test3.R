@@ -31,8 +31,12 @@ generateRandomString <- function(n = 10, m = 10) {
 
 # Define the UI
 ui <- fluidPage(
-  actionButton("adder", "Add"),
-  tags$div(id = 'placeholder')
+  column(3,
+  tags$div(id = 'placeholder'),
+  actionButton("adder", "Add")),
+  
+  column(9,textOutput("test"))
+  
 )
 
 
@@ -57,16 +61,29 @@ server <- function(input, output) {
       selector = '#placeholder',
       ui = tags$div(
         id = divId,
-        actionButton(removeFilterId, label = "Remove filter", style = "float: right;"),
-        textInput(elementFilterId, label = "Introduce text", value = "")
+        fluidRow(
+          column(10,style = "margin-top:10%; margin-left:0%; margin-right:0%;",
+                 textInput(elementFilterId, label = "Introduce text", value = "")),
+          column(1, style = "margin-top:16.9%; margin-left:0%; margin-right:0%;",
+                 actionButton(removeFilterId, label = "x", style = ""))
+          ),
+        
+        
+        
+        )
       )
-    )
+    
+    
     
     # Observer that removes a filter
     observeEvent(input[[removeFilterId]],{
       rv$counter <- rv$counter - 1
       removeUI(selector = paste0("#", divId))
     })
+    
+    
+    output$test = renderPrint(list(reactiveValuesToList(input)))
+    
   })
 }
 

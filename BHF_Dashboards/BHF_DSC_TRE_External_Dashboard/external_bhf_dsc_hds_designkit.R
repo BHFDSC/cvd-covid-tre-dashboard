@@ -107,6 +107,20 @@ table.dataTable thead tr {
 /*.paginate_button:not(.previous):not(.next){background-color: var(--colour_bhf_darkred);color: var(--colour_bhf_darkred);}*/
 
 
+/*Compare - Add more data and trash*/
+#add {  color:white!important;
+  background-color:var(--colour_bhf_darkred)!important;
+}
+#add:hover {  color:white!important;
+  background-color:var(--colour_bhf_neonred)!important;
+}
+
+
+
+
+
+
+
 
 /* CSS for the checked checkboxes */
 .pretty.p-default input:checked~.state label:after {
@@ -206,6 +220,18 @@ margin-top:15px;
           opacity: 0.95 !important;
           color: #FFFFFF;
           text-shadow: none;
+          transition-duration: width 2s, height 2s, transform 2s;
+          transition-timing-function: ease-in; 
+          transition-delay: 0.5s !important;
+}
+/*little arrow tooltip*/
+.hint--error:before { 
+          opacity: 0.95 !important;
+          color: #FFFFFF;
+          text-shadow: none;
+          transition-duration: width 2s, height 2s, transform 2s;
+          transition-timing-function: ease-in;
+          transition-delay: 0.5s !important;
         }
         .hint--error.hint--bottom:before {
           border-bottom-color: var(--colour_bhf_neonred)
@@ -397,7 +423,7 @@ border: 1px solid var(--colour_bhf_lightred) !important;
   }
 
 
-/*COMPARE TAB - Nation and Dataste Inputs*/
+/*COMPARE TAB - Nation and Dataset Inputs*/
 #compare_module-compare-nation_compare-label{
   color:var(--colour_bhf_darkred) !important;
 }
@@ -493,62 +519,75 @@ font-size: 15px;
 
 
 
+/*Compare Tab Action Buttons take the default*/
+.btn-secondary, .btn-default:not(.btn-primary):not(.btn-info):not(.btn-success):not(.btn-warning):not(.btn-danger):not(.btn-dark):not(.btn-outline-primary):not(.btn-outline-info):not(.btn-outline-success):not(.btn-outline-warning):not(.btn-outline-danger):not(.btn-outline-dark){
+color:var(--colour_bhf_darkred);
+background-color:#F3F2F4;
+border-color:#F3F2F4;
+}
+
+.btn-secondary:hover, .btn-default:hover:not(.btn-primary):not(.btn-info):not(.btn-success):not(.btn-warning):not(.btn-danger):not(.btn-dark):not(.btn-outline-primary):not(.btn-outline-info):not(.btn-outline-success):not(.btn-outline-warning):not(.btn-outline-danger):not(.btn-outline-dark){
+color:var(--colour_bhf_neonred);
+background-color:#F3F2F4;
+border-color:#F3F2F4;
+}
+
 /*Css Tags in Modules access - downloads*/
 #summary_module-data_coverage_module-download_summary_coverage_plot:hover{
-background-color:white;
-border-color:white;
-color:var(--colour_bhf_neonred);
+background-color:white !important;
+border-color:white !important;
+color:var(--colour_bhf_neonred) !important;
 outline: none !important;
-box-shadow: none;
-margin-left:-4%;
+box-shadow: none !important;
+margin-left:-4% !important;
 }
 
 
 #summary_module-data_coverage_module-download_summary_coverage_plot{ /*#data_coverage_module-download_summary_coverage_plot*/
-background-color:white;
-border-color:white;
-color:#3C3C3C;
-outline: none !important;
-box-shadow: none;
-margin-left:-4%;
+background-color:white !important;
+border-color:white !important;
+color:#3C3C3C !important;
+outline: none !important !important;
+box-shadow: none !important;
+margin-left:-4% !important;
 }
 
 #summary_module-data_coverage_module-download_summary_coverage_season_plot:hover{
-background-color:white;
-border-color:white;
-color:var(--colour_bhf_neonred);
+background-color:white !important;
+border-color:white !important;
+color:var(--colour_bhf_neonred) !important;
 outline: none !important;
-box-shadow: none;
-margin-left:-4%;
+box-shadow: none !important;
+margin-left:-4% !important;
 }
 
 
 #summary_module-data_coverage_module-download_summary_coverage_season_plot{ /*#data_coverage_module-download_summary_coverage_plot*/
-background-color:white;
-border-color:white;
-color:#3C3C3C;
+background-color:white !important;
+border-color:white !important;
+color:#3C3C3C !important;
 outline: none !important;
-box-shadow: none;
-margin-left:-4%;
+box-shadow: none !important;
+margin-left:-4% !important;
 }
 
 
 #summary_module-data_completeness_module-download_summary_completeness_plot:hover{
-background-color:white;
-border-color:white;
-color:var(--colour_bhf_neonred);
+background-color:white !important;
+border-color:white !important;
+color:var(--colour_bhf_neonred) !important;
 outline: none !important;
-box-shadow: none;
-margin-left:-4%;
+box-shadow: none !important;
+margin-left:-4% !important;
 }
 
 #summary_module-data_completeness_module-download_summary_completeness_plot{
-background-color:white;
-border-color:white;
-color:#3C3C3C;
+background-color:white !important;
+border-color:white !important;
+color:#3C3C3C !important;
 outline: none !important;
-box-shadow: none;
-margin-left:-4%;
+box-shadow: none !important;
+margin-left:-4% !important;
 }
 
 
@@ -698,6 +737,49 @@ bhf_global_options_dateRangeInput_style = list(
   separator = "to",
   min='2022-02-03') #access using input$date_range_demographics[1] and input$date_range_demographics[2]
 
+
+
+tabset_panel_compare_styling = '
+
+ul.nav-pills{
+ background-color: transparent !important;
+}
+.nav-pills .nav-link.active {
+color: #FF001F !important;
+background-color:#F3F2F4 !important;
+border: 1px solid #F3F2F4!important;
+border-top-left-radius: 10px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 10px !important;
+border-bottom-right-radius: 0px !important;
+}
+.nav-pills .nav-link.active:hover {
+color: #FF001F !important;
+background-color:#F3F2F4 !important;
+border: 1px solid #F3F2F4!important;
+border-top-left-radius: 10px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 10px !important;
+border-bottom-right-radius: 0px !important;
+}
+.nav-pills .nav-link {
+color: #FF001F;
+background-color:white;
+border: 1px solid white!important;
+border-top-left-radius: 10px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 10px !important;
+border-bottom-right-radius: 0px !important;
+}
+.nav-pills .nav-link:hover {
+color: #A0003C !important;
+background-color:white !important;
+border: 1px solid #F3F2F4!important;
+border-top-left-radius: 10px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 10px !important;
+border-bottom-right-radius: 0px !important;
+}'
 
 
 # Appendix Container
