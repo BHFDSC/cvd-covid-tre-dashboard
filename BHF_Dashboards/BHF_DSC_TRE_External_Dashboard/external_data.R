@@ -11,7 +11,7 @@ datasets_available = t.dataset_dashboard %>%
 
 # TRE Data Dictionary ----------------------------------------------------------
 
-#England
+#England------------------------------------------------------------------------
 t.data_dictionaryEng = read_excel_allsheets('Data/TRE_DD_391419_j3w9t.xlsx',
                                        tibble = FALSE,
                                        except_sheet_no = 1,
@@ -20,10 +20,10 @@ t.data_dictionaryEng = read_excel_allsheets('Data/TRE_DD_391419_j3w9t.xlsx',
   filter(!is.na(table))
 
 # duplicating in case there are any downstream chunks depending on the name 'data_dictionary'
-data_dictionary <- t.data_dictionaryEng
+# data_dictionary <- t.data_dictionaryEng
 
 
-#Scotland
+#Scotland------------------------------------------------------------------
 # pathfornow = "C:/Users/LarsMurdock/Documents/Repo/BHF_DSC_HDS/BHF_Dashboards/BHF_DSC_TRE_External_Dashboard/Data/DD_Scotland.xlsx"
 
 t.data_dictionaryScot = read_excel_allsheets( #pathfornow, 
@@ -43,6 +43,20 @@ t.data_dictionaryScot = t.data_dictionaryScot %>%
   dplyr:: bind_rows() %>% 
   filter( !is.na(Type))
 
+
+# Wales-------------------------------------------------------------------
+# pathfornow = "C:/Users/LarsMurdock/Documents/Repo/BHF_DSC_HDS/BHF_Dashboards/BHF_DSC_TRE_External_Dashboard/Data/DD_Wales.xlsx"
+
+t.data_dictionaryWales = read_excel_allsheets( # pathfornow, 
+  "Data/DD_Wales.xlsx")
+
+
+
+
+
+
+
+# # Data Coverage Pre Processed from data_preprocessing -------------------
 
 
 
