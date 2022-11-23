@@ -1,4 +1,9 @@
-getwd()
+
+# This script is to read in the Wales data and clean it into a more user friendly format, ready for the app
+
+
+
+#install.packages("xlsx")
 
 #location
 Wales_dic_file <- "BHF_Dashboards/BHF_DSC_TRE_External_Dashboard/Archive/Lars_module/Wales_scraping.xlsx"
@@ -34,10 +39,6 @@ xlsx :: write.xlsx(output[[i]],
 }
 
 # writing
-install.packages("xlsx")
 
-xlsx :: write.xlsx(output,
-#                   "BHF_Dashboards/BHF_DSC_TRE_External_Dashboard/Data/DD_Wales.xlsx",
-                  "BHF_Dashboards/BHF_DSC_TRE_External_Dashboard/Archive/Lars_module/DD_Wales.xlsx",
-                   row.names = FALSE) 
+
 
