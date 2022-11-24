@@ -50,7 +50,7 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
       
       output$tab <- renderUI({
        
-         tagList(url1, url2)
+         tagList(url1, "and", url2)
       
           
           })
