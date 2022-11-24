@@ -1,37 +1,41 @@
 library(shiny)
-library(shinyBS)
+library(shinyhelper)
+library(magrittr)
 
-shinyApp(
-  ui = fluidPage(
-    br(),
-    selectInput("works", 
-                label = tags$span(
-                  "This works", 
-                  tags$i(
-                    class = "glyphicon glyphicon-info-sign", 
-                    style = "color:#0072B2;",
-                    title = "Further information "
-                  )),
-                choices = c("a","b")),
-    
-    selectInput("worksnow", 
-                label = tags$span("This works now too", bsButton("thisworks", label = "", icon = icon("info"), style = "info", size = "extra-small")),
-                choices = c("a","b")
-    ),
-    bsPopover(
-      id = "thisworks",
-      title = "More information",
-      content = paste0(
-        "Any HTML can be here ",
-        a("ShinyBS", href = "https://ebailey78.github.io/shinyBS/index.html", target="_blank")
-      ),
-      placement = "right",
-      trigger = "hover",
-      options = list(container = "body")
-    )
-  ),
+ui <- fluidPage(
   
-  server = function(input, output) {
+  titlePanel(title = "Demo APP"),
+  
+  sidebarLayout(
     
-  }
+    sidebarPanel = sidebarPanel(
+      
+      selectInput(inputId = "dataset", "choose DataSet",
+                  choices = c("MTCARS","IRSIS")
+      ) %>% 
+        helper(type = "inline",
+               title = "Inline Help",
+               content = c("This helpfile is defined entirely in the UI!",
+                           "This is on a new line.",
+                           "This is some <b>HTML</b>."),
+               size = "s")
+    ),
+    
+    mainPanel = mainPanel(
+      verbatimTextOutput(outputId = "TABLE")
+      
+    )
+  )
 )
+
+
+server <- function(input, output) {
+  observe_helpers()
+  output$TABLE<-renderText({
+    
+    paste0("Dataset selcted: ",input$dataset)
+    
+  }) 
+}
+
+shinyApp(ui, server)
