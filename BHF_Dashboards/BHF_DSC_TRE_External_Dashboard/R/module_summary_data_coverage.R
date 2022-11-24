@@ -7,39 +7,79 @@ dataCoverageUI <- function(id){
       # Inputs -----------------------------------------------------------------
       column(3,
 
-
+             fluidRow(column(12,
              sliderInput(inputId = ns("date_range_coverage"),
                          label = "Date Range:",
                          #initialise values
                          min = 2020, max = 2021, 
                          value = c(2020,2021), 
                          step=1, sep = ""
-             ),
-
-             prettySwitch(inputId = ns("all_records"), label = "Show extreme dates", fill = TRUE)  
-             %>%
-               add_prompt(
-                 message = extreme_dates_text,
-                 position = "right", type = "error",
-                 size = "small", rounded = TRUE
-               )
-             ,
+             ))),
              
+             fluidRow(column(11,
+                             
+             prettySwitch(inputId = ns("all_records"),
+                          
+               label = "Show extreme dates"),
+             fill = TRUE),
+             
+             column(1,
+                    
+                    tags$span(icon("info-circle"), id = "iconer") %>% 
+                      
+                      add_prompt(
+                        message = extreme_dates_text,
+                        position = "right", type = "error",
+                        size = "small", rounded = TRUE,
+                        bounce=FALSE,animate=FALSE
+                      ))),
 
              
              conditionalPanel(condition = "input.tab_selected_summary_coverage == 'summary_coverage_plot'",
                               
-                              fluidRow(
+                              div(id = "css_pair_popup",
+                              fluidRow(column(11,
                               checkboxGroupInput(inputId = ns("count_coverage"),
                                                  label = "Count:",
+
                                                  choices = count_options,
                                                  selected = count_options_selected
-                              ) %>% 
-                                add_prompt(
-                                  message = type_text,
-                                  position = "right", type = "error",
-                                  size = "small", rounded = TRUE
-                                )),
+                              )),
+                              column(1,
+                                     
+                                     tags$span(icon("info-circle"), id = "iconer") %>% 
+                                       
+                                       add_prompt(
+                                         message = type_text,
+                                         position = "right", type = "error",
+                                         size = "small", rounded = TRUE,
+                                         bounce=FALSE,animate=FALSE
+                                       ))
+                                # %>%
+                                # shinyInput_label_embed(
+                                #   shiny_iconlink("circle-info",style=paste0('color:',colour_bhf_darkred,';')) %>%
+                                # 
+                                #     bs_embed_tooltip(title = "A realistic value is no more than about 0.25% or 250 in 100,000",
+                                #                      container='body',
+                                #                      #trigger="click"
+                                #                      )
+                                # )
+                              )),
+                              
+                              
+                              
+                              # radioButtons(
+                              #   "filter1", 
+                              #   tagList(
+                              #     tags$span("Select properties", style = "font-size: 24px; font-weight: normal;"), 
+                              #     tags$span(icon("info-circle"), id = "iconer", style = "color: blue;")
+                              #   ),
+                              #   choices = list("All properties" = 1, 
+                              #                  "Exclude properties" = 2),
+                              #   selected = 1
+                              # ),
+                              # 
+                              # shinyBS::bsPopover(id="iconer", title="TITLE", content="CONTENT", placement = "right", trigger="click"),
                               
                               
                               downloadButton(outputId = ns("download_summary_coverage_plot"), 
@@ -97,6 +137,11 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
   moduleServer(
     id,
     function(input, output, session) {
+      
+      
+      observeEvent(input$info4, {
+        shinyalert(text = "Info 4", type = "info")
+      })
       
       coverage_data_all_records =  reactive({
         t.data_coverage %>%
