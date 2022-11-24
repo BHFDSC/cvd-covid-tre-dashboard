@@ -25,6 +25,7 @@ library(htmltools)
 library(bsplus)
 library(showtext)
 library(spsComps)
+library(shinyalert)
 
 #External Sources
 source('external_common_functions.R')
@@ -49,6 +50,8 @@ ui = fluidPage(
   #JS Script https://shiny.rstudio.com/articles/packaging-javascript.html
   tags$head(tags$script(src="bhf_dsc_design.js")),
 
+  bsplus::use_bs_tooltip(),
+  bsplus::use_bs_popover(),
   
 
   ## Navigation Bar ############################################################

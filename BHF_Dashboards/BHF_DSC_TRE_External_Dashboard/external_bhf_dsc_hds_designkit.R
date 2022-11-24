@@ -104,19 +104,33 @@ table.dataTable thead tr {
 }
 
 
-#ab1{padding:4px; font-size:80%}
+#ab1{padding:4px; font-size:80%; margin-bottom:-50%;margin-top:-50%;}
+#ab1:hover{padding:4px; font-size:80%; margin-bottom:-50%;margin-top:-50%;}
 
 
 
 /*.paginate_button:not(.previous):not(.next){background-color: var(--colour_bhf_darkred);color: var(--colour_bhf_darkred);}*/
 
 
+#info4 { color:var(--colour_bhf_darkred) !important;
+
+         margin: 0px;
+         }
 
 
+#iconer:hover{color:var(--colour_bhf_neonred);align:right;transition-duration: width 2s, height 2s, transform 2s;
+          transition-timing-function: ease-in; 
+          transition-delay: 0.5s !important;float: right !important;}
+#iconer{color:#A052A7;align:right;transition-duration: width 2s, height 2s, transform 2s;
+          transition-timing-function: ease-in; 
+          transition-delay: 0.5s !important;float: right !important;}
 
+#body{color:red;background-color:blue;}
 
+tooltip .tooltip-inner {display:inline;color:red;background-color:blue;}
 
-
+.popover { visibility: hidden; background-color: blue; }
+                    .tooltip:hover .tooltiptext { visibility: visible; color:red;background-color:blue;}
 
 
 
@@ -164,7 +178,7 @@ a:visited {
 
 /* mouse over link */
 a:hover {
-  color: #9F54A8;
+  color: #9F54A8; display:float;
 }
 
 /* selected link */
