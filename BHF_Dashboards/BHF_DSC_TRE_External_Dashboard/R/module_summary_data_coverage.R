@@ -16,97 +16,114 @@ dataCoverageUI <- function(id){
                          step=1, sep = ""
              ))),
              
-             fluidRow(column(11,
+             fluidRow(column(12,
                              
-             prettySwitch(inputId = ns("all_records"),
+             prettySwitchCustom(inputId = ns("all_records"),
                           
-               label = "Show extreme dates"),
-             fill = TRUE),
+               label = "Show extreme dates",
+               spaces = 2,
+               prompt_size = "medium",
+               my_message = extreme_dates_text,
              
-             column(1,
-                    
-                    tags$span(icon("info-circle"), id = "iconer") %>% 
-                      
-                      add_prompt(
-                        message = extreme_dates_text,
-                        position = "right", type = "error",
-                        size = "small", rounded = TRUE,
-                        bounce=FALSE,animate=FALSE
-                      ))),
+             fill = TRUE),
+
+             )),
 
              
              conditionalPanel(condition = "input.tab_selected_summary_coverage == 'summary_coverage_plot'",
                               
                               div(id = "css_pair_popup",
-                              fluidRow(column(11,
+                                  
+                              fluidRow(column(12,
                               checkboxGroupInput(inputId = ns("count_coverage"),
-                                                 label = "Count:",
+                                                 #label = "Count:",
+                            
+                                                 label = h6(id='count_heading',paste0("Count:",stringi::stri_dup(intToUtf8(160),2)), tags$span(icon("info-circle"), id = "iconer") %>% 
+                                                                
+                                                                add_prompt(
+                                                                  message = type_text,
+                                                                  position = "right", type = "error",
+                                                                  size = "medium", rounded = TRUE,
+                                                                  bounce=FALSE,animate=FALSE
+                                                                )),
 
                                                  choices = count_options,
                                                  selected = count_options_selected
+                              ),
+                              
+                              
+                              #LOG SCALE
+                              prettySwitchCustom(inputId = ns("log_scale_summary"),
+                                                 label = "Log scale", fill = TRUE, value=FALSE, spaces = 2,info=FALSE),
+                              
+                              #TREND LINE
+                              prettySwitchCustom(inputId = ns("trend_line"),
+                                                 label = "Show trend", fill = TRUE, value=FALSE, spaces = 2,my_message = trend_text,prompt_size="medium"),
+                              
+                              ),
+
                               )),
-                              column(1,
-                                     
-                                     tags$span(icon("info-circle"), id = "iconer") %>% 
-                                       
-                                       add_prompt(
-                                         message = type_text,
-                                         position = "right", type = "error",
-                                         size = "small", rounded = TRUE,
-                                         bounce=FALSE,animate=FALSE
-                                       ))
-                                # %>%
-                                # shinyInput_label_embed(
-                                #   shiny_iconlink("circle-info",style=paste0('color:',colour_bhf_darkred,';')) %>%
-                                # 
-                                #     bs_embed_tooltip(title = "A realistic value is no more than about 0.25% or 250 in 100,000",
-                                #                      container='body',
-                                #                      #trigger="click"
-                                #                      )
-                                # )
-                              )),
-                              
-                              
-                              
-                              # radioButtons(
-                              #   "filter1", 
-                              #   tagList(
-                              #     tags$span("Select properties", style = "font-size: 24px; font-weight: normal;"), 
-                              #     tags$span(icon("info-circle"), id = "iconer", style = "color: blue;")
-                              #   ),
-                              #   choices = list("All properties" = 1, 
-                              #                  "Exclude properties" = 2),
-                              #   selected = 1
-                              # ),
-                              # 
-                              # shinyBS::bsPopover(id="iconer", title="TITLE", content="CONTENT", placement = "right", trigger="click"),
-                              
-                              
-                              downloadButton(outputId = ns("download_summary_coverage_plot"), 
-                                             label = "Download PNG",
-                                             icon = icon("file-image"))
+                            
+                            
              ),
              
              conditionalPanel(condition = "input.tab_selected_summary_coverage == 'compare_plot'",
 
 
-                              fluidRow(
+                              fluidRow(column(12,
                               radioButtons(inputId = ns("count_coverage_season"),
-                                           label = "Count:",
+                                           label = h6(id='count_heading',paste0("Count:",stringi::stri_dup(intToUtf8(160),2)), tags$span(icon("info-circle"), id = "iconer") %>% 
+                                                        
+                                                        add_prompt(
+                                                          message = type_text,
+                                                          position = "right", type = "error",
+                                                          size = "medium", rounded = TRUE,
+                                                          bounce=FALSE,animate=FALSE
+                                                        )),
                                            choices = count_options,
                                            selected = count_options_selected
-                              ) %>%
-                                
-                                add_prompt(
-                                  message = type_text,
-                                  position = "right", type = "error",
-                                  size = "small", rounded = TRUE
-                                )),
+                              ),
                               
-                              downloadButton(outputId = ns("download_summary_coverage_season_plot"), 
-                                             label = "Download PNG",
-                                             icon = icon("file-image"))
-             )
+                              #LOG SCALE
+                              # prettySwitchCustom(inputId = ns("log_scale_summary_season"),
+                              #                    label = "Log scale", fill = TRUE, value=FALSE, spaces = 2,info=FALSE),
+                              
+                              
+                              #TREND LINE
+                              # prettySwitchCustom(inputId = ns("trend_line_season"),
+                              #                    label = "Show trend", fill = TRUE, value=FALSE, spaces = 2,my_message = trend_text,prompt_size="medium"),
+                              
+                              ),
+                              ),
+
+             ),
+
+
+
+conditionalPanel(condition = "input.tab_selected_summary_coverage == 'summary_coverage_plot'",
+                 
+                 div(id = "css_pair_popup",
+downloadButton(outputId = ns("download_summary_coverage_plot"), 
+               label = "Download PNG",
+               icon = icon("file-image"))
+)),
+
+conditionalPanel(condition = "input.tab_selected_summary_coverage == 'compare_plot'",
+                 
+                 div(id = "css_pair_popup",
+downloadButton(outputId = ns("download_summary_coverage_season_plot"), 
+               label = "Download PNG",
+               icon = icon("file-image"))
+)),
+
+
+actionButton(ns("download_coverage_data"), 
+               label="Export Data",
+               icon = icon("file-excel"))
+
+
+
+
       ),
       
       # Outputs ----------------------------------------------------------------
@@ -138,10 +155,67 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
     id,
     function(input, output, session) {
       
+      #"input.tab_selected_summary_coverage == 'compare_plot'"
+      #input$tab_selected_summary_coverage == "Seasonality"
+ 
+      # observeEvent(eventExpr = input$tab_selected_summary_coverage, handlerExpr = {
+      #   if(input$tab_selected_summary_coverage == "Seasonality"){
+      #   updatePrettySwitch(session, "log_scale_summary",
+      #                      label = "Log scale",
+      #                      value = FALSE
+      #   )
+      #   }
+      # })
       
-      observeEvent(input$info4, {
-        shinyalert(text = "Info 4", type = "info")
-      })
+      
+      # observeEvent(c(req(input$tab_selected_summary_coverage)), {
+      #   
+      #   if (input$input$tab_selected_summary_coverage == 'Seasonality'){
+      #     updatePrettySwitch(session, "log_scale_summary",
+      #                        label = "Log scale",
+      #                        value = FALSE)
+      #   }
+      # }
+      # )
+
+      
+      # observeEvent(c(req(input$tab_selected_summary_coverage == 'summary_coverage_plot')), {
+      #   
+      #   if (input$tab_selected_summary_coverage == 'Seasonality'){
+      #     updatePrettySwitch(session, "log_scale_summary",
+      #                        label = "Log scale",
+      #                        value = FALSE)
+      #   }
+      # }
+      # )
+      # 
+        
+      
+      # observe({
+      #   req(input$tab_selected_summary_coverage == "Seasonality")
+      #     updatePrettySwitch(session, "log_scale_summary",
+      #                        label = "Log scale",
+      #                        value = FALSE)
+      # }
+      # )
+      
+      
+      # observeEvent(eventExpr = input$log_scale_summary_season, handlerExpr = {{
+      #   updatePrettySwitch(session, "log_scale_summary_season",
+      #                      label = "Log scale",
+      #                      value = FALSE
+      #   )
+      #   }
+      # })
+      
+      
+      # observeEvent(input$tab_selected_summary_coverage, {
+      #   if(input$tab_selected_summary_coverage=="Seasonality"){
+      #     shinyjs::disable('trend_line')
+      #   }  
+      # })
+      
+      
       
       coverage_data_all_records =  reactive({
         t.data_coverage %>%
@@ -223,52 +297,107 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
           filter(.data$date_y>=input$date_range_coverage[1] & .data$date_y<=input$date_range_coverage[2]) %>%
           filter(Type %in% input$count_coverage_season)
       })
+      
 
       
       ## Trend Plot ============================================================
+      
+      y_axis = reactive({paste(ifelse(input$log_scale_summary,"Count (Log Scale)","Count (Linear Scale)"))})
+      
+      coverage_title_download = reactive({paste("Data Coverage - ", pull(filter(t.dataset_dashboard,Dataset==dataset_summary()),Title))})
 
       summary_coverage_plot = reactive({
+        
+        validate(
+          need(nrow(coverage_data_filtered()) >0, message = FALSE)
+        )
+        
         ggplot(
           data = coverage_data_filtered(),
           aes(x = .data$date_format,
-              y = .data$N,
+              if(input$log_scale_summary){y=log(.data$N)} else {y=.data$N},
               color = .data$Type,
-              #data_id = .data$DateType,
+              #data_id = .data$Type,
               group = .data$Type
           )
         ) +
-          geom_line(size = 3,
-                                alpha = 0.4) +
+
+          geom_line_interactive(size = 3,
+                                alpha = if(input$trend_line){0.1} else {0.4},
+                                aes(
+                                  data_id = .data$dataset
+                                )) +
           geom_point_interactive(
             aes(tooltip = .data$N_tooltip_date),
+            alpha = if(input$trend_line){0.2} else {0.8},
             fill = "white",
             size = 3,
             stroke = 1.5,
             shape = 20) +
+          
+          
+          {if(input$trend_line)geom_smooth_interactive(aes(fill = .data$Type,
+                                                           tooltip = .data$N_tooltip_date), method="auto", se=TRUE, fullrange=FALSE, level=0.95)} +
 
-        labs(x = NULL, y = NULL) +
+        labs(x = NULL, y = y_axis()) +
           theme_minimal() +
           theme(
             text=element_text(family=family_lato),
             panel.grid = element_blank(),
-            plot.margin = margin(0,50,0,0),
+            plot.margin = margin(10,10,0,0),
             plot.background = element_rect(color=NA),
             panel.background = element_rect(color = NA),
             axis.ticks = element_blank(),
+            axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size=14, color="#4D4C4C"),
             axis.text.x = element_text(size = 14, face = "bold"),
             axis.text.y = element_text(size = 14, face = "bold"),
             legend.position = "none"
           ) +
           coord_cartesian(clip = "off") +
-          scale_colour_manual(values = c(
-            "n"="#F5484A",
-            "n_id"="#F88350",
-            "n_id_distinct"="#b388eb")) + 
-          scale_y_continuous(labels = scales::label_number_si())
+
+          
+          scale_colour_manual(values=summary_coverage_palette, name = "colour_summary") +
+          scale_fill_manual(values=summary_coverage_palette, name = "colour_summary")  +
+          
+          {if(input$log_scale_summary)scale_y_continuous(labels = scales::label_number_si()) else {scale_y_continuous(labels = scales::label_number_si())}} #, limits = c(0, NA)
+      })
+      
+
+      y_nudge = reactive({(
+        #nudge up a 30th of difference between max and min
+        (
+          (
+            (
+              coverage_data_filtered() %>% filter(N == max(N)) %>% distinct(N) %>% pull(N)) - (
+                coverage_data_filtered() %>% filter(N == min(N)) %>% distinct(N) %>% pull(N))
+          ) /30)
+      )})
+      
+      y_nudge_log = reactive({(
+        #nudge up a 30th of difference between max and min
+        (
+          (
+            (
+              log(coverage_data_filtered() %>% mutate(N=log(N)) %>% filter(N == max(N)) %>% distinct(N) %>% pull(N))) - (
+                log(coverage_data_filtered() %>% mutate(N=log(N)) %>% filter(N == min(N)) %>% distinct(N) %>% pull(N)))
+          ) /30)
+      )})
+      
+      x_nudge = reactive({
+        (
+          as.numeric(
+            (coverage_data_filtered() %>% filter(date_format == max(date_format)) %>% distinct(date_format) %>% pull(date_format)) -
+              (coverage_data_filtered() %>% filter(date_format == min(date_format)) %>% distinct(date_format) %>% pull(date_format))
+          )/10)
       })
       
 
       output$summary_coverage_plot_girafe = renderGirafe({
+        
+        validate(
+          need(nrow(coverage_data_filtered()) >0, message = FALSE)
+        )
+        
         girafe(ggobj = summary_coverage_plot() +
                  
                  (geom_text_repel_interactive(
@@ -282,12 +411,8 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                    ),
                    
                    aes(
-                     x = .data$date_format + (
-                       as.numeric(
-                         (coverage_data_filtered() %>% filter(date_format == max(date_format)) %>% distinct(date_format) %>% pull(date_format)) -
-                           (coverage_data_filtered() %>% filter(date_format == min(date_format)) %>% distinct(date_format) %>% pull(date_format))
-                       )/10),
-                     y = .data$N + (
+                     x = .data$date_format + x_nudge(),
+                     y = if(input$log_scale_summary){log(.data$N) } else {.data$N + (
                        #nudge up a 30th of difference between max and min
                        (
                          (
@@ -295,7 +420,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                              coverage_data_filtered() %>% filter(N == max(N)) %>% distinct(N) %>% pull(N)) - (
                                coverage_data_filtered() %>% filter(N == min(N)) %>% distinct(N) %>% pull(N))
                          ) /30)
-                     ),
+                     )},
                      color = .data$Type,
                      label = .data$count_options
                    ),
@@ -316,21 +441,25 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                  ),
             #to work - need data_id on
             opts_hover_inv(
-              css = "stroke-width:3; opacity:0.6;"
+              css = "stroke-width:3; opacity:0.6;" #"opacity:0.2; transition-delay:0.2s;"
             ),
             opts_hover(
-              css = "stroke-width: 4; opacity: 1;"
+              css = if(input$trend_line){"opacity: 1; transition-delay:0.2s;"} else {"opacity: 1; transition-delay:0.2s;"} 
             ),
             #turn off save as png as will put this as a shiny command to match excel download
-            opts_toolbar(saveaspng = FALSE)
+            opts_toolbar(saveaspng = FALSE),
+            opts_selection(type="none")
                )
         )
       })
 
 
+
+
       output$download_summary_coverage_plot = downloadHandler(
         filename = function() {paste(Sys.Date(), "coverage_trend.png")},
         content = function(file) {ggsave(file, plot = (summary_coverage_plot()) +
+                                           ggtitle(coverage_title_download()) +
                                            (geom_text_repel_interactive(
                                              size = 12,
                                              data = (
@@ -342,12 +471,8 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                                              ),
                                              
                                              aes(
-                                               x = .data$date_format + (
-                                                 as.numeric(
-                                                   (coverage_data_filtered() %>% filter(date_format == max(date_format)) %>% distinct(date_format) %>% pull(date_format)) -
-                                                     (coverage_data_filtered() %>% filter(date_format == min(date_format)) %>% distinct(date_format) %>% pull(date_format))
-                                                 )/10),
-                                               y = .data$N + (
+                                               x = .data$date_format + x_nudge(),
+                                               y = if(input$log_scale_summary){log(.data$N) } else {.data$N + (
                                                  #nudge up a 30th of difference between max and min
                                                  (
                                                    (
@@ -355,7 +480,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                                                        coverage_data_filtered() %>% filter(N == max(N)) %>% distinct(N) %>% pull(N)) - (
                                                          coverage_data_filtered() %>% filter(N == min(N)) %>% distinct(N) %>% pull(N))
                                                    ) /30)
-                                               ),
+                                               )},
                                                color = .data$Type,
                                                label = .data$count_options
                                              ),
@@ -366,7 +491,12 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                                            #new theme for download
                                            theme(plot.margin = margin(20,50,20,50),
                                                  axis.text.x = element_text(size = 34, face = "bold"),
-                                                 axis.text.y = element_text(size = 34, face = "bold")),
+                                                 axis.text.y = element_text(size = 34, face = "bold"),
+                                                 axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size=34, color="#4D4C4C"),
+                                                 plot.title.position = "plot", #left align title
+                                                 #plot.title = element_markdown(lineheight = 2.8, margin = margin(t = 6, r = 0, b = 6, l = 0)), #ggtext
+                                                 plot.title = element_text(color="#4D4C4C", size=38, face = "bold",margin = margin(t = 6, r = 0, b = 6, l = 0)), #ggtext
+                                                 ),
                                          #ensure width and height are same as ggiraph
                                          #width_svg and height_svg to ensure png not cut off
                                          width = 16, height = 9, units = "in",
@@ -377,8 +507,14 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
       
       
       ## Season Plot ===========================================================
+
       
       summary_coverage_season_plot = reactive({
+        
+        validate(
+          need(nrow(coverage_data_filtered_season()) >0, message = FALSE)
+        )
+        
         ggplot(
           data = coverage_data_filtered_season() %>% mutate(date_y=as.character(date_y)),
           aes(x = .data$date_m,
@@ -388,16 +524,17 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
               group = .data$date_y
           )
         ) +
-          geom_line(size = 3,
+          geom_line(size = 2.6,
                                 alpha = 0.4) +
           geom_point_interactive(
             aes(tooltip = .data$N_tooltip_date_season),
             fill = "white",
-            size = 3,
+            size = 2.6,
             stroke = 1.5,
             shape = 20) +
           
-          labs(x = NULL, y = NULL) +
+          labs(x = NULL, y = "Count (Linear Scale)") +
+          
 
           theme_minimal() +
           theme(
@@ -407,11 +544,13 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
             plot.background = element_rect(color=NA),
             panel.background = element_rect(color = NA),
             axis.ticks = element_blank(),
+            axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size=14, color="#4D4C4C"),
             axis.text.x = element_text(size = 14, face = "bold"),
             axis.text.y = element_text(size = 14, face = "bold"),
             legend.position = "none"
           ) +
           coord_cartesian(clip = "off") +
+          
 
           
           scale_colour_manual(values = c(
@@ -442,7 +581,14 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
       #   segment.color = 'transparent')
       #   )})
       
+
+      
       output$summary_coverage_season_plot_girafe = renderGirafe({
+        
+        validate(
+          need(nrow(coverage_data_filtered_season()) >0, message = FALSE)
+        )
+        
         girafe(ggobj = summary_coverage_season_plot() +
                  #add geom text layer separate for girafe object and download as different sizes needed
                  geom_text_repel_interactive(
@@ -478,15 +624,18 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
               css = "stroke-width: 4; opacity: 1;"
             ),
             #turn off save as png as will put this as a shiny command to match excel download
-            opts_toolbar(saveaspng = FALSE)
+            opts_toolbar(saveaspng = FALSE),
+            opts_selection(type="none")
                )
         )
       })
       
       
+      
       output$download_summary_coverage_season_plot = downloadHandler(
         filename = function() {paste(Sys.Date(), "coverage_season.png")},
         content = function(file) {ggsave(file, plot = (summary_coverage_season_plot()) +
+                                           ggtitle(coverage_title_download()) +
                                            #add geom text layer separate for girafe object and download as different sizes needed
                                            geom_text_repel_interactive(
                                              size = 12,
@@ -500,13 +649,19 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                                                  color = as.factor(.data$date_y),
                                                  label = as.factor(.data$date_y)),
                                              
+                                             
+                                             
                                              direction = "y",
                                              family=family_lato,
                                              segment.color = 'transparent') +
                                            #custom theme for download
                                            theme(plot.margin = margin(20,50,20,50),
                                                  axis.text.x = element_text(size = 34, face = "bold"),
-                                                 axis.text.y = element_text(size = 34, face = "bold")
+                                                 axis.text.y = element_text(size = 34, face = "bold"),
+                                                 axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size=34, color="#4D4C4C"),
+                                                 plot.title.position = "plot", #left align title
+                                                 #plot.title = element_markdown(lineheight = 2.8, margin = margin(t = 6, r = 0, b = 6, l = 0)), #ggtext
+                                                 plot.title = element_text(color="#4D4C4C", size=38, face = "bold",margin = margin(t = 6, r = 0, b = 6, l = 0)), #ggtext
                                                  ),
                                          #ensure width and height are same as ggiraph
                                          #width_svg and height_svg to ensure png not cut off
@@ -515,7 +670,67 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                                          dpi = 300, device = "png")}
       )
       
+      
+      
+      observeEvent(input$download_coverage_data, {
+        
+        ns <- session$ns
+        
+        shinyalert::shinyalert("Export Data:", 
+                               type = "info",
+                               size = "xs",
+                               html = TRUE,
+                               text = tagList(
+                                 #textInput(inputId = "namere", label = NULL),
+                                 selectInput(inputId = ns("download_choice_compare"), choices=c("with current plot input selection"="selected","for all plot input data points"="full"), label=NULL),
+                                 downloadButton(ns("confName"), "Confirm")
+                               ),
+                               closeOnEsc = TRUE,
+                               closeOnClickOutside = TRUE,
+                               showConfirmButton = FALSE,
+                               showCancelButton = FALSE,
+                               animation = TRUE
+        )
+        runjs("
+        var confName = document.getElementById('summary_module-data_coverage_module-confName')
+        confName.onclick = function() {swal.close();}
+        ")
+        
+      })
+      
+      
+      
+      output$confName = downloadHandler(
+        filename = function() {paste(Sys.Date(), "compare_coverage.xlsx")},
+        content = function(file) {writexl::write_xlsx(
+          
+          if(input$download_choice_compare=="selected"){
+            t.data_coverage_source %>%
+              arrange(dataset,date_ym) %>%
+              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              filter(.data$dataset == dataset_summary()) %>%
+              ungroup() %>%
+              mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
+              filter(!is.na(date_ym)) %>%
+              separate(date_ym, c("date_y", "date_m"), remove=FALSE, sep = '-') %>%
+              mutate(across(.cols = c(date_y, date_m), .fn = ~ as.numeric(.))) %>%
+              filter(.data$date_y>=input$date_range_coverage[1] & .data$date_y<=input$date_range_coverage[2]) %>%
+              
+              select(dataset,title, date_ym, any_of(input$count_coverage)) %>%
+              mutate(export = coverage_dataset_name)
+          } else {t.data_coverage_source %>%
+              arrange(dataset,date_ym) %>%
+              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              filter(.data$dataset == dataset_summary()) %>%
+              ungroup() %>%
+              mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
+              filter(!is.na(date_ym)) %>%
+              select(dataset,title, date_ym, n, n_id, n_id_distinct) %>%
+              mutate(export = coverage_dataset_name)},
+          path=file)}
+      )
 
+      
     }
   )
 }

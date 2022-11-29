@@ -1,3 +1,13 @@
+observeEvent(input$add, {
+  removeUI(
+    selector = "#message_temp"
+  )
+})
+
+
+
+
+
 input_counter <- reactiveVal(1) 
 
 handlers <- reactiveVal(list()) #holds all reactives of the module
@@ -79,7 +89,11 @@ my_vars = reactive({table1() %>% pull(dataset)})
 
 
 
-compare_coverage_data_all_records =  reactive({
+
+  
+  
+
+compare_coverage_data_all_records_before =  reactive({
   t.data_coverage %>%
     left_join(datasets_available,by = c("dataset"="Dataset")) %>%
     
@@ -90,10 +104,13 @@ compare_coverage_data_all_records =  reactive({
     #tooltips for plot
     mutate(N_tooltip = format(.data$N, nsmall=0, big.mark=",", trim=TRUE)) %>%
     mutate(N_tooltip_date = paste0(date_name,N_tooltip)) %>%
-    mutate(N_tooltip_date_season = paste0(date_name_season,N_tooltip)) %>%
-    filter(Type == input$type_compare) %>%
+    mutate(N_tooltip_date_season = paste0(date_name_season,N_tooltip))
+})
+    
+compare_coverage_data_all_records =  reactive({ 
+  compare_coverage_data_all_records_before() %>%
+    #filter(Type == input$type_compare) %>%
     ungroup()
-  
 })
 
 compare_coverage_data_start_date =
@@ -162,7 +179,8 @@ compare_coverage_data_filtered = reactive({
   )
   
   compare_coverage_data() %>%
-    filter(.data$date_y>=input$date_range_coverage2[1] & .data$date_y<=input$date_range_coverage2[2])
+    filter(.data$date_y>=input$date_range_coverage2[1] & .data$date_y<=input$date_range_coverage2[2]) %>%
+    filter(Type == input$type_compare)
 })
 
 
@@ -202,7 +220,8 @@ compare_coverage_plot = reactive({
       stroke = 1.5,
       shape = 20) +
     
-    {if(input$trend_line)geom_smooth(aes(fill = .data$dataset), method="loess", se=TRUE, fullrange=FALSE, level=0.95)} +
+    {if(input$trend_line)geom_smooth_interactive(aes(fill = .data$dataset,
+                                                     tooltip = .data$N_tooltip_date), method="auto", se=TRUE, fullrange=FALSE, level=0.95)} +
     
     labs(x = NULL, y = y_axis()) +
     theme_minimal() +
@@ -213,7 +232,7 @@ compare_coverage_plot = reactive({
       plot.background = element_rect(color=NA),
       panel.background = element_rect(color = NA),
       axis.ticks = element_blank(),
-      axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold"),
+      axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size = 12, color="#4D4C4C"),
       axis.text.x = element_text(size = 14, face = "bold"),
       axis.text.y = element_text(size = 14, face = "bold"),
       legend.position = "none"
@@ -224,7 +243,7 @@ compare_coverage_plot = reactive({
 
     coord_cartesian(clip = "off") +
 
-    scale_y_continuous(labels = scales::label_number_si(), limits = c(0, NA))
+    scale_y_continuous(labels = scales::label_number_si(), limits = c(0, NA)) 
     
 })
 
@@ -288,7 +307,7 @@ output$compare_coverage_plot_girafe =
                    ) /30)
                )},
                color = .data$dataset,
-               label = .data$Title
+               label = .data$Shortname
              ),
              
              direction = "y",
@@ -319,3 +338,128 @@ output$compare_coverage_plot_girafe =
   )
 })
 
+
+
+observeEvent(input$download_coverage_data, {
+  
+  shinyalert::shinyalert("Export Data:", 
+             type = "info",
+             size = "xs",
+             html = TRUE,
+             text = tagList(
+               #textInput(inputId = "namere", label = NULL),
+               selectInput(inputId = "download_choice_compare", choices=c("with current plot input selection"="selected","for all plot input data points"="full"), label=NULL),
+               downloadButton("confName", "Confirm")
+             ),
+             closeOnEsc = TRUE,
+             closeOnClickOutside = TRUE,
+             showConfirmButton = FALSE,
+             showCancelButton = FALSE,
+             animation = TRUE
+  )
+  runjs("
+        var confName = document.getElementById('confName')
+        confName.onclick = function() {swal.close();}
+        ")
+  
+})
+
+
+
+output$confName = downloadHandler(
+  filename = function() {paste(Sys.Date(), "compare_coverage.xlsx")},
+  content = function(file) {writexl::write_xlsx(
+    
+    if(input$download_choice_compare=="selected"){
+      t.data_coverage_source %>%
+        arrange(dataset,date_ym) %>%
+        left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+        filter(.data$dataset %in% my_vars()) %>%
+        ungroup() %>%
+        mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
+        filter(!is.na(date_ym)) %>%
+        separate(date_ym, c("date_y", "date_m"), remove=FALSE, sep = '-') %>%
+        mutate(across(.cols = c(date_y, date_m), .fn = ~ as.numeric(.))) %>%
+        filter(.data$date_y>=input$date_range_coverage2[1] & .data$date_y<=input$date_range_coverage2[2]) %>%
+        select(dataset,title, date_ym, any_of(input$type_compare)) %>%
+        mutate(export = coverage_dataset_name)
+      } else {t.data_coverage_source %>%
+          arrange(dataset,date_ym) %>%
+          left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+          filter(.data$dataset %in% my_vars()) %>%
+          ungroup() %>%
+          mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
+          filter(!is.na(date_ym)) %>%
+          select(dataset,title, date_ym, n, n_id, n_id_distinct) %>%
+          mutate(export = coverage_dataset_name)},
+    path=file)}
+)
+
+
+
+
+
+output$download_compare_coverage_plot = downloadHandler(
+  filename = function() {paste(Sys.Date(), "compare_coverage.png")},
+  content = function(file) {ggsave(file, plot = (compare_coverage_plot()) +
+
+                                     #add geom text layer separate for girafe object and download as different sizes needed
+                                     (geom_text_repel_interactive(
+                                       size = 12,
+                                       data = (
+                                         compare_coverage_data_filtered() %>% 
+                                           filter(date_format == max(date_format))
+                                       ),
+                                       
+                                       aes(
+                                         x = .data$date_format + x_nudge(),
+                                         y = if(input$log_scale){log(.data$N) } else {.data$N + (
+                                           #nudge up a 30th of difference between max and min
+                                           (
+                                             (
+                                               (
+                                                 compare_coverage_data_filtered() %>% filter(N == max(N)) %>% distinct(N) %>% pull(N)) - (
+                                                   compare_coverage_data_filtered() %>% filter(N == min(N)) %>% distinct(N) %>% pull(N))
+                                             ) /30)
+                                         )},
+                                         color = .data$dataset,
+                                         label = .data$Shortname
+                                       ),
+                                       
+                                       direction = "y",
+                                       family=family_lato,
+                                       segment.color = 'transparent')) +
+                                     
+                                     #custom theme for download
+                                     theme(plot.margin = margin(20,50,20,50),
+                                           axis.text.x = element_text(size = 34, face = "bold"),
+                                           axis.text.y = element_text(size = 34, face = "bold"),
+                                           axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size=34, color="#4D4C4C")
+                                     ),
+                                   #ensure width and height are same as ggiraph
+                                   #width_svg and height_svg to ensure png not cut off
+                                   width = 16, height = 9, units = "in",
+                                   bg = "transparent",
+                                   dpi = 300, device = "png")}
+)
+
+
+
+
+
+
+# observeEvent(nrow(table2()) ==0, {
+#   insertUI(
+#     selector = "#Panels",
+#     where = "beforeBegin",
+#     ui = div(id = paste0("txt", input$add),
+#         h6("Click below to begin comparing datasets:"))
+#   )
+# })
+# 
+# 
+# observeEvent(nrow(table2()) >0, {
+#   removeUI(
+#     selector = "div:has(> #txt)"
+#   )
+# })

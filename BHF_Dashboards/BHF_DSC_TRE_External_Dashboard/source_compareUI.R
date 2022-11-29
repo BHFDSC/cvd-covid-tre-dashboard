@@ -14,6 +14,10 @@ fluidRow(titlePanel(h3(id = 'section_heading',"Data Coverage")),
                                      value = "data_input",
                                      wellPanel(style = bhf_tab_panel_style,
                                                
+                                               div(id = "message_temp", 
+                                                   h6("Click below to begin comparing datasets:")),
+
+                                               
                                                tags$div(id = "Panels"),
                                                actionButton("add",
                                                             "Add Dataset")
@@ -24,6 +28,7 @@ fluidRow(titlePanel(h3(id = 'section_heading',"Data Coverage")),
                             #PLOT INPUT
                             tabPanel(title = "Plot",
                                      value = "plot_input",
+                                     fluidRow(
                                      wellPanel(style = bhf_tab_panel_style,
                                                
                                                #DATE RANGE SLIDER
@@ -35,40 +40,51 @@ fluidRow(titlePanel(h3(id = 'section_heading',"Data Coverage")),
                                                            step=1, sep = ""),
                                                
                                                #EXTREME VALUES
-                                               prettySwitch(inputId = "all_records",
-                                                            label = "Show extreme dates", fill = TRUE) %>%
-                                                 
-                                                 add_prompt(
-                                                   message = extreme_dates_text,
-                                                   position = "right", type = "error",
-                                                   size = "small", rounded = TRUE
-                                                 ),
+                                               fluidRow(column(12,
+                                               prettySwitchCustom(inputId = "all_records",
+                                                            label = "Show extreme dates", fill = TRUE,spaces = 2,my_message = extreme_dates_text,prompt_size="medium",prompt_position="bottom-right")),),
                                                
                                                #TYPE INPUT
                                                fluidRow(
                                                radioButtons(
                                                  inputId = "type_compare",
-                                                 label = "Order:",
+                                                 label = h6(id='count_heading',paste0("Count:",stringi::stri_dup(intToUtf8(160),2)), tags$span(icon("info-circle"), id = "iconer") %>% 
+                                                              
+                                                              add_prompt(
+                                                                message = type_text,
+                                                                position = "right", type = "error",
+                                                                size = "medium", rounded = TRUE,
+                                                                bounce=FALSE,animate=FALSE
+                                                              )),
                                                  selected = count_options_selected,
-                                                 choices = count_options) %>%
-                                                 
-                                                 add_prompt(
-                                                   message = type_text,
-                                                   position = "right", type = "error",
-                                                   size = "small", rounded = TRUE
-                                                 )),
+                                                 choices = count_options)),
                                                
                                                #LOG SCALE
-                                               prettySwitch(inputId = "log_scale",
-                                                            label = "Log scale", fill = TRUE, value=TRUE),
+                                               prettySwitchCustom(inputId = "log_scale",
+                                                            label = "Log scale", fill = TRUE, value=TRUE, info=FALSE),
                                                
                                                #TREND LINE
-                                               prettySwitch(inputId = "trend_line",
-                                                            label = "Show trend", fill = TRUE, value=FALSE),
+                                               prettySwitchCustom(inputId = "trend_line",
+                                                            label = "Show trend", fill = TRUE, value=FALSE, spaces = 2,my_message = trend_text,prompt_size="medium"),
+                                               
+                                               
+                                               fluidRow(column(12,
+                                               downloadButton(outputId = "download_compare_coverage_plot",
+                                                              label = "Download PNG",
+                                                              icon = icon("file-image"))
+                                               )),
+
+                                               fluidRow(column(12,
+                                               actionButton("download_coverage_data",
+                                                              label="Export Data",
+                                                              icon = icon("file-excel"))
+                                               )),
+                                               
+
                                                
                                      )
                             )
-                )
+                ))
          ),
          
          #UI OUTPUT

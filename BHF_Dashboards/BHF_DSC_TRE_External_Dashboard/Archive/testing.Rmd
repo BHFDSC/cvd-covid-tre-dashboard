@@ -8,26 +8,24 @@ Blank Rmd for debugging and troubleshooting
 
 ```{r}
 
-library(tidyverse)
+pull(filter(t.dataset_dashboard,Dataset=="gdppr"),Title)
 
 
-compare_palette = c(
-  "#b388eb",
-  "#9F54A8",
-  "#F5484A",
-  "#FFC16A",
-  "#FDA361"
-)
-
-table1 <- data.frame(nation=c("England","England","England","England","England","England","England"),
-                     dataset=c("gdppr","hes","sus","test","test1","test2","test3"))
-
-
-table1 %>% add_column(colours = rep(compare_palette, length.out=nrow(table1)))
-
-data.frame(input_no = 2:1000) %>%
-  add_column(colours = rep(compare_palette, length.out=nrow(.)))
-
+t.data_coverage_source %>%
+              arrange(dataset,date_ym) %>%
+              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              filter(.data$dataset == "gdppr") %>%
+              ungroup() %>%
+              mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
+              filter(!is.na(date_ym)) %>%
+              separate(date_ym, c("date_y", "date_m"), remove=FALSE, sep = '-') %>%
+              mutate(across(.cols = c(date_y, date_m), .fn = ~ as.numeric(.))) %>%
+              filter(.data$date_y>=1999 & .data$date_y<=2017) %>%
+              pivot_longer(cols=starts_with("n"), names_to="type",values_to="n") %>%
+              filter(type %in% c("n","n_id")) %>%
+              pivot_wider(names_from="type",values_from="n") %>%
+              #select(dataset,title, date_ym, ) %>%
+              mutate(export = coverage_dataset_name)
 
 ```
 
