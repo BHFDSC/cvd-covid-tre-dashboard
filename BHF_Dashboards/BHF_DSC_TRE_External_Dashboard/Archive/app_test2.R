@@ -1,41 +1,48 @@
 library(shiny)
-library(shinyhelper)
-library(magrittr)
+library(shinyalert)
+library(ggplot2)
+library(shinyjs)
 
 ui <- fluidPage(
-  
-  titlePanel(title = "Demo APP"),
-  
-  sidebarLayout(
-    
-    sidebarPanel = sidebarPanel(
-      
-      selectInput(inputId = "dataset", "choose DataSet",
-                  choices = c("MTCARS","IRSIS")
-      ) %>% 
-        helper(type = "inline",
-               title = "Inline Help",
-               content = c("This helpfile is defined entirely in the UI!",
-                           "This is on a new line.",
-                           "This is some <b>HTML</b>."),
-               size = "s")
-    ),
-    
-    mainPanel = mainPanel(
-      verbatimTextOutput(outputId = "TABLE")
-      
-    )
-  )
-)
-
+  useShinyjs(),
+  useShinyalert(),
+  plotOutput("vmgraph"),
+  actionButton("downloadPlot", "Download Plot")
+) 
 
 server <- function(input, output) {
-  observe_helpers()
-  output$TABLE<-renderText({
-    
-    paste0("Dataset selcted: ",input$dataset)
-    
-  }) 
+  
+  output$vmgraph <- renderPlot({plot(mtcars)})
+  
+  observeEvent(input$downloadPlot, {
+    shinyalert("Save as:", 
+               type = "info",
+               size = "m",
+               html = TRUE,
+               text = tagList(
+                 textInput(inputId = "name", label = NULL ),
+                 downloadButton("confName", "Confirm")
+               ),
+               closeOnEsc = TRUE,
+               closeOnClickOutside = TRUE,
+               showConfirmButton = FALSE,
+               showCancelButton = TRUE,
+               animation = TRUE
+    )
+    runjs("
+        var confName = document.getElementById('confName')
+        confName.onclick = function() {swal.close();}
+        ")
+  })
+  
+  output$confName <- downloadHandler(
+    filename = function(){
+      paste(input$name, ".png", sep = "")},
+    content = function(file) {
+      ggsave(file, plot = plot(mtcars), width = 12, height = 7.7)
+    }
+  )
+  
 }
 
 shinyApp(ui, server)

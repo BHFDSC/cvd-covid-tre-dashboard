@@ -84,7 +84,7 @@ ui = fluidPage(
     #tabPanel("Insight"),
     
     ### Appendix Tab ===========================================================
-    tabPanel("Appendix",appendixOutput(id = "appendix")) ,
+    #tabPanel("Appendix",appendixOutput(id = "appendix")) ,
     
     ### Feedback Button ===========================================================
     
@@ -110,6 +110,10 @@ ui = fluidPage(
 # Server -----------------------------------------------------------------------
 
 server = function(input, output, session) {
+  
+  # observeEvent(input$myButton, {
+  #   runjs(paste0('$("#ab1").css("animation","")'))
+  # })
 
 
   ### Summary Tab ============================================================
