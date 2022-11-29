@@ -1,5 +1,12 @@
 #current_dir_data = dirname(rstudioapi::getSourceEditorContext()$path)
 
+# Current Dataset Names --------------------------------------------------------
+date_production = as.Date("2022-11-29")
+completeness_dataset_name = "export_dashboard_NHSD_20221108_data_completeness"
+coverage_dataset_name = "export_dashboard_NHSD_20221102_data_coverage"
+
+
+
 # TRE Dataset Provisioning Dashboard -------------------------------------------
 t.dataset_dashboard = read.csv('Data/TRE_dataset_link.csv')
 
@@ -7,7 +14,8 @@ datasets_available = t.dataset_dashboard %>%
   mutate(across(-c("Description"), .fn=~str_trim(.,side="both"))) %>%
   mutate(across(everything(), .fn=~na_if(.,""))) %>%
   filter(!is.na(Dataset)) %>%
-  filter(!is.na(Title))
+  filter(!is.na(Title)) %>%
+  filter(!Key=="Dataset requested")
 
 # TRE Data Dictionary ----------------------------------------------------------
 
@@ -64,7 +72,7 @@ t.data_dictionaryWales = read_excel_allsheets( # pathfornow,
 # Data Coverage Pre Processed from data_preprocessing
 #t.data_coverage = read_rds("Data/data_coverage")
 
-t.data_coverage_source = read.csv('Data/export_dashboard_NHSD_20221102_data_coverage.csv')
+t.data_coverage_source = read.csv(paste0('Data/',coverage_dataset_name,'.csv'))
 
 t.data_coverage = t.data_coverage_source %>% # as.data.frame() %>% 
   mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
@@ -102,10 +110,6 @@ t.data_coverage = t.data_coverage_source %>% # as.data.frame() %>%
 t.dataset_overview = read.csv('Data/export_dashboard_NHSD_20221108_date_overview.csv')
 
 # Dataset Overview -------------------------------------------------------------
-t.dataset_completeness = read.csv('Data/export_dashboard_NHSD_20221108_data_completeness.csv')
-
-
-
-
+t.dataset_completeness = read.csv(paste0('Data/',completeness_dataset_name,'.csv'))
 
 

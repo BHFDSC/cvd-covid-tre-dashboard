@@ -60,6 +60,13 @@ compare_palette = c(
   "#FDA361"
 )
 
+
+summary_coverage_palette = c(
+"n"="#F5484A",
+"n_id"="#F88350",
+"n_id_distinct"="#b388eb"
+)
+
 ###############################################################################
 #Boostrap and CSS Theme
 library(bslib)
@@ -104,9 +111,33 @@ table.dataTable thead tr {
 }
 
 
-#ab1{padding:4px; font-size:80%; margin-bottom:-50%;margin-top:-50%;}
-#ab1:hover{padding:4px; font-size:80%; margin-bottom:-50%;margin-top:-50%;}
+/*
+@keyframes glowing {
+         0% { background-color: #fcfcfc; box-shadow: 0 0 5px #A307AB; }
+         50% { background-color: #F8E8FC; box-shadow: 0 0 20px #D143C8; }
+         100% { background-color: #fcfcfc; box-shadow: 0 0 5px #A907AB; }
+}
+*/
 
+
+#ab1{padding:4px; font-size:80%; margin-bottom:-50%;margin-top:-50%;color:purple!important;border-color:purple!important;
+box-shadow: 0 0 4px 1px #A907AB;
+
+} /*animation:glowing 1300ms infinite;*/
+
+#ab1:hover{padding:4px; font-size:80%; margin-bottom:-50%;margin-top:-50%;color:white!important;
+box-shadow: 0 0 4px 1px #A907AB;
+text-decoration:none;}
+
+.bttn-unite.bttn-success:after{background:#BF09C1!important;
+box-shadow: 0 0 4px 1px #A907AB;
+text-decoration:none;}
+.bttn-unite.bttn-success:focus, .bttn-unite.bttn-success:hover{background:#BF09C1!important;
+box-shadow: 0 0 4px 1px #A907AB;
+text-decoration:none;}
+.bttn-unite.bttn-success:before{background:#BF09C1!important;
+box-shadow: 0 0 4px 1px #A907AB;
+text-decoration:none;}
 
 
 /*.paginate_button:not(.previous):not(.next){background-color: var(--colour_bhf_darkred);color: var(--colour_bhf_darkred);}*/
@@ -118,12 +149,7 @@ table.dataTable thead tr {
          }
 
 
-#iconer:hover{color:var(--colour_bhf_neonred);align:right;transition-duration: width 2s, height 2s, transform 2s;
-          transition-timing-function: ease-in; 
-          transition-delay: 0.5s !important;float: right !important;}
-#iconer{color:#A052A7;align:right;transition-duration: width 2s, height 2s, transform 2s;
-          transition-timing-function: ease-in; 
-          transition-delay: 0.5s !important;float: right !important;}
+
 
 #body{color:red;background-color:blue;}
 
@@ -145,8 +171,10 @@ tooltip .tooltip-inner {display:inline;color:red;background-color:blue;}
 
 
 
-
-
+.sweet-alert h2{color: !important;font-size:20px !important;}
+.sweet-alert .sa-icon.sa-info{border-color:var(--colour_bhf_lightred)!important;}
+.sweet-alert .sa-icon.sa-info::before{background-color:var(--colour_bhf_lightred)!important;}
+.sweet-alert .sa-icon.sa-info::after{background-color:var(--colour_bhf_lightred)!important;}
 
 
 /* CSS for the checked checkboxes */
@@ -272,6 +300,12 @@ margin-top:15px;
         .hint--error.hint--right:before {
           border-right-color: var(--colour_bhf_neonred)
         }
+
+
+
+
+
+
 
 
 /*Plot/Summary Active Tab*/
@@ -579,6 +613,28 @@ box-shadow: none !important;
 margin-left:-4% !important;
 }
 
+
+#summary_module-data_coverage_module-download_coverage_data:hover{
+background-color:white !important;
+border-color:white !important;
+color:var(--colour_bhf_neonred) !important;
+outline: none !important;
+box-shadow: none !important;
+margin-left:-4% !important;
+}
+
+
+#summary_module-data_coverage_module-download_coverage_data{ /*#data_coverage_module-download_summary_coverage_plot*/
+background-color:white !important;
+border-color:white !important;
+color:#3C3C3C !important;
+outline: none !important !important;
+box-shadow: none !important;
+margin-left:-4% !important;
+}
+
+
+
 #summary_module-data_coverage_module-download_summary_coverage_season_plot:hover{
 background-color:white !important;
 border-color:white !important;
@@ -618,12 +674,76 @@ margin-left:-4% !important;
 }
 
 
+#summary_module-data_completeness_module-download_coverage_data:hover{
+background-color:white !important;
+border-color:white !important;
+color:var(--colour_bhf_neonred) !important;
+outline: none !important;
+box-shadow: none !important;
+margin-left:-4% !important;
+}
+
+
+#summary_module-data_completeness_module-download_coverage_data{ /*#data_coverage_module-download_summary_coverage_plot*/
+background-color:white !important;
+border-color:white !important;
+color:#3C3C3C !important;
+outline: none !important !important;
+box-shadow: none !important;
+margin-left:-4% !important;
+}
+
+
+#download_compare_coverage_plot:hover{
+background-color:var(--colour_bhf_background_lightgrey) !important;
+border-color:var(--colour_bhf_background_lightgrey) !important;
+color:var(--colour_bhf_neonred) !important;
+outline: none !important;
+box-shadow: none !important;
+margin-left:-4% !important;
+}
+
+
+#download_compare_coverage_plot{
+background-color:var(--colour_bhf_background_lightgrey) !important;
+border-color:var(--colour_bhf_background_lightgrey) !important;
+color:#3C3C3C !important;
+outline: none !important;
+box-shadow: none !important;
+margin-left:-4% !important;
+}
+
+#download_coverage_data:hover{
+background-color:var(--colour_bhf_background_lightgrey) !important;
+border-color:var(--colour_bhf_background_lightgrey) !important;
+color:var(--colour_bhf_neonred) !important;
+outline: none !important;
+box-shadow: none !important;
+margin-left:-4% !important;
+}
+
+
+#download_coverage_data{
+background-color:var(--colour_bhf_background_lightgrey) !important;
+border-color:var(--colour_bhf_background_lightgrey) !important;
+color:#3C3C3C !important;
+outline: none !important;
+box-shadow: none !important;
+margin-left:-4% !important;
+}
+
+
+
+
+
+
+
 /*pretty switch*/
 /*
-.state {color: white !important;}
-.state :not([class]){color: white !important;}
-.state::before{background-color: #5A656B !important; color: #5A656B !important;}
-.pretty.p-switch .state label:after{background-color: #FFFFFF !important; color: #FFFFFF !important}
+.state {color: white !important;margin-right:0% !important;}
+.state :not([class]){color: white !important;margin-right:0% !important;}
+.state::before{background-color: #5A656B !important; color: #5A656B !important;margin-right:0% !important;}
+.pretty.p-switch .state label:after{background-color: #FFFFFF !important; color: #FFFFFF !importantmargin-right:0% !important;}
 */
 
 
@@ -700,11 +820,70 @@ margin-left:-4% !important;
 }
 
 
+#iconer:hover{
+color:var(--colour_bhf_neonred);
+align:right;
+transition-duration: width 2s, height 2s, transform 2s;
+transition-timing-function: ease-in; 
+transition-delay: 0.5s !important;
+float: right !important;
+
+z-index:999999 !important;
+}
+
+#iconer{
+color:#A052A7;
+align:right;
+transition-duration: width 2s, height 2s, transform 2s;
+transition-timing-function: ease-in; 
+transition-delay: 0.5s !important;
+float: right !important;
+
+
+z-index:999999 !important;
+}
+
+#pretty_custom_icon{
+color:#A052A7;
+align:left;
+transition-duration: width 2s, height 2s, transform 2s;
+transition-timing-function: ease-in; 
+transition-delay: 0.5s !important;
+margin-left:0% !important;
+font-size: 100%;
+z-index:999999 !important;
+}
+
+
+#pretty_custom_icon:hover{
+color:var(--colour_bhf_neonred);
+align:left;
+transition-duration: width 2s, height 2s, transform 2s;
+transition-timing-function: ease-in; 
+transition-delay: 0.5s !important;
+margin-left:0% !important;
+font-size: 100%;
+z-index:999999 !important;
+}
+
+
+#pretty_custom_label{color:#212529!important; background-color:none!important;font-size:1rem !important;}
+
+#count_heading{color:#212529!important}
+
+/*enforce maring so info box can go beside*/
+.pretty {margin-right:0% !important;}
+
+
+[class*=hint--][aria-label]:after {
+   white-space: pre;
+}
+
 "
 
 
 #Global Options FluidRow
-wellpanel_style = "background: white; border-color: white;margin-top:-1%;"
+wellpanel_style = "background: white; border-color: white;margin-top:-1%;position:relative;z-index:1 !important;"
 bhf_global_options_style = "
 background: linear-gradient(to right, #e30020, #ed1f54);
 border-top-left-radius: 10px !important; /*Round Edges*/
@@ -875,3 +1054,165 @@ input_ui = function(input_id, input_element, help, margin = 4) {
       )
   )
 }
+
+
+
+# shinyWidgets pretty switch hack ==============================================
+#https://github.com/dreamRs/shinyWidgets/blob/master/R/input-pretty.R
+
+#dependencies
+attachShinyWidgetsDep <- function(tag, widget = NULL, extra_deps = NULL) {
+  dependencies <- html_dependency_shinyWidgets()
+  if (!is.null(widget)) {
+    if (widget == "picker") {
+      dependencies <- list(
+        dependencies,
+        # htmltools::htmlDependencies(shiny::fluidPage())[[1]],
+        html_dependency_picker()
+      )
+    } else if (widget == "awesome") {
+      dependencies <- list(
+        dependencies,
+        html_dependency_awesome(),
+        htmltools::findDependencies(shiny::icon("rebel"))[[1]]
+      )
+    } else if (widget == "bsswitch") {
+      dependencies <- c(
+        list(dependencies),
+        html_dependency_bsswitch()
+      )
+    } else if (widget == "multi") {
+      dependencies <- list(
+        dependencies,
+        html_dependency_multi()
+      )
+    } else if (widget == "jquery-knob") {
+      dependencies <- list(
+        dependencies,
+        html_dependency_knob()
+      )
+    } else if (widget == "dropdown") {
+      dependencies <- list(
+        dependencies,
+        htmltools::htmlDependency(
+          name = "dropdown-patch",
+          version = packageVersion("shinyWidgets"),
+          src = c(href = "shinyWidgets/dropdown"),
+          script = "dropdown-click.js"
+        )
+      )
+    } else if (widget == "sw-dropdown") {
+      dependencies <- list(
+        dependencies,
+        htmltools::htmlDependency(
+          name = "sw-dropdown",
+          version = packageVersion("shinyWidgets"),
+          src = c(href = "shinyWidgets/sw-dropdown"),
+          script = "sw-dropdown.js",
+          stylesheet = "sw-dropdown.css"
+        )
+      )
+    } else if (widget == "animate") {
+      dependencies <- list(
+        dependencies,
+        html_dependency_animate()
+      )
+    } else if (widget == "bttn") {
+      dependencies <- list(
+        dependencies,
+        html_dependency_bttn()
+      )
+    } else if (widget == "spectrum") {
+      dependencies <- list(
+        dependencies,
+        html_dependency_spectrum()
+      )
+    } else if (widget == "pretty") {
+      dependencies <- list(
+        dependencies,
+        html_dependency_pretty()
+      )
+    } else if (widget == "nouislider") {
+      dependencies <- list(
+        dependencies,
+        html_dependency_nouislider()
+      )
+    } else if (widget == "airdatepicker") {
+      dependencies <- list(
+        dependencies,
+        html_dependency_airdatepicker()
+      )
+    }
+    dependencies <- c(dependencies, extra_deps)
+  } else {
+    dependencies <- c(list(dependencies), extra_deps)
+  }
+  htmltools::attachDependencies(
+    x = tag,
+    value = dependencies,
+    append = TRUE
+  )
+}
+
+
+html_dependency_shinyWidgets <- function() {
+  htmltools::htmlDependency(
+    name = "shinyWidgets",
+    version = packageVersion("shinyWidgets"),
+    src = c(href = "shinyWidgets", file = "assets"),
+    package = "shinyWidgets",
+    script = "shinyWidgets-bindings.min.js",
+    stylesheet = "shinyWidgets.min.css",
+    all_files = FALSE
+  )
+}
+
+#custom switch
+prettySwitchCustom <- function(inputId,
+                         label,
+                         value = FALSE,
+                         status = "default",
+                         slim = FALSE,
+                         fill = FALSE,
+                         bigger = FALSE,
+                         inline = FALSE,
+                         width = NULL,
+                         info = TRUE,
+                         my_message,
+                         prompt_size = "small",
+                         prompt_position = "right",
+                         spaces = 0 #no of spaces want between label and info icon
+                         ) {
+  value <- shiny::restoreInput(id = inputId, default = value)
+  status <- match.arg(status, c("default", "primary", "success",
+                                "info", "danger", "warning"))
+  inputTag <- tags$input(id = inputId, type = "checkbox")
+  if (!is.null(value) && value)
+    inputTag$attribs$checked <- "checked"
+  if (fill & slim)
+    message("slim = TRUE & fill = TRUE don't work well together.")
+  switchTag <- tags$div(
+    class = "form-group shiny-input-container",
+    style = if (!is.null(width))  paste0("width: ", validateCssUnit(width), ";"),
+    class = if (inline) "shiny-input-container-inline",
+    style = if (inline) "display: inline-block; margin-right: 10px;",
+    tags$div(
+      class="pretty p-default p-switch", inputTag,
+      class=if(bigger) "p-bigger",
+      class=if(fill) "p-fill", class=if(slim) "p-slim",
+      tags$div(
+        class="state",
+        class=if(status != "default") paste0("p-", status),
+        tags$label(tags$span(paste0(label,stringi::stri_dup(intToUtf8(160),spaces)), id = "pretty_custom_label"))
+      )
+    ) , if (info) {tags$span(icon("info-circle"), id = "pretty_custom_icon") %>% add_prompt(
+      message = my_message,
+      position = prompt_position, type = "error",
+      size = prompt_size, rounded = TRUE,
+      bounce=FALSE,animate=FALSE)}
+  )
+  attachShinyWidgetsDep(switchTag, "pretty")
+}
+
+
+

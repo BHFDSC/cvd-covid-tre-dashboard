@@ -21,9 +21,15 @@ dataCompletenessUI <- function(id){
                selected = "value",
                choices = c("Alphabetically"="alpha", "Value"="value")),
              
+             fluidRow(column(12,
              downloadButton(outputId = ns("download_summary_completeness_plot"), 
                                              label = "Download PNG",
-                                             icon = icon("file-image"))
+                                             icon = icon("file-image")))),
+             
+             fluidRow(column(12,
+             downloadButton(ns("download_coverage_data"), 
+                            label="Export Data",
+                            icon = icon("file-excel"))))
              ),
       # Outputs ----------------------------------------------------------------
       column(9,
@@ -38,6 +44,8 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
   moduleServer(
     id,
     function(input, output, session) {
+      
+      completeness_title_download = reactive({paste("Data Completeness - ", pull(filter(t.dataset_dashboard,Dataset==dataset_summary()),Title))})
 
       # pull the variable names from a chosen dataset to use as test data
       completeness_test_data = reactive({t.dataset_completeness %>%
@@ -99,7 +107,6 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
         
           theme(
             text=element_text(family=family_lato),
-            plot.title = element_markdown(size = 11, lineheight = 1.2),
             plot.subtitle = element_markdown(size = 11, lineheight = 1.2),
             legend.position = "none",
             plot.title.position = 'plot', #align to outer margin; applies to subtitle too
@@ -112,7 +119,7 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
             axis.text.y = element_text(size = 6, hjust = 1),
             axis.ticks.x = element_blank(),
             plot.margin = margin(0,0,0,0)
-          )
+          ) 
       })
       
   
@@ -141,7 +148,21 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
       
       output$download_summary_completeness_plot = downloadHandler(
         filename = function() {paste(Sys.Date(), "completeness.png")},
-        content = function(file) {ggsave(file, plot = (completeness_plot()) + theme(plot.margin = margin(20,50,20,50)),
+        content = function(file) {ggsave(file, 
+                                         plot = (completeness_plot() +
+                                           ggtitle(completeness_title_download()) +
+                                            geom_text(aes(label = paste(.data$completeness,"%")),
+                                                      vjust = 0.6, hjust = -0.3, size = 6, color="#4D4C4C") +
+                                           theme(plot.margin = margin(20,50,20,50),
+                                                 axis.text.x = element_text(size = 18, face = "bold"),
+                                                 axis.text.y = element_text(size = 18, face = "bold"),
+                                                 axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0),
+                                                                             face = "bold", size=18, color="#4D4C4C"),
+                                                 plot.title.position = "plot", #left align title
+                                                 plot.title = element_text(color="#4D4C4C", size=28,
+                                                                           face = "bold", margin = margin(t = 6, r = 0, b = 16, l = 0)
+                                                                           )
+                                                 )),
                                          #ensure width and height are same as ggiraph
                                          #width_svg and height_svg to ensure png not cut off
                                          width = 9, units = "in",
@@ -150,6 +171,19 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
       )
       
       
+      output$download_coverage_data = downloadHandler(
+        filename = function() {paste(Sys.Date(), "completeness.xlsx")},
+        content = function(file) {writexl::write_xlsx(
+          (completeness_test_data() %>%
+            arrange(column_name) %>%
+            left_join(t.dataset_dashboard %>% select(dataset=Dataset,title=Title)) %>%
+            select(dataset,title,column_name,completeness) %>%
+            mutate(export = completeness_dataset_name)),
+          path=file)}
+      )
+
+      
+     
       
     }
   )
