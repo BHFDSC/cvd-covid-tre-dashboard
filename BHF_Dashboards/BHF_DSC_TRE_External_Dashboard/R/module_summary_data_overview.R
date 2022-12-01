@@ -40,8 +40,34 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
         shhh() #suppress warnings about coercing NAs
       })
       
+      archived_on = reactive({
+        
+        dataset_overview() %>%
+          left_join(datasets_available%>%select(dataset=Dataset,exported)) %>%
+          select(archived_on) %>% 
+          pivot_longer(everything()) %>% 
+          pull(value)
+        
+      })
+
+      export_date_batch = reactive({
+          if(nation_summary()=="England"){export_date_england} else if (nation_summary()=="Scotland"){export_date_scotland} else {export_date_wales}
+      })
+      
+      archived_on_list = reactive({if(length(archived_on()==0)){archived_on()} else {""}})
+      
+      batch_summary = reactive({
+        
+        c(
+          archived_on_list(),
+          export_date_batch()
+        )
+      })
+      
       #### Value Boxes =============================================================
       output$registrations <- renderValueBox({
+        
+        
         if (nrow(dataset_overview())>1){
           return(customValueBox(
             title = "Records",
@@ -73,29 +99,32 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
       })
       
       
+
+  
+      
+      
       output$batch_summary = renderValueBox({
-        if (nrow(dataset_overview())>1){
+        if (length(archived_on())>1){
           return(customValueBox(
             title = "Batch Summary",
             icon = icon("file"),
             subtitle = "",
-            value = HTML(paste0(paste(paste0("<b>",c("Batch ID","Archived On"),":</b>"),
-                                      collapse = '<br/>'),"<br/>&nbsp")),
+            value = HTML(paste0(paste(paste0("<b>",c("Archived On", "Exported On"),":</b>"),
+                                      collapse = '<br/>'))),
             color = colour_bhf_darkred,
             background = customValueBox_global_colour,
             border = customValueBox_border_colour,
             href = NULL
           ))
         }
+        
+        
         customValueBox(
           title = "Batch Summary",
           icon = icon("file"),
           subtitle = "",
-          value = HTML(paste0(paste(paste0("<b>",c("Batch ID","Archived On"),":</b>"),
-                                    dataset_overview() %>% 
-                                      select(BatchId,archived_on) %>% 
-                                      pivot_longer(everything()) %>% 
-                                      pull(value),
+          value = HTML(paste0(paste(paste0("<b>",c("Archived On","Exported On"),":</b>"),
+                                    batch_summary(),
                                     collapse = '<br/>'),"<br/>&nbsp")),
           color = colour_bhf_darkred,
           background = customValueBox_global_colour,
@@ -103,7 +132,16 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
           href = NULL
           )
       })
+      
+      # HTML(paste0(paste(paste0("<b>",c("Batch ID","Archived On"),":</b>"),
+      #                   collapse = '<br/>'),"<br/>&nbsp"))
         
+      # HTML(paste0(paste(paste0("<b>",c("Batch ID","Archived On"),":</b>"),
+      #                   dataset_overview() %>% 
+      #                     select(BatchId,archived_on) %>% 
+      #                     pivot_longer(everything()) %>% 
+      #                     pull(value),
+      #                   collapse = '<br/>'),"<br/>&nbsp"))
     }
   )
 }

@@ -34,7 +34,7 @@ summaryUI <- function(id){
               hr(),
               titlePanel(h3(id = 'section_heading',"Data Dictionary")),
 
-              dataDictionaryUI(id = ns("data_dictionary")),
+              dataDictionaryUI(id = ns("data_dictionary_module")),
 
 
               ## Data Coverage =================================================
@@ -94,7 +94,7 @@ summaryServer <- function(id) {
 
 
       ## Data Dictionary =======================================================
-      dataDictionaryServer(id = "data_dictionary",
+      dataDictionaryServer(id = "data_dictionary_module",
                            dataset_summary=global_dataset_summary,
                            nation_summary=global_nation_summary)
 

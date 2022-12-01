@@ -95,7 +95,7 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
                                                      data_id = column_name)) +
           geom_bar_interactive(stat="identity"
                                , size = 0.35
-                               #, width=0.9
+                               , width=0.9
                                ) +
           coord_flip(clip = 'off')  +
           labs(x=""
@@ -115,8 +115,8 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
             panel.grid.minor = element_blank(),
             panel.background = element_blank(),
             axis.ticks.y = element_blank(),
-            axis.text.x = element_text(size = 8, face = "bold"),
-            axis.text.y = element_text(size = 6, hjust = 1),
+            axis.text.x = element_text(size = 6, face = "bold"),
+            axis.text.y = element_text(size = if(nrow(completeness_test_data())>=20){3.5}else{4.5}, hjust = 1),
             axis.ticks.x = element_blank(),
             plot.margin = margin(0,0,0,0)
           ) 
@@ -139,7 +139,39 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
             opts_toolbar(saveaspng = FALSE),
             opts_selection(type="none")),
             
-            width_svg  = 9
+            height_svg = (
+              if (nrow(completeness_test_data()) >= 150) {
+                10
+              }
+              else if (nrow(completeness_test_data()) < 150 & nrow(completeness_test_data()) >= 120) {
+                8
+              }
+              else if (nrow(completeness_test_data()) < 120 & nrow(completeness_test_data()) >= 100) {
+                6
+              }
+              else if (nrow(completeness_test_data()) < 100 & nrow(completeness_test_data()) >= 80) {
+                5
+              }
+              else if (nrow(completeness_test_data()) < 80 & nrow(completeness_test_data()) >= 20) {
+                4
+              }
+              else if (nrow(completeness_test_data()) < 20 & nrow(completeness_test_data()) >= 15) {
+                3.5
+              }
+              else if (nrow(completeness_test_data()) < 15 & nrow(completeness_test_data()) >= 10) {
+                3
+              }
+              else if (nrow(completeness_test_data()) < 10 & nrow(completeness_test_data()) >= 5) {
+                2
+              }
+              else if (nrow(completeness_test_data()) < 5 & nrow(completeness_test_data()) >= 3) {
+                1.5
+              }
+              else {
+                1.2
+              }
+            )
+            #width_svg  = 9
             
             )
       })
@@ -147,15 +179,15 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
   
       
       output$download_summary_completeness_plot = downloadHandler(
-        filename = function() {paste(Sys.Date(), "completeness.png")},
+        filename = function() {paste0("data_completeness_",str_remove_all(Sys.Date(),"-"),".png")},
         content = function(file) {ggsave(file, 
                                          plot = (completeness_plot() +
                                            ggtitle(completeness_title_download()) +
                                             geom_text(aes(label = paste(.data$completeness,"%")),
-                                                      vjust = 0.6, hjust = -0.3, size = 6, color="#4D4C4C") +
+                                                      vjust = 0.6, hjust = -0.3, size = if(nrow(completeness_test_data())>=20){4}else{5}, color="#4D4C4C") +
                                            theme(plot.margin = margin(20,50,20,50),
                                                  axis.text.x = element_text(size = 18, face = "bold"),
-                                                 axis.text.y = element_text(size = 18, face = "bold"),
+                                                 axis.text.y = element_text(size = if(nrow(completeness_test_data())>=20){12}else{18}, face = "bold"),
                                                  axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0),
                                                                              face = "bold", size=18, color="#4D4C4C"),
                                                  plot.title.position = "plot", #left align title
@@ -165,20 +197,55 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
                                                  )),
                                          #ensure width and height are same as ggiraph
                                          #width_svg and height_svg to ensure png not cut off
-                                         width = 9, units = "in",
+                                         #width = 9, 
+                                         units = "in",
                                          bg = "transparent",
+                                         height = (
+                                           if (nrow(completeness_test_data()) >= 150) {
+                                             10
+                                           }
+                                           else if (nrow(completeness_test_data()) < 150 & nrow(completeness_test_data()) >= 120) {
+                                             8
+                                           }
+                                           else if (nrow(completeness_test_data()) < 120 & nrow(completeness_test_data()) >= 100) {
+                                             6
+                                           }
+                                           else if (nrow(completeness_test_data()) < 100 & nrow(completeness_test_data()) >= 80) {
+                                             5
+                                           }
+                                           else if (nrow(completeness_test_data()) < 80 & nrow(completeness_test_data()) >= 20) {
+                                             4
+                                           }
+                                           else if (nrow(completeness_test_data()) < 20 & nrow(completeness_test_data()) >= 15) {
+                                             3.5
+                                           }
+                                           else if (nrow(completeness_test_data()) < 15 & nrow(completeness_test_data()) >= 10) {
+                                             3
+                                           }
+                                           else if (nrow(completeness_test_data()) < 10 & nrow(completeness_test_data()) >= 5) {
+                                             2
+                                           }
+                                           else if (nrow(completeness_test_data()) < 5 & nrow(completeness_test_data()) >= 3) {
+                                             1.5
+                                           }
+                                           else {
+                                             1.2
+                                           }
+                                         ),
                                          dpi = 300, device = "png")}
       )
       
-      
+
       output$download_coverage_data = downloadHandler(
-        filename = function() {paste(Sys.Date(), "completeness.xlsx")},
+        filename = function() {paste0("data_completeness_",str_remove_all(Sys.Date(),"-"),".xlsx")},
         content = function(file) {writexl::write_xlsx(
           (completeness_test_data() %>%
             arrange(column_name) %>%
             left_join(t.dataset_dashboard %>% select(dataset=Dataset,title=Title)) %>%
             select(dataset,title,column_name,completeness) %>%
-            mutate(export = completeness_dataset_name)),
+             mutate(export_date = Sys.Date())),
+          
+          format_headers = FALSE,
           path=file)}
       )
 

@@ -120,6 +120,9 @@ table.dataTable thead tr {
 */
 
 
+
+
+
 #ab1{padding:4px; font-size:80%; margin-bottom:-50%;margin-top:-50%;color:purple!important;border-color:purple!important;
 box-shadow: 0 0 4px 1px #A907AB;
 
@@ -167,6 +170,22 @@ tooltip .tooltip-inner {display:inline;color:red;background-color:blue;}
 #add:hover{  color:white!important;
   background-color:var(--colour_bhf_neonred)!important;
 }
+
+
+
+/*DT Information Show number label*/
+#DataTables_Table_1_info {margin-top: -1.5% !important;}
+#DataTables_Table_1_length {margin-left:-14.3% !important; margin-top: -3% !important;} /*length moves wrt to info*/
+#DataTables_Table_1_length [value='10'] {color:green!important;background-color:blue;margin-left:-14.3% !important; margin-top: -3% !important;} /*length moves wrt to info*/
+/*removed the outline focus col for now but for accessibility would be better to keep but replace blue with purple to fit theme*/
+.dataTables_length select:focus {
+        border-color: rgba(126, 220, 104, 0.8);
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(126, 239, 104, 0.6);
+        outline: 0 none;
+}
+/*#DataTables_Table_1_paginate.paginate_button current{color:green !important; background-color:blue!important;}
+#DataTables_Table_1_previous{color:green !important; background-color:blue!important;}*/
+#DataTables_Table_1_paginate{margin-top:0.5% !important;}
 
 
 
@@ -694,6 +713,34 @@ margin-left:-4% !important;
 }
 
 
+
+
+#summary_module-data_dictionary_module-download_dd{
+background-color:white !important;
+border-color:white !important;
+color:#3C3C3C !important;
+outline: none !important;
+box-shadow: none !important;
+margin-left:-1% !important;
+margin-bottom:-1% !important;
+margin-top:0.8% !important;
+}
+
+
+#summary_module-data_dictionary_module-download_dd:hover{
+background-color:white !important;
+border-color:white !important;
+color:var(--colour_bhf_neonred) !important;
+outline: none !important;
+box-shadow: none !important;
+margin-left:-1% !important;
+margin-bottom:-1% !important;
+margin-top:0.8% !important;
+}
+
+
+
+
 #download_compare_coverage_plot:hover{
 background-color:var(--colour_bhf_background_lightgrey) !important;
 border-color:var(--colour_bhf_background_lightgrey) !important;
@@ -818,6 +865,8 @@ margin-left:-4% !important;
   font-size: 1rem;
   font-weight: 300;
 }
+
+.copyright-text{margin-left:1%;}
 
 
 #iconer:hover{
