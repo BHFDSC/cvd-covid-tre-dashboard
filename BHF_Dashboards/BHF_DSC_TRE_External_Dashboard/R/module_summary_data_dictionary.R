@@ -1,7 +1,14 @@
 dataDictionaryUI <- function(id){
   ns <- NS(id)
   tagList(
-    fluidRow(DTOutput(ns('tbl')))
+    
+    
+    fluidRow(DTOutput(ns('tbl'))),
+    
+    downloadButton(ns("download_dd"),
+                                   label="Export Data",
+                                   icon = icon("file-excel"))
+    
   )
 }
 
@@ -49,12 +56,20 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
         selection = "none",
         rownames = FALSE,
         
+        #extensions = 'Buttons',
+
+        
         options = list(
+          #buttons = c('copy', 'csv', 'excel'),
+
           scrollX = TRUE,
           searching = TRUE,
           
-          lengthChange = FALSE,
+          #lengthChange = FALSE,
           pageLength = 5,
+          lengthMenu = list(c(5, 10, 20, -1), c('5', '10', '20', 'All')),
+          paging = T,
+          dom = '<"top"Bf>rt<"bottom"pil><"clear">', #'Bfrtpil', #'rtipl',
           
           columnDefs = list(list(
             targets = "_all",
@@ -71,7 +86,20 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
             #   "}")
           ))
         )
-      ) 
+      )
+      
+      
+      output$download_dd = downloadHandler(
+        filename = function() {paste0("data_dictionary_",str_remove_all(Sys.Date(),"-"),".xlsx")},
+        content = function(file) {writexl::write_xlsx(
+          (data_dict() %>%
+             mutate(dataset = dataset_summary()) %>%
+             mutate(export_date = Sys.Date())),
+          
+          format_headers = FALSE,
+          path=file)}
+      )
+      
     }
   )
 }

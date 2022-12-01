@@ -81,7 +81,7 @@ dataCoverageUI <- function(id){
                                                           bounce=FALSE,animate=FALSE
                                                         )),
                                            choices = count_options,
-                                           selected = count_options_selected
+                                           selected = count_options_selected_season
                               ),
                               
                               #LOG SCALE
@@ -224,7 +224,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
           #tooltips for plot
           mutate(N_tooltip = format(.data$N, nsmall=0, big.mark=",", trim=TRUE)) %>%
           mutate(N_tooltip_date = paste0(date_name,N_tooltip)) %>%
-          mutate(N_tooltip_date_season = paste0(date_name_season,N_tooltip))
+          mutate(N_tooltip_date_season = paste0(date_name,N_tooltip)) #date_name_season
         
       })
       
@@ -302,7 +302,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
       
       ## Trend Plot ============================================================
       
-      y_axis = reactive({paste(ifelse(input$log_scale_summary,"Count (Log Scale)","Count (Linear Scale)"))})
+      y_axis = reactive({paste(ifelse(input$log_scale_summary,"Monthly Count (Log Scale)","Monthly Count (Linear Scale)"))})
       
       coverage_title_download = reactive({paste("Data Coverage - ", pull(filter(t.dataset_dashboard,Dataset==dataset_summary()),Title))})
 
@@ -315,7 +315,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
         ggplot(
           data = coverage_data_filtered(),
           aes(x = .data$date_format,
-              if(input$log_scale_summary){y=log(.data$N)} else {y=.data$N},
+              if(input$log_scale_summary){y=(.data$N)} else {y=.data$N},
               color = .data$Type,
               #data_id = .data$Type,
               group = .data$Type
@@ -350,7 +350,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
             axis.ticks = element_blank(),
             axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size=14, color="#4D4C4C"),
             axis.text.x = element_text(size = 14, face = "bold"),
-            axis.text.y = element_text(size = 14, face = "bold"),
+            axis.text.y = element_text(size = 13, face = "bold"),
             legend.position = "none"
           ) +
           coord_cartesian(clip = "off") +
@@ -359,7 +359,11 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
           scale_colour_manual(values=summary_coverage_palette, name = "colour_summary") +
           scale_fill_manual(values=summary_coverage_palette, name = "colour_summary")  +
           
-          {if(input$log_scale_summary)scale_y_continuous(labels = scales::label_number_si()) else {scale_y_continuous(labels = scales::label_number_si())}} #, limits = c(0, NA)
+          scale_y_continuous(labels = scales::label_number_si(),
+                             trans=if(input$log_scale_summary){scales::pseudo_log_trans(base = 10)} else {trend="identity"}
+          ) 
+        
+          #{if(input$log_scale_summary)scale_y_continuous(labels = scales::label_number_si()) else {scale_y_continuous(labels = scales::label_number_si())}} #, limits = c(0, NA)
       })
       
 
@@ -412,7 +416,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                    
                    aes(
                      x = .data$date_format + x_nudge(),
-                     y = if(input$log_scale_summary){log(.data$N) } else {.data$N + (
+                     y = if(input$log_scale_summary){(.data$N) } else {.data$N + (
                        #nudge up a 30th of difference between max and min
                        (
                          (
@@ -457,7 +461,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
 
 
       output$download_summary_coverage_plot = downloadHandler(
-        filename = function() {paste(Sys.Date(), "coverage_trend.png")},
+        filename = function() {paste0("data_coverage_trend_",str_remove_all(Sys.Date(),"-"),".png")},
         content = function(file) {ggsave(file, plot = (summary_coverage_plot()) +
                                            ggtitle(coverage_title_download()) +
                                            (geom_text_repel_interactive(
@@ -472,7 +476,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                                              
                                              aes(
                                                x = .data$date_format + x_nudge(),
-                                               y = if(input$log_scale_summary){log(.data$N) } else {.data$N + (
+                                               y = if(input$log_scale_summary){(.data$N) } else {.data$N + (
                                                  #nudge up a 30th of difference between max and min
                                                  (
                                                    (
@@ -560,7 +564,8 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
             )) +
           
           scale_y_continuous(labels = scales::label_number_si()) +
-          scale_x_continuous(breaks = c(1, 4, 7, 10),label = c("Jan", "Apr", "Jul", "Oct"))
+          scale_x_continuous(breaks = 1:12, #c(1, 4, 7, 10),
+                             label = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
       })
       
       # test = reactive({(
@@ -633,7 +638,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
       
       
       output$download_summary_coverage_season_plot = downloadHandler(
-        filename = function() {paste(Sys.Date(), "coverage_season.png")},
+        filename = function() {paste0("data_coverage_seasonality_",str_remove_all(Sys.Date(),"-"),".png")},
         content = function(file) {ggsave(file, plot = (summary_coverage_season_plot()) +
                                            ggtitle(coverage_title_download()) +
                                            #add geom text layer separate for girafe object and download as different sizes needed
@@ -682,7 +687,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                                html = TRUE,
                                text = tagList(
                                  #textInput(inputId = "namere", label = NULL),
-                                 selectInput(inputId = ns("download_choice_compare"), choices=c("with current plot input selection"="selected","for all plot input data points"="full"), label=NULL),
+                                 selectInput(inputId = ns("download_choice_compare"), choices=c("with selected input"="selected","in full"="full"), label=NULL),
                                  downloadButton(ns("confName"), "Confirm")
                                ),
                                closeOnEsc = TRUE,
@@ -701,10 +706,14 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
       
       
       output$confName = downloadHandler(
-        filename = function() {paste(Sys.Date(), "compare_coverage.xlsx")},
+        filename = function() {if(input$download_choice_compare=="selected"){
+          paste0("data_coverage_",str_remove_all(Sys.Date(),"-"),".xlsx")} else {
+            paste0("data_coverage_full_",str_remove_all(Sys.Date(),"-"),".xlsx")}
+          },
         content = function(file) {writexl::write_xlsx(
           
           if(input$download_choice_compare=="selected"){
+            
             t.data_coverage_source %>%
               arrange(dataset,date_ym) %>%
               left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
@@ -717,7 +726,8 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
               filter(.data$date_y>=input$date_range_coverage[1] & .data$date_y<=input$date_range_coverage[2]) %>%
               
               select(dataset,title, date_ym, any_of(input$count_coverage)) %>%
-              mutate(export = coverage_dataset_name)
+              mutate(export_date = Sys.Date())
+                  
           } else {t.data_coverage_source %>%
               arrange(dataset,date_ym) %>%
               left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
@@ -726,7 +736,9 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
               mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
               filter(!is.na(date_ym)) %>%
               select(dataset,title, date_ym, n, n_id, n_id_distinct) %>%
-              mutate(export = coverage_dataset_name)},
+              mutate(export_date = Sys.Date())},
+          
+          format_headers = FALSE,
           path=file)}
       )
 

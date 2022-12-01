@@ -184,7 +184,7 @@ compare_coverage_data_filtered = reactive({
 })
 
 
-y_axis = reactive({paste((if(input$type_compare=="n_id_distinct"){"Distinct IDs"} else if (input$type_compare=="n_id"){"Valid IDs"} else {"Records"}),
+y_axis = reactive({paste((if(input$type_compare=="n_id_distinct"){"Monthly Distinct IDs"} else if (input$type_compare=="n_id"){"Monthly Valid IDs"} else {"Monthly Records"}),
                          ifelse(input$log_scale,"(Log Scale)","(Linear Scale)"))})
 
 ## Trend Plot ============================================================
@@ -201,7 +201,7 @@ compare_coverage_plot = reactive({
   ggplot(
     data = compare_coverage_data_filtered(),
     aes(x = .data$date_format,
-        if(input$log_scale){y=log(.data$N)} else {y=.data$N},
+        if(input$log_scale){y=.data$N} else {y=.data$N},
         color = .data$dataset,
         data_id = .data$dataset,
         group = .data$dataset
@@ -223,6 +223,7 @@ compare_coverage_plot = reactive({
     {if(input$trend_line)geom_smooth_interactive(aes(fill = .data$dataset,
                                                      tooltip = .data$N_tooltip_date), method="auto", se=TRUE, fullrange=FALSE, level=0.95)} +
     
+    #coord_trans(y="log10") +
     labs(x = NULL, y = y_axis()) +
     theme_minimal() +
     theme(
@@ -234,7 +235,7 @@ compare_coverage_plot = reactive({
       axis.ticks = element_blank(),
       axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size = 12, color="#4D4C4C"),
       axis.text.x = element_text(size = 14, face = "bold"),
-      axis.text.y = element_text(size = 14, face = "bold"),
+      axis.text.y = element_text(size = 13, face = "bold"),
       legend.position = "none"
     ) +
     
@@ -243,7 +244,9 @@ compare_coverage_plot = reactive({
 
     coord_cartesian(clip = "off") +
 
-    scale_y_continuous(labels = scales::label_number_si(), limits = c(0, NA)) 
+    scale_y_continuous(labels = scales::label_number_si(), #limits = c(0, NA),
+                       trans=if(input$log_scale){scales::pseudo_log_trans(base = 10)} else {trend="identity"}
+                       ) 
     
 })
 
@@ -297,7 +300,7 @@ output$compare_coverage_plot_girafe =
              
              aes(
                x = .data$date_format + x_nudge(),
-               y = if(input$log_scale){log(.data$N) } else {.data$N + (
+               y = if(input$log_scale){(.data$N) } else {.data$N + (
                  #nudge up a 30th of difference between max and min
                  (
                    (
@@ -348,7 +351,7 @@ observeEvent(input$download_coverage_data, {
              html = TRUE,
              text = tagList(
                #textInput(inputId = "namere", label = NULL),
-               selectInput(inputId = "download_choice_compare", choices=c("with current plot input selection"="selected","for all plot input data points"="full"), label=NULL),
+               selectInput(inputId = "download_choice_compare", choices=c("with selected plot input"="selected","in full"="full"), label=NULL),
                downloadButton("confName", "Confirm")
              ),
              closeOnEsc = TRUE,
@@ -367,7 +370,10 @@ observeEvent(input$download_coverage_data, {
 
 
 output$confName = downloadHandler(
-  filename = function() {paste(Sys.Date(), "compare_coverage.xlsx")},
+  filename = function() {if(input$download_choice_compare=="selected"){
+    paste0("data_coverage_",str_remove_all(Sys.Date(),"-"),".xlsx")} else {
+      paste0("data_coverage_full_",str_remove_all(Sys.Date(),"-"),".xlsx")}
+  },
   content = function(file) {writexl::write_xlsx(
     
     if(input$download_choice_compare=="selected"){
@@ -382,7 +388,7 @@ output$confName = downloadHandler(
         mutate(across(.cols = c(date_y, date_m), .fn = ~ as.numeric(.))) %>%
         filter(.data$date_y>=input$date_range_coverage2[1] & .data$date_y<=input$date_range_coverage2[2]) %>%
         select(dataset,title, date_ym, any_of(input$type_compare)) %>%
-        mutate(export = coverage_dataset_name)
+        mutate(export_date = Sys.Date())
       } else {t.data_coverage_source %>%
           arrange(dataset,date_ym) %>%
           left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
@@ -391,16 +397,16 @@ output$confName = downloadHandler(
           mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
           filter(!is.na(date_ym)) %>%
           select(dataset,title, date_ym, n, n_id, n_id_distinct) %>%
-          mutate(export = coverage_dataset_name)},
+          mutate(export_date = Sys.Date())},
+    format_headers = FALSE,
     path=file)}
 )
 
 
 
 
-
 output$download_compare_coverage_plot = downloadHandler(
-  filename = function() {paste(Sys.Date(), "compare_coverage.png")},
+  filename = function() {paste0("compare_data_coverage_",str_remove_all(Sys.Date(),"-"),".png")},
   content = function(file) {ggsave(file, plot = (compare_coverage_plot()) +
 
                                      #add geom text layer separate for girafe object and download as different sizes needed
@@ -413,7 +419,7 @@ output$download_compare_coverage_plot = downloadHandler(
                                        
                                        aes(
                                          x = .data$date_format + x_nudge(),
-                                         y = if(input$log_scale){log(.data$N) } else {.data$N + (
+                                         y = if(input$log_scale){(.data$N) } else {.data$N + (
                                            #nudge up a 30th of difference between max and min
                                            (
                                              (

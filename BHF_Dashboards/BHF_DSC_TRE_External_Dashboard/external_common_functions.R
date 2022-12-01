@@ -65,3 +65,39 @@ split_occurrence = function(x, sep, n, keep = "lhs") {
     return(as.character(NA))
   }
 }
+
+
+footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
+  glue::glue(
+    '<html>
+           <body>
+  <footer class="footer">
+    <ul class="social-icon">
+      <li class="social-icon__item"><a class="social-icon__link" 
+      href={email_link} target="_blank">
+          <ion-icon name="mail-outline"></ion-icon>
+        </a></li>
+      <li class="social-icon__item"><a class="social-icon__link" 
+      href={twitter_link} target="_blank">
+          <ion-icon name="logo-twitter"></ion-icon>
+        </a></li>
+      <li class="social-icon__item"><a class="social-icon__link" 
+      href={youtube_link} target="_blank">
+          <ion-icon name="logo-youtube"></ion-icon>
+        </a></li>
+    </ul>
+
+</div>
+<hr>
+</div>
+ <p class="copyright-text">This dashboard is updated monthly. Data last exported on: {export_date}.
+</p>
+        
+  </footer>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>'
+  )
+}
