@@ -14,8 +14,10 @@ fluidRow(titlePanel(h3(id = 'section_heading',"Data Coverage")),
                                      value = "data_input",
                                      wellPanel(style = bhf_tab_panel_style,
                                                
-                                               div(id = "message_temp", 
-                                                   h6("Click below to begin comparing datasets:")),
+                                               div(id = "message_temp",
+                                                   div(style = "color:#A0003C !important; margin-bottom:5%;",
+                                                   "Click below to begin comparing datasets:")
+                                                   ),
 
                                                
                                                tags$div(id = "Panels"),
@@ -56,7 +58,7 @@ fluidRow(titlePanel(h3(id = 'section_heading',"Data Coverage")),
                                                                 size = "medium", rounded = TRUE,
                                                                 bounce=FALSE,animate=FALSE
                                                               )),
-                                                 selected = count_options_selected,
+                                                 selected = count_options_selected_season,
                                                  choices = count_options)),
                                                
                                                #LOG SCALE

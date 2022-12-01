@@ -65,7 +65,8 @@ ui = fluidPage(
                     style = "margin-top:7% !important;
                         justify-content: center !important;
                         align-items: center !important;",
-                    height = 70), 
+                    height = 70),
+                   target = "_blank", #open in new tab
                    href="https://www.hdruk.ac.uk/helping-with-health-data/bhf-data-science-centre/"),
     
     
@@ -99,11 +100,17 @@ ui = fluidPage(
     ),
     
     ## Footer ==================================================================
+
     hr(),
     tags$footer(div(
       class = "footer",
-      includeHTML("footer.html")
-    ))
+      #includeHTML('footer.html') #now archived
+      HTML(footer_template(export_date = max(export_date_england,export_date_scotland,export_date_wales),
+                           email_link = "mailto:bhfdsc@hdruk.ac.uk",
+                           twitter_link = "https://twitter.com/BHFDataScience?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
+                           youtube_link = "https://www.youtube.com/channel/UCvpInOwkV-Di0Kt6HwizbDw"
+                           ))
+))
   
 )
 
