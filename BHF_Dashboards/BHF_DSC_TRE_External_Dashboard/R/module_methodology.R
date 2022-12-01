@@ -1,5 +1,5 @@
 #Outputs
-appendixOutput <- function(id){
+methodologyOutput <- function(id){
   ns <- NS(id)
   tagList(
       fluidRow(

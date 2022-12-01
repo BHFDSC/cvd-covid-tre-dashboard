@@ -14,7 +14,7 @@ dataCompletenessUI <- function(id){
              #   label = "Order:",
              #   selected = "value",
              #   choices = c("Alphabetically"="alpha", "Value"="value"))),
-             
+
              radioButtons(
                inputId = ns("order_complete"),
                label = "Order:",

@@ -90,7 +90,7 @@ footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
 </div>
 <hr>
 </div>
- <p class="copyright-text">This dashboard is updated monthly. Data last exported on: {export_date}.
+ <p class="copyright-text">This dashboard is updated on a monthly basis by nation.
 </p>
         
   </footer>
