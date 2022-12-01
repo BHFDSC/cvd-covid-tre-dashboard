@@ -1,13 +1,26 @@
 #current_dir_data = dirname(rstudioapi::getSourceEditorContext()$path)
 
 # Current Dataset Names --------------------------------------------------------
-date_production = as.Date("2022-11-29")
+
+#England
+export_date_england = "2022-11-29"
 completeness_dataset_name = "export_dashboard_NHSD_20221108_data_completeness"
 coverage_dataset_name = "export_dashboard_NHSD_20221102_data_coverage"
+overview_dataset_name = "export_dashboard_NHSD_20221108_date_overview"
 
+#Scotland
+export_date_scotland = "2022-11-26"
+
+#Wales
+export_date_wales = "2022-11-21"
 
 
 # TRE Dataset Provisioning Dashboard -------------------------------------------
+nation_exports = data.frame(Nation=c("England","Scotland","Wales"),
+                               exported=c(export_date_england,export_date_scotland,export_date_wales))
+  
+  
+  
 t.dataset_dashboard = read.csv('Data/TRE_dataset_link.csv')
 
 datasets_available = t.dataset_dashboard %>%
@@ -15,7 +28,8 @@ datasets_available = t.dataset_dashboard %>%
   mutate(across(everything(), .fn=~na_if(.,""))) %>%
   filter(!is.na(Dataset)) %>%
   filter(!is.na(Title)) %>%
-  filter(!Key=="Dataset requested")
+  filter(!Key=="Dataset requested") %>%
+  left_join(nation_exports)
 
 # TRE Data Dictionary ----------------------------------------------------------
 
@@ -60,12 +74,7 @@ t.data_dictionaryWales = read_excel_allsheets( # pathfornow,
 
 
 
-
-
-
-
 # # Data Coverage Pre Processed from data_preprocessing -------------------
-
 
 
 
@@ -107,7 +116,7 @@ t.data_coverage = t.data_coverage_source %>% # as.data.frame() %>%
   mutate(date_format = as.Date(paste(date_ym, 1, sep="-"), "%Y-%m-%d"))
 
 # Dataset Overview -------------------------------------------------------------
-t.dataset_overview = read.csv('Data/export_dashboard_NHSD_20221108_date_overview.csv')
+t.dataset_overview = read.csv(paste0('Data/',overview_dataset_name,'.csv'))
 
 # Dataset Overview -------------------------------------------------------------
 t.dataset_completeness = read.csv(paste0('Data/',completeness_dataset_name,'.csv'))

@@ -8,24 +8,44 @@ Blank Rmd for debugging and troubleshooting
 
 ```{r}
 
-pull(filter(t.dataset_dashboard,Dataset=="gdppr"),Title)
+t.dataset_completeness %>% count(dataset) %>% arrange(n)
+t.dataset_dashboard %>% arrange(Dataset)
+
+strSys.Date()
+str_remove_all(Sys.Date(),"-")
 
 
-t.data_coverage_source %>%
-              arrange(dataset,date_ym) %>%
-              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
-              filter(.data$dataset == "gdppr") %>%
-              ungroup() %>%
-              mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
-              filter(!is.na(date_ym)) %>%
-              separate(date_ym, c("date_y", "date_m"), remove=FALSE, sep = '-') %>%
-              mutate(across(.cols = c(date_y, date_m), .fn = ~ as.numeric(.))) %>%
-              filter(.data$date_y>=1999 & .data$date_y<=2017) %>%
-              pivot_longer(cols=starts_with("n"), names_to="type",values_to="n") %>%
-              filter(type %in% c("n","n_id")) %>%
-              pivot_wider(names_from="type",values_from="n") %>%
-              #select(dataset,title, date_ym, ) %>%
-              mutate(export = coverage_dataset_name)
+archived_on = 
+        t.dataset_overview %>%
+  left_join(datasets_available%>%select(dataset=Dataset,exported)) %>%
+          filter(dataset == "gdppr") %>%
+          select(archived_on,exported) %>% 
+          pivot_longer(everything()) %>% 
+          pull(value)
+      
+        
+nation_summary = "England"
+export_date_england = "2022-10-02"
+export_date_scotland = Sys.Date() + 1
+
+
+paste0(paste(paste0("<b>",c("Archived On","Exported On"),":</b>"),
+                                    c(if(length(archived_on==0)){"s"} else {archived_on},
+                                      if(nation_summary=="England"){export_date_england} else if (nation_summary=="Scotland"){export_date_scotland} else {export_date_wales}),
+                                    collapse = '<br/>'),"<br/>&nbsp")
+
+length(archived_on)
+
+
+max(export_date_england,export_date_scotland,export_date_wales)
+
+
+dataset_overview() %>%
+          left_join(datasets_available%>%select(dataset=Dataset,exported)) %>%
+          select(archived_on,exported) %>% 
+          pivot_longer(everything()) %>% 
+          pull(value)
+
 
 ```
 
