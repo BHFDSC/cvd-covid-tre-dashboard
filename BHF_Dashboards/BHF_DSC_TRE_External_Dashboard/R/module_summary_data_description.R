@@ -41,12 +41,14 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
                               ifelse(grepl("scot", 
                                            datasets_available$url1[datasets_available$Dataset == dataset_summary()]), "Public Health Scotland",
                                      ""))),
-                href = datasets_available$url1[datasets_available$Dataset == dataset_summary()])
+                href = datasets_available$url1[datasets_available$Dataset == dataset_summary()],
+                target = "_blank")
                 
                 
       url2 <- a(ifelse(is.na(datasets_available$url2[datasets_available$Dataset == dataset_summary()]),
-                       "", "Health Data Gateway"), 
-                       href = datasets_available$url2[datasets_available$Dataset == dataset_summary()])
+                       "", "Health Data Research Innovation Gateway"), 
+                       href = datasets_available$url2[datasets_available$Dataset == dataset_summary()],
+                target = "_blank")
       
       output$tab <- renderUI({
        
