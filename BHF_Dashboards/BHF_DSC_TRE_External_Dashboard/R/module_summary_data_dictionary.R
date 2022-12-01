@@ -51,7 +51,8 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
 
       output$tbl = renderDataTable(
         
-        data_dict(),
+        data_dict() %>%
+          rename_with(str_to_title),
         
         selection = "none",
         rownames = FALSE,
@@ -93,6 +94,7 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
         filename = function() {paste0("data_dictionary_",str_remove_all(Sys.Date(),"-"),".xlsx")},
         content = function(file) {writexl::write_xlsx(
           (data_dict() %>%
+             rename_with(str_to_title) %>%
              mutate(dataset = dataset_summary()) %>%
              mutate(export_date = Sys.Date())),
           

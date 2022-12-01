@@ -84,8 +84,8 @@ ui = fluidPage(
     ### Insight Tab ============================================================
     #tabPanel("Insight"),
     
-    ### Appendix Tab ===========================================================
-    #tabPanel("Appendix",appendixOutput(id = "appendix")) ,
+    ### Methodology Tab ===========================================================
+    tabPanel("Methodology",methodologyOutput(id = "methodology")) ,
     
     ### Feedback Button ===========================================================
     
@@ -105,7 +105,7 @@ ui = fluidPage(
     tags$footer(div(
       class = "footer",
       #includeHTML('footer.html') #now archived
-      HTML(footer_template(export_date = max(export_date_england,export_date_scotland,export_date_wales),
+      HTML(footer_template(export_date = paste(export_date_england,export_date_scotland,export_date_wales),
                            email_link = "mailto:bhfdsc@hdruk.ac.uk",
                            twitter_link = "https://twitter.com/BHFDataScience?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
                            youtube_link = "https://www.youtube.com/channel/UCvpInOwkV-Di0Kt6HwizbDw"
@@ -132,7 +132,7 @@ server = function(input, output, session) {
   
   ### Insight Tab ============================================================
   
-  ### Appendix Tab ===========================================================
+  ### Methodology Tab ===========================================================
 
 
   

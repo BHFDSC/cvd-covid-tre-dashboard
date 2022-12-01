@@ -187,6 +187,32 @@ tooltip .tooltip-inner {display:inline;color:red;background-color:blue;}
 #DataTables_Table_1_previous{color:green !important; background-color:blue!important;}*/
 #DataTables_Table_1_paginate{margin-top:0.5% !important;}
 
+/*Col names and up and down arrows*/
+table.dataTable thead .sorting:after {
+  color : white !important;
+  opacity: 1 !important;
+}
+
+table.dataTable thead .sorting {
+  color : white !important;
+  opacity: 1 !important;
+}
+
+table.dataTable thead .sorting:before {
+  color : white !important;
+  opacity: 1 !important;
+}
+
+table.dataTable thead .sorting_asc:after {
+  color : white !important;
+  opacity: 1 !important;
+}
+
+table.dataTable thead .sorting_desc:after {
+  color : white !important;
+  opacity: 1 !important;
+}
+
 
 
 

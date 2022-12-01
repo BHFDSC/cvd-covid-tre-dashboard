@@ -1,69 +1,48 @@
-library(shiny)
-library(shinyalert)
+## Only run examples in interactive R sessions
 
-mod_match_columns_ui <- function(id){
-  ns <- NS(id)
-  tagList(
-    shinyalert::useShinyalert(),
-    actionButton(ns("run"), label = "Start!")
+  
+  library(shiny)
+  library(shinyWidgets)
+  
+  ui <- fluidPage(
+    dropdownButton(
+      inputId = "mydropdown",
+      label = "Controls",
+      icon = icon("sliders"),
+      status = "primary",
+      circle = FALSE,
+      sliderInput(
+        inputId = "n",
+        label = "Number of observations",
+        min = 10, max = 100, value = 30
+      ),
+      prettyToggle(
+        inputId = "na",
+        label_on = "NAs keeped",
+        label_off = "NAs removed",
+        icon_on = icon("check"),
+        icon_off = icon("xmark")
+      )
+    ),
+    tags$div(style = "height: 140px;"), # spacing
+    verbatimTextOutput(outputId = "out"),
+    verbatimTextOutput(outputId = "state")
   )
-}
-
-mod_match_columns_server <- function(id) {
-  moduleServer(id,
-               function(input, output, session) {
-                 
-                 ns <- session$ns
-                 
-                 options <- list(c("option_1","option_2"),
-                                 c("option_3","option_4"))
-                 
-                 lapply(1:2, function(col){
-                   
-                   output[[paste0("dropdown",col)]] <- renderUI({
-                     shinyWidgets::pickerInput(
-                       inputId = ns(paste0("options",col)),
-                       label = paste("Options",col,"listed below"),
-                       choices = options[[col]],
-                       selected = "",
-                       multiple = FALSE,
-                       options = shinyWidgets::pickerOptions(size = 15)
-                     )
-                   })
-                   
-                 })
-                 
-                 observeEvent(input$run, {
-                   
-                   shinyalert::shinyalert(
-                     title = "Pick an option!",
-                     html = TRUE,
-                     text = tagList(
-                       lapply(1:2, function(i){uiOutput(ns(paste0("dropdown",i)))})
-                     )
-                     # callbackR = function(x) { message("Hello ", x) },
-                     # inputId = ns(paste0("modal"))
-                   )
-                   
-                 })
-                 
-                 observe({
-                   print(input$options1)
-                   print(input$options2)
-                   print(input$shinyalert)
-                 })
-                 
-               })
-}
-
-ui <- fluidPage(
-  tagList(
-    mod_match_columns_ui("match_columns_ui_1")
-  )
-)
-
-server <- function(input, output, session) {
-  mod_match_columns_server("match_columns_ui_1")
-}
-
-shinyApp(ui = ui, server = server)
+  
+  server <- function(input, output, session) {
+    
+    output$out <- renderPrint({
+      cat(
+        " # n\n", input$n, "\n",
+        "# na\n", input$na
+      )
+    })
+    
+    output$state <- renderPrint({
+      cat("Open:", input$mydropdown_state)
+    })
+    
+  }
+  
+  shinyApp(ui, server)
+  
