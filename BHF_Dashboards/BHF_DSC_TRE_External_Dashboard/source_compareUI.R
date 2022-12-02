@@ -1,7 +1,9 @@
 ## Data Coverage ===========================================================
-fluidRow(titlePanel(h3(id = 'section_heading',"Data Coverage")),
+fluidRow(titlePanel(h3(id = 'section_heading_hyper',
+                       shinyLink(to = "dcov_meth", label = "Data Coverage")
+                       )),
          
-         #tabset panel styling
+         #tabset panel styling for pills
          tags$head(tags$style(tabset_panel_compare_styling)),
          
          #UI INPUT
@@ -10,8 +12,11 @@ fluidRow(titlePanel(h3(id = 'section_heading',"Data Coverage")),
                 tabsetPanel(id = "tab_selected_data_input", type="pills",
                             
                             #DATA INPUT
-                            tabPanel(title = "Data",
+                            tabPanel("Data",
+                                 
                                      value = "data_input",
+                                     id = "data_input_css",
+                                    
                                      wellPanel(style = bhf_tab_panel_style,
                                                
                                                div(id = "message_temp",
@@ -82,6 +87,27 @@ fluidRow(titlePanel(h3(id = 'section_heading',"Data Coverage")),
                                                               icon = icon("file-excel"))
                                                )),
                                                
+                                               dropdown(id = "testingf",
+                                                 radioGroupButtons(
+                                                   inputId = "box1.0",
+                                                   label = "Choose groups", 
+                                                   choiceNames = c("Antimicrobial - Groups", "Antimicrobials"), 
+                                                   choiceValues = c("ab_group", "ab_type"), 
+                                                   direction = "vertical"
+                                                 ),
+                                                 radioGroupButtons(
+                                                   inputId = "box1.1",
+                                                   label = "Show", 
+                                                   choiceNames = c("Prescriptions", "DDD per 100 bed days", "DOT per 100 bed days"),
+                                                   choiceValues = c("prescriptions", "DDD_100", "DOT_100"),
+                                                   selected = "prescriptions", 
+                                                   direction = "vertical"
+                                                 ),
+                                                 size = "xs",
+                                                 icon = icon("gear", class = "opt"), 
+                                                 up = TRUE
+                                               )
+                                               
 
                                                
                                      )
@@ -93,7 +119,10 @@ fluidRow(titlePanel(h3(id = 'section_heading',"Data Coverage")),
          column(9,
                 
                 tags$div(girafeOutput("compare_coverage_plot_girafe",
-                                      width = '100%', height = '85%')),
+                                      width = '100%', height = '85%') 
+                        # %>% shinycssloaders::withSpinner(type = 4, color = colour_bhf_lightred ,size = 0.7)
+                         )
+                
                 #tableOutput("table"),
                 #textOutput("test")
                 #textOutput("reactive_test"),
