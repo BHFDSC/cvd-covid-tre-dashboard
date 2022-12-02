@@ -289,6 +289,8 @@ output$compare_coverage_plot_girafe =
       need(nrow(validate_plots()) > 1, message = FALSE)
     )
     
+    #validate(need(compare_coverage_plot(), "")) #attempt to only induce spinner once 2 inputs added
+    
   girafe(ggobj = compare_coverage_plot() +
            
            (geom_text_repel_interactive(
@@ -469,3 +471,10 @@ output$download_compare_coverage_plot = downloadHandler(
 #     selector = "div:has(> #txt)"
 #   )
 # })
+
+
+
+
+
+
+

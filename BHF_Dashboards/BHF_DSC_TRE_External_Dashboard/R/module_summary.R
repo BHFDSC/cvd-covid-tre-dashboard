@@ -32,23 +32,31 @@ summaryUI <- function(id){
 
               ## Data Dictionary ===============================================
               hr(),
-              titlePanel(h3(id = 'section_heading',"Data Dictionary")),
+              titlePanel(h3(id = 'section_heading_hyper',
+                            shinyLink(to = "dd_meth", label = "Data Dictionary"),
+                            )),
 
               dataDictionaryUI(id = ns("data_dictionary_module")),
 
 
               ## Data Coverage =================================================
               hr(),
-              titlePanel(h3(id = 'section_heading',"Data Coverage")),
+              titlePanel(h3(id = 'section_heading_hyper',
+                            shinyLink(to = "dcov_meth", label = "Data Coverage")
+                            )),
 
               dataCoverageUI(id = ns("data_coverage_module")),
 
               ## Data Completeness =============================================
               hr(),
-              titlePanel(h3(id='section_heading',"Data Completeness")),
+              titlePanel(h3(id='section_heading_hyper',
+                            shinyLink(to = "dcom_meth", label = "Data Completeness"),
+                            #tags$a("Data Completeness",href="https://shiny.rstudio.com/articles/basics.html",target="_blank")
+                            )),
 
               dataCompletenessUI(id = ns("data_completeness_module")),
 
+              
               ## Data Validity =================================================
               #hr(),
               #titlePanel(h3(id='section_heading',"Data Validity")),
