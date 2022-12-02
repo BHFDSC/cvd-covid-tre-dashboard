@@ -5,7 +5,7 @@ dataOverviewUI <- function(id){
     # Outputs ------------------------------------------------------------------
     fluidRow(class = "overview_css",
              
-             column(3,
+             column(4,
   
 
              valueBoxOutput(ns("registrations"), width="100%")
@@ -13,7 +13,7 @@ dataOverviewUI <- function(id){
              ),
              
              
-             column(3, 
+             column(4, 
 
                valueBoxOutput(ns("batch_summary"), width="100%")
              

@@ -136,13 +136,16 @@ actionButton(ns("download_coverage_data"),
                         value = "summary_coverage_plot",
                         class = "one",
                         tags$div(girafeOutput(ns("summary_coverage_plot_girafe"),
-                                              width = '100%', height = '85%')),
+                                              width = '100%', height = '100%')),
                ),
                tabPanel(title = "Seasonality", 
                         value = "compare_plot", 
                         class = "one",
+                        fluidRow(
                         tags$div(girafeOutput(ns("summary_coverage_season_plot_girafe"),
-                                              width = '100%', height = '85%')))
+                                              width = '100%', height = '100%') 
+                                 #%>% shinycssloaders::withSpinner(type = 4, color = colour_bhf_lightred ,size = 0.7)
+                                 )))
              )),
       
     )
