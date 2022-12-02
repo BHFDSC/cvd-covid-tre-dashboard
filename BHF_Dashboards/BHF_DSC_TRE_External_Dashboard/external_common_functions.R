@@ -101,3 +101,21 @@ footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
 </html>'
   )
 }
+
+
+#' Shiny Link
+#'
+#' Create a link to an internal tab panel
+#'
+#' @param to page to navigate to
+#' @param label text that describes the link
+#'
+#' @importFrom shiny tags
+#' @export
+shinyLink <- function(to, label) {
+  tags$a(
+    class = "shiny__link",
+    href = to, #receive value of the page (i.e., tab panel) that you would like to navigate to
+    label #description of the link: if you want to render the value for label as HTML, then wrap label in the HTML()
+  )
+}

@@ -1,48 +1,156 @@
-## Only run examples in interactive R sessions
+# shiny::runGitHub(
+#   repo = "shinyAppTutorials",
+#   username = "davidruvolo51",
+#   subdir = "shiny-links"
+# )
 
-  
-  library(shiny)
-  library(shinyWidgets)
-  
-  ui <- fluidPage(
-    dropdownButton(
-      inputId = "mydropdown",
-      label = "Controls",
-      icon = icon("sliders"),
-      status = "primary",
-      circle = FALSE,
-      sliderInput(
-        inputId = "n",
-        label = "Number of observations",
-        min = 10, max = 100, value = 30
+#'////////////////////////////////////////////////////////////////////////////
+#' FILE: app.R
+#' AUTHOR: David Ruvolo
+#' CREATED: 2020-08-02
+#' MODIFIED: 2021-05-01
+#' PURPOSE: Update example on creating internal links
+#' STATUS: working
+#' PACKAGES: Shiny
+#' COMMENTS: This Shiny app replaces previous example apps as there were
+#' accessibility concerns with the previous method. This approach is much
+#' easier to use as it uses Shiny Input Bindings rather than inline onclick
+#' event declarations.
+#'////////////////////////////////////////////////////////////////////////////
+
+# pkgs
+library(shiny)
+
+shinyLink <- function(to, label) {
+  tags$a(
+    class = "shiny__link",
+    href = to, #receive value of the page (i.e., tab panel) that you would like to navigate to
+    label #description of the link: if you want to render the value for label as HTML, then wrap label in the HTML()
+  )
+}
+
+code <- list(
+  #r = paste0(readLines("R/shinyLink.R"), collapse = "\n"),
+  js = paste0(readLines("www/shinyLink.js"), collapse = "\n")
+)
+
+# ui
+ui <- tagList(
+  tags$head(
+    tags$link(rel = "stylesheet", href = "styles.css"),
+    tags$title("Shiny Link Component")
+  ),
+  navbarPage(
+    title = "shinyLink",
+    tabPanel(
+      title = "Home",
+      value = "home",
+      tags$h1("Creating Internal Links"),
+      tags$img(
+        src = "chain-image.jpg",
+        alt = "the ends of two metal chains linked together by a ring"
       ),
-      prettyToggle(
-        inputId = "na",
-        label_on = "NAs keeped",
-        label_off = "NAs removed",
-        icon_on = icon("check"),
-        icon_off = icon("xmark")
+      tags$p(
+        "This Shiny app uses a custom input component with a Shiny",
+        "input binding to create internal links to other pages in a",
+        "shiny application. This is ideal for Shiny apps that use",
+        "navbarPage, tabPanel, and tabsetPanel layouts."
+      ),
+      tags$p(
+        "Visit the", shinyLink(to = "code", "Code Page"), "to view",
+        "the", shinyLink(to = "r", label = "R Code"), "and the",
+        shinyLink(to = "javascript", "JavaScript input binding")
       )
     ),
-    tags$div(style = "height: 140px;"), # spacing
-    verbatimTextOutput(outputId = "out"),
-    verbatimTextOutput(outputId = "state")
-  )
-  
-  server <- function(input, output, session) {
-    
-    output$out <- renderPrint({
-      cat(
-        " # n\n", input$n, "\n",
-        "# na\n", input$na
+    tabPanel(
+      title = "Code",
+      value = "code",
+      tags$h1("Code"),
+      tags$p(
+        "View the R code and the JavaScript Input Binding for the",
+        tags$code("shinyLink"), "component."
+      ),
+      tabsetPanel(
+        tabPanel(
+          title = "R",
+          value = "r",
+          tags$h2("The shinyLink Component"),
+          tags$p(
+            "The", tags$code("shinyLink"), "has two input args",
+            tags$code("to"), "and", tags$code("label"),
+            ". Use", tags$code("to"), "to specify the tab you",
+            "would like to navigate to, and use",
+            tags$code("label"), " to",
+            "describe the link. The value entered for",
+            tags$code("to"),
+            "must match the target tabPanel (i.e., the value",
+            "entered for ", tags$code("title"), " or",
+            tags$code("value"), "."
+          ),
+          tags$p(
+            "It is strongly recommended to structure the tabPanels",
+            "using the", tags$code("value"),
+            "argument. By default, the value",
+            "supplied for", tags$code("title"),
+            "will be used as the tab's value.",
+            "However, if the title has many spaces or characters,",
+            "it is more difficult to find and select elements in",
+            "JavaScript. Instead, use the attribute",
+            tags$code("value"), "and enter",
+            "a concise name without spaces or characters (",
+            "with the exception of underscores or hyphens).",
+            "For example, if the title was 'Data Visualisations",
+            "and Tables', then the value should be 'data' or",
+            "'data-viz'."
+          ),
+          tags$pre(tags$code(code$r)),
+          tags$p(
+            shinyLink(
+              to = "javascript",
+              label = "View JavaScript code"
+            )
+          ),
+          tags$p(
+            shinyLink(
+              to = "home",
+              label = "Go back to the home page"
+            )
+          )
+        ),
+        tabPanel(
+          title = "JavaScript",
+          value = "javascript",
+          tags$h2("JavaScript"),
+          tags$p(
+            "Here is the shiny input binding for the",
+            tags$code("shinyLink"), "component."
+          ),
+          tags$pre(tags$code(code$js)),
+          tags$p(
+            shinyLink(
+              to = "r",
+              label = "View R Component"
+            )
+          ),
+          tags$p(
+            shinyLink(
+              to = "home",
+              label = "Go back to the home page"
+            )
+          )
+        )
       )
-    })
-    
-    output$state <- renderPrint({
-      cat("Open:", input$mydropdown_state)
-    })
-    
-  }
+    )
+  ),
+  tags$script(src = "shinyLink.js")
+)
+
+
+# server
+server <- function(input, output) {
   
-  shinyApp(ui, server)
-  
+}
+
+
+# app
+shinyApp(ui, server)
