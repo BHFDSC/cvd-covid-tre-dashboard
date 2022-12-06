@@ -34,17 +34,18 @@ datasets_available = t.dataset_dashboard %>%
 # TRE Data Dictionary ----------------------------------------------------------
 
 #England------------------------------------------------------------------------
+# Be advised the English dd had a hidden tab called 'Admin Lists' hence why the '38th' tab is dropped.
 t.data_dictionaryEng = read_excel_allsheets('Data/TRE_DD_391419_j3w9t.xlsx',
                                        tibble = FALSE,
-                                       except_sheet_no = 1,
+                                       except_sheet_no = c(1,38) ,
                                        skip = 2) %>%
   mutate(table = str_replace(table, paste0("_", database),"")) %>%
   mutate(table = str_replace(table,"_[{]fyear[}]" ,"")) %>%
   filter(!is.na(table))
 
 # just doing a super basic change of column names here until the extra column issue is solved
-colnames(t.data_dictionaryEng) <- c("database", "table", "field", "field name", "field description", "field type",
-                                    "data type", "units", "values", "notes", "links", "x")
+#colnames(t.data_dictionaryEng) <- c("database", "table", "field", "field name", "field description", "field type",
+#                                   "data type", "units", "values", "notes", "links", "x")
 
 # duplicating in case there are any downstream chunks depending on the name 'data_dictionary'
 # data_dictionary <- t.data_dictionaryEng
