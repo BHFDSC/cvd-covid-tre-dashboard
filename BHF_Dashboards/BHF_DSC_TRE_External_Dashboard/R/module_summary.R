@@ -34,8 +34,9 @@ summaryUI <- function(id){
               hr(),
               titlePanel(h3(id = 'section_heading_hyper',
                             shinyLink(to = "dd_meth", label = "Data Dictionary") %>% add_prompt(
-                              message = "test",
-                              position = "right", type = "error",
+                              message = "Go to methodology",
+                              position = "right", type = "info",
+                              arrow=FALSE,
                               size = "s", rounded = TRUE,
                               bounce=FALSE,animate=FALSE)
                             )),
@@ -46,7 +47,12 @@ summaryUI <- function(id){
               ## Data Coverage =================================================
               hr(),
               titlePanel(h3(id = 'section_heading_hyper',
-                            shinyLink(to = "dcov_meth", label = "Data Coverage")
+                            shinyLink(to = "dcov_meth", label = "Data Coverage") %>% add_prompt(
+                              message = "Go to methodology",
+                              position = "right", type = "info",
+                              arrow=FALSE,
+                              size = "s", rounded = TRUE,
+                              bounce=FALSE,animate=FALSE)
                             )),
 
               dataCoverageUI(id = ns("data_coverage_module")),
@@ -54,7 +60,12 @@ summaryUI <- function(id){
               ## Data Completeness =============================================
               hr(),
               titlePanel(h3(id='section_heading_hyper',
-                            shinyLink(to = "dcom_meth", label = "Data Completeness"),
+                            shinyLink(to = "dcom_meth", label = "Data Completeness") %>% add_prompt(
+                              message = "Go to methodology",
+                              position = "right", type = "info",
+                              arrow=FALSE,
+                              size = "s", rounded = TRUE,
+                              bounce=FALSE,animate=FALSE)
                             #tags$a("Data Completeness",href="https://shiny.rstudio.com/articles/basics.html",target="_blank")
                             )),
 

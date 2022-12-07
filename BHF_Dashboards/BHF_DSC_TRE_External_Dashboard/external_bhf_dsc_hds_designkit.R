@@ -362,10 +362,11 @@ margin-top:15px;
 
 /*Prompter Tooltips*/
 .hint--error:after {
-          background: none var(--colour_bhf_neonred);
+          background: var(--colour_bhf_neonred);
           opacity: 0.95 !important;
           color: #FFFFFF;
           text-shadow: none;
+          box-shadow: none;
           transition-duration: width 2s, height 2s, transform 2s;
           transition-timing-function: ease-in; 
           transition-delay: 0.5s !important;
@@ -391,11 +392,20 @@ margin-top:15px;
         .hint--error.hint--right:before {
           border-right-color: var(--colour_bhf_neonred)
         }
+.hint--info:after {
+          background: #F7F7F7;
+          opacity: 0.95 !important;
+          color: #6B6B6B;
+          text-shadow: none;
+          box-shadow: none;
+          transition-duration: width 2s, height 2s, transform 2s;
+          transition-timing-function: ease-in; 
+          transition-delay: 0.5s !important;
+}
 
 
 
-
-
+#summary_module-data_completeness_module-order_complete-label{margin-bottom:4% !important;}
 
 
 
