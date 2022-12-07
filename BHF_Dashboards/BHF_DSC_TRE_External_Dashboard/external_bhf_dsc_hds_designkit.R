@@ -181,17 +181,24 @@ tooltip .tooltip-inner {display:inline;color:red;background-color:blue;}
 }
 
 
+/*############################################################################*/
 
 /*DT Information Show number label*/
+
+/*
 #DataTables_Table_1_info {
 margin-top: !important;
 }
-#DataTables_Table_1_length {
-margin-left: !important; margin-top: 1% !important;
+#DataTables_length {
+margin-left: !important; margin-top: 30% !important;
 } /*length moves wrt to info*/
+
 #DataTables_Table_1_filter {
 margin-bottom: -2% !important;
 }
+*/
+
+/*DataTables_Table_1_filter DataTables_Table_2_filter etc works but targets each individually - need to target whole class but dont know how*/
 
 /*NOT WORKING
 #DataTables_Table_1_length [value='10'] {
@@ -204,10 +211,26 @@ color:green!important;background-color:blue;margin-left:-14.3% !important; margi
         box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(126, 239, 104, 0.6);
         outline: 0 none;
 }
+
 /*#DataTables_Table_1_paginate.paginate_button current{color:green !important; background-color:blue!important;}
 #DataTables_Table_1_previous{color:green !important; background-color:blue!important;}*/
 /*#DataTables_Table_1_paginate{margin-top:0.5% !important;}*/
 
+
+/*############################################################################*/
+
+
+/*reactable*/
+
+.rt-page-size-select{
+outline: 0 
+}
+.rt-page-info{
+margin-left:-2% !important;
+}
+.rt-page-size{
+
+}
 
 
 /*Col names and up and down arrows*/
@@ -1081,6 +1104,16 @@ padding-top:-50% !important;
 }
 
 
+
+#custom_spinner{
+color:var(--colour_bhf_lightred);
+   position: fixed;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+}
+
+
 "
 
 
@@ -1188,7 +1221,7 @@ color: ##CC0016 !important;
 background-color:white !important;
 border: 1px solid #F3F2F4!important;
 border-top-left-radius: 10px !important;
-border-bottom-left-radius: 0px !important;
+border-bottom-leftf-radius: 0px !important;
 border-top-right-radius: 10px !important;
 border-bottom-right-radius: 0px !important;
 }'
@@ -1385,6 +1418,7 @@ prettySwitchCustom <- function(inputId,
                          width = NULL,
                          info = TRUE,
                          my_message,
+                         arrow = TRUE,
                          prompt_size = "small",
                          prompt_position = "right",
                          spaces = 0 #no of spaces want between label and info icon
@@ -1412,6 +1446,7 @@ prettySwitchCustom <- function(inputId,
         tags$label(tags$span(paste0(label,stringi::stri_dup(intToUtf8(160),spaces)), id = "pretty_custom_label"))
       )
     ) , if (info) {tags$span(icon("info-circle"), id = "pretty_custom_icon") %>% add_prompt(
+      arrow = arrow,
       message = my_message,
       position = prompt_position, type = "error",
       size = prompt_size, rounded = TRUE,

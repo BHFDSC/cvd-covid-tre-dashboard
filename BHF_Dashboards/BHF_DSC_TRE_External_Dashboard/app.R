@@ -26,6 +26,7 @@ library(bsplus)
 library(showtext)
 library(spsComps)
 library(shinyalert)
+library(reactable)
 
 #External Sources
 source('external_common_functions.R')
