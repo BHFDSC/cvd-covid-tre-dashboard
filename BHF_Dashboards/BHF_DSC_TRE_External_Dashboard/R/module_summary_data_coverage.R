@@ -143,8 +143,14 @@ actionButton(ns("download_coverage_data"),
                         class = "one",
                         fluidRow(
                         tags$div(girafeOutput(ns("summary_coverage_season_plot_girafe"),
-                                              width = '100%', height = '100%') 
-                                 #%>% shinycssloaders::withSpinner(type = 4, color = colour_bhf_lightred ,size = 0.7)
+                                              width = '100%', height = '100%')
+                                 %>% shinyWidgets::addSpinner(spin = "double-bounce", color = "#112446")
+                                 # %>% shinycssloaders::withSpinner(type = 4
+                                 #                                  #,color = colour_bhf_lightred 
+                                 #                                  ,size = 0.7
+                                 #                                  ,custom.css = TRUE
+                                 #                                  ,id = "custom_spinner"
+                                 #                                  )
                                  )))
              )),
       
@@ -547,13 +553,13 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
           theme(
             text=element_text(family=family_lato),
             panel.grid = element_blank(),
-            plot.margin = margin(0,50,0,0),
+            plot.margin = margin(10,50,0,0),
             plot.background = element_rect(color=NA),
             panel.background = element_rect(color = NA),
             axis.ticks = element_blank(),
             axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size=14, color="#4D4C4C"),
             axis.text.x = element_text(size = 14, face = "bold"),
-            axis.text.y = element_text(size = 14, face = "bold"),
+            axis.text.y = element_text(size = 13, face = "bold"),
             legend.position = "none"
           ) +
           coord_cartesian(clip = "off") +

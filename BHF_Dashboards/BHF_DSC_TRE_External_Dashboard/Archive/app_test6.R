@@ -1,49 +1,48 @@
 library(shiny)
-library(shinyjs)
+library(DT)
 
-## Modify the CSS style of a given selector
-modifyStyle <- function(selector, ...) {
+set.seed(2282018)
+company <- data.frame(Company = letters[1:10], Sales = scales::dollar(runif(10, 200, 1230)), stringsAsFactors = F)
+
+css <- HTML(".pull-left{float: left !important;}
+            .pull-right{float: right !important;}")
+
+js <- HTML("$(function(){
+        setTimeout(function(){
+           $('.dataTables_filter').addClass('pull-left');
+           $('.dataTables_length').addClass('pull-right');
+           }, 200);
+           });")
+
+# UI ---- 
+ui <- function(){
   
-  values <- as.list(substitute(list(...)))[-1L]
-  parameters <- names(values)
-  
-  args <- Map(function(p, v) paste0("'", p,"': '", v,"'"), parameters, values)
-  jsc <- paste0("$('",selector,"').css({", paste(args, collapse = ", "),"});")
-  
-  shinyjs::runjs(code = jsc)
-  
+  fluidPage(
+    tags$head(tags$style(css),
+              tags$script(js)),
+    
+    sidebarLayout(
+      
+      sidebarPanel(numericInput("nums", label = "Num Input", value = 1, min = 1, max = 10)),
+      
+      mainPanel(dataTableOutput("mytable"))
+    )       
+  )
 }
 
-# UI for the app
-user <- shinyUI(
-  navbarPage(title = "", id = "navtab",
-             header = div(useShinyjs()),
-             tabPanel("Home Page",
-                      div(HTML("<h1><b><center>Home Page</center></b></h1>")),
-                      "More text."
-             ),
-             
-             tabPanel("Glossary",
-                      div(HTML("<h1><b><center>Glossary</center></b></h1>")),
-                      "More text."
-             )
-  )
-)
-
-# Server for the app
-serv <- shinyServer(function(input, output, session) {
+# server ----
+server <- function(input, output, session){
   
-  observeEvent(input$navtab, {
-    currentTab <- input$navtab # Name of the current tab
-    
-    if (currentTab == "Home Page") {
-      modifyStyle("body", background = "blue", color = "white", 'font-family' = "Arial")
-    }
-    if (currentTab == "Glossary")  {
-      modifyStyle("body", background = "red", color = "white", 'font-family' = "Arial")
-    }
+  output$mytable <- renderDataTable({
+    datatable(company, 
+              caption = tags$caption("StackOverflow Example"), 
+              filter = "none", 
+              options = list(
+                autoWidth = T, 
+                pageLength = 10, 
+                scrollCollapse = T, 
+                dom = '<"top"l>t<"bottom"f>')
+    )
   })
-  
-})
-
-shinyApp(user, serv)
+}
+shinyApp(ui, server)

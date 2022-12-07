@@ -16,11 +16,14 @@ dataDictionaryUI <- function(id){
     #       icon_animation = "spin"
     #     )),
     
-    fluidRow(DTOutput(ns('tbl'))),
+    fluidRow(column(12,
+                    
+    reactableOutput(ns("tbl")),
     
     downloadButton(ns("download_dd"),
                                    label="Export Data",
                                    icon = icon("file-excel"))
+    ))
     
   )
 }
@@ -29,6 +32,11 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
   moduleServer(
     id,
     function(input, output, session){
+      
+      grouped_datasets = datasets_available %>% filter(Dataset != dataset_dataset) %>%
+        distinct(Dataset) %>%
+        pull(Dataset)
+      
 ## England and Scotland reactive  - designed for table format
       data_dict = reactive({
         
@@ -49,58 +57,86 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
           
         }
         
+        # else if(nation_summary() == "England" ){
+        #   t.data_dictionaryEng %>%
+        #     left_join(select(datasets_available, c("table","Dataset", "title_dataset")), by=c("table")) %>%
+        #     filter(Dataset == dataset_summary()) %>%
+        #     select(-Dataset,-table,-database,-x) %>%
+        #     relocate(title_dataset)
+        #   
+        # }
         
         else if(nation_summary() == "England" ){
           t.data_dictionaryEng %>%
-            left_join(select(datasets_available, c("table","Dataset")), by=c("table")) %>%
+            select("table") %>%
+            left_join(select(datasets_available, c("table","Dataset","Title","title_dataset","dataset_dataset")),
+                      by=c("table")) %>%
             filter(Dataset == dataset_summary()) %>%
-            select(-Dataset,-table,-database) 
-          
+            select(-Dataset) %>%
+            distinct() %>%
+            mutate(Dataset = ifelse(Title==title_dataset, NA, title_dataset)) %>%
+            select(-Title,-title_dataset) %>%
+            select(where(not_all_na)) %>%
+            left_join(t.data_dictionaryEng, by = "table") %>%
+            select(-table,-database,-x,-dataset_dataset)
         }
         
       })
       
       
 
-      output$tbl = renderDataTable(
+      output$tbl = renderReactable(
         
-        data_dict() %>%
-          rename_with(str_to_title),
-        
-        selection = "none",
-        rownames = FALSE,
-        
-        #extensions = 'Buttons',
+        reactable(
+          data = if(dataset_summary() %in% grouped_datasets){
+            data_dict() %>%
+              group_by(Dataset) %>%
+              rename_with(str_to_title) %>%
+              mutate(Order = row_number()) %>%
+              ungroup() %>%
+              relocate(Order)} else {
+                data_dict() %>%
+                  rename_with(str_to_title) %>%
+                  mutate(Order = row_number()) %>%
+                  relocate(Order)
+              },
+          
+          groupBy = if(dataset_summary() %in% grouped_datasets){"Dataset"} else {NULL},
+          paginateSubRows = TRUE,
+          
+          class = "my-tbl",
+          columns = list(
+            Order = colDef(style = list(whiteSpace = "nowrap", textOverflow = "unset")),
+            Dataset = colDef(minWidth = 400),
+            Field = colDef(minWidth = 200),   # 50% width, 200px minimum
+            `Field Name` = colDef(minWidth = 200),   # 25% width, 100px minimum
+            `Field Description` = colDef(minWidth = 200)  # 25% width, 100px minimum
+          ),
 
-        
-        options = list(
-          #buttons = c('copy', 'csv', 'excel'),
-          escape = FALSE,
-          scrollX = TRUE,
-          searching = TRUE,
+      
+          showSortable = TRUE,
+          defaultColDef = colDef(
+            align = "left",
+            minWidth = 100,
+            headerStyle = list(background = colour_bhf_darkred, height = 60, color="white", overflow = "visible")
+          ),
           
-          #lengthChange = FALSE,
-          pageLength = 5,
-          lengthMenu = list(c(5, 10, 20, -1), c('5', '10', '20', 'All')),
-          paging = T,
-          dom = '<"top"Bfi>rt<"bottom"pl><"clear">', 
+    
+
+          striped = TRUE,
+          wrap = FALSE,
+          searchable = TRUE,
           
-          columnDefs = list(list(
-            targets = "_all",
-            render = JS(
-              "function(data, type, row, meta) {",
-              "return type === 'display' && data != null && data.length > 30 ?",
-              "'<span title=\"' + data + '\">' + data.substr(0, 30) + '...</span>' : data;",
-              "}"
-            )
-            
-            # rowCallback = JS(
-            #   "function(row, data) {",
-            #   "var full_text = 'This rows values are :' + data[0] + ',' + data[1] + '...'",
-            #   "$('td', row).attr('title', full_text);",
-            #   "}")
-          ))
+          highlight = TRUE,
+          
+          minRows = 5,
+          showPageSizeOptions = TRUE,
+          defaultPageSize = 5,
+          pageSizeOptions = c(5, 10, 20, nrow(data_dict())),
+          #paginationType = "jump",
+          onClick = "expand"
         )
+
       )
       
       
