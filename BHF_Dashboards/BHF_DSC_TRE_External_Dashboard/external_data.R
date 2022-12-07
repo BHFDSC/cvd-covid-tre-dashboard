@@ -44,8 +44,8 @@ t.data_dictionaryEng = read_excel_allsheets('Data/TRE_DD_391419_j3w9t.xlsx',
   filter(!is.na(table))
 
 # just doing a super basic change of column names here until the extra column issue is solved
-#colnames(t.data_dictionaryEng) <- c("database", "table", "field", "field name", "field description", "field type",
-#                                   "data type", "units", "values", "notes", "links", "x")
+colnames(t.data_dictionaryEng) <- c("database", "table", "field", "field name", "field description", "field type",
+                                   "data type", "units", "values", "notes", "links")
 
 # duplicating in case there are any downstream chunks depending on the name 'data_dictionary'
 # data_dictionary <- t.data_dictionaryEng
