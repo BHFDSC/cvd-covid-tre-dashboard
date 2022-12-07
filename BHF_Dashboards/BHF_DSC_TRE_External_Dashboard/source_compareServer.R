@@ -118,6 +118,8 @@ compare_coverage_data_start_date =
     compare_coverage_data_all_records() %>%
       #filter date range
       mutate(start_date = as.Date(paste(start_date, 1, sep="-"), "%Y-%m-%d")) %>%
+      #to ensure all datasets take the min start date of the greatest min
+      mutate(start_date = min(start_date))%>%
       filter(!start_date >= date_format) %>%
       #using current month but this should be updated to use production ym in future
       mutate(current_date = as.Date(paste(format(Sys.Date(), "%Y-%m"), 1, sep="-"), "%Y-%m-%d")) %>%
