@@ -4,7 +4,9 @@ library(readxl)
 dataset_dashboard_list = function(nation,key="Dataset available"){
   
   nation_datasets = datasets_available %>%
-    filter(Key==key & Nation==nation)
+    filter(Key==key & Nation==nation) %>%
+    select(Group,Title,Dataset) %>%
+    distinct()
   
   nation_datasets_list = list()
   
@@ -23,6 +25,7 @@ dataset_dashboard_list = function(nation,key="Dataset available"){
   return(nation_datasets_list)
   
 }
+
 
 
 read_excel_allsheets <- function(filename, tibble = FALSE, except_sheet_no = NA, skip = 0, collate = TRUE) {
@@ -119,3 +122,6 @@ shinyLink <- function(to, label) {
     label #description of the link: if you want to render the value for label as HTML, then wrap label in the HTML()
   )
 }
+
+
+not_all_na <- function(x) any(!is.na(x))

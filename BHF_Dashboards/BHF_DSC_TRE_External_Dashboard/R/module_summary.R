@@ -33,7 +33,11 @@ summaryUI <- function(id){
               ## Data Dictionary ===============================================
               hr(),
               titlePanel(h3(id = 'section_heading_hyper',
-                            shinyLink(to = "dd_meth", label = "Data Dictionary"),
+                            shinyLink(to = "dd_meth", label = "Data Dictionary") %>% add_prompt(
+                              message = "test",
+                              position = "right", type = "error",
+                              size = "s", rounded = TRUE,
+                              bounce=FALSE,animate=FALSE)
                             )),
 
               dataDictionaryUI(id = ns("data_dictionary_module")),

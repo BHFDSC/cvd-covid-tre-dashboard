@@ -55,7 +55,8 @@ fluidRow(titlePanel(h3(id = 'section_heading_hyper',
                                                fluidRow(
                                                radioButtons(
                                                  inputId = "type_compare",
-                                                 label = h6(id='count_heading',paste0("Count:",stringi::stri_dup(intToUtf8(160),2)), tags$span(icon("info-circle"), id = "iconer") %>% 
+                                                 label = h6(id='count_heading',paste0("Count:",stringi::stri_dup(intToUtf8(160),2)),
+                                                            tags$span(icon("info-circle"), id = "iconer") %>% 
                                                               
                                                               add_prompt(
                                                                 message = type_text,
@@ -72,7 +73,7 @@ fluidRow(titlePanel(h3(id = 'section_heading_hyper',
                                                
                                                #TREND LINE
                                                prettySwitchCustom(inputId = "trend_line",
-                                                            label = "Show trend", fill = TRUE, value=FALSE, spaces = 2,my_message = trend_text,prompt_size="medium"),
+                                                            label = "Show trend", fill = TRUE, value=FALSE, spaces = 2, my_message = trend_text , prompt_size="medium"),
                                                
                                                
                                                fluidRow(column(12,
