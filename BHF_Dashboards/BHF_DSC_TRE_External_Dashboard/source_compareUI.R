@@ -13,8 +13,9 @@ fluidRow(titlePanel(h3(id = 'section_heading_hyper',
          
          #UI INPUT
          column(3,
-                
+                style = 'z-index:99 !important;',
                 tabsetPanel(id = "tab_selected_data_input", type="pills",
+                            
                             
                             #DATA INPUT
                             tabPanel("Data",
@@ -54,7 +55,8 @@ fluidRow(titlePanel(h3(id = 'section_heading_hyper',
                                                #EXTREME VALUES
                                                fluidRow(column(12,
                                                prettySwitchCustom(inputId = "all_records",
-                                                            label = "Show extreme dates", fill = TRUE,spaces = 2,my_message = extreme_dates_text,prompt_size="medium",prompt_position="bottom-right")),),
+                                                            label = "Show extreme dates", fill = TRUE,spaces = 2,
+                                                            my_message = extreme_dates_text,prompt_size="medium",prompt_position="bottom-right"))),
                                                
                                                #TYPE INPUT
                                                fluidRow(
@@ -93,26 +95,26 @@ fluidRow(titlePanel(h3(id = 'section_heading_hyper',
                                                               icon = icon("file-excel"))
                                                )),
                                                
-                                               dropdown(id = "testingf",
-                                                 radioGroupButtons(
-                                                   inputId = "box1.0",
-                                                   label = "Choose groups", 
-                                                   choiceNames = c("Antimicrobial - Groups", "Antimicrobials"), 
-                                                   choiceValues = c("ab_group", "ab_type"), 
-                                                   direction = "vertical"
-                                                 ),
-                                                 radioGroupButtons(
-                                                   inputId = "box1.1",
-                                                   label = "Show", 
-                                                   choiceNames = c("Prescriptions", "DDD per 100 bed days", "DOT per 100 bed days"),
-                                                   choiceValues = c("prescriptions", "DDD_100", "DOT_100"),
-                                                   selected = "prescriptions", 
-                                                   direction = "vertical"
-                                                 ),
-                                                 size = "xs",
-                                                 icon = icon("gear", class = "opt"), 
-                                                 up = TRUE
-                                               )
+                                               # dropdown(id = "testingf",
+                                               #   radioGroupButtons(
+                                               #     inputId = "box1.0",
+                                               #     label = "Choose groups", 
+                                               #     choiceNames = c("Antimicrobial - Groups", "Antimicrobials"), 
+                                               #     choiceValues = c("ab_group", "ab_type"), 
+                                               #     direction = "vertical"
+                                               #   ),
+                                               #   radioGroupButtons(
+                                               #     inputId = "box1.1",
+                                               #     label = "Show", 
+                                               #     choiceNames = c("Prescriptions", "DDD per 100 bed days", "DOT per 100 bed days"),
+                                               #     choiceValues = c("prescriptions", "DDD_100", "DOT_100"),
+                                               #     selected = "prescriptions", 
+                                               #     direction = "vertical"
+                                               #   ),
+                                               #   size = "xs",
+                                               #   icon = icon("gear", class = "opt"), 
+                                               #   up = TRUE
+                                               # )
                                                
 
                                                
