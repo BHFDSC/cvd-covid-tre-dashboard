@@ -8,7 +8,92 @@ Blank Rmd for debugging and troubleshooting
 
 ```{r}
 
+not_all_na <- function(x) any(!is.na(x))
 
+t.data_dictionaryEng %>%
+            select("table") %>%
+            left_join(select(datasets_available, c("table","Dataset", Group="dictionary_group")), by=c("table")) %>%
+            filter(Dataset == "gdppr") %>%
+            distinct() %>%
+            mutate(Group = ifelse(Dataset==Group, NA, Group)) %>%
+            relocate(Group) %>%
+            select(where(not_all_na)) %>%
+            left_join(t.data_dictionaryEng, by = "table") %>%
+            select(-table,-database,-Dataset,-x)
+
+          # t.data_dictionaryEng %>%
+          #   select("table") %>%
+          #   left_join(select(datasets_available, c("table","Dataset", Group="dictionary_group")), by=c("table")) %>%
+          #   filter(Dataset == dataset_summary()) %>%
+          #   distinct() %>%
+          #   mutate(Group = ifelse(Dataset==Group, NA, Group)) %>%
+          #   relocate(Group) %>%
+          #   select(where(not_all_na)) %>%
+          #   left_join(t.data_dictionaryEng, by = "table") %>%
+          #   select(-table,-database,-x)
+
+
+t.data_dictionaryEng %>%
+            left_join(select(datasets_available, c("table","Dataset", "title_dataset")), by=c("table")) %>%
+            filter(Dataset == "gdppr") %>%
+            select(-Dataset,-table,-database,-x) %>%
+            relocate(title_dataset)
+
+
+pull(distinct(filter(datasets_available,Group=="Secondary Care"),Title))
+
+
+grouped_datasets = datasets_available %>% filter(Dataset != dataset_dataset) %>%
+  distinct(Dataset) %>%
+  pull(Dataset)
+
+
+t.data_dictionaryEng %>%
+            select("table") %>%
+            left_join(select(datasets_available, c("table","Dataset","Title","title_dataset","dataset_dataset")),
+                      by=c("table")) %>%
+            filter(Dataset == "hes") %>%
+            select(-Dataset) %>%
+            distinct() %>%
+            mutate(Dataset = ifelse(Title==title_dataset, NA, title_dataset)) %>%
+            select(-Title,-title_dataset) %>%
+            select(where(not_all_na)) %>%
+            left_join(t.data_dictionaryEng, by = "table") %>%
+            select(-table,-database,-x,-dataset_dataset) %>%
+
+          rename_with(str_to_title) %>%
+          mutate(Order = row_number()) %>%
+          relocate(Order)data_dict() %>%
+          group_by()
+          rename_with(str_to_title) %>%
+          mutate(Order = row_number()) %>%
+          relocate(Order)
+          
+          
+dataset_dashboard_list = function(nation,key="Dataset available"){
+  
+  nation_datasets = datasets_available %>%
+    filter(Key==key & Nation==nation) %>%
+    select(Group,Title,Dataset) %>%
+    distinct()
+  
+  nation_datasets_list = list()
+  
+  groups = pull(distinct(nation_datasets,Group))
+  
+  for(i in 1:length(groups)){
+    nation_datasets_list[[i]]=
+      setNames(
+        pull(filter(nation_datasets,Group==groups[i]),Dataset),
+        pull(filter(nation_datasets,Group==groups[i]),Title)
+      )
+  }
+  
+  names(nation_datasets_list) = groups
+  
+  return(nation_datasets_list)
+  
+}
 
 
 ```
