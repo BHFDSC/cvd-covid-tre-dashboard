@@ -1,6 +1,11 @@
 ## Data Coverage ===========================================================
 fluidRow(titlePanel(h3(id = 'section_heading_hyper',
-                       shinyLink(to = "dcov_meth", label = "Data Coverage")
+                       shinyLink(to = "dcov_meth", label = "Data Coverage") %>% add_prompt(
+                         message = "Go to methodology",
+                         position = "right", type = "info",
+                         arrow=FALSE,
+                         size = "s", rounded = TRUE,
+                         bounce=FALSE,animate=FALSE)
                        )),
          
          #tabset panel styling for pills
