@@ -45,16 +45,14 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
                 target = "_blank")
                 
                 
-      url2 <- a(ifelse(is.na(datasets_available$url2[datasets_available$Dataset == dataset_summary()]),
-                       "", "Health Data Research Innovation Gateway"), 
+      url2 <- a("Health Data Research Innovation Gateway", 
                        href = datasets_available$url2[datasets_available$Dataset == dataset_summary()],
                 target = "_blank")
       
-      output$tab <- renderUI({
+      output$tab <- renderUI({ifelse(is.na(url2),
        
-         tagList(url1, "and", url2)
-      
-          
+         tagList(url1), tagList(url1, "and", url2))
+                       
           })
         })
       )
