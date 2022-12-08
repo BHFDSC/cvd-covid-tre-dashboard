@@ -401,8 +401,7 @@ z-index:999999 !important;
 }
 
 
-
-
+/*bottom right arrow color*/
 .hint--error.hint--bottom-left:before, .hint--error.hint--bottom-right:before, .hint--error.hint--bottom:before{
 border-bottom-color:var(--colour_bhf_neonred);
 }
