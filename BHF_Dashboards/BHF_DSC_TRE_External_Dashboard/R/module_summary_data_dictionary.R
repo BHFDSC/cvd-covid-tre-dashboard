@@ -41,6 +41,9 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
       data_dict = reactive({
         
         
+        validate(need(dataset_summary() ,
+                      message = FALSE))
+        
         if(nation_summary() == "Scotland"){
           t.data_dictionaryScot %>% 
             left_join(select(datasets_available, c("table","Dataset")), by=c("table")) %>%
@@ -85,8 +88,8 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
       
       
 
-      output$tbl = renderReactable(
-        
+      data_dict_react = reactive({
+
         reactable(
           data = if(dataset_summary() %in% grouped_datasets){
             data_dict() %>%
@@ -137,7 +140,10 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
           onClick = "expand"
         )
 
-      )
+      })
+      
+      
+      output$tbl = renderReactable(data_dict_react())
       
       
       output$download_dd = downloadHandler(

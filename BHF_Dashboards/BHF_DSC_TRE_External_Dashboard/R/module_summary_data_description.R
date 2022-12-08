@@ -32,6 +32,10 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
       
         
       output$info <- renderText({
+        
+        validate(need(dataset_summary() ,
+                      message = FALSE))
+        
         "For more information see:"})    
       
       url1 <- a(ifelse(grepl("digital.nhs", 
@@ -49,7 +53,12 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
                        href = datasets_available$url2[datasets_available$Dataset == dataset_summary()],
                 target = "_blank")
       
-      output$tab <- renderUI({ifelse(is.na(url2),
+      output$tab <- renderUI({
+        
+        validate(need(dataset_summary() ,
+                      message = FALSE))
+        
+         ifelse(is.na(url2),
        
          tagList(url1), tagList(url1, "and", url2))
                        
