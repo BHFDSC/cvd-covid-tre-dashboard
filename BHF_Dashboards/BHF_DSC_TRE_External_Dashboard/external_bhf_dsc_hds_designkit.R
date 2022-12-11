@@ -56,9 +56,14 @@ compare_palette = c(
   "#b388eb",
   "#9F54A8",
   "#F5484A",
+  "#F88350",
+  "#DD002D",
   "#FFC16A",
-  "#FDA361"
+  "#00DEBE"
+
 )
+
+
 
 
 summary_coverage_palette = c(
