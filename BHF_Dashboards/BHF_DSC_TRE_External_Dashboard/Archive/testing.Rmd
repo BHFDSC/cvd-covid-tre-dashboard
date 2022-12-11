@@ -9,6 +9,81 @@ Blank Rmd for debugging and troubleshooting
 ```{r}
 
 
+str_count(paste(c("g","asd","bad","gas"),collapse=""),"gas")
+
+
+input_colours = data.frame(input_no = 2:1000) %>%
+  add_column(colours = rep(compare_palette, length.out=nrow(.)))
+
+
+
+compare_palette
+countervalue=4
+state = data.frame(number=c(2,3,4,5),colors=c("#b388eb","#9F54A8","#F5484A","#F88350"))
+countervalue=4
+state = data.frame(number=c(2,4,5),colors=c("#b388eb","#F5484A","#F88350"))
+
+colors_memory = pull(state,colors)
+
+
+countervalue=5
+state = data.frame(number=c(2,4,5,6),colors=c("#b388eb","#F5484A","#F88350","#DD002D"))
+
+
+state
+setdiff(compare_palette[1:length(state$colors)],state$colors)
+
+state %>% mutate(colors = ifelse(row_number() == n() & length(setdiff(compare_palette[1:nrow(state %>% select(colors))],state$colors))!=0,
+                                 setdiff(compare_palette[1:nrow(state)],pull(state %>% select(colors))),colors))
+  
+state$colors %in% compare_palette[1:length(state$colors)]
+
+state
+
+state = state %>% mutate(colors = c(colors_memory,rep(NA,(nrow(state)-length(colors_memory)))))
+
+colors_memory[1:length(colors_memory)-1]
+
+length(setdiff(compare_palette[1:length(state$colors)],state$colors))!=0
+
+nrow(state %>% select(colors))
+
+Sys.time()
+format(as.POSIXct(Sys.time()),format = "%H:%M:%S:%MS")
+
+
+state %>% 
+    mutate(colors = ifelse(row_number() == n() & length(setdiff(compare_palette[1:nrow(state %>% select(colors))],
+                                                                pull(state %>% select(colors))))!=0,
+                                 setdiff(compare_palette[1:nrow(state)],pull(state %>% select(colors))),colors))
+
+
+test = list("name"="gdppr","name-r"="fadf","ad"="vcx","gf"="weas","name-df"="pasdasd")
+
+data.frame(test[grep('-dataset_compare', names(test))])
+
+data.frame(test)
+
+length(test[grep('name', names(test))])
+
+test = "red"
+test = c(test, c("white",'BLUE'))
+
+
+setdiff(compare_palette[1:nrow(state)],pull(state %>% select(colors)))
+```
+
+
+```{r}
+compare_palette
+state = state %>% 
+  mutate(colors = c(colors_memory,rep(NA,(nrow(state)-length(colors_memory))))) %>%
+  mutate(colors = ifelse(is.na(colors), setdiff(compare_palette,filter(state,!is.na(colors))$colors)[1], colors))
+
+
+state = state %>% 
+  mutate(colors = c(colors_memory,rep(NA,(nrow(state)-length(colors_memory))))) %>%
+  mutate(colors = ifelse(is.na(colors), setdiff(compare_palette,filter(state,!is.na(colors))$colors)[1], colors))
 ```
 
 

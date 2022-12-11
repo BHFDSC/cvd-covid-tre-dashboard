@@ -126,8 +126,10 @@ fluidRow(titlePanel(h3(id = 'section_heading_hyper',
          #UI OUTPUT
          column(9,
                 
+                #tableOutput("test_output")
                 tags$div(girafeOutput("compare_coverage_plot_girafe",
-                                      width = '100%', height = '85%') 
+                                      width = '100%', height = '85%')
+                    
                         # %>% shinycssloaders::withSpinner(type = 4, color = colour_bhf_lightred ,size = 0.7)
                          )
                 
