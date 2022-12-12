@@ -95,26 +95,31 @@ fluidRow(titlePanel(h3(id = 'section_heading_hyper',
                                                               icon = icon("file-excel"))
                                                )),
                                                
-                                               # dropdown(id = "testingf",
-                                               #   radioGroupButtons(
-                                               #     inputId = "box1.0",
-                                               #     label = "Choose groups", 
-                                               #     choiceNames = c("Antimicrobial - Groups", "Antimicrobials"), 
-                                               #     choiceValues = c("ab_group", "ab_type"), 
-                                               #     direction = "vertical"
-                                               #   ),
-                                               #   radioGroupButtons(
-                                               #     inputId = "box1.1",
-                                               #     label = "Show", 
-                                               #     choiceNames = c("Prescriptions", "DDD per 100 bed days", "DOT per 100 bed days"),
-                                               #     choiceValues = c("prescriptions", "DDD_100", "DOT_100"),
-                                               #     selected = "prescriptions", 
-                                               #     direction = "vertical"
-                                               #   ),
-                                               #   size = "xs",
-                                               #   icon = icon("gear", class = "opt"), 
-                                               #   up = TRUE
-                                               # )
+                                               "Under developement:",
+                                               dropdown(id = "testingf",
+                                                 radioGroupButtons(
+                                                   inputId = "download_image_choice1",
+                                                   label = "Data selection:",
+                                                   choiceNames = c("Current input", "Full"),
+                                                   choiceValues = c("selected", "full"),
+                                                   selected = character(0),
+                                                   direction = "vertical"
+                                                 ),
+                                                 radioGroupButtons(
+                                                   inputId = "download_image_choice2",
+                                                   label = "Export as:",
+                                                   choiceNames = c(".jpeg",".pdf",".png"),
+                                                   choiceValues = c(".jpeg", ".pdf", ".png"),
+                                                   selected = character(0),
+                                                   width = "100%",
+                                                   direction = "vertical"
+                                                 ),
+                                                 size = "xs",
+                                                 status = "myClass",
+                                                 label = "Download Image",
+                                                 icon = icon("file-image"),
+                                                 up = TRUE
+                                               )
                                                
 
                                                
