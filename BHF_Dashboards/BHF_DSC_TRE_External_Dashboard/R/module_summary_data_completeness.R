@@ -19,7 +19,7 @@ dataCompletenessUI <- function(id){
                inputId = ns("order_complete"),
                label = "Order:",
                selected = "value",
-               choices = c("Alphabetically"="alpha", "Value"="value")),
+               choices = c("Alphabetically"="alpha", "Position"="position" ,"Value"="value")),
              
              fluidRow(column(12,
              downloadButton(outputId = ns("download_summary_completeness_plot"), 
@@ -82,13 +82,44 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
         )
       })
       
+      plot_data = reactive({
+        
+        if(nation_summary() == "England"){
+        completeness_test_data() %>%
+          left_join(datasets_available,by=c("dataset"="Dataset")) %>%
+          left_join((
+            t.data_dictionaryEng %>%
+              mutate(position = row_number())
+          ), by=c("column_name"="field","table"="table"))}
+        
+        
+        else if(nation_summary() == "Scotland"){
+          completeness_test_data() %>%
+            left_join(datasets_available,by=c("dataset"="Dataset")) %>%
+            left_join((
+              t.data_dictionaryScot %>%
+                mutate(position = row_number())
+            ), by=c("column_name"="field","table"="table"))} #need to update what the field name is
+        
+        else if(nation_summary() == "Wales"){
+          completeness_test_data() %>%
+            left_join(datasets_available,by=c("dataset"="Dataset")) %>%
+            left_join((
+              t.data_dictionaryWales %>%
+                mutate(position = row_number())
+            ), by=c("column_name"="field","table"="table"))}
+
+          })
       
-      completeness_plot = reactive({ ggplot(data=completeness_test_data(),
+      completeness_plot = reactive({ ggplot(data=(plot_data()),
                                                      aes(
                                                        if(input$order_complete=="alpha"){
                                                          #x=forcats::fct_rev(reorder(column_name,column_name))
                                                          x=forcats::fct_rev(reorder(column_name,column_alpha_order))
-                                                         } else {x=reorder(column_name, desc(value_name_order))}, 
+                                                       } else if (input$order_complete=="position"){
+                                                         x=forcats::fct_rev(reorder(column_name,position)) 
+                                                         } 
+                                                       else {x=reorder(column_name, desc(value_name_order))}, 
                                                      y=completeness,
                                                      fill = column_name,
                                                      tooltip = completeness_tooltip,

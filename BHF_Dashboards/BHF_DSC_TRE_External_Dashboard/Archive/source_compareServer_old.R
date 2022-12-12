@@ -74,63 +74,199 @@ input_colours = data.frame(input_no = 2:1000) %>%
   add_column(colours = rep(compare_palette, length.out=nrow(.)))
 
 
+table2 <- reactive({table1() %>% left_join(input_colours,by=c("number"="input_no"))})
 
 
-#infinite recursion will occur as table2 depends on the previous colours which depends on table2
-#thus use isolate function
+#WORKS
+# table2 <- reactive({
+#   #req(counter$countervalue <=2)
+#   if(counter$countervalue <=2){
+#       table1() %>% left_join(input_colours,by=c("number"="input_no"))
+#   } else {
+#     table1() %>% mutate(colours = xvals())
+#     }
+# })
 
-# create a reactive value to store the current df
-values <- reactiveValues()
-observe({
+# table2 <- reactive({
+#   if(counter$countervalue >2){
+#     table1() %>% left_join(input_colours,by=c("number"="input_no"))}
+# })
+
+
+# table2 <- reactive({
+#   #req(counter$countervalue <=2)
+#   if(counter$countervalue <=2){
+#       table1() %>% left_join(input_colours,by=c("number"="input_no"))
+#   }
+# })
+# 
+# 
+# observeEvent(req(input$add, counter$countervalue >2), {
+#   table2 <- reactive({table1() %>% mutate(colours = xvals())})
+# })
+
+
+
+#set_colours <- reactive({table2() %>% select(colours) %>% pull()})
+#set_row_numbers <- reactive({table2() %>% select(number) %>% pull()})
+
+# memory <- reactiveValues(previous_colours = NULL)
+# colours_list <- reactive({ table2() %>% pull(colours) })
+# 
+# xvals <- reactive({
+#   isolate(previous_colours <- memory$previous_colours)
+#   if (is.null(previous_colours)) {
+#     memory$previous_colours <- c(colours_list())
+#   } else {
+#     memory$previous_colours <- c(previous_colours,colours_list())
+#   }
+#   return(memory$previous_colours)
+# })
+# 
+# observe({print(xvals())
+#   print(table2())
+#   
+#   })
+
+
+
   
-  values$new_dataset = table1() %>% pull(dataset)
-  values$new_nation = table1() %>% pull(nation)
-  values$new_number = table1() %>% pull(number)
-  values$new_colour = if(nrow(table1()>1)){
-    setdiff(compare_palette[1:nrow(table1())],values$df$colours)[1]
-    }
-  
-  if (counter$countervalue <=2) {
-    # isolate is to make sure df is not updated when input changes
-    values$df <- table1() %>% left_join(input_colours,by=c("number"="input_no"))
-
-  }
-  
-  if (counter$countervalue > 2) {
-    
-    
-    
-    isolate({
-
-      values$df <- data.frame(dataset=values$new_dataset,
-                              nation=values$new_nation,
-                              number=values$new_number) %>%
-        left_join(values$df, by = c("dataset", "nation", "number")) %>%
-        mutate(colours = ifelse(is.na(colours),values$new_colour,colours))
-
-      
-    })      
-  }    
-})
+table3 <- reactive({table2()})
 
 
-#output$test_output <- renderTable(values$df)
+# # Initialize reactive values
+# rv <- reactiveValues(previous_colours = "white")
+# 
+# # Append new value to previous values when input$bins changes 
+# 
+# rv$revious_colours <- reactive({c(rv$revious_colours, table3() %>% head(1) %>% pull(colours))})
+# 
+# 
+# # Output
+# observe({
+#   paste(rv$prev_bins)
+# })
 
-table3 <- reactive({values$df})
 
 
-#compare_palette_values = reactive({setNames(table3() %>% pull(colours),table3() %>% pull(dataset))})
+# previous <- reactiveValues(previous_colours = "white",
+#                            previous_numbers = 1)
+# observeEvent(req(set_colours()), {
+#   previous$previous_colours <- c(previous$previous_colours, "white", set_colours())
+# })
+# observeEvent(req(set_row_numbers()), {
+#   previous$previous_numbers <- c(previous$previous_numbers, 1, set_row_numbers())
+# })
+# observeEvent(previous$previous_numbers, {
+#   previous$datatable <- data.frame(colours=previous$previous_colours,number=previous$previous_numbers)
+# })
+# observe({
+#   #print(previous$previous_colours)
+#   #print(previous$previous_numbers)
+#   print(previous$datatable)
+#   })
+# observeEvent(input$add, {
+#   previous$datatable <- data.frame(colours=previous$previous_colours,number=previous$previous_numbers)
+# })
 
-compare_palette_values = reactive({setNames(values$df$colours,values$df$dataset)})
+
+
+
+
+
+
+
+
+
+
+# table3 <- reactive({
+# table2() %>%
+#       mutate(colours = ifelse(row_number() == n() &
+#                                 length(setdiff(
+#                                   compare_palette[1:nrow(table2())],
+#                                   pull(table2() %>% select(colours))
+#                                 ))!=0,
+#                               
+#                               setdiff(compare_palette[1:nrow(table2())],pull(table2() %>% select(colours))),
+#                               colours))
+# })
+
+
+# table3 <- reactive({
+#   req(input$add)
+#   if (input$add) {
+#     data <- table2() %>%
+#       mutate(colours = ifelse(row_number() == n() &
+#                                 length(setdiff(
+#                                   compare_palette[1:nrow(table2())],
+#                                   pull(table2() %>% select(colours))
+#                                 ))!=0,
+#                               
+#                               setdiff(compare_palette[1:nrow(table2())],pull(table2() %>% select(colours))),
+#                               colours))
+#   }
+#   else
+#   {
+#     data <- table2() %>%
+#       mutate(colours = ifelse(row_number() == n() &
+#                                 length(setdiff(
+#                                   compare_palette[1:nrow(table2())],
+#                                   pull(table2() %>% select(colours))
+#                                 ))!=0,
+#                               
+#                               setdiff(compare_palette[1:nrow(table2())],pull(table2() %>% select(colours))),
+#                               colours))
+#   }
+#   
+#   
+# })
+
+
+# table3 <- reactive({
+#   req(input$add)
+#   if (!input$add) {
+#     data <- table1() %>% left_join(input_colours,by=c("number"="input_no"))
+#   }
+#   else
+#   {
+#     data <- table1() %>% left_join(input_colours,by=c("number"="input_no"))
+#   }
+#   
+#   
+# })
+
+
+# table3  <- eventReactive(input$add,{
+#   table2() %>% 
+#     mutate(colours = ifelse(row_number() == n() & 
+#                               length(setdiff(
+#                                 compare_palette[1:nrow(table2())],
+#                                 pull(table2() %>% select(colours))
+#                               ))!=0,
+#                             
+#                             setdiff(compare_palette[1:nrow(table2())],pull(table2() %>% select(colours))),
+#                             colours))
+# })
+
+#output$reactive_test_table = renderTable(table3())
+
+
+
+
+#output$reactive_test = renderPrint(reactiveValuesToList(input))
+
+compare_palette_values = reactive({setNames(table3()%>%pull(colours),table3()%>%pull(dataset))})
+
+output$test = renderPrint(table1() %>% pull(dataset))
 
 my_vars = reactive({table1() %>% pull(dataset)})
 
 
-observe({
-  #print(values$colours)
-  #print(compare_palette_values())
-  #print(values$df)
-  })
+
+
+
+  
+  
 
 compare_coverage_data_all_records_before =  reactive({
   t.data_coverage %>%
@@ -495,56 +631,7 @@ output$download_compare_coverage_plot = downloadHandler(
 
 
 
-output$testingf = downloadHandler(
-  filename = function() {paste0("compare_data_coverage_",str_remove_all(Sys.Date(),"-"),download_image_choice2)},
-  content = function(file) {ggsave(file, plot = (compare_coverage_plot()) +
-                                     
-                                     #add geom text layer separate for girafe object and download as different sizes needed
-                                     (geom_text_repel_interactive(
-                                       size = 12,
-                                       data = (
-                                         compare_coverage_data_filtered() %>% 
-                                           filter(date_format == max(date_format))
-                                       ),
-                                       
-                                       aes(
-                                         x = .data$date_format + x_nudge(),
-                                         y = if(input$log_scale){(.data$N) } else {.data$N + (
-                                           #nudge up a 30th of difference between max and min
-                                           (
-                                             (
-                                               (
-                                                 compare_coverage_data_filtered() %>% filter(N == max(N)) %>% distinct(N) %>% pull(N)) - (
-                                                   compare_coverage_data_filtered() %>% filter(N == min(N)) %>% distinct(N) %>% pull(N))
-                                             ) /30)
-                                         )},
-                                         color = .data$dataset,
-                                         label = .data$Shortname
-                                       ),
-                                       
-                                       direction = "y",
-                                       family=family_lato,
-                                       segment.color = 'transparent')) +
-                                     
-                                     #custom theme for download
-                                     theme(plot.margin = margin(20,50,20,50),
-                                           axis.text.x = element_text(size = 34, face = "bold"),
-                                           axis.text.y = element_text(size = 34, face = "bold"),
-                                           axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size=34, color="#4D4C4C")
-                                     ),
-                                   #ensure width and height are same as ggiraph
-                                   #width_svg and height_svg to ensure png not cut off
-                                   width = 16, height = 9, units = "in",
-                                   bg = "transparent",
-                                   dpi = 300, device = "png")}
-)
 
-
-#Dropdown - will downloaded as soon as both input choices have been selected
-#the input will then be reset AND the dropdown window will close automatically
-observeEvent(req(input$log_scale), {
-  updateRadioGroupButtons(inputId = "input$download_image_choice1", selected=character(0))
-})
 
 # observeEvent(req(counter$countervalue>0, input$"row_1-delete"), {
 #   insertUI(
@@ -563,7 +650,27 @@ observeEvent(req(input$log_scale), {
 # })
 
 observe({
-#print()
+# print(input$"row_1-dataset_compare")
+# print(is.null(input$"row_1-dataset_compare"))
+# print(!is.null(input$"row_1-dataset_compare"))
+# print(names(input))
+# print(is.null(input_counter()))
+# print(input$delete)
+# print(is.null(input$delete))
+# print(names(input))
+# print(str_count(paste(names(input),collapse=""),"-delete"))
+
+# print(counter$countervalue)
+#   print(table1())
+#   print(table2())
+#   print(table3())
+  #print(length((reactiveValuesToList(input))[grep('-dataset_compare', names((reactiveValuesToList(input))))]))
+  #print((reactiveValuesToList(input)))
+# print(if(length((reactiveValuesToList(input))[grep('-dataset_compare', names((reactiveValuesToList(input))))])>=2){
+#   data.frame((reactiveValuesToList(input))[grep('-dataset_compare', names((reactiveValuesToList(input))))]) %>% pivot_longer()
+#   })
+#print(table1() %>% left_join(input_colours,by=c("number"="input_no")))
+#print(compare_palette_values)
 })
 
 
@@ -572,3 +679,10 @@ counter <- reactiveValues(countervalue = 0)
 observeEvent(req(input$add), {
   counter$countervalue <- counter$countervalue + 1
   })
+
+# observe({
+# print(counter$countervalue)
+# print(counter$countervalue > sum(input$"row_1-delete"))
+#  })
+
+

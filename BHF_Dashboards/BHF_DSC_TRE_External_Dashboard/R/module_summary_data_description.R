@@ -32,6 +32,10 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
       
         
       output$info <- renderText({
+        
+        validate(need(dataset_summary() ,
+                      message = FALSE))
+        
         "For more information see:"})    
       
       url1 <- a(ifelse(grepl("digital.nhs", 
@@ -51,7 +55,12 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
       
       output$tab <- renderUI({
         
+
+        validate(need(dataset_summary() ,
+                      message = FALSE))
+        
         if(is.na(datasets_available$url2[datasets_available$Dataset == dataset_summary()]))
+
        
         {tagList(url1)} 
         
