@@ -55,12 +55,22 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
       
       output$tab <- renderUI({
         
+
         validate(need(dataset_summary() ,
                       message = FALSE))
         
-         ifelse(is.na(url2),
+        if(is.na(datasets_available$url2[datasets_available$Dataset == dataset_summary()]))
+
        
-         tagList(url1), tagList(url1, "and", url2))
+        {tagList(url1)} 
+        
+        else if(is.na(datasets_available$url1[datasets_available$Dataset == dataset_summary()]))
+          
+        {tagList(url2)}
+        
+        else 
+           
+          {tagList(url1, "and", url2)}
                        
           })
         })
@@ -68,5 +78,8 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
     }
   )
 }
+
+
+
 
 
