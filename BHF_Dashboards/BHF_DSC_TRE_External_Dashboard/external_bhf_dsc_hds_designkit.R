@@ -56,9 +56,14 @@ compare_palette = c(
   "#b388eb",
   "#9F54A8",
   "#F5484A",
+  "#F88350",
+  "#DD002D",
   "#FFC16A",
-  "#FDA361"
+  "#00DEBE"
+
 )
+
+
 
 
 summary_coverage_palette = c(
@@ -362,40 +367,77 @@ margin-top:15px;
 
 /*Prompter Tooltips*/
 .hint--error:after {
-          background: none var(--colour_bhf_neonred);
+          background: var(--colour_bhf_neonred);
           opacity: 0.95 !important;
           color: #FFFFFF;
           text-shadow: none;
+          box-shadow: none;
           transition-duration: width 2s, height 2s, transform 2s;
           transition-timing-function: ease-in; 
           transition-delay: 0.5s !important;
+z-index:999999 !important;
 }
 /*little arrow tooltip*/
 .hint--error:before { 
           opacity: 0.95 !important;
-          color: #FFFFFF;
           text-shadow: none;
           transition-duration: width 2s, height 2s, transform 2s;
           transition-timing-function: ease-in;
           transition-delay: 0.5s !important;
-        }
-        .hint--error.hint--bottom:before {
-          border-bottom-color: var(--colour_bhf_neonred)
-        }
-        .hint--error.hint--left:before {
-          border-left-color: var(--colour_bhf_neonred)
-        }
-        .hint--error.hint--top:before {
-          border-top-color: var(--colour_bhf_neonred)
-        }
-        .hint--error.hint--right:before {
-          border-right-color: var(--colour_bhf_neonred)
-        }
+z-index:999999 !important;
+
+}
+
+.hint--error.hint--bottom:before {
+border-bottom-color: var(--colour_bhf_neonred)!important;
+z-index:999999 !important;
+}
+.hint--error.hint--left:before {
+border-left-color: var(--colour_bhf_neonred)!important;
+z-index:999999 !important;
+}
+.hint--error.hint--top:before {
+border-top-color: var(--colour_bhf_neonred)!important;
+z-index:999999!important;
+}
+.hint--error.hint--right:before {
+ border-right-color: var(--colour_bhf_neonred)!important;
+z-index:999999 !important;
+}
+
+
+/*bottom right arrow color*/
+.hint--error.hint--bottom-left:before, .hint--error.hint--bottom-right:before, .hint--error.hint--bottom:before{
+border-bottom-color:var(--colour_bhf_neonred);
+}
+
+
+
+
+.hint--error.hint--bottom-right:before {
+ border-bottom-right-color: var(--colour_bhf_neonred)!important;
+z-index:999999 !important;
+}
 
 
 
 
 
+
+.hint--info:after {
+          background: #F7F7F7;
+          opacity: 0.95 !important;
+          color: #6B6B6B;
+          text-shadow: none;
+          box-shadow: none;
+          transition-duration: width 2s, height 2s, transform 2s;
+          transition-timing-function: ease-in; 
+          transition-delay: 0.5s !important;
+}
+
+
+
+#summary_module-data_completeness_module-order_complete-label{margin-bottom:4% !important;}
 
 
 
@@ -884,6 +926,55 @@ margin-top:-0.6% !important;
 }
 
 
+.sw-dropdown{
+margin-left:-4% !important;
+}
+
+
+
+btn btn-default btn-xs action-button shiny-bound-input{
+color:#3D3C3C !important;
+}
+
+.btn-myClass { color: #3D3C3C;}
+.btn-myClass:hover { color: var(--colour_bhf_neonred);}
+.glyphicon.glyphicon-triangle-top::before{color:transparent;}
+.glyphicon.glyphicon-triangle-top{color:transparent;}
+
+.sw-dropdown-content.animated.sw-dropup-content.sw-show{
+/*box-shadow: none !important;*/
+background-color:white;
+z-index:999999;
+}
+
+.sw-dropdown-in{
+/*box-shadow: none !important;*/
+background-color:white;
+z-index:999999;
+}
+
+.btn-check:checked+.btn-outline-primary, .btn-check:active+.btn-outline-primary, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show, .dropdown-toggle.in{
+background-color:var(--colour_bhf_darkred);
+color:white;
+}
+
+.btn-check:checked+.btn-outline-primary, .btn-check:active+.btn-outline-primary, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show, .dropdown-toggle.in{
+border-color:#BEC3C6;
+}
+
+.btn-outline-primary{
+font-size: 80%;
+border-color:#BEC3C6;
+color:#484D5B;
+}
+
+.btn-outline-primary:hover{
+border-color:#BEC3C6;
+color:var(--colour_bhf_neonred);
+}
+
+
+
 
 
 #download_compare_coverage_plot:hover{
@@ -1072,9 +1163,6 @@ z-index:99999 !important;
 [class*=hint--][aria-label]:after {
    white-space: pre;
 }
-
-
-#testingf{z-index:999999 !important;}
 
 
 

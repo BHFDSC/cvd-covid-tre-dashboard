@@ -1,6 +1,11 @@
 ## Data Coverage ===========================================================
 fluidRow(titlePanel(h3(id = 'section_heading_hyper',
-                       shinyLink(to = "dcov_meth", label = "Data Coverage")
+                       shinyLink(to = "dcov_meth", label = "Data Coverage") %>% add_prompt(
+                         message = "Go to methodology",
+                         position = "right", type = "info",
+                         arrow=FALSE,
+                         size = "s", rounded = TRUE,
+                         bounce=FALSE,animate=FALSE)
                        )),
          
          #tabset panel styling for pills
@@ -8,8 +13,9 @@ fluidRow(titlePanel(h3(id = 'section_heading_hyper',
          
          #UI INPUT
          column(3,
-                
+                style = 'z-index:99 !important;',
                 tabsetPanel(id = "tab_selected_data_input", type="pills",
+                            
                             
                             #DATA INPUT
                             tabPanel("Data",
@@ -49,7 +55,8 @@ fluidRow(titlePanel(h3(id = 'section_heading_hyper',
                                                #EXTREME VALUES
                                                fluidRow(column(12,
                                                prettySwitchCustom(inputId = "all_records",
-                                                            label = "Show extreme dates", fill = TRUE,spaces = 2,my_message = extreme_dates_text,prompt_size="medium",prompt_position="bottom-right")),),
+                                                            label = "Show extreme dates", fill = TRUE,spaces = 2,
+                                                            my_message = extreme_dates_text,prompt_size="medium",prompt_position="bottom-right"))),
                                                
                                                #TYPE INPUT
                                                fluidRow(
@@ -88,24 +95,29 @@ fluidRow(titlePanel(h3(id = 'section_heading_hyper',
                                                               icon = icon("file-excel"))
                                                )),
                                                
+                                               "Under developement:",
                                                dropdown(id = "testingf",
                                                  radioGroupButtons(
-                                                   inputId = "box1.0",
-                                                   label = "Choose groups", 
-                                                   choiceNames = c("Antimicrobial - Groups", "Antimicrobials"), 
-                                                   choiceValues = c("ab_group", "ab_type"), 
+                                                   inputId = "download_image_choice1",
+                                                   label = "Data selection:",
+                                                   choiceNames = c("Current input", "Full"),
+                                                   choiceValues = c("selected", "full"),
+                                                   selected = character(0),
                                                    direction = "vertical"
                                                  ),
                                                  radioGroupButtons(
-                                                   inputId = "box1.1",
-                                                   label = "Show", 
-                                                   choiceNames = c("Prescriptions", "DDD per 100 bed days", "DOT per 100 bed days"),
-                                                   choiceValues = c("prescriptions", "DDD_100", "DOT_100"),
-                                                   selected = "prescriptions", 
+                                                   inputId = "download_image_choice2",
+                                                   label = "Export as:",
+                                                   choiceNames = c(".jpeg",".pdf",".png"),
+                                                   choiceValues = c(".jpeg", ".pdf", ".png"),
+                                                   selected = character(0),
+                                                   width = "100%",
                                                    direction = "vertical"
                                                  ),
                                                  size = "xs",
-                                                 icon = icon("gear", class = "opt"), 
+                                                 status = "myClass",
+                                                 label = "Download Image",
+                                                 icon = icon("file-image"),
                                                  up = TRUE
                                                )
                                                
@@ -119,8 +131,10 @@ fluidRow(titlePanel(h3(id = 'section_heading_hyper',
          #UI OUTPUT
          column(9,
                 
+                #tableOutput("test_output")
                 tags$div(girafeOutput("compare_coverage_plot_girafe",
-                                      width = '100%', height = '85%') 
+                                      width = '100%', height = '85%')
+                    
                         # %>% shinycssloaders::withSpinner(type = 4, color = colour_bhf_lightred ,size = 0.7)
                          )
                 

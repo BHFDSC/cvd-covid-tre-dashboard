@@ -67,6 +67,9 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
       #### Value Boxes =============================================================
       output$registrations <- renderValueBox({
         
+        validate(need(dataset_summary() ,
+                      message = FALSE))
+        
         
         if (nrow(dataset_overview())>1){
           return(customValueBox(
@@ -104,6 +107,11 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
       
       
       output$batch_summary = renderValueBox({
+        
+        validate(need(dataset_summary() ,
+                      message = FALSE))
+        
+        
         if (length(archived_on())>1){
           return(customValueBox(
             title = "Batch Summary",

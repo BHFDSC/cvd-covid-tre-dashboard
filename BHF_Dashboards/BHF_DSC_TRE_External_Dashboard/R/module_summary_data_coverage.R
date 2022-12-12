@@ -144,7 +144,6 @@ actionButton(ns("download_coverage_data"),
                         fluidRow(
                         tags$div(girafeOutput(ns("summary_coverage_season_plot_girafe"),
                                               width = '100%', height = '100%')
-                                 %>% shinyWidgets::addSpinner(spin = "double-bounce", color = "#112446")
                                  # %>% shinycssloaders::withSpinner(type = 4
                                  #                                  #,color = colour_bhf_lightred 
                                  #                                  ,size = 0.7
