@@ -105,7 +105,7 @@ observe({
       values$df <- data.frame(dataset=values$new_dataset,
                               nation=values$new_nation,
                               number=values$new_number) %>%
-        left_join(values$df) %>%
+        left_join(values$df, by = c("dataset", "nation", "number")) %>%
         mutate(colours = ifelse(is.na(colours),values$new_colour,colours))
 
       
@@ -495,7 +495,56 @@ output$download_compare_coverage_plot = downloadHandler(
 
 
 
+output$testingf = downloadHandler(
+  filename = function() {paste0("compare_data_coverage_",str_remove_all(Sys.Date(),"-"),download_image_choice2)},
+  content = function(file) {ggsave(file, plot = (compare_coverage_plot()) +
+                                     
+                                     #add geom text layer separate for girafe object and download as different sizes needed
+                                     (geom_text_repel_interactive(
+                                       size = 12,
+                                       data = (
+                                         compare_coverage_data_filtered() %>% 
+                                           filter(date_format == max(date_format))
+                                       ),
+                                       
+                                       aes(
+                                         x = .data$date_format + x_nudge(),
+                                         y = if(input$log_scale){(.data$N) } else {.data$N + (
+                                           #nudge up a 30th of difference between max and min
+                                           (
+                                             (
+                                               (
+                                                 compare_coverage_data_filtered() %>% filter(N == max(N)) %>% distinct(N) %>% pull(N)) - (
+                                                   compare_coverage_data_filtered() %>% filter(N == min(N)) %>% distinct(N) %>% pull(N))
+                                             ) /30)
+                                         )},
+                                         color = .data$dataset,
+                                         label = .data$Shortname
+                                       ),
+                                       
+                                       direction = "y",
+                                       family=family_lato,
+                                       segment.color = 'transparent')) +
+                                     
+                                     #custom theme for download
+                                     theme(plot.margin = margin(20,50,20,50),
+                                           axis.text.x = element_text(size = 34, face = "bold"),
+                                           axis.text.y = element_text(size = 34, face = "bold"),
+                                           axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size=34, color="#4D4C4C")
+                                     ),
+                                   #ensure width and height are same as ggiraph
+                                   #width_svg and height_svg to ensure png not cut off
+                                   width = 16, height = 9, units = "in",
+                                   bg = "transparent",
+                                   dpi = 300, device = "png")}
+)
 
+
+#Dropdown - will downloaded as soon as both input choices have been selected
+#the input will then be reset AND the dropdown window will close automatically
+observeEvent(req(input$log_scale), {
+  updateRadioGroupButtons(inputId = "input$download_image_choice1", selected=character(0))
+})
 
 # observeEvent(req(counter$countervalue>0, input$"row_1-delete"), {
 #   insertUI(
