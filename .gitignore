@@ -1,3 +1,4 @@
 .DS_store
 *.csv
 .Rproj.user
+.idea
