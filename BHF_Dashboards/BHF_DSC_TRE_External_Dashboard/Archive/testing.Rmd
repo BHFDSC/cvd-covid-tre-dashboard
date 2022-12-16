@@ -85,6 +85,19 @@ nrow(setdiff(df1,df2))>0
 df1 %>% head(-1)
 
 all(c("test","y") == c("y"))
+
+
+t.data_dictionaryEng
+colnames(t.data_dictionaryEng) <- c("database", "table", "field", "field name", "field description", "field type",
+                                    "data type", "units", "values", "notes", "links", "x")
+
+rename(`field` = display_name,
+       `field name` = display_name_label,
+       `field description` = field_description,
+       `field type` = variable_type,
+       `variable_type` = data_type,
+       `x` = gdppr
+       )
 ```
 
 

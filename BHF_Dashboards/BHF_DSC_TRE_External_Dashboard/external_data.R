@@ -4,15 +4,16 @@
 
 #England
 export_date_england = "2022-11-29"
-completeness_dataset_name = "export_dashboard_NHSD_20221108_data_completeness"
-coverage_dataset_name = "export_dashboard_NHSD_20221102_data_coverage"
-overview_dataset_name = "export_dashboard_NHSD_20221108_date_overview"
+completeness_dataset_name_england = "export_dashboard_NHSD_20221108_data_completeness"
+coverage_dataset_name_england = "export_dashboard_NHSD_20221102_data_coverage"
+overview_dataset_name_england = "export_dashboard_NHSD_20221108_date_overview"
 
 #Scotland
 export_date_scotland = "2022-11-26"
 
 #Wales
-export_date_wales = "2022-11-21"
+export_date_wales = "2022-12-16"
+coverage_dataset_name_wales = "export_dashboard_SAIL_20221130_data_coverage"
 
 
 # TRE Dataset Provisioning Dashboard -------------------------------------------
@@ -40,14 +41,14 @@ t.data_dictionaryEng = read_excel_allsheets('Data/TRE_DD_391419_j3w9t.xlsx',
                                        skip = 2) %>%
   mutate(table = str_replace(table, paste0("_", database),"")) %>%
   mutate(table = str_replace(table,"_[{]fyear[}]" ,"")) %>%
-  filter(!is.na(table))
-
-# just doing a super basic change of column names here until the extra column issue is solved
-colnames(t.data_dictionaryEng) <- c("database", "table", "field", "field name", "field description", "field type",
-                                    "data type", "units", "values", "notes", "links", "x")
-
-# duplicating in case there are any downstream chunks depending on the name 'data_dictionary'
-# data_dictionary <- t.data_dictionaryEng
+  filter(!is.na(table)) %>%
+  rename(`field` = display_name,
+         `field name` = display_name_label,
+         `field description` = field_description,
+         `field type` = variable_type,
+         `variable_type` = data_type,
+         `x` = gdppr
+  )
 
 
 #Scotland------------------------------------------------------------------
@@ -86,7 +87,7 @@ t.data_dictionaryWales = read_excel_allsheets( # pathfornow,
 # Data Coverage Pre Processed from data_preprocessing
 #t.data_coverage = read_rds("Data/data_coverage")
 
-t.data_coverage_source = read.csv(paste0('Data/',coverage_dataset_name,'.csv'))
+t.data_coverage_source = read.csv(paste0('Data/',coverage_dataset_name_england,'.csv'))
 
 t.data_coverage = t.data_coverage_source %>% # as.data.frame() %>% 
   mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
@@ -121,9 +122,9 @@ t.data_coverage = t.data_coverage_source %>% # as.data.frame() %>%
   mutate(date_format = as.Date(paste(date_ym, 1, sep="-"), "%Y-%m-%d"))
 
 # Dataset Overview -------------------------------------------------------------
-t.dataset_overview = read.csv(paste0('Data/',overview_dataset_name,'.csv'))
+t.dataset_overview = read.csv(paste0('Data/',overview_dataset_name_england,'.csv'))
 
 # Dataset Overview -------------------------------------------------------------
-t.dataset_completeness = read.csv(paste0('Data/',completeness_dataset_name,'.csv'))
+t.dataset_completeness = read.csv(paste0('Data/',completeness_dataset_name_england,'.csv'))
 
 
