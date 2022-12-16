@@ -73,7 +73,8 @@ ui = fluidPage(
                    target = "_blank", #open in new tab
                    href="https://www.hdruk.ac.uk/helping-with-health-data/bhf-data-science-centre/"),
     
-    
+    ### Landing Tab ============================================================
+    tabPanel("Landing tab", landing_page_text),
 
     ### Summary Tab ============================================================
   

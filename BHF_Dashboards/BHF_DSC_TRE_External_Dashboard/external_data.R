@@ -126,4 +126,7 @@ t.dataset_overview = read.csv(paste0('Data/',overview_dataset_name,'.csv'))
 # Dataset Overview -------------------------------------------------------------
 t.dataset_completeness = read.csv(paste0('Data/',completeness_dataset_name,'.csv'))
 
+# Landing page static text ------------------------------------------------
 
+Static_text <- read_excel("Data/Static text.xlsx", col_names = FALSE)
+landing_page_text <- Static_text[1,1]
