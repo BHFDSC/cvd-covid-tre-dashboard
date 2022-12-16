@@ -134,6 +134,79 @@ table.dataTable thead tr {
 #section_heading_hyper a:active{color:var(--colour_bhf_neonred)!important;text-decoration: none; }
 
 
+#compare_dropdown_data {
+
+}
+
+.fa fa-file-lines:before{margin-left:-4%;}
+
+
+/*Export Image Dropdown Compare - ensure border radius aligns with order of options*/
+#compare_jpeg{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+border-top-left-radius: 10px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 10px !important;
+border-bottom-right-radius: 0px !important;
+}
+#compare_jpeg:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#compare_jpeg:active{color:white;background-color:var(--colour_bhf_darkred);}
+#compare_jpeg:focus{color:white;background-color:var(--colour_bhf_darkred);}
+#compare_pdf{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+border-top:none;
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 0px !important;
+}
+#compare_pdf:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#compare_pdf:active{color:white;background-color:var(--colour_bhf_darkred);}
+#compare_pdf:focus{color:white;background-color:var(--colour_bhf_darkred);}
+#compare_png{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+border-top:none;
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 10px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 10px !important;
+}
+#compare_png:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#compare_png:active{color:white;background-color:var(--colour_bhf_darkred);}
+#compare_png:focus{color:white;background-color:var(--colour_bhf_darkred);}
+
+/*Export Data Dropdown Compare - ensure border radius aligns with order of options*/
+#compare_csv{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+padding-left:5%;
+border-top-left-radius: 10px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 10px !important;
+border-bottom-right-radius: 0px !important;
+}
+#compare_csv:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#compare_csv:active{color:white;background-color:var(--colour_bhf_darkred);}
+#compare_csv:focus{color:white;background-color:var(--colour_bhf_darkred);}
+#compare_xlsx{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+padding-left:5%;
+border-top:none;
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 0px !important;
+}
+#compare_xlsx:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#compare_xlsx:active{color:white;background-color:var(--colour_bhf_darkred);}
+#compare_xlsx:focus{color:white;background-color:var(--colour_bhf_darkred);}
+#compare_txt{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+padding-left:5%;
+border-top:none;
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 10px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 10px !important;
+}
+#compare_txt:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#compare_txt:active{color:white;background-color:var(--colour_bhf_darkred);}
+#compare_txt:focus{color:white;background-color:var(--colour_bhf_darkred);}
+
+
 
 
 
@@ -926,48 +999,39 @@ margin-top:-0.6% !important;
 }
 
 
+/*radioGroupButtons no longer used in dropdown*/
 .sw-dropdown{
 margin-left:-4% !important;
 }
-
-
-
 btn btn-default btn-xs action-button shiny-bound-input{
 color:#3D3C3C !important;
 }
-
 .btn-myClass { color: #3D3C3C;}
 .btn-myClass:hover { color: var(--colour_bhf_neonred);}
 .glyphicon.glyphicon-triangle-top::before{color:transparent;}
 .glyphicon.glyphicon-triangle-top{color:transparent;}
-
 .sw-dropdown-content.animated.sw-dropup-content.sw-show{
 /*box-shadow: none !important;*/
 background-color:white;
 z-index:999999;
 }
-
 .sw-dropdown-in{
 /*box-shadow: none !important;*/
 background-color:white;
 z-index:999999;
 }
-
 .btn-check:checked+.btn-outline-primary, .btn-check:active+.btn-outline-primary, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show, .dropdown-toggle.in{
 background-color:var(--colour_bhf_darkred);
 color:white;
 }
-
 .btn-check:checked+.btn-outline-primary, .btn-check:active+.btn-outline-primary, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show, .dropdown-toggle.in{
 border-color:#BEC3C6;
 }
-
 .btn-outline-primary{
 font-size: 80%;
 border-color:#BEC3C6;
 color:#484D5B;
 }
-
 .btn-outline-primary:hover{
 border-color:#BEC3C6;
 color:var(--colour_bhf_neonred);

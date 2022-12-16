@@ -71,6 +71,20 @@ test = c(test, c("white",'BLUE'))
 
 
 setdiff(compare_palette[1:nrow(state)],pull(state %>% select(colors)))
+
+
+nrow(data.frame(dataset=c("test","rere",NA)) %>% filter(is.na(dataset))) ==0
+
+
+
+df1 = data.frame(dataset=c("A","B","C"),nation=c("Test","Test","Test"),number=c(2,3,4))
+df2 = data.frame(dataset=c("A","B"),nation=c("Test","Test"),number=c(2,3))
+
+nrow(setdiff(df1,df2))>0
+
+df1 %>% head(-1)
+
+all(c("test","y") == c("y"))
 ```
 
 
