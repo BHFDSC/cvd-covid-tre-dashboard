@@ -88,7 +88,7 @@ observe({
   values$new_number = table1() %>% pull(number)
   values$new_colour = if(nrow(table1()>1)){
     setdiff(compare_palette[1:nrow(table1())],values$df$colours)[1]
-    }
+  }
   
   if (counter$countervalue <=2) {
     # isolate is to make sure df is not updated when input changes
@@ -100,13 +100,20 @@ observe({
     
     
     
+    validate(need(nrow(table1()%>%filter(dataset==""))==0,message = FALSE))
+    
     isolate({
 
-      values$df <- data.frame(dataset=values$new_dataset,
+      observeEvent(nrow(table1()%>%filter(dataset==""))==0,{
+        req(nrow(table1()%>%filter(dataset==""))==0)
+        if(nrow(table1()%>%filter(dataset==""))==0){
+          values$df <- 
+          data.frame(dataset=values$new_dataset,
                               nation=values$new_nation,
                               number=values$new_number) %>%
         left_join(values$df, by = c("dataset", "nation", "number")) %>%
-        mutate(colours = ifelse(is.na(colours),values$new_colour,colours))
+        mutate(colours = ifelse(is.na(colours),values$new_colour,colours))}
+      })
 
       
     })      
@@ -116,14 +123,11 @@ observe({
 
 #output$test_output <- renderTable(values$df)
 
-table3 <- reactive({values$df})
-
-
-#compare_palette_values = reactive({setNames(table3() %>% pull(colours),table3() %>% pull(dataset))})
+#table3 <- reactive({values$df})
 
 compare_palette_values = reactive({setNames(values$df$colours,values$df$dataset)})
 
-my_vars = reactive({table1() %>% pull(dataset)})
+my_vars = reactive({values$df$dataset})
 
 
 observe({
@@ -232,6 +236,8 @@ y_axis = reactive({paste((if(input$type_compare=="n_id_distinct"){"Monthly Disti
 
 validate_plots = reactive({compare_coverage_data_filtered() %>% distinct(dataset) %>% select(dataset)})
 
+
+
 compare_coverage_plot = reactive({
   
   #dont render until have 2 datasets
@@ -323,15 +329,20 @@ x_nudge = reactive({
 
 
 
+
+
+
 output$compare_coverage_plot_girafe = 
+
   renderGirafe({
-    
+
     validate(
       need(nrow(validate_plots()) > 1, message = FALSE)
     )
     
     #validate(need(compare_coverage_plot(), "")) #attempt to only induce spinner once 2 inputs added
-    
+ 
+
   girafe(ggobj = compare_coverage_plot() +
            
            (geom_text_repel_interactive(
@@ -382,109 +393,181 @@ output$compare_coverage_plot_girafe =
            opts_selection(type="none")
          )
   )
+
 })
 
 
 
-observeEvent(input$download_coverage_data, {
-  
-  shinyalert::shinyalert("Export Data:", 
-             type = "info",
-             size = "xs",
-             html = TRUE,
-             text = tagList(
-               #textInput(inputId = "namere", label = NULL),
-               selectInput(inputId = "download_choice_compare", choices=c("with selected plot input"="selected","in full"="full"), label=NULL),
-               downloadButton("confName", "Confirm")
-             ),
-             closeOnEsc = TRUE,
-             closeOnClickOutside = TRUE,
-             showConfirmButton = FALSE,
-             showCancelButton = FALSE,
-             animation = TRUE
-  )
-  runjs("
-        var confName = document.getElementById('confName')
-        confName.onclick = function() {swal.close();}
-        ")
-  
+compare_coverage_data_selected_download = reactive({
+  t.data_coverage_source %>%
+    arrange(dataset,date_ym) %>%
+    left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+    filter(.data$dataset %in% my_vars()) %>%
+    ungroup() %>%
+    mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
+    filter(!is.na(date_ym)) %>%
+    separate(date_ym, c("date_y", "date_m"), remove=FALSE, sep = '-') %>%
+    mutate(across(.cols = c(date_y, date_m), .fn = ~ as.numeric(.))) %>%
+    filter(.data$date_y>=input$date_range_coverage2[1] & .data$date_y<=input$date_range_coverage2[2]) %>%
+    select(dataset,title, date_ym, any_of(input$type_compare)) %>%
+    mutate(export_date = Sys.Date())
 })
 
+compare_coverage_data_full_download = reactive({
+  t.data_coverage_source %>%
+    arrange(dataset,date_ym) %>%
+    left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+    filter(.data$dataset %in% my_vars()) %>%
+    ungroup() %>%
+    mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
+    filter(!is.na(date_ym)) %>%
+    select(dataset,title, date_ym, n, n_id, n_id_distinct) %>%
+    mutate(export_date = Sys.Date())
+})
+
+# observeEvent(input$download_coverage_data, {
+#   
+#   shinyalert::shinyalert("Export Data:", 
+#                          type = "info",
+#                          size = "xs",
+#                          html = TRUE,
+#                          text = tagList(
+#                            #textInput(inputId = "namere", label = NULL),
+#                            selectInput(inputId = "download_choice_compare", choices=c("with selected plot input"="selected","in full"="full"), label=NULL),
+#                            downloadButton("confName", "Confirm")
+#                          ),
+#                          closeOnEsc = TRUE,
+#                          closeOnClickOutside = TRUE,
+#                          showConfirmButton = FALSE,
+#                          showCancelButton = FALSE,
+#                          animation = TRUE
+#   )
+#   #this closes the shiny alert after download has been clicked
+#   runjs("
+#         var confName = document.getElementById('confName')
+#         confName.onclick = function() {swal.close();}
+#         ")
+#   
+# })
+
+# output$confName = downloadHandler(
+#   filename = function() {if(input$download_choice_compare=="selected"){
+#     paste0("data_coverage_",str_remove_all(Sys.Date(),"-"),".xlsx")} else {
+#       paste0("data_coverage_full_",str_remove_all(Sys.Date(),"-"),".xlsx")}
+#   },
+#   content = function(file) {writexl::write_xlsx(
+#     
+#     if(input$download_choice_compare=="selected"){
+#       compare_coverage_data_selected_download()
+#       } else {
+#         compare_coverage_data_full_download()
+#       },
+#     format_headers = FALSE,
+#     path=file)}
+# )
 
 
-output$confName = downloadHandler(
-  filename = function() {if(input$download_choice_compare=="selected"){
+output$compare_xlsx = downloadHandler(
+  filename = function() {if(input$compare_download_type=="selected"){
     paste0("data_coverage_",str_remove_all(Sys.Date(),"-"),".xlsx")} else {
       paste0("data_coverage_full_",str_remove_all(Sys.Date(),"-"),".xlsx")}
   },
   content = function(file) {writexl::write_xlsx(
     
-    if(input$download_choice_compare=="selected"){
-      t.data_coverage_source %>%
-        arrange(dataset,date_ym) %>%
-        left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
-        filter(.data$dataset %in% my_vars()) %>%
-        ungroup() %>%
-        mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
-        filter(!is.na(date_ym)) %>%
-        separate(date_ym, c("date_y", "date_m"), remove=FALSE, sep = '-') %>%
-        mutate(across(.cols = c(date_y, date_m), .fn = ~ as.numeric(.))) %>%
-        filter(.data$date_y>=input$date_range_coverage2[1] & .data$date_y<=input$date_range_coverage2[2]) %>%
-        select(dataset,title, date_ym, any_of(input$type_compare)) %>%
-        mutate(export_date = Sys.Date())
-      } else {t.data_coverage_source %>%
-          arrange(dataset,date_ym) %>%
-          left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
-          filter(.data$dataset %in% my_vars()) %>%
-          ungroup() %>%
-          mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
-          filter(!is.na(date_ym)) %>%
-          select(dataset,title, date_ym, n, n_id, n_id_distinct) %>%
-          mutate(export_date = Sys.Date())},
+    if(input$compare_download_type=="selected"){
+      compare_coverage_data_selected_download()
+    } else {
+      compare_coverage_data_full_download()
+    },
     format_headers = FALSE,
     path=file)}
 )
 
+output$compare_csv = downloadHandler(
+  filename = function() {if(input$compare_download_type=="selected"){
+    paste0("data_coverage_",str_remove_all(Sys.Date(),"-"),".csv")} else {
+      paste0("data_coverage_full_",str_remove_all(Sys.Date(),"-"),".csv")}
+  },
+  content = function(file) {write_csv(
+    
+    if(input$compare_download_type=="selected"){
+      compare_coverage_data_selected_download()
+    } else {
+      compare_coverage_data_full_download()
+    },
+    path=file)}
+)
 
 
+compare_coverage_plot_download = reactive({(compare_coverage_plot()) +
+  
+  #add geom text layer separate for girafe object and download as different sizes needed
+  (geom_text_repel_interactive(
+    size = 12,
+    data = (
+      compare_coverage_data_filtered() %>% 
+        filter(date_format == max(date_format))
+    ),
+    
+    aes(
+      x = .data$date_format + x_nudge(),
+      y = if(input$log_scale){(.data$N) } else {.data$N + (
+        #nudge up a 30th of difference between max and min
+        (
+          (
+            (
+              compare_coverage_data_filtered() %>% filter(N == max(N)) %>% distinct(N) %>% pull(N)) - (
+                compare_coverage_data_filtered() %>% filter(N == min(N)) %>% distinct(N) %>% pull(N))
+          ) /30)
+      )},
+      color = .data$dataset,
+      label = .data$Shortname
+    ),
+    
+    direction = "y",
+    family=family_lato,
+    segment.color = 'transparent')) +
+  
+  #custom theme for download
+  theme(plot.margin = margin(20,50,20,50),
+        axis.text.x = element_text(size = 34, face = "bold"),
+        axis.text.y = element_text(size = 34, face = "bold"),
+        axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size=34, color="#4D4C4C")
+  )
+})
 
-output$download_compare_coverage_plot = downloadHandler(
+
+# output$download_compare_coverage_plot = downloadHandler(
+#   filename = function() {paste0("compare_data_coverage_",str_remove_all(Sys.Date(),"-"),".png")},
+#   content = function(file) {ggsave(file, plot = compare_coverage_plot_download(),,
+#                                    #ensure width and height are same as ggiraph
+#                                    #width_svg and height_svg to ensure png not cut off
+#                                    width = 16, height = 9, units = "in",
+#                                    bg = "transparent",
+#                                    dpi = 300, device = "png")}
+# )
+
+output$compare_jpeg = downloadHandler(
+  filename = function() {paste0("compare_data_coverage_",str_remove_all(Sys.Date(),"-"),".jpeg")},
+  content = function(file) {ggsave(file, plot = compare_coverage_plot_download(),
+                                   #ensure width and height are same as ggiraph
+                                   #width_svg and height_svg to ensure not cut off
+                                   width = 16, height = 9, units = "in",
+                                   bg = "transparent",
+                                   dpi = 300, device = "jpeg")}
+)
+output$compare_pdf = downloadHandler(
+  filename = function() {paste0("compare_data_coverage_",str_remove_all(Sys.Date(),"-"),".pdf")},
+  content = function(file) {ggsave(file, plot = compare_coverage_plot_download(),
+                                   #ensure width and height are same as ggiraph
+                                   #width_svg and height_svg to ensure not cut off
+                                   width = 16, height = 9, units = "in",
+                                   bg = "transparent",
+                                   dpi = 300, device = "pdf")}
+)
+output$compare_png = downloadHandler(
   filename = function() {paste0("compare_data_coverage_",str_remove_all(Sys.Date(),"-"),".png")},
-  content = function(file) {ggsave(file, plot = (compare_coverage_plot()) +
-
-                                     #add geom text layer separate for girafe object and download as different sizes needed
-                                     (geom_text_repel_interactive(
-                                       size = 12,
-                                       data = (
-                                         compare_coverage_data_filtered() %>% 
-                                           filter(date_format == max(date_format))
-                                       ),
-                                       
-                                       aes(
-                                         x = .data$date_format + x_nudge(),
-                                         y = if(input$log_scale){(.data$N) } else {.data$N + (
-                                           #nudge up a 30th of difference between max and min
-                                           (
-                                             (
-                                               (
-                                                 compare_coverage_data_filtered() %>% filter(N == max(N)) %>% distinct(N) %>% pull(N)) - (
-                                                   compare_coverage_data_filtered() %>% filter(N == min(N)) %>% distinct(N) %>% pull(N))
-                                             ) /30)
-                                         )},
-                                         color = .data$dataset,
-                                         label = .data$Shortname
-                                       ),
-                                       
-                                       direction = "y",
-                                       family=family_lato,
-                                       segment.color = 'transparent')) +
-                                     
-                                     #custom theme for download
-                                     theme(plot.margin = margin(20,50,20,50),
-                                           axis.text.x = element_text(size = 34, face = "bold"),
-                                           axis.text.y = element_text(size = 34, face = "bold"),
-                                           axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size=34, color="#4D4C4C")
-                                     ),
+  content = function(file) {ggsave(file, plot = compare_coverage_plot_download(),
                                    #ensure width and height are same as ggiraph
                                    #width_svg and height_svg to ensure png not cut off
                                    width = 16, height = 9, units = "in",
@@ -493,51 +576,66 @@ output$download_compare_coverage_plot = downloadHandler(
 )
 
 
+# disable the download button on page load
+shinyjs::disable(list("compare_dropdown_image",
+                 "date_range_coverage2"))
+# enable when at least 2 unique datasets
+observe({
+  if (nrow(validate_plots()) >= 2) {
+    shinyjs::enable(list("compare_dropdown_image",
+                    "date_range_coverage2"))
+  }
+})
+# disable the download button on page load
+shinyjs::disable("compare_dropdown_data")
+# enable when at least 2 unique datasets
+observe({
+  if (nrow(validate_plots()) >= 2) {
+    shinyjs::enable("compare_dropdown_data")
+  }
+})
 
 
-output$testingf = downloadHandler(
-  filename = function() {paste0("compare_data_coverage_",str_remove_all(Sys.Date(),"-"),download_image_choice2)},
-  content = function(file) {ggsave(file, plot = (compare_coverage_plot()) +
-                                     
-                                     #add geom text layer separate for girafe object and download as different sizes needed
-                                     (geom_text_repel_interactive(
-                                       size = 12,
-                                       data = (
-                                         compare_coverage_data_filtered() %>% 
-                                           filter(date_format == max(date_format))
-                                       ),
-                                       
-                                       aes(
-                                         x = .data$date_format + x_nudge(),
-                                         y = if(input$log_scale){(.data$N) } else {.data$N + (
-                                           #nudge up a 30th of difference between max and min
-                                           (
-                                             (
-                                               (
-                                                 compare_coverage_data_filtered() %>% filter(N == max(N)) %>% distinct(N) %>% pull(N)) - (
-                                                   compare_coverage_data_filtered() %>% filter(N == min(N)) %>% distinct(N) %>% pull(N))
-                                             ) /30)
-                                         )},
-                                         color = .data$dataset,
-                                         label = .data$Shortname
-                                       ),
-                                       
-                                       direction = "y",
-                                       family=family_lato,
-                                       segment.color = 'transparent')) +
-                                     
-                                     #custom theme for download
-                                     theme(plot.margin = margin(20,50,20,50),
-                                           axis.text.x = element_text(size = 34, face = "bold"),
-                                           axis.text.y = element_text(size = 34, face = "bold"),
-                                           axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size=34, color="#4D4C4C")
-                                     ),
-                                   #ensure width and height are same as ggiraph
-                                   #width_svg and height_svg to ensure png not cut off
-                                   width = 16, height = 9, units = "in",
-                                   bg = "transparent",
-                                   dpi = 300, device = "png")}
-)
+
+#Objective: When one of the download options has been clicked: eg CSV,Excel or Txt
+#want the dropdown to close at same time as download
+#problem is there is no toggleoption to close dropdown
+#additionall cannot observe the download button as there is no inputId part to it
+#solution is to observe the clicks of the download button and assign this an input (rnd) - using JS
+#then if this changes use JS again to simulate a click of the dropdown thus closing it
+
+observe({
+  if(is.null(input$rnd)){
+    runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd', click)
+            var compare_csv = document.getElementById('compare_csv')
+            compare_csv.onclick = function() {click += 1; Shiny.onInputChange('rnd', click)};
+            ")      
+  }
+})
+
+observeEvent(input$rnd, {
+  shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                 session$sendCustomMessage("close_drop1", ""))
+})
+
+
+observe({
+  if(is.null(input$rnd_excel)){
+    runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_excel', click)
+            var compare_csv = document.getElementById('compare_xlsx')
+            compare_csv.onclick = function() {click += 1; Shiny.onInputChange('rnd_excel', click)};
+            ")      
+  }
+})
+
+observeEvent(input$rnd_excel, {
+  shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                 session$sendCustomMessage("close_drop1_excel", ""))
+})
 
 
 #Dropdown - will downloaded as soon as both input choices have been selected
@@ -563,7 +661,13 @@ observeEvent(req(input$log_scale), {
 # })
 
 observe({
-#print()
+print(names(input))
+# print(counter$countervalue)
+# print(values$df)
+# print(table1())
+# print(table1()%>%select(dataset)%>%distinct()%>%arrange(dataset)%>%pull())
+# print(values$df%>%select(dataset)%>%distinct()%>%arrange(dataset)%>%pull())
+# print(all((table1()%>%select(dataset)%>%distinct()%>%arrange(dataset)%>%pull())==(values$df%>%select(dataset)%>%distinct()%>%arrange(dataset)%>%pull())))
 })
 
 

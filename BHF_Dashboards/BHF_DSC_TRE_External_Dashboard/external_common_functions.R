@@ -125,3 +125,5 @@ shinyLink <- function(to, label) {
 
 
 not_all_na <- function(x) any(!is.na(x))
+
+

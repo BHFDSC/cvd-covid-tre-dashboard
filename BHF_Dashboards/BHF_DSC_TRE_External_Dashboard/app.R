@@ -27,12 +27,15 @@ library(showtext)
 library(spsComps)
 library(shinyalert)
 library(reactable)
+library(waiter)
+library(shinycssloaders)
 
 #External Sources
 source('external_common_functions.R')
 source('external_bhf_dsc_hds_designkit.R')
 source('external_data.R')
 source('external_inputs.R')
+
 
 
 # User Interface ---------------------------------------------------------------
@@ -51,6 +54,7 @@ ui = fluidPage(
   #JS Script https://shiny.rstudio.com/articles/packaging-javascript.html
   #tags$head(tags$script(src="bhf_dsc_design.js")),
   tags$head(tags$script(src="shinyLink.js")),
+  useWaitress(),
   
 
 
@@ -121,6 +125,19 @@ ui = fluidPage(
 # Server -----------------------------------------------------------------------
 
 server = function(input, output, session) {
+  
+  # # call the waitress
+  # waitress <- Waitress$
+  #   new(theme = "overlay-percent")$
+  #   start() # start
+  # 
+  # for(i in 1:10){
+  #   waitress$inc(10) # increase by 10%
+  #   Sys.sleep(.3)
+  # }
+  # 
+  # # hide when it's done
+  # waitress$close() 
   
   # observeEvent(input$myButton, {
   #   runjs(paste0('$("#ab1").css("animation","")'))
