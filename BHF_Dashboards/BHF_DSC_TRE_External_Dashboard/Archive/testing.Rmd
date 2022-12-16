@@ -8,96 +8,142 @@ Blank Rmd for debugging and troubleshooting
 
 ```{r}
 
+t.data_coverage_source = df1 %>%
+  rbind(df2 %>% rename(n_id_distinct=n_distinct)) %>%
+  as.data.frame() %>%   
+  mutate(date_ym_reformat = ifelse(str_detect(date_ym,"-"),1,ifelse(date_ym=="","",0))) %>%
+  mutate(date_ym = ifelse(date_ym_reformat==0,str_pad(date_ym,6,side="left",pad=0),date_ym)) %>%
+  mutate(date_ym = ifelse(date_ym_reformat==0,paste0(substr(date_ym,1,4),"-",substr(date_ym,5,6)),date_ym)) %>%
+  select(-date_ym_reformat)
 
-str_count(paste(c("g","asd","bad","gas"),collapse=""),"gas")
+t.data_coverage = t.data_coverage_source %>%
+  mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>% 
+  #remove null dates
+  filter(!is.na(date_ym)) %>% 
+  separate(date_ym, c("date_y", "date_m"), remove=FALSE, sep = '-') %>% 
+  mutate(across(.cols = c(date_y, date_m), .fn = ~ as.numeric(.))) %>% 
+  #remove future dates > this year + 1 (to reduce file size)
+  filter(date_y <= (as.numeric(format(Sys.Date(), "%Y"))+1)) %>% 
+  #expand to include all dates in between where counts=0
+  group_by(dataset) %>%
+  expand(date_y=min(date_y):max(date_y),date_m=1:12) %>%
+  ungroup() %>%
+  mutate(date_ym = paste0(str_pad(date_y,width=4,pad=0,side="left"),
+                          "-",
+                          str_pad(date_m,width=2,pad=0,side="left"))) %>% 
+  left_join(t.data_coverage_source, by = c("date_ym","dataset")) %>%
+  mutate(across(.cols = starts_with('n'),
+                .fn = ~ replace_na(.,0))) %>%
+  group_by(dataset) %>%
+  arrange(dataset,date_y,date_m) %>%
+  mutate(across(.cols = starts_with("n"),
+                .names = "{.col}_cum",
+                .fn = ~ cumsum(.))) %>% 
+  filter(!if_all(ends_with("cum"), ~ . == 0)) %>% 
+  select(!ends_with("cum")) %>%
+  #date month names for plot annotation
+  mutate(date_name = paste0(month.name[date_m]," ", date_y, ": ")) %>%
+  mutate(date_name_season = paste0(date_y, ": ")) %>%
+  mutate(date_m_name = paste0(month.name[date_m])) %>%
+  pivot_longer(cols=starts_with("n"), names_to="Type",values_to="N") %>%
+  mutate(date_format = as.Date(paste(date_ym, 1, sep="-"), "%Y-%m-%d"))
 
 
-input_colours = data.frame(input_no = 2:1000) %>%
-  add_column(colours = rep(compare_palette, length.out=nrow(.)))
 
 
 
-compare_palette
-countervalue=4
-state = data.frame(number=c(2,3,4,5),colors=c("#b388eb","#9F54A8","#F5484A","#F88350"))
-countervalue=4
-state = data.frame(number=c(2,4,5),colors=c("#b388eb","#F5484A","#F88350"))
-
-colors_memory = pull(state,colors)
-
-
-countervalue=5
-state = data.frame(number=c(2,4,5,6),colors=c("#b388eb","#F5484A","#F88350","#DD002D"))
-
-
-state
-setdiff(compare_palette[1:length(state$colors)],state$colors)
-
-state %>% mutate(colors = ifelse(row_number() == n() & length(setdiff(compare_palette[1:nrow(state %>% select(colors))],state$colors))!=0,
-                                 setdiff(compare_palette[1:nrow(state)],pull(state %>% select(colors))),colors))
   
-state$colors %in% compare_palette[1:length(state$colors)]
-
-state
-
-state = state %>% mutate(colors = c(colors_memory,rep(NA,(nrow(state)-length(colors_memory)))))
-
-colors_memory[1:length(colors_memory)-1]
-
-length(setdiff(compare_palette[1:length(state$colors)],state$colors))!=0
-
-nrow(state %>% select(colors))
-
-Sys.time()
-format(as.POSIXct(Sys.time()),format = "%H:%M:%S:%MS")
-
-
-state %>% 
-    mutate(colors = ifelse(row_number() == n() & length(setdiff(compare_palette[1:nrow(state %>% select(colors))],
-                                                                pull(state %>% select(colors))))!=0,
-                                 setdiff(compare_palette[1:nrow(state)],pull(state %>% select(colors))),colors))
-
-
-test = list("name"="gdppr","name-r"="fadf","ad"="vcx","gf"="weas","name-df"="pasdasd")
-
-data.frame(test[grep('-dataset_compare', names(test))])
-
-data.frame(test)
-
-length(test[grep('name', names(test))])
-
-test = "red"
-test = c(test, c("white",'BLUE'))
-
-
-setdiff(compare_palette[1:nrow(state)],pull(state %>% select(colors)))
-
-
-nrow(data.frame(dataset=c("test","rere",NA)) %>% filter(is.na(dataset))) ==0
+```
 
 
 
-df1 = data.frame(dataset=c("A","B","C"),nation=c("Test","Test","Test"),number=c(2,3,4))
-df2 = data.frame(dataset=c("A","B"),nation=c("Test","Test"),number=c(2,3))
-
-nrow(setdiff(df1,df2))>0
-
-df1 %>% head(-1)
-
-all(c("test","y") == c("y"))
+```{r}
 
 
-t.data_dictionaryEng
-colnames(t.data_dictionaryEng) <- c("database", "table", "field", "field name", "field description", "field type",
-                                    "data type", "units", "values", "notes", "links", "x")
+coverage_data_all_records =  
+        t.data_coverage %>%
+          left_join(datasets_available,by = c("dataset"="Dataset")) %>%
+          filter(dataset=="Welsh Longitudinal General Practice") %>%
+          #tooltips for plot
+          mutate(N_tooltip = format(.data$N, nsmall=0, big.mark=",", trim=TRUE)) %>%
+          mutate(N_tooltip_date = paste0(date_name,N_tooltip)) %>%
+          mutate(N_tooltip_date_season = paste0(date_name,N_tooltip)) #date_name_season
+        
+     
+      
+      season_colour_palette = reactive({setNames(
+        rep(rev(colour_stepped_palette), length.out=nrow(distinct(coverage_data_all_records(),date_y))),
+        rev(pull(distinct(coverage_data_all_records(),date_y),date_y))
+      )})
 
-rename(`field` = display_name,
-       `field name` = display_name_label,
-       `field description` = field_description,
-       `field type` = variable_type,
-       `variable_type` = data_type,
-       `x` = gdppr
-       )
+        coverage_data_start_date =
+            reactive({
+              coverage_data_all_records() %>%
+                #filter date range
+                mutate(start_date = as.Date(paste(start_date, 1, sep="-"), "%Y-%m-%d")) %>%
+                filter(!start_date > date_format) %>%
+                #using current month but this should be updated to use production ym in future
+                mutate(current_date = as.Date(paste(format(Sys.Date(), "%Y-%m"), 1, sep="-"), "%Y-%m-%d")) %>%
+                filter(date_format <= current_date)
+              })
+
+      coverage_data = reactive({
+        if(input$all_records) {
+          (coverage_data_all_records())
+        } else {
+          (coverage_data_start_date())
+        }
+      })
+
+      date_range_coverage_extremum = reactive({
+        coverage_data() %>%
+        summarise(min = min(.data$date_y),
+                  max = max(.data$date_y)) %>%
+          pivot_longer(cols=c(min,max),names_to="extremum",values_to="year")
+      })
+
+      date_range_coverage_min = reactive({date_range_coverage_extremum() %>% filter(.data$extremum=="min") %>% pull(year)})
+      date_range_coverage_max = reactive({date_range_coverage_extremum() %>% filter(.data$extremum=="max") %>% pull(year)})
+      
+      date_range_coverage_extremum_start_date = reactive({
+        coverage_data_start_date() %>%
+          summarise(min = min(.data$date_y),
+                    max = max(.data$date_y)) %>%
+          pivot_longer(cols=c(min,max),names_to="extremum",values_to="year")
+      })
+      
+      date_range_coverage_min_start_date = reactive({date_range_coverage_extremum_start_date() %>% filter(.data$extremum=="min") %>% pull(year)})
+      date_range_coverage_max_start_date = reactive({date_range_coverage_extremum_start_date() %>% filter(.data$extremum=="max") %>% pull(year)})
+
+      observe({
+        updateSliderInput(session, "date_range_coverage",
+                          min = date_range_coverage_min(),
+                          max = date_range_coverage_max(),
+                          value = c(
+                            date_range_coverage_min_start_date(),
+                            date_range_coverage_max_start_date()
+                          ),
+                          step=1
+                          )
+        })
+      
+    
+      #date filtered dataset
+      coverage_data_filtered = reactive({
+        coverage_data() %>%
+          filter(.data$date_y>=input$date_range_coverage[1] & .data$date_y<=input$date_range_coverage[2]) %>%
+          filter(Type %in% input$count_coverage)
+      })
+      
+      coverage_data_filtered_season = reactive({
+        coverage_data() %>%
+          filter(.data$date_y>=input$date_range_coverage[1] & .data$date_y<=input$date_range_coverage[2]) %>%
+          filter(Type %in% input$count_coverage_season)
+      })
+
+      
+
+
 ```
 
 
