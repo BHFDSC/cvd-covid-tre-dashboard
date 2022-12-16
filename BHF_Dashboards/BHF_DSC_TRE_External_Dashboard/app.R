@@ -36,7 +36,9 @@ source('external_bhf_dsc_hds_designkit.R')
 source('external_data.R')
 source('external_inputs.R')
 
-
+## change path to a non temp diretory to keep that even after reboot
+shinyOptions(cache = cachem::cache_disk(file.path(dirname(tempdir()), 
+                                                  "myapp-cache")))
 
 # User Interface ---------------------------------------------------------------
 
