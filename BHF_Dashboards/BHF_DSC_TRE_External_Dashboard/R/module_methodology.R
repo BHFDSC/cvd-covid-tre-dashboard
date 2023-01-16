@@ -27,7 +27,7 @@ methodologyOutput <- function(id){
         wellPanel(style = bhf_tab_panel_style,
         tags$h4("Header 1", style="margin-top:-0.1%;"),
         tags$p(
-          "Some holding text about curation of the data dictionary."
+          htmlOutput("text2")
         ),
         tags$h4("Header 2"),
         tags$p(

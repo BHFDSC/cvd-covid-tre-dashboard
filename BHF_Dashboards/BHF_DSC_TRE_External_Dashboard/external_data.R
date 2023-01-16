@@ -128,5 +128,17 @@ t.dataset_completeness = read.csv(paste0('Data/',completeness_dataset_name,'.csv
 
 # Landing page static text ------------------------------------------------
 
-Static_text <- read_excel("Data/Static text.xlsx", col_names = FALSE)
-landing_page_text <- Static_text[1,1]
+Static_text <- read_excel("Data/Static text.xlsx", col_names = FALSE, sheet = "Landing")
+landing_page_text <- as.character(Static_text[1,1])
+landing_page_text <- landing_page_text %>% str_replace_all(. , "\n", " <br> ")
+
+# Methodology static text ------------------------------------------------
+
+Methodology_DD_Header1 <- as.character(
+  read_excel(
+    "Data/Static text.xlsx", col_names = FALSE, sheet = "Methodology_DD_Header1"
+    )[1,1]
+) %>% str_replace_all(. , "\r", "") %>% 
+  str_replace_all(. , "\n", " <br> ")
+
+

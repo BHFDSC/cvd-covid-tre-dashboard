@@ -74,7 +74,8 @@ ui = fluidPage(
                    href="https://www.hdruk.ac.uk/helping-with-health-data/bhf-data-science-centre/"),
     
     ### Landing Tab ============================================================
-    tabPanel("Landing tab", landing_page_text),
+    tabPanel("Landing tab", htmlOutput("text")),
+             #"landing_page_text" ),
 
     ### Summary Tab ============================================================
   
@@ -126,8 +127,14 @@ server = function(input, output, session) {
   # observeEvent(input$myButton, {
   #   runjs(paste0('$("#ab1").css("animation","")'))
   # })
-
-
+  ### Landing Tab ============================================================
+  output$text <- renderUI({
+    HTML(landing_page_text)
+  })
+  
+  
+  
+  
   ### Summary Tab ============================================================
   summaryServer(id = "summary_module")
   
@@ -138,7 +145,9 @@ server = function(input, output, session) {
   ### Insight Tab ============================================================
   
   ### Methodology Tab ===========================================================
-
+  output$text2 <- renderUI({
+    HTML(Methodology_DD_Header1)
+  })
 
   
 }
