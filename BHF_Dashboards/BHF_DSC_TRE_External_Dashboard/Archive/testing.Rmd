@@ -49,7 +49,9 @@ t.data_coverage = t.data_coverage_source %>%
   mutate(date_format = as.Date(paste(date_ym, 1, sep="-"), "%Y-%m-%d"))
 
 
-
+t.data_coverage %>%
+  filter(str_detect(dataset,"hes_apc_all_years")) %>%
+  arrange(desc(date_y))
 
 
   

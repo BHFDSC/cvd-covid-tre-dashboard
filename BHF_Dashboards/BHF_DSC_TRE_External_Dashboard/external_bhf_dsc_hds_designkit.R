@@ -126,19 +126,61 @@ table.dataTable thead tr {
 
 
 
-
-
 #section_heading_hyper a:link{color:var(--colour_bhf_darkred)!important;text-decoration: none; }
 #section_heading_hyper a:visited{color:var(--colour_bhf_darkred)!important;text-decoration: none; }
 #section_heading_hyper a:hover{color:var(--colour_bhf_neonred)!important;text-decoration: none; }
 #section_heading_hyper a:active{color:var(--colour_bhf_neonred)!important;text-decoration: none; }
 
 
-#compare_dropdown_data {
+
+/*############################################################################*/
+/*All this section is for the export dropdowns but css is also controlled from the modules themselves*/
+/*also see the class assigned to dropdown .btn-myClass*/
+
+
+#compare_dropdown_data:active{
+border-color: transparent;
+color:var(--colour_bhf_neonred);
+}
+
+#compare_dropdown_image:active{
+border-color: transparent;
+color:var(--colour_bhf_neonred);
+}
+
+#compare_dropdown_data:disabled{
+color:#6B6C6F !important;
+border:none!important;
+}
+
+#compare_dropdown_image:disabled{
+color:#6B6C6F !important;
+border:none!important;
+}
+
+
+
+
+
+
+
+
+.sw-dropdown-in{
+width:200px;
+font-size:85%;
+}
+
+#compare_dropdown_data.sw-dropdown-in{
 
 }
 
-.fa fa-file-lines:before{margin-left:-4%;}
+#compare_download_type{
+margin:1%;
+}
+
+#testid{width:20%;}
+
+/*############################################################################*/
 
 
 /*Export Image Dropdown Compare - ensure border radius aligns with order of options*/
@@ -207,6 +249,38 @@ border-bottom-right-radius: 10px !important;
 #compare_txt:focus{color:white;background-color:var(--colour_bhf_darkred);}
 
 
+#download_summary_coverage_season_plot_jpeg{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+padding-left:5%;
+border-top-left-radius: 10px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 10px !important;
+border-bottom-right-radius: 0px !important;
+}
+#download_summary_coverage_season_plot_jpeg:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#download_summary_coverage_season_plot_jpeg:active{color:white;background-color:var(--colour_bhf_darkred);}
+#download_summary_coverage_season_plot_jpeg:focus{color:white;background-color:var(--colour_bhf_darkred);}
+#download_summary_coverage_season_plot_pdf{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+padding-left:5%;
+border-top:none;
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 0px !important;
+}
+#download_summary_coverage_season_plot_pdf:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#download_summary_coverage_season_plot_pdf:active{color:white;background-color:var(--colour_bhf_darkred);}
+#download_summary_coverage_season_plot_pdf:focus{color:white;background-color:var(--colour_bhf_darkred);}
+#download_summary_coverage_season_plot_png{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+padding-left:5%;
+border-top:none;
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 10px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 10px !important;
+}
+#download_summary_coverage_season_plot_png:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#download_summary_coverage_season_plot_png:active{color:white;background-color:var(--colour_bhf_darkred);}
+#download_summary_coverage_season_plot_png:focus{color:white;background-color:var(--colour_bhf_darkred);}
 
 
 
@@ -1008,6 +1082,7 @@ color:#3D3C3C !important;
 }
 .btn-myClass { color: #3D3C3C;}
 .btn-myClass:hover { color: var(--colour_bhf_neonred);}
+.btn-myClass:active { color: var(--colour_bhf_neonred);border-color:transparent!important;}
 .glyphicon.glyphicon-triangle-top::before{color:transparent;}
 .glyphicon.glyphicon-triangle-top{color:transparent;}
 .sw-dropdown-content.animated.sw-dropup-content.sw-show{

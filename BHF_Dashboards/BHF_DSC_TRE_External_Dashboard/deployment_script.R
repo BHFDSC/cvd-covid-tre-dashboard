@@ -52,10 +52,11 @@ rsconnect::deployApp()
 
 # There may be some additional package warnings..... in this case you might want to use pacman to quickly address this. See code below
 
-# install.packages("pacman")
+#install.packages("pacman")
 # 
 # pacman::p_load(brew, devtools, downlit, gert, gh, gitcreds, ini, miniUI, pkgbuild, pkgdown, profvis, ragg, rcmdcheck, remotes,
-#                roxygen2, rversions, sessioninfo, textshaping, urlchecker, usethis, whisker, xopen, zip, gh)
+#                roxygen2, rversions, sessioninfo, textshaping, urlchecker, usethis, whisker, xopen, zip, gh, jJava, shinyvalidate,
+#                xlsx, xlsxjars)
 
 
 
