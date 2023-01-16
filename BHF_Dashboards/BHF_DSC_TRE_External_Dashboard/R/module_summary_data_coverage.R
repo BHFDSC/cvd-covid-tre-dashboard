@@ -110,11 +110,55 @@ downloadButton(outputId = ns("download_summary_coverage_plot"),
 
 conditionalPanel(condition = "input.tab_selected_summary_coverage == 'compare_plot'",
                  
-                 div(id = "css_pair_popup",
-downloadButton(outputId = ns("download_summary_coverage_season_plot"), 
-               label = "Download PNG",
-               icon = icon("file-image"))
-)),
+
+    
+dropdown(
+  id = "coverage_dropdown_image_season",
+  inputId = "coverage_dropdown_image_season",
+  
+  fluidRow(align="center", style="margin-top: -11%;
+            padding-top: -11%;
+            padding-left: -11.3%;
+            margin-left: -11.3%;
+            padding-right: -10.9%;
+            margin-right:-10.9%;
+            padding-bottom:3%;",
+           h6("Download Plot", 
+              style="color:white;background-color:#A0003C;
+                     font-size:100%;
+                     padding-top: 3%;
+                     padding-bottom:3.5%;
+                     border-top-left-radius: 10px !important;
+                    border-top-right-radius: 10px !important;")),
+  
+  fluidRow(align="center",h6("Save as:", style="color:#3D3C3C;margin-top:-3%;margin-bottom:4%;")),
+  fluidRow(downloadButton(outputId="download_summary_coverage_season_plot_jpeg","JPEG (.jpeg)",icon=NULL)),
+  fluidRow(downloadButton(outputId="download_summary_coverage_season_plot_pdf","PDF (.pdf)",icon=NULL)),
+  fluidRow(downloadButton(outputId="download_summary_coverage_season_plot_png","PNG (.png)",icon=NULL)),
+
+  size = "xs",
+  status = "myClass",
+  label = "Download Plot",
+  icon = icon("file-image"),
+  up = TRUE
+),
+
+#simulate a click on the dropdown button when input$rnd changes (see server)
+#see server side too
+# tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_jpeg', function(x){
+#                                                                      $('html').click();});")
+# ),
+# 
+# tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_pdf', function(x){
+#                                                                      $('html').click();});")
+# ),
+# 
+# tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_png', function(x){
+#                                                                      $('html').click();});")
+# ),
+
+),
+
 
 
 actionButton(ns("download_coverage_data"), 
@@ -468,7 +512,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
 
 
 
-      output$download_summary_coverage_plot = downloadHandler(
+      output$download_summary_coverage_plot_png = downloadHandler(
         filename = function() {paste0("data_coverage_trend_",str_remove_all(Sys.Date(),"-"),".png")},
         content = function(file) {ggsave(file, plot = (summary_coverage_plot()) +
                                            ggtitle(coverage_title_download()) +
@@ -645,7 +689,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
       
       
       
-      output$download_summary_coverage_season_plot = downloadHandler(
+      output$download_summary_coverage_season_plot_png = downloadHandler(
         filename = function() {paste0("data_coverage_seasonality_",str_remove_all(Sys.Date(),"-"),".png")},
         content = function(file) {ggsave(file, plot = (summary_coverage_season_plot()) +
                                            ggtitle(coverage_title_download()) +
@@ -682,6 +726,58 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                                          bg = "transparent",
                                          dpi = 300, device = "png")}
       )
+
+      
+      
+      # observe({
+      #   if(is.null(input$rnd_jpeg)){
+      #     runjs("
+      #       var click = 0;
+      #       Shiny.onInputChange('rnd_jpeg', click)
+      #       var compare_csv = document.getElementById('download_summary_coverage_season_plot_jpeg')
+      #       compare_csv.onclick = function() {click += 1; Shiny.onInputChange('rnd_jpeg', click)};
+      #       ")      
+      #   }
+      # })
+      # 
+      # observeEvent(input$rnd_jpeg, {
+      #   shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+      #                  session$sendCustomMessage("close_drop1_jpeg", ""))
+      # })
+      # 
+      # 
+      # observe({
+      #   if(is.null(input$rnd_pdf)){
+      #     runjs("
+      #       var click = 0;
+      #       Shiny.onInputChange('rnd_pdf', click)
+      #       var compare_csv = document.getElementById('download_summary_coverage_season_plot_pdf')
+      #       compare_csv.onclick = function() {click += 1; Shiny.onInputChange('rnd_pdf', click)};
+      #       ")      
+      #   }
+      # })
+      # 
+      # observeEvent(input$rnd_pdf, {
+      #   shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+      #                  session$sendCustomMessage("close_drop1_pdf", ""))
+      # })
+      # 
+      # 
+      # observe({
+      #   if(is.null(input$rnd_png)){
+      #     runjs("
+      #       var click = 0;
+      #       Shiny.onInputChange('rnd_png', click)
+      #       var download_summary_coverage_season_plot_png = document.getElementById('download_summary_coverage_season_plot_png')
+      #       download_summary_coverage_season_plot_png.onclick = function() {click += 1; Shiny.onInputChange('rnd_png', click)};
+      #       ")      
+      #   }
+      # })
+      # 
+      # observeEvent(input$rnd_png, {
+      #   shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+      #                  session$sendCustomMessage("close_drop1_png", ""))
+      # })
       
       
       

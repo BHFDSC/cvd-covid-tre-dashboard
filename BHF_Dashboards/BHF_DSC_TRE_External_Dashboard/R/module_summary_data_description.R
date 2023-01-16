@@ -17,7 +17,7 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
       dataset_desc_filter = reactive({
         datasets_available %>%
         filter(.data$Dataset == dataset_summary())
-      })
+      }) %>% bindCache(dataset_summary(),nation_summary())
 
          
       observeEvent(dataset_summary(),
@@ -36,7 +36,8 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
         validate(need(dataset_summary() ,
                       message = FALSE))
         
-        "For more information see:"})    
+        "For more information see:"}) 
+      #%>% bindCache(dataset_summary(),nation_summary())
       
       url1 <- a(ifelse(grepl("digital.nhs", 
                              datasets_available$url1[datasets_available$Dataset == dataset_summary()]),"NHS Digital",
@@ -72,8 +73,8 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
            
           {tagList(url1, "and", url2)}
                        
-          })
-        })
+          }) %>% bindCache(dataset_summary(),nation_summary())
+        }) %>% bindCache(dataset_summary(),nation_summary())
       )
     }
   )
