@@ -101,11 +101,26 @@ fluidRow(titlePanel(h3(id = 'section_heading_hyper',
                                                dropdown(
                                                  id = "compare_dropdown_image",
                                                  inputId = "compare_dropdown_image",
+                                              
+                                                 fluidRow(align="center", style="margin-top: -11%;
+                                                                            padding-top: -11%;
+                                                                            padding-left: -11.3%;
+                                                                            margin-left: -11.3%;
+                                                                            padding-right: -10.9%;
+                                                                            margin-right:-10.9%;
+                                                                            padding-bottom:3%;",
+                                                          h6("Download Plot", 
+                                                             style="color:white;background-color:#A0003C;
+                                                                            font-size:100%;
+                                                                            padding-top: 3%;
+                                                                            padding-bottom:3.5%;
+                                                                            border-top-left-radius: 10px !important;
+                                                                            border-top-right-radius: 10px !important;")),
 
-                                                 fluidRow(align="center",h6("Save as:", style="color:#3D3C3C;")),
-                                                 fluidRow(downloadButton(outputId="compare_jpeg","JPEG",icon=NULL)),
-                                                 fluidRow(downloadButton(outputId="compare_pdf","PDF",icon=NULL)),
-                                                 fluidRow(downloadButton(outputId="compare_png","PNG",icon=NULL)),
+                                                 fluidRow(align="center",h6("Save as:", style="color:#3D3C3C;margin-top:-3%;margin-bottom:4%;")),
+                                                 fluidRow(downloadButton(outputId="compare_jpeg","JPEG (.jpeg)",icon=NULL)),
+                                                 fluidRow(downloadButton(outputId="compare_pdf","PDF (.pdf)",icon=NULL)),
+                                                 fluidRow(downloadButton(outputId="compare_png","PNG (.png)",icon=NULL)),
                                                 
                                                  #no longer using radioGroupButtons but have made radioGroupButtons style above with downloadButtons
                                                  # radioGroupButtons(
@@ -126,27 +141,33 @@ fluidRow(titlePanel(h3(id = 'section_heading_hyper',
                                                
                                                
                                                #simulate a click on the dropdown button when input$rnd changes (see server)
-                                               tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1', function(x){
+                                               #see server side too
+                                               tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_jpeg', function(x){
                                                                      $('html').click();});")
                                                ),
                                                
-                                               tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_excel', function(x){
+                                               tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_pdf', function(x){
                                                                      $('html').click();});")
                                                ),
+                                               
+                                               tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_png', function(x){
+                                                                     $('html').click();});")
+                                               ),
+                                            
                                                
                                                dropdown(
                                               
                                                  
                                                  id = "compare_dropdown_data",
                                                  inputId = "compare_dropdown_data",
-                                                 
+                                            
                                         
-                                                 fluidRow(align="center", style="margin-top: -8%;
-                                                                            padding-top: -8%;
-                                                                            padding-left: -8%;
-                                                                            margin-left: -8%;
-                                                                            padding-right: -8%;
-                                                                            margin-right:-8%;
+                                                 fluidRow(align="center", style="margin-top: -11%;
+                                                                            padding-top: -11%;
+                                                                            padding-left: -11.3%;
+                                                                            margin-left: -11.3%;
+                                                                            padding-right: -10.9%;
+                                                                            margin-right:-10.9%;
                                                                             padding-bottom:3%;",
                                                           h6("Download Data", 
                                                                             style="color:white;background-color:#A0003C;
@@ -156,11 +177,13 @@ fluidRow(titlePanel(h3(id = 'section_heading_hyper',
                                                                             border-top-left-radius: 10px !important;
                                                                             border-top-right-radius: 10px !important;")),
                                                  
-                                                 wellPanel(style = "background:white;border:white;margin-left:-3%;margin-right:-3%;",
+                                                 wellPanel(style = "background:white;border:white;margin-left:-3%;margin-right:-3%;
+                                                           padding-top:5px;padding-bottom:5px;padding-left:0px;padding-right:0px;
+                                                           border-top:5px;border-bottom:5px;border-left:0px;border-right:0px;",
                                                  radioButtons(inputId="compare_download_type",
                                                               choiceNames = list(
-                                                                tags$span(style = "font-size:100%;", "Download with Selected Input"),
-                                                                tags$span(style = "font-size:100%;", "Download Full Dataset")
+                                                                tags$span(style = "font-size:100%;", "Selected input only"),
+                                                                tags$span(style = "font-size:100%;", "Full dataset")
                                                                 ),
                                                               choiceValues = list("selected","full"),
                                                               label = NULL,
@@ -168,8 +191,8 @@ fluidRow(titlePanel(h3(id = 'section_heading_hyper',
                                                               )
                                                  ),
 
-                                                 fluidRow(align="center",h6("Save as:", style="color:#3D3C3C;")),
-                                                 wellPanel(style = "background:white;border:white;margin-top:-3%;",
+                                                 fluidRow(align="center",h6("Save as:", style="color:#3D3C3C;margin-bottom:4%;")),
+                                                 wellPanel(style = "background:white;border:white;margin-top:-0%;padding:0px;border:0px;",
                                                  fluidRow(downloadButton(outputId="compare_csv","CSV (.csv)",icon=NULL)),
                                                  fluidRow(downloadButton(outputId="compare_xlsx","Excel (.xlsx)",icon=NULL)),
                                                  fluidRow(downloadButton(outputId="compare_txt","Text (.txt)",icon=NULL))
@@ -190,7 +213,22 @@ fluidRow(titlePanel(h3(id = 'section_heading_hyper',
                                                  label = "Download Data",
                                                  icon = icon("file-lines"),
                                                  up = TRUE
-                                               )
+                                               ),
+                                               
+                                               
+                                               #simulate a click on the dropdown button when input$rnd changes (see server)
+                                               #see server side too
+                                               tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop2_csv', function(x){
+                                                                     $('html').click();});")
+                                               ),
+                                               
+                                               tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop2_excel', function(x){
+                                                                     $('html').click();});")
+                                               ),
+                                               
+                                               tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop2_txt', function(x){
+                                                                     $('html').click();});")
+                                               ),
                                                
 
                                                

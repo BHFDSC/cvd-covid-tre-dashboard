@@ -92,9 +92,10 @@ footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
 
 </div>
 <hr>
-</div>
+
  <p class="copyright-text">This dashboard is updated on a monthly basis by nation.
 </p>
+</div>
         
   </footer>
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
