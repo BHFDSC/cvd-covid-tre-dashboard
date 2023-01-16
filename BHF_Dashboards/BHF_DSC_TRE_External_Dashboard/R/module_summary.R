@@ -91,8 +91,8 @@ summaryServer <- function(id) {
       
       # Global Input ===========================================================
       #Define global input from main module that can be passed to nested modules
-      global_dataset_summary <- reactive(input$dataset_summary)
-      global_nation_summary <- reactive(input$nation_summary)
+      global_dataset_summary <- reactive(input$dataset_summary) %>% bindCache(input$dataset_summary,input$nation_summary)
+      global_nation_summary <- reactive(input$nation_summary) %>% bindCache(input$dataset_summary,input$nation_summary)
       
       #Dynamic Dataset options depending on Nation selected
       datasets_available_list = reactive({
@@ -108,7 +108,9 @@ summaryServer <- function(id) {
 
       
       ## Data Overview =========================================================
-      dataDescriptionServer(id = "data_description", 
+      
+      
+      dataDescriptionServer(id = "data_description",
                             dataset_summary=global_dataset_summary, 
                             nation_summary=global_nation_summary) 
       dataOverviewServer(id = "data_overview",
