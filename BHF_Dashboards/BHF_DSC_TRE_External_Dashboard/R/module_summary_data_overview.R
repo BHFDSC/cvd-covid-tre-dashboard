@@ -67,23 +67,9 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
       #### Value Boxes =============================================================
       output$registrations <- renderValueBox({
         
-        validate(need(dataset_summary() ,
-                      message = FALSE))
-        
-        
-        if (nrow(dataset_overview())>1){
-          return(customValueBox(
-            title = "Records",
-            icon = icon("user"),
-            subtitle = "",
-            value = HTML(paste(paste0("<b>",names(count_options),":</b>"),
-                               collapse = '<br/>')),
-            color = colour_bhf_darkred,
-            background = customValueBox_global_colour,
-            border = customValueBox_border_colour,
-            href = NULL
-          ))
-        }
+        # validate(need(dataset_summary() ,
+        #               message = FALSE))
+ 
         customValueBox(
           title = "Records",
           icon = icon("user"),
@@ -108,23 +94,11 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
       
       output$batch_summary = renderValueBox({
         
-        validate(need(dataset_summary() ,
-                      message = FALSE))
+        # validate(need(dataset_summary() ,
+        #               message = FALSE))
         
         
-        if (length(archived_on())>1){
-          return(customValueBox(
-            title = "Batch Summary",
-            icon = icon("file"),
-            subtitle = "",
-            value = HTML(paste0(paste(paste0("<b>",c("Archived On", "Exported On"),":</b>"),
-                                      collapse = '<br/>'))),
-            color = colour_bhf_darkred,
-            background = customValueBox_global_colour,
-            border = customValueBox_border_colour,
-            href = NULL
-          ))
-        }
+
         
         
         customValueBox(

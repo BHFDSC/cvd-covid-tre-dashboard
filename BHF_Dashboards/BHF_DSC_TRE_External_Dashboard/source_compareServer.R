@@ -577,13 +577,11 @@ output$compare_png = downloadHandler(
 
 
 # disable the download button on page load
-shinyjs::disable(list("compare_dropdown_image",
-                 "date_range_coverage2"))
+shinyjs::disable("compare_dropdown_image")
 # enable when at least 2 unique datasets
 observe({
   if (nrow(validate_plots()) >= 2) {
-    shinyjs::enable(list("compare_dropdown_image",
-                    "date_range_coverage2"))
+    shinyjs::enable("compare_dropdown_image")
   }
 })
 # disable the download button on page load
@@ -595,29 +593,93 @@ observe({
   }
 })
 
+shinyjs::disable("date_range_coverage2")
+observe({
+  if (nrow(validate_plots()) >= 2) {
+    shinyjs::enable("date_range_coverage2")
+  }
+})
+
+
+
+
 
 
 #Objective: When one of the download options has been clicked: eg CSV,Excel or Txt
 #want the dropdown to close at same time as download
 #problem is there is no toggleoption to close dropdown
-#additionall cannot observe the download button as there is no inputId part to it
+#additionally cannot observe the download button as there is no inputId part to it
 #solution is to observe the clicks of the download button and assign this an input (rnd) - using JS
 #then if this changes use JS again to simulate a click of the dropdown thus closing it
 
+
 observe({
-  if(is.null(input$rnd)){
+  if(is.null(input$rnd_jpeg)){
     runjs("
             var click = 0;
-            Shiny.onInputChange('rnd', click)
-            var compare_csv = document.getElementById('compare_csv')
-            compare_csv.onclick = function() {click += 1; Shiny.onInputChange('rnd', click)};
+            Shiny.onInputChange('rnd_jpeg', click)
+            var compare_jpeg = document.getElementById('compare_jpeg')
+            compare_jpeg.onclick = function() {click += 1; Shiny.onInputChange('rnd_jpeg', click)};
             ")      
   }
 })
 
-observeEvent(input$rnd, {
+observeEvent(input$rnd_jpeg, {
   shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
-                 session$sendCustomMessage("close_drop1", ""))
+                 session$sendCustomMessage("close_drop1_jpeg", ""))
+})
+
+
+observe({
+  if(is.null(input$rnd_pdf)){
+    runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_pdf', click)
+            var compare_pdf = document.getElementById('compare_pdf')
+            compare_pdf.onclick = function() {click += 1; Shiny.onInputChange('rnd_pdf', click)};
+            ")      
+  }
+})
+
+observeEvent(input$rnd_pdf, {
+  shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                 session$sendCustomMessage("close_drop1_pdf", ""))
+})
+
+
+observe({
+  if(is.null(input$rnd_png)){
+    runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_png', click)
+            var compare_png = document.getElementById('compare_png')
+            compare_png.onclick = function() {click += 1; Shiny.onInputChange('rnd_png', click)};
+            ")      
+  }
+})
+
+observeEvent(input$rnd_png, {
+  shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                 session$sendCustomMessage("close_drop1_png", ""))
+})
+
+
+
+
+observe({
+  if(is.null(input$rnd_csv)){
+    runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_csv', click)
+            var compare_csv = document.getElementById('compare_csv')
+            compare_csv.onclick = function() {click += 1; Shiny.onInputChange('rnd_csv', click)};
+            ")      
+  }
+})
+
+observeEvent(input$rnd_csv, {
+  shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                 session$sendCustomMessage("close_drop2_csv", ""))
 })
 
 
@@ -626,23 +688,48 @@ observe({
     runjs("
             var click = 0;
             Shiny.onInputChange('rnd_excel', click)
-            var compare_csv = document.getElementById('compare_xlsx')
-            compare_csv.onclick = function() {click += 1; Shiny.onInputChange('rnd_excel', click)};
+            var compare_xlsx = document.getElementById('compare_xlsx')
+            compare_xlsx.onclick = function() {click += 1; Shiny.onInputChange('rnd_excel', click)};
             ")      
   }
 })
 
 observeEvent(input$rnd_excel, {
   shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
-                 session$sendCustomMessage("close_drop1_excel", ""))
+                 session$sendCustomMessage("close_drop2_excel", ""))
 })
+
+observe({
+  if(is.null(input$rnd_txt)){
+    runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_txt', click)
+            var compare_txt = document.getElementById('compare_txt')
+            compare_txt.onclick = function() {click += 1; Shiny.onInputChange('rnd_txt', click)};
+            ")      
+  }
+})
+
+observeEvent(input$rnd_txt, {
+  shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                 session$sendCustomMessage("close_drop2_txt", ""))
+})
+
+
+
+
+
+
+
 
 
 #Dropdown - will downloaded as soon as both input choices have been selected
 #the input will then be reset AND the dropdown window will close automatically
-observeEvent(req(input$log_scale), {
-  updateRadioGroupButtons(inputId = "input$download_image_choice1", selected=character(0))
-})
+# observeEvent(req(input$log_scale), {
+#   updateRadioGroupButtons(inputId = "input$download_image_choice1", selected=character(0))
+# })
+
+
 
 # observeEvent(req(counter$countervalue>0, input$"row_1-delete"), {
 #   insertUI(
@@ -661,7 +748,7 @@ observeEvent(req(input$log_scale), {
 # })
 
 observe({
-print(names(input))
+#print(names(input))
 # print(counter$countervalue)
 # print(values$df)
 # print(table1())
