@@ -68,10 +68,15 @@ methodologyOutput <- function(id){
         title = "Data Completeness",
         value = "dcom_meth",
         wellPanel(style = bhf_tab_panel_style,
-        tags$h4("Header 1", style="margin-top:-0.1%;"),
-        tags$p(
-        "Some holding text about the data completeness."
-        ),
+        tags$h4("Missingness Codes", style="margin-top:-0.1%;"),
+        tags$p(HTML(
+          
+  "<ul>
+  <li>Some fields may show low completeness in an individual dataset, but a much more complete version may be available by deriving from multiple datasets. Common examples might be ethnicity fields, or comorbidity.</li>
+  <li>The completeness we present is simply based on whether a cell is populated or not. For some fields they have been populated with a label such as 'missing', or 'not available', or a coded version of this.</li>
+  <li>Some fields we would not expect to be 100% complete. For example a dataset may refer to group of patients receiving treatment X. This might include showing the date if this treatment was concluded early. However if the treatment did not conclude early, there would be no need for this field to be populated.</li>
+  </ul>"
+        )),
         tags$h4("Non-null"),
         tags$p(
         "Some holding text.",

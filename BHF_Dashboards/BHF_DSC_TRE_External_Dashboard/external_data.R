@@ -7,6 +7,8 @@ export_date_england = "2022-11-29"
 completeness_dataset_name_england = "export_dashboard_NHSD_20221108_data_completeness"
 coverage_dataset_name_england = "export_dashboard_NHSD_20221102_data_coverage"
 overview_dataset_name_england = "export_dashboard_NHSD_20221108_date_overview"
+substr(export_date_england,1,4)
+substr(export_date_england,6,7)
 
 #Scotland
 export_date_scotland = "2022-11-26"

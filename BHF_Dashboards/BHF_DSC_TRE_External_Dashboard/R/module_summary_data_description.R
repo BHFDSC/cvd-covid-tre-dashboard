@@ -17,7 +17,7 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
       dataset_desc_filter = reactive({
         datasets_available %>%
         filter(.data$Dataset == dataset_summary())
-      }) %>% bindCache(dataset_summary(),nation_summary())
+      }) #%>% bindCache(dataset_summary(),nation_summary())
 
          
       observeEvent(dataset_summary(),
@@ -73,8 +73,8 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
            
           {tagList(url1, "and", url2)}
                        
-          }) %>% bindCache(dataset_summary(),nation_summary())
-        }) %>% bindCache(dataset_summary(),nation_summary())
+          }) #%>% bindCache(dataset_summary(),nation_summary())
+        }) #%>% bindCache(dataset_summary(),nation_summary())
       )
     }
   )
