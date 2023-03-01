@@ -7,7 +7,8 @@ date: "2022-10-20"
 Blank Rmd for debugging and troubleshooting
 
 ```{r}
-
+as.Date(paste(format(Sys.Date(), "%Y-%m"), 1, sep="-"), "%Y-%m-%d")
+as.Date("2022-12-01")
 t.data_coverage_source = df1 %>%
   rbind(df2 %>% rename(n_id_distinct=n_distinct)) %>%
   as.data.frame() %>%   
@@ -51,7 +52,10 @@ t.data_coverage = t.data_coverage_source %>%
 
 t.data_coverage %>%
   filter(str_detect(dataset,"hes_apc_all_years")) %>%
-  arrange(desc(date_y))
+  arrange(desc(date_y)) %>%
+  write.table("test.txt")
+
+
 
 
   
