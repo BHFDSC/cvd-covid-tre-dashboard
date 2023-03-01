@@ -20,9 +20,70 @@ dataDictionaryUI <- function(id){
                     
     reactableOutput(ns("tbl")),
     
-    downloadButton(ns("download_dd"),
-                                   label="Export Data",
-                                   icon = icon("file-excel"))
+    dropdown(
+      
+      
+      id = "download_dd",
+      inputId = "download_dd",
+      
+      
+      fluidRow(align="center", style="margin-top: -11%;
+      padding-top: -11%;
+      padding-left: -11.3%;
+      margin-left: -11.3%;
+      padding-right: -10.9%;
+      margin-right:-10.9%;
+      padding-bottom:3%;",
+               h6("Download Data", 
+                  style="color:white;background-color:#A0003C;
+                   font-size:100%;
+                   padding-top: 3%;
+                   padding-bottom:3.5%;
+                   border-top-left-radius: 10px !important;
+                   border-top-right-radius: 10px !important;")),
+      
+      wellPanel(style = "background:white;border:white;margin-left:-3%;margin-right:-3%;
+                                                           padding-top:5px;padding-bottom:5px;padding-left:0px;padding-right:0px;
+                                                           border-top:5px;border-bottom:5px;border-left:0px;border-right:0px;",
+                # radioButtons(inputId="dict_download_type",
+                #              choiceNames = list(
+                #                tags$span(style = "font-size:100%;", "Selected input only"),
+                #                tags$span(style = "font-size:100%;", "Full dataset")
+                #              ),
+                #              choiceValues = list("selected","full"),
+                #              label = NULL,
+                #              selected="selected"
+                # )
+      ),
+      
+      fluidRow(align="center",h6("Save as:", style="color:#3D3C3C;margin-bottom:4%;")),
+      wellPanel(style = "background:white;border:white;margin-top:-0%;padding:0px;border:0px;",
+                fluidRow(downloadButton(outputId=ns("download_dd_csv"),"CSV (.csv)",icon=NULL)),
+                fluidRow(downloadButton(outputId=ns("download_dd_xlsx"),"Excel (.xlsx)",icon=NULL)),
+                fluidRow(downloadButton(outputId=ns("download_dd_txt"),"Text (.txt)",icon=NULL))
+      ),
+
+      size = "xs",
+      status = "myClass",
+      label = "Download Data",
+      icon = icon("file-lines"),
+      up = TRUE
+    ),
+    
+    
+    #simulate a click on the dropdown button when input$rnd changes (see server)
+    #see server side too
+    tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop2_csv', function(x){
+                                                                     $('html').click();});")
+    ),
+    
+    tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop2_xlsx', function(x){
+                                                                     $('html').click();});")
+    ),
+    
+    tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop2_txt', function(x){
+                                                                     $('html').click();});")
+    ),
     ))
     
   )
@@ -138,17 +199,88 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
       output$tbl = renderReactable(data_dict_react())
       
       
-      output$download_dd = downloadHandler(
+      output$download_dd_csv = downloadHandler(
+        filename = function() {paste0("data_dictionary_",str_remove_all(Sys.Date(),"-"),".csv")},
+        content = function(file) {write_csv(
+          (data_dict() %>%
+             rename_with(str_to_title) %>%
+             mutate(dataset = dataset_summary()) %>%
+             mutate(export_date = Sys.Date())),
+          path=file)}
+      )
+      
+      observe({
+        if(is.null(input$rnd_csv)){
+          runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_csv', click)
+            var compare_csv = document.getElementById('summary_module-data_dictionary_module-download_dd_csv')
+            compare_csv.onclick = function() {click += 1; Shiny.onInputChange('rnd_csv', click)};
+            ")      
+        }
+      })
+      
+      observeEvent(input$rnd_csv, {
+        shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                       session$sendCustomMessage("close_drop2_csv", ""))
+      })
+      
+      
+      output$download_dd_xlsx = downloadHandler(
         filename = function() {paste0("data_dictionary_",str_remove_all(Sys.Date(),"-"),".xlsx")},
         content = function(file) {writexl::write_xlsx(
           (data_dict() %>%
              rename_with(str_to_title) %>%
              mutate(dataset = dataset_summary()) %>%
              mutate(export_date = Sys.Date())),
-          
           format_headers = FALSE,
           path=file)}
       )
+      
+      observe({
+        if(is.null(input$rnd_excel)){
+          runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_excel', click)
+            var compare_xlsx = document.getElementById('summary_module-data_dictionary_module-download_dd_xlsx')
+            compare_xlsx.onclick = function() {click += 1; Shiny.onInputChange('rnd_excel', click)};
+            ")      
+        }
+      })
+      
+      observeEvent(input$rnd_excel, {
+        shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                       session$sendCustomMessage("close_drop2_xlsx", ""))
+      })
+      
+      
+      output$download_dd_txt = downloadHandler(
+        filename = function() {paste0("data_dictionary_",str_remove_all(Sys.Date(),"-"),".txt")},
+        content = function(file) {write_tsv(
+          (data_dict() %>%
+             rename_with(str_to_title) %>%
+             mutate(dataset = dataset_summary()) %>%
+             mutate(export_date = Sys.Date())),
+          path=file)}
+      )
+      
+      observe({
+        if(is.null(input$rnd_txt)){
+          runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_txt', click)
+            var compare_csv = document.getElementById('summary_module-data_dictionary_module-download_dd_txt')
+            compare_txt.onclick = function() {click += 1; Shiny.onInputChange('rnd_txt', click)};
+            ")      
+        }
+      })
+      
+      observeEvent(input$rnd_txt, {
+        shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                       session$sendCustomMessage("close_drop2_txt", ""))
+      })
+      
+      
       
     }
   )

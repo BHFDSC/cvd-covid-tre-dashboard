@@ -30,7 +30,8 @@ dataCoverageUI <- function(id){
              )),
 
              
-             conditionalPanel(condition = "input.tab_selected_summary_coverage == 'summary_coverage_plot'",
+             conditionalPanel(ns = ns,
+                              condition = "input.tab_selected_summary_coverage == 'summary_coverage_plot'",
                               
                               div(id = "css_pair_popup",
                                   
@@ -52,14 +53,6 @@ dataCoverageUI <- function(id){
                               ),
                               
                               
-                              #LOG SCALE
-                              prettySwitchCustom(inputId = ns("log_scale_summary"),
-                                                 label = "Log scale", fill = TRUE, value=FALSE, spaces = 2,info=FALSE),
-                              
-                              #TREND LINE
-                              prettySwitchCustom(inputId = ns("trend_line"),
-                                                 label = "Show trend", fill = TRUE, value=FALSE, spaces = 2,my_message = trend_text,prompt_size="medium"),
-                              
                               ),
 
                               )),
@@ -67,7 +60,8 @@ dataCoverageUI <- function(id){
                             
              ),
              
-             conditionalPanel(condition = "input.tab_selected_summary_coverage == 'compare_plot'",
+             conditionalPanel(ns = ns,
+                              condition = "input.tab_selected_summary_coverage == 'compare_plot'",
 
 
                               fluidRow(column(12,
@@ -97,18 +91,60 @@ dataCoverageUI <- function(id){
                               ),
 
              ),
+             
+             
+             #LOG SCALE
+             prettySwitchCustom(inputId = ns("log_scale_summary"),
+                                label = "Log scale", fill = TRUE, value=FALSE, spaces = 2,info=FALSE),
+             
+             #TREND LINE
+             prettySwitchCustom(inputId = ns("trend_line"),
+                                label = "Show trend", fill = TRUE, value=FALSE, spaces = 2,my_message = trend_text,prompt_size="medium"),
+
+
+             
 
 
 
-conditionalPanel(condition = "input.tab_selected_summary_coverage == 'summary_coverage_plot'",
+conditionalPanel(ns = ns,
+                 condition = "input.tab_selected_summary_coverage == 'summary_coverage_plot'",
                  
-                 div(id = "css_pair_popup",
-downloadButton(outputId = ns("download_summary_coverage_plot"), 
-               label = "Download PNG",
-               icon = icon("file-image"))
-)),
+                 dropdown(
+                   id = "coverage_dropdown_image_plot",
+                   inputId = "coverage_dropdown_image_plot",
+                   
+                   fluidRow(align="center", style="margin-top: -11%;
+            padding-top: -11%;
+            padding-left: -11.3%;
+            margin-left: -11.3%;
+            padding-right: -10.9%;
+            margin-right:-10.9%;
+            padding-bottom:3%;",
+            h6("Download Plot", 
+               style="color:white;background-color:#A0003C;
+                     font-size:100%;
+                     padding-top: 3%;
+                     padding-bottom:3.5%;
+                     border-top-left-radius: 10px !important;
+                    border-top-right-radius: 10px !important;")),
+            
+            fluidRow(align="center",h6("Save as:", style="color:#3D3C3C;margin-top:-3%;margin-bottom:4%;")),
+            fluidRow(downloadButton(outputId=ns("download_summary_coverage_plot_jpeg"),"JPEG (.jpeg)",icon=NULL)),
+            fluidRow(downloadButton(outputId=ns("download_summary_coverage_plot_pdf"),"PDF (.pdf)",icon=NULL)),
+            fluidRow(downloadButton(outputId=ns("download_summary_coverage_plot_png"),"PNG (.png)",icon=NULL)),
+            
+            size = "xs",
+            status = "myClass",
+            label = "Download Plot",
+            icon = icon("file-image"),
+            up = TRUE
+                 ),        
+                 
+                 
+),
 
-conditionalPanel(condition = "input.tab_selected_summary_coverage == 'compare_plot'",
+conditionalPanel(ns = ns,
+                 condition = "input.tab_selected_summary_coverage == 'compare_plot'",
                  
 
     
@@ -132,9 +168,9 @@ dropdown(
                     border-top-right-radius: 10px !important;")),
   
   fluidRow(align="center",h6("Save as:", style="color:#3D3C3C;margin-top:-3%;margin-bottom:4%;")),
-  fluidRow(downloadButton(outputId="download_summary_coverage_season_plot_jpeg","JPEG (.jpeg)",icon=NULL)),
-  fluidRow(downloadButton(outputId="download_summary_coverage_season_plot_pdf","PDF (.pdf)",icon=NULL)),
-  fluidRow(downloadButton(outputId="download_summary_coverage_season_plot_png","PNG (.png)",icon=NULL)),
+  fluidRow(downloadButton(outputId=ns("download_summary_coverage_season_plot_jpeg"),"JPEG (.jpeg)",icon=NULL)),
+  fluidRow(downloadButton(outputId=ns("download_summary_coverage_season_plot_pdf"),"PDF (.pdf)",icon=NULL)),
+  fluidRow(downloadButton(outputId=ns("download_summary_coverage_season_plot_png"),"PNG (.png)",icon=NULL)),
 
   size = "xs",
   status = "myClass",
@@ -143,39 +179,124 @@ dropdown(
   up = TRUE
 ),
 
-#simulate a click on the dropdown button when input$rnd changes (see server)
-#see server side too
-# tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_jpeg', function(x){
-#                                                                      $('html').click();});")
-# ),
-# 
-# tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_pdf', function(x){
-#                                                                      $('html').click();});")
-# ),
-# 
-# tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_png', function(x){
-#                                                                      $('html').click();});")
-# ),
+
 
 ),
 
 
 
-actionButton(ns("download_coverage_data"), 
-               label="Export Data",
-               icon = icon("file-excel"))
+dropdown(
+  
+  
+  id = "download_coverage_data",
+  inputId = "download_coverage_data",
+  
+  
+  fluidRow(align="center", style="margin-top: -11%;
+           padding-top: -9%;
+           padding-left: -5.9%;
+           margin-left: -5.9%;
+           padding-right: -11.3%;
+           margin-right:-11.3%;
+           padding-bottom:3%;",
+           h6("Download Data", 
+              style="color:white;background-color:#A0003C;
+                     font-size:100%;
+                     padding-top: 3%;
+                     padding-bottom:3.5%;
+                     border-top-left-radius: 10px !important;
+                     border-top-right-radius: 10px !important;")),
+  
+  wellPanel(style = "background:white;border:white;
+                     margin-left:2%;margin-right:2%;padding-left:0px;padding-right:0px;border-left:0px;border-right:0px;
+                     padding-top:-5%;border-top:-5%;margin-top:-5%;
+                     border-bottom:-25%;padding-bottom:-25%;margin-bottom:-25%;",
+            radioButtons(inputId=ns("download_choice_compare"),
+                         choiceNames = list(
+                           tags$span(style = "font-size:100%;", "Selected input only"),
+                           tags$span(style = "font-size:100%;", "Full dataset")
+                         ),
+                         choiceValues = list("selected","full"),
+                         label = NULL,
+                         selected="selected"
+            )
+  ),
+  
+  fluidRow(align="center",h6("Save as:", style="color:#3D3C3C;margin-bottom:4%;")),
+  wellPanel(style = "background:white;border:white;margin-top:-0%;padding:0px;border:0px;margin-left:7%;margin-right:2%",
+            fluidRow(downloadButton(outputId=ns("download_coverage_data_csv"),"CSV (.csv)",icon=NULL)),
+            fluidRow(downloadButton(outputId=ns("download_coverage_data_xlsx"),"Excel (.xlsx)",icon=NULL)),
+            fluidRow(downloadButton(outputId=ns("download_coverage_data_txt"),"Text (.txt)",icon=NULL))
+  ),
+
+  size = "xs",
+  status = "myClass",
+  label = "Download Data",
+  icon = icon("file-lines"),
+  up = TRUE
+),
+
+
+#simulate a click on the dropdown button when input$rnd changes (see server)
+#see server side too
+tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop2_csv', function(x){
+                                                                     $('html').click();});")
+),
+
+tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop2_excel', function(x){
+                                                                     $('html').click();});")
+),
+
+tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop2_txt', function(x){
+                                                                     $('html').click();});")
+),
+
+
+# simulate a click on the dropdown button when input$rnd changes (see server)
+# see server side too
+tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_jpeg', function(x){
+                                                                     $('html').click();});")
+),
+
+tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_pdf', function(x){
+                                                                     $('html').click();});")
+),
+
+tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_png', function(x){
+                                                                     $('html').click();});")
+), 
+
+
+tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_season_jpeg', function(x){
+                                                                     $('html').click();});")
+),
+
+tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_season_pdf', function(x){
+                                                                     $('html').click();});")
+),
+
+tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_season_png', function(x){
+                                                                     $('html').click();});")
+), 
 
 
 
 
-      ),
+
+),
+
+
+
+
       
       # Outputs ----------------------------------------------------------------
       
       column(9,style=(style='padding-right:80px;padding-left:80px;padding-top:20px;
                                      margin-top:-4.0%;'),
              tabsetPanel(
-               id = "tab_selected_summary_coverage",
+               
+               id = ns("tab_selected_summary_coverage"),
+               
                tabPanel(title = "Trend", 
                         value = "summary_coverage_plot",
                         class = "one",
@@ -206,69 +327,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
   moduleServer(
     id,
     function(input, output, session) {
-      
-      #"input.tab_selected_summary_coverage == 'compare_plot'"
-      #input$tab_selected_summary_coverage == "Seasonality"
  
-      # observeEvent(eventExpr = input$tab_selected_summary_coverage, handlerExpr = {
-      #   if(input$tab_selected_summary_coverage == "Seasonality"){
-      #   updatePrettySwitch(session, "log_scale_summary",
-      #                      label = "Log scale",
-      #                      value = FALSE
-      #   )
-      #   }
-      # })
-      
-      
-      # observeEvent(c(req(input$tab_selected_summary_coverage)), {
-      #   
-      #   if (input$input$tab_selected_summary_coverage == 'Seasonality'){
-      #     updatePrettySwitch(session, "log_scale_summary",
-      #                        label = "Log scale",
-      #                        value = FALSE)
-      #   }
-      # }
-      # )
-
-      
-      # observeEvent(c(req(input$tab_selected_summary_coverage == 'summary_coverage_plot')), {
-      #   
-      #   if (input$tab_selected_summary_coverage == 'Seasonality'){
-      #     updatePrettySwitch(session, "log_scale_summary",
-      #                        label = "Log scale",
-      #                        value = FALSE)
-      #   }
-      # }
-      # )
-      # 
-        
-      
-      # observe({
-      #   req(input$tab_selected_summary_coverage == "Seasonality")
-      #     updatePrettySwitch(session, "log_scale_summary",
-      #                        label = "Log scale",
-      #                        value = FALSE)
-      # }
-      # )
-      
-      
-      # observeEvent(eventExpr = input$log_scale_summary_season, handlerExpr = {{
-      #   updatePrettySwitch(session, "log_scale_summary_season",
-      #                      label = "Log scale",
-      #                      value = FALSE
-      #   )
-      #   }
-      # })
-      
-      
-      # observeEvent(input$tab_selected_summary_coverage, {
-      #   if(input$tab_selected_summary_coverage=="Seasonality"){
-      #     shinyjs::disable('trend_line')
-      #   }  
-      # })
-      
-      
-      
       coverage_data_all_records =  reactive({
         t.data_coverage %>%
           left_join(datasets_available,by = c("dataset"="Dataset")) %>%
@@ -510,7 +569,101 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
       })
 
 
-
+      output$download_summary_coverage_plot_jpeg = downloadHandler(
+        filename = function() {paste0("data_coverage_trend_",str_remove_all(Sys.Date(),"-"),".jpeg")},
+        content = function(file) {ggsave(file, plot = (summary_coverage_plot()) +
+                                           ggtitle(coverage_title_download()) +
+                                           (geom_text_repel_interactive(
+                                             size = 12,
+                                             data = (
+                                               coverage_data_filtered() %>% 
+                                                 filter(date_format == max(date_format)) %>%
+                                                 left_join(as.data.frame(count_options) %>% 
+                                                             rename(Type=count_options) %>% 
+                                                             rownames_to_column("count_options"),by="Type")
+                                             ),
+                                             
+                                             aes(
+                                               x = .data$date_format + x_nudge(),
+                                               y = if(input$log_scale_summary){(.data$N) } else {.data$N + (
+                                                 #nudge up a 30th of difference between max and min
+                                                 (
+                                                   (
+                                                     (
+                                                       coverage_data_filtered() %>% filter(N == max(N)) %>% distinct(N) %>% pull(N)) - (
+                                                         coverage_data_filtered() %>% filter(N == min(N)) %>% distinct(N) %>% pull(N))
+                                                   ) /30)
+                                               )},
+                                               color = .data$Type,
+                                               label = .data$count_options
+                                             ),
+                                             
+                                             direction = "y",
+                                             family=family_lato,
+                                             segment.color = 'transparent')) +
+                                           #new theme for download
+                                           theme(plot.margin = margin(20,50,20,50),
+                                                 axis.text.x = element_text(size = 34, face = "bold"),
+                                                 axis.text.y = element_text(size = 34, face = "bold"),
+                                                 axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size=34, color="#4D4C4C"),
+                                                 plot.title.position = "plot", #left align title
+                                                 #plot.title = element_markdown(lineheight = 2.8, margin = margin(t = 6, r = 0, b = 6, l = 0)), #ggtext
+                                                 plot.title = element_text(color="#4D4C4C", size=38, face = "bold",margin = margin(t = 6, r = 0, b = 6, l = 0)), #ggtext
+                                           ),
+                                         #ensure width and height are same as ggiraph
+                                         #width_svg and height_svg to ensure png not cut off
+                                         width = 16, height = 9, units = "in",
+                                         bg = "transparent",
+                                         dpi = 300, device = "jpeg")}
+      )
+      
+      output$download_summary_coverage_plot_pdf = downloadHandler(
+        filename = function() {paste0("data_coverage_trend_",str_remove_all(Sys.Date(),"-"),".pdf")},
+        content = function(file) {ggsave(file, plot = (summary_coverage_plot()) +
+                                           ggtitle(coverage_title_download()) +
+                                           (geom_text_repel_interactive(
+                                             size = 4,
+                                             data = (
+                                               coverage_data_filtered() %>% 
+                                                 filter(date_format == max(date_format)) %>%
+                                                 left_join(as.data.frame(count_options) %>% 
+                                                             rename(Type=count_options) %>% 
+                                                             rownames_to_column("count_options"),by="Type")
+                                             ),
+                                             
+                                             aes(
+                                               x = .data$date_format + x_nudge(),
+                                               y = if(input$log_scale_summary){(.data$N) } else {.data$N + (
+                                                 #nudge up a 30th of difference between max and min
+                                                 (
+                                                   (
+                                                     (
+                                                       coverage_data_filtered() %>% filter(N == max(N)) %>% distinct(N) %>% pull(N)) - (
+                                                         coverage_data_filtered() %>% filter(N == min(N)) %>% distinct(N) %>% pull(N))
+                                                   ) /30)
+                                               )},
+                                               color = .data$Type,
+                                               label = .data$count_options
+                                             ),
+                                             
+                                             direction = "y",
+                                             family=family_lato,
+                                             segment.color = 'transparent')) +
+                                           #new theme for download
+                                           theme(plot.margin = margin(20,50,20,50),
+                                                 axis.text.x = element_text(size = 10, face = "bold"),
+                                                 axis.text.y = element_text(size = 10, face = "bold"),
+                                                 axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size=10, color="#4D4C4C"),
+                                                 plot.title.position = "plot", #left align title
+                                                 #plot.title = element_markdown(lineheight = 2.8, margin = margin(t = 6, r = 0, b = 6, l = 0)), #ggtext
+                                                 plot.title = element_text(color="#4D4C4C", size=12, face = "bold",margin = margin(t = 6, r = 0, b = 6, l = 0)), #ggtext
+                                           ),
+                                         #ensure width and height are same as ggiraph
+                                         #width_svg and height_svg to ensure png not cut off
+                                         width = 16, height = 9, units = "in",
+                                         bg = "transparent",
+                                         dpi = 300, device = "pdf")}
+      )
 
       output$download_summary_coverage_plot_png = downloadHandler(
         filename = function() {paste0("data_coverage_trend_",str_remove_all(Sys.Date(),"-"),".png")},
@@ -688,6 +841,82 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
       })
       
       
+      output$download_summary_coverage_season_plot_jpeg = downloadHandler(
+        filename = function() {paste0("data_coverage_seasonality_",str_remove_all(Sys.Date(),"-"),".jpeg")},
+        content = function(file) {ggsave(file, plot = (summary_coverage_season_plot()) +
+                                           ggtitle(coverage_title_download()) +
+                                           #add geom text layer separate for girafe object and download as different sizes needed
+                                           geom_text_repel_interactive(
+                                             size = 12,
+                                             
+                                             data = (coverage_data_filtered_season() %>%
+                                                       group_by(date_y) %>%
+                                                       filter(date_m == max(date_m))),
+                                             
+                                             aes(x = .data$date_m,
+                                                 y = .data$N,
+                                                 color = as.factor(.data$date_y),
+                                                 label = as.factor(.data$date_y)),
+                                             
+                                             
+                                             
+                                             direction = "y",
+                                             family=family_lato,
+                                             segment.color = 'transparent') +
+                                           #custom theme for download
+                                           theme(plot.margin = margin(20,50,20,50),
+                                                 axis.text.x = element_text(size = 34, face = "bold"),
+                                                 axis.text.y = element_text(size = 34, face = "bold"),
+                                                 axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size=34, color="#4D4C4C"),
+                                                 plot.title.position = "plot", #left align title
+                                                 #plot.title = element_markdown(lineheight = 2.8, margin = margin(t = 6, r = 0, b = 6, l = 0)), #ggtext
+                                                 plot.title = element_text(color="#4D4C4C", size=38, face = "bold",margin = margin(t = 6, r = 0, b = 6, l = 0)), #ggtext
+                                           ),
+                                         #ensure width and height are same as ggiraph
+                                         #width_svg and height_svg to ensure png not cut off
+                                         width = 16, height = 9, units = "in",
+                                         bg = "transparent",
+                                         dpi = 300, device = "jpeg")}
+      )
+      
+      output$download_summary_coverage_season_plot_pdf = downloadHandler(
+        filename = function() {paste0("data_coverage_seasonality_",str_remove_all(Sys.Date(),"-"),".pdf")},
+        content = function(file) {ggsave(file, plot = (summary_coverage_season_plot()) +
+                                           ggtitle(coverage_title_download()) +
+                                           #add geom text layer separate for girafe object and download as different sizes needed
+                                           geom_text_repel_interactive(
+                                             size = 12,
+                                             
+                                             data = (coverage_data_filtered_season() %>%
+                                                       group_by(date_y) %>%
+                                                       filter(date_m == max(date_m))),
+                                             
+                                             aes(x = .data$date_m,
+                                                 y = .data$N,
+                                                 color = as.factor(.data$date_y),
+                                                 label = as.factor(.data$date_y)),
+                                             
+                                             
+                                             
+                                             direction = "y",
+                                             family=family_lato,
+                                             segment.color = 'transparent') +
+                                           #custom theme for download
+                                           theme(plot.margin = margin(20,50,20,50),
+                                                 axis.text.x = element_text(size = 34, face = "bold"),
+                                                 axis.text.y = element_text(size = 34, face = "bold"),
+                                                 axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size=34, color="#4D4C4C"),
+                                                 plot.title.position = "plot", #left align title
+                                                 #plot.title = element_markdown(lineheight = 2.8, margin = margin(t = 6, r = 0, b = 6, l = 0)), #ggtext
+                                                 plot.title = element_text(color="#4D4C4C", size=38, face = "bold",margin = margin(t = 6, r = 0, b = 6, l = 0)), #ggtext
+                                           ),
+                                         #ensure width and height are same as ggiraph
+                                         #width_svg and height_svg to ensure png not cut off
+                                         width = 16, height = 9, units = "in",
+                                         bg = "transparent",
+                                         dpi = 300, device = "pdf")}
+      )
+      
       
       output$download_summary_coverage_season_plot_png = downloadHandler(
         filename = function() {paste0("data_coverage_seasonality_",str_remove_all(Sys.Date(),"-"),".png")},
@@ -726,58 +955,120 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                                          bg = "transparent",
                                          dpi = 300, device = "png")}
       )
+      
+
+      
 
       
       
-      # observe({
-      #   if(is.null(input$rnd_jpeg)){
-      #     runjs("
-      #       var click = 0;
-      #       Shiny.onInputChange('rnd_jpeg', click)
-      #       var compare_csv = document.getElementById('download_summary_coverage_season_plot_jpeg')
-      #       compare_csv.onclick = function() {click += 1; Shiny.onInputChange('rnd_jpeg', click)};
-      #       ")      
-      #   }
-      # })
-      # 
-      # observeEvent(input$rnd_jpeg, {
-      #   shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
-      #                  session$sendCustomMessage("close_drop1_jpeg", ""))
-      # })
-      # 
-      # 
-      # observe({
-      #   if(is.null(input$rnd_pdf)){
-      #     runjs("
-      #       var click = 0;
-      #       Shiny.onInputChange('rnd_pdf', click)
-      #       var compare_csv = document.getElementById('download_summary_coverage_season_plot_pdf')
-      #       compare_csv.onclick = function() {click += 1; Shiny.onInputChange('rnd_pdf', click)};
-      #       ")      
-      #   }
-      # })
-      # 
-      # observeEvent(input$rnd_pdf, {
-      #   shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
-      #                  session$sendCustomMessage("close_drop1_pdf", ""))
-      # })
-      # 
-      # 
-      # observe({
-      #   if(is.null(input$rnd_png)){
-      #     runjs("
-      #       var click = 0;
-      #       Shiny.onInputChange('rnd_png', click)
-      #       var download_summary_coverage_season_plot_png = document.getElementById('download_summary_coverage_season_plot_png')
-      #       download_summary_coverage_season_plot_png.onclick = function() {click += 1; Shiny.onInputChange('rnd_png', click)};
-      #       ")      
-      #   }
-      # })
-      # 
-      # observeEvent(input$rnd_png, {
-      #   shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
-      #                  session$sendCustomMessage("close_drop1_png", ""))
-      # })
+      
+      
+      
+      
+
+      
+
+      observe({
+        if(is.null(input$rnd_jpeg)){
+          runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_jpeg', click)
+            var compare_jpeg = document.getElementById('summary_module-data_coverage_module-download_summary_coverage_plot_jpeg')
+            compare_jpeg.onclick = function() {click += 1; Shiny.onInputChange('rnd_jpeg', click)};
+            ")
+        }
+      })
+      
+      observeEvent(input$rnd_jpeg, {
+        shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                       session$sendCustomMessage("close_drop1_jpeg", ""))
+      })
+      
+      
+      observe({
+        if(is.null(input$rnd_jpeg)){
+          runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_jpeg', click)
+            var compare_jpeg = document.getElementById('summary_module-data_coverage_module-download_summary_coverage_season_plot_jpeg')
+            compare_jpeg.onclick = function() {click += 1; Shiny.onInputChange('rnd_jpeg', click)};
+            ")
+        }
+      })
+      
+      observeEvent(input$rnd_jpeg, {
+        shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                       session$sendCustomMessage("close_drop1_season_jpeg", ""))
+      })
+      
+      
+      
+      observe({
+        if(is.null(input$rnd_pdf)){
+          runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_pdf', click)
+            var compare_pdf = document.getElementById('summary_module-data_coverage_module-download_summary_coverage_plot_pdf')
+            compare_pdf.onclick = function() {click += 1; Shiny.onInputChange('rnd_pdf', click)};
+            ")
+        }
+      })
+      
+      observeEvent(input$rnd_pdf, {
+        shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                       session$sendCustomMessage("close_drop1_pdf", ""))
+      })
+
+
+      observe({
+        if(is.null(input$rnd_pdf)){
+          runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_pdf', click)
+            var compare_pdf = document.getElementById('summary_module-data_coverage_module-download_summary_coverage_season_plot_pdf')
+            compare_pdf.onclick = function() {click += 1; Shiny.onInputChange('rnd_pdf', click)};
+            ")
+        }
+      })
+      
+      observeEvent(input$rnd_pdf, {
+        shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                       session$sendCustomMessage("close_drop1_season_pdf", ""))
+      })
+
+
+      observe({
+        if(is.null(input$rnd_png)){
+          runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_png', click)
+            var compare_png = document.getElementById('summary_module-data_coverage_module-download_summary_coverage_plot_png')
+            compare_png.onclick = function() {click += 1; Shiny.onInputChange('rnd_png', click)};
+            ")
+        }
+      })
+      
+      observeEvent(input$rnd_png, {
+        shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                       session$sendCustomMessage("close_drop1_png", ""))
+      })
+      
+      
+      observe({
+        if(is.null(input$rnd_png)){
+          runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_png', click)
+            var compare_png = document.getElementById('summary_module-data_coverage_module-download_summary_coverage_season_plot_png')
+            compare_png.onclick = function() {click += 1; Shiny.onInputChange('rnd_png', click)};
+            ")
+        }
+      })
+      
+      observeEvent(input$rnd_png, {
+        shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                       session$sendCustomMessage("close_drop1_season_png", ""))
+      })
       
       
       
@@ -809,11 +1100,49 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
       
       
       
-      output$confName = downloadHandler(
+      # output$confName = downloadHandler(
+      #   filename = function() {if(input$download_choice_compare=="selected"){
+      #     paste0("data_coverage_",str_remove_all(Sys.Date(),"-"),".xlsx")} else {
+      #       paste0("data_coverage_full_",str_remove_all(Sys.Date(),"-"),".xlsx")}
+      #     },
+      #   content = function(file) {writexl::write_xlsx(
+      #     
+      #     if(input$download_choice_compare=="selected"){
+      #       
+      #       t.data_coverage_source %>%
+      #         arrange(dataset,date_ym) %>%
+      #         left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+      #         filter(.data$dataset == dataset_summary()) %>%
+      #         ungroup() %>%
+      #         mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
+      #         filter(!is.na(date_ym)) %>%
+      #         separate(date_ym, c("date_y", "date_m"), remove=FALSE, sep = '-') %>%
+      #         mutate(across(.cols = c(date_y, date_m), .fn = ~ as.numeric(.))) %>%
+      #         filter(.data$date_y>=input$date_range_coverage[1] & .data$date_y<=input$date_range_coverage[2]) %>%
+      #         
+      #         select(dataset,title, date_ym, any_of(input$count_coverage)) %>%
+      #         mutate(export_date = Sys.Date())
+      #             
+      #     } else {t.data_coverage_source %>%
+      #         arrange(dataset,date_ym) %>%
+      #         left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+      #         filter(.data$dataset == dataset_summary()) %>%
+      #         ungroup() %>%
+      #         mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
+      #         filter(!is.na(date_ym)) %>%
+      #         select(dataset,title, date_ym, n, n_id, n_id_distinct) %>%
+      #         mutate(export_date = Sys.Date())},
+      #     
+      #     format_headers = FALSE,
+      #     path=file)}
+      # )
+      
+
+      output$download_coverage_data_xlsx = downloadHandler(
         filename = function() {if(input$download_choice_compare=="selected"){
           paste0("data_coverage_",str_remove_all(Sys.Date(),"-"),".xlsx")} else {
             paste0("data_coverage_full_",str_remove_all(Sys.Date(),"-"),".xlsx")}
-          },
+        },
         content = function(file) {writexl::write_xlsx(
           
           if(input$download_choice_compare=="selected"){
@@ -831,7 +1160,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
               
               select(dataset,title, date_ym, any_of(input$count_coverage)) %>%
               mutate(export_date = Sys.Date())
-                  
+            
           } else {t.data_coverage_source %>%
               arrange(dataset,date_ym) %>%
               left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
@@ -845,6 +1174,147 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
           format_headers = FALSE,
           path=file)}
       )
+      
+      output$download_coverage_data_csv = downloadHandler(
+        filename = function() {if(input$download_choice_compare=="selected"){
+          paste0("data_coverage_",str_remove_all(Sys.Date(),"-"),".csv")} else {
+            paste0("data_coverage_full_",str_remove_all(Sys.Date(),"-"),".csv")}
+        },
+        content = function(file) {write_csv(
+          
+          if(input$download_choice_compare=="selected"){
+            
+            t.data_coverage_source %>%
+              arrange(dataset,date_ym) %>%
+              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              filter(.data$dataset == dataset_summary()) %>%
+              ungroup() %>%
+              mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
+              filter(!is.na(date_ym)) %>%
+              separate(date_ym, c("date_y", "date_m"), remove=FALSE, sep = '-') %>%
+              mutate(across(.cols = c(date_y, date_m), .fn = ~ as.numeric(.))) %>%
+              filter(.data$date_y>=input$date_range_coverage[1] & .data$date_y<=input$date_range_coverage[2]) %>%
+              
+              select(dataset,title, date_ym, any_of(input$count_coverage)) %>%
+              mutate(export_date = Sys.Date())
+            
+          } else {t.data_coverage_source %>%
+              arrange(dataset,date_ym) %>%
+              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              filter(.data$dataset == dataset_summary()) %>%
+              ungroup() %>%
+              mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
+              filter(!is.na(date_ym)) %>%
+              select(dataset,title, date_ym, n, n_id, n_id_distinct) %>%
+              mutate(export_date = Sys.Date())},
+          
+          path=file)}
+      )
+      
+      
+      output$download_coverage_data_txt = downloadHandler(
+        filename = function() {if(input$download_choice_compare=="selected"){
+          paste0("data_coverage_",str_remove_all(Sys.Date(),"-"),".txt")} else {
+            paste0("data_coverage_full_",str_remove_all(Sys.Date(),"-"),".txt")}
+        },
+        content = function(file) {write_tsv(
+          
+          if(input$download_choice_compare=="selected"){
+            
+            t.data_coverage_source %>%
+              arrange(dataset,date_ym) %>%
+              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              filter(.data$dataset == dataset_summary()) %>%
+              ungroup() %>%
+              mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
+              filter(!is.na(date_ym)) %>%
+              separate(date_ym, c("date_y", "date_m"), remove=FALSE, sep = '-') %>%
+              mutate(across(.cols = c(date_y, date_m), .fn = ~ as.numeric(.))) %>%
+              filter(.data$date_y>=input$date_range_coverage[1] & .data$date_y<=input$date_range_coverage[2]) %>%
+              
+              select(dataset,title, date_ym, any_of(input$count_coverage)) %>%
+              mutate(export_date = Sys.Date())
+            
+          } else {t.data_coverage_source %>%
+              arrange(dataset,date_ym) %>%
+              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              filter(.data$dataset == dataset_summary()) %>%
+              ungroup() %>%
+              mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
+              filter(!is.na(date_ym)) %>%
+              select(dataset,title, date_ym, n, n_id, n_id_distinct) %>%
+              mutate(export_date = Sys.Date())},
+          
+          path=file)}
+      )
+      
+      
+      observe({
+        if(is.null(input$rnd_csv)){
+          runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_csv', click)
+            var compare_csv = document.getElementById('summary_module-data_coverage_module-download_coverage_data_csv')
+            compare_csv.onclick = function() {click += 1; Shiny.onInputChange('rnd_csv', click)};
+            ")      
+        }
+      })
+      
+      observeEvent(input$rnd_csv, {
+        shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                       session$sendCustomMessage("close_drop2_csv", ""))
+      })
+      
+      
+      observe({
+        if(is.null(input$rnd_excel)){
+          runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_excel', click)
+            var compare_xlsx = document.getElementById('summary_module-data_coverage_module-download_coverage_data_xlsx')
+            compare_xlsx.onclick = function() {click += 1; Shiny.onInputChange('rnd_excel', click)};
+            ")      
+        }
+      })
+      
+      observeEvent(input$rnd_excel, {
+        shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                       session$sendCustomMessage("close_drop2_excel", ""))
+      })
+      
+      observe({
+        if(is.null(input$rnd_txt)){
+          runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_txt', click)
+            var compare_txt = document.getElementById('summary_module-data_coverage_module-download_coverage_data_txt')
+            compare_txt.onclick = function() {click += 1; Shiny.onInputChange('rnd_txt', click)};
+            ")      
+        }
+      })
+      
+      observeEvent(input$rnd_txt, {
+        shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                       session$sendCustomMessage("close_drop2_txt", ""))
+      })
+      
+
+      
+      
+      
+      observeEvent(input$tab_selected_summary_coverage,{
+        #req(input$tab_selected_summary_coverage)
+        if (input$tab_selected_summary_coverage == 'summary_coverage_plot') {
+          shinyjs::enable("log_scale_summary")
+          shinyjs::enable("trend_line")
+          shinyjs::enable("pretty_custom_icon")
+        } else {
+          shinyjs::disable("log_scale_summary")
+          shinyjs::disable("trend_line")
+          shinyjs::disable("pretty_custom_icon")
+        }
+      })
+      
 
       
     }
