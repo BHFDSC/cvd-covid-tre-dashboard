@@ -22,14 +22,103 @@ dataCompletenessUI <- function(id){
                choices = c("Alphabetically"="alpha", "Position"="position" ,"Value"="value")),
              
              fluidRow(column(12,
-             downloadButton(outputId = ns("download_summary_completeness_plot"), 
-                                             label = "Download PNG",
-                                             icon = icon("file-image")))),
+                             dropdown(
+                               id = "completeness_dropdown_image_plot",
+                               inputId = "completeness_dropdown_image_plot",
+                               
+                               fluidRow(align="center", style="margin-top: -11%;
+            padding-top: -11%;
+            padding-left: -11.3%;
+            margin-left: -11.3%;
+            padding-right: -10.9%;
+            margin-right:-10.9%;
+            padding-bottom:3%;",
+            h6("Download Plot", 
+               style="color:white;background-color:#A0003C;
+                     font-size:100%;
+                     padding-top: 3%;
+                     padding-bottom:3.5%;
+                     border-top-left-radius: 10px !important;
+                    border-top-right-radius: 10px !important;")),
+            
+            fluidRow(align="center",h6("Save as:", style="color:#3D3C3C;margin-top:-3%;margin-bottom:4%;")),
+            fluidRow(downloadButton(outputId=ns("download_summary_completeness_plot_jpeg"),"JPEG (.jpeg)",icon=NULL)),
+            fluidRow(downloadButton(outputId=ns("download_summary_completeness_plot_pdf"),"PDF (.pdf)",icon=NULL)),
+            fluidRow(downloadButton(outputId=ns("download_summary_completeness_plot_png"),"PNG (.png)",icon=NULL)),
+            
+            size = "xs",
+            status = "myClass",
+            label = "Download Plot",
+            icon = icon("file-image"),
+            up = TRUE
+                             ),        
+            
+            # simulate a click on the dropdown button when input$rnd changes (see server)
+            # see server side too
+            tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_jpeg', function(x){
+                                                                     $('html').click();});")
+            ),
+            
+            tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_pdf', function(x){
+                                                                     $('html').click();});")
+            ),
+            
+            tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_png', function(x){
+                                                                     $('html').click();});")
+            ))),
              
              fluidRow(column(12,
-             downloadButton(ns("download_coverage_data"), 
-                            label="Export Data",
-                            icon = icon("file-excel"))))
+                             dropdown(
+                               
+                               
+                               id = "download_completeness_data",
+                               inputId = "download_completeness_data",
+                               
+                               
+                               fluidRow(align="center", style="margin-top: -11%;
+                                                                            padding-top: -9%;
+                                                                            padding-left: -11.1%;
+                                                                            margin-left: -11.1%;
+                                                                            padding-right: -11.1%;
+                                                                            margin-right:-11.1%;
+                                                                            padding-bottom:3%;",
+                                        h6("Download Data", 
+                                           style="color:white;background-color:#A0003C;
+                                                                            font-size:100%;
+                                                                            padding-top: 3%;
+                                                                            padding-bottom:3.5%;
+                                                                            border-top-left-radius: 10px !important;
+                                                                            border-top-right-radius: 10px !important;")),
+
+                     
+                     fluidRow(align="center",h6("Save as:", style="color:#3D3C3C;margin-bottom:4%;")),
+                     wellPanel(style = "background:white;border:white;margin-top:-0%;padding:0px;border:0px;margin-left:7%;margin-right:2%",
+                               fluidRow(downloadButton(outputId=ns("download_completeness_data_csv"),"CSV (.csv)",icon=NULL)),
+                               fluidRow(downloadButton(outputId=ns("download_completeness_data_xlsx"),"Excel (.xlsx)",icon=NULL)),
+                               fluidRow(downloadButton(outputId=ns("download_completeness_data_txt"),"Text (.txt)",icon=NULL))
+                     ),
+                     
+                     size = "xs",
+                     status = "myClass",
+                     label = "Download Data",
+                     icon = icon("file-lines"),
+                     up = TRUE
+                             ),
+                     
+                     
+                     #simulate a click on the dropdown button when input$rnd changes (see server)
+                     #see server side too
+                     tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop2_csv', function(x){
+                                                                     $('html').click();});")
+                     ),
+                     
+                     tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop2_excel', function(x){
+                                                                     $('html').click();});")
+                     ),
+                     
+                     tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop2_txt', function(x){
+                                                                     $('html').click();});")
+                     ),))
              ),
       # Outputs ----------------------------------------------------------------
       column(9,
@@ -207,9 +296,124 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
             )
       })
       
+      
+      output$download_summary_completeness_plot_jpeg = downloadHandler(
+        filename = function() {paste0("data_completeness_",str_remove_all(Sys.Date(),"-"),".jpeg")},
+        content = function(file) {ggsave(file, 
+                                         plot = (completeness_plot() +
+                                                   ggtitle(completeness_title_download()) +
+                                                   geom_text(aes(label = paste(.data$completeness,"%")),
+                                                             vjust = 0.6, hjust = -0.3, size = if(nrow(completeness_test_data())>=20){4}else{5}, color="#4D4C4C") +
+                                                   theme(plot.margin = margin(20,50,20,50),
+                                                         axis.text.x = element_text(size = 18, face = "bold"),
+                                                         axis.text.y = element_text(size = if(nrow(completeness_test_data())>=20){12}else{18}, face = "bold"),
+                                                         axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0),
+                                                                                     face = "bold", size=18, color="#4D4C4C"),
+                                                         plot.title.position = "plot", #left align title
+                                                         plot.title = element_text(color="#4D4C4C", size=28,
+                                                                                   face = "bold", margin = margin(t = 6, r = 0, b = 16, l = 0)
+                                                         )
+                                                   )),
+                                         #ensure width and height are same as ggiraph
+                                         #width_svg and height_svg to ensure png not cut off
+                                         #width = 9, 
+                                         units = "in",
+                                         bg = "transparent",
+                                         height = (
+                                           if (nrow(completeness_test_data()) >= 150) {
+                                             10
+                                           }
+                                           else if (nrow(completeness_test_data()) < 150 & nrow(completeness_test_data()) >= 120) {
+                                             8
+                                           }
+                                           else if (nrow(completeness_test_data()) < 120 & nrow(completeness_test_data()) >= 100) {
+                                             6
+                                           }
+                                           else if (nrow(completeness_test_data()) < 100 & nrow(completeness_test_data()) >= 80) {
+                                             5
+                                           }
+                                           else if (nrow(completeness_test_data()) < 80 & nrow(completeness_test_data()) >= 20) {
+                                             4
+                                           }
+                                           else if (nrow(completeness_test_data()) < 20 & nrow(completeness_test_data()) >= 15) {
+                                             3.5
+                                           }
+                                           else if (nrow(completeness_test_data()) < 15 & nrow(completeness_test_data()) >= 10) {
+                                             3
+                                           }
+                                           else if (nrow(completeness_test_data()) < 10 & nrow(completeness_test_data()) >= 5) {
+                                             2
+                                           }
+                                           else if (nrow(completeness_test_data()) < 5 & nrow(completeness_test_data()) >= 3) {
+                                             1.5
+                                           }
+                                           else {
+                                             1.2
+                                           }
+                                         ),
+                                         dpi = 300, device = "jpeg")}
+      )
+     
+      
+      output$download_summary_completeness_plot_pdf = downloadHandler(
+        filename = function() {paste0("data_completeness_",str_remove_all(Sys.Date(),"-"),".pdf")},
+        content = function(file) {ggsave(file, 
+                                         plot = (completeness_plot() +
+                                                   ggtitle(completeness_title_download()) +
+                                                   geom_text(aes(label = paste(.data$completeness,"%")),
+                                                             vjust = 0.6, hjust = -0.3, size = if(nrow(completeness_test_data())>=20){1}else{3}, color="#4D4C4C") +
+                                                   theme(plot.margin = margin(20,50,20,50),
+                                                         axis.text.x = element_text(size = 8, face = "bold"),
+                                                         axis.text.y = element_text(size = if(nrow(completeness_test_data())>=20){3}else{8}, face = "bold"),
+                                                         axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0),
+                                                                                     face = "bold", size=8, color="#4D4C4C"),
+                                                         plot.title.position = "plot", #left align title
+                                                         plot.title = element_text(color="#4D4C4C", size=10,
+                                                                                   face = "bold", margin = margin(t = 6, r = 0, b = 16, l = 0)
+                                                         )
+                                                   )),
+                                         #ensure width and height are same as ggiraph
+                                         #width_svg and height_svg to ensure png not cut off
+                                         #width = 9, 
+                                         units = "in",
+                                         bg = "transparent",
+                                         height = (
+                                           if (nrow(completeness_test_data()) >= 150) {
+                                             10
+                                           }
+                                           else if (nrow(completeness_test_data()) < 150 & nrow(completeness_test_data()) >= 120) {
+                                             8
+                                           }
+                                           else if (nrow(completeness_test_data()) < 120 & nrow(completeness_test_data()) >= 100) {
+                                             6
+                                           }
+                                           else if (nrow(completeness_test_data()) < 100 & nrow(completeness_test_data()) >= 80) {
+                                             5
+                                           }
+                                           else if (nrow(completeness_test_data()) < 80 & nrow(completeness_test_data()) >= 20) {
+                                             4
+                                           }
+                                           else if (nrow(completeness_test_data()) < 20 & nrow(completeness_test_data()) >= 15) {
+                                             3.5
+                                           }
+                                           else if (nrow(completeness_test_data()) < 15 & nrow(completeness_test_data()) >= 10) {
+                                             3
+                                           }
+                                           else if (nrow(completeness_test_data()) < 10 & nrow(completeness_test_data()) >= 5) {
+                                             2
+                                           }
+                                           else if (nrow(completeness_test_data()) < 5 & nrow(completeness_test_data()) >= 3) {
+                                             1.5
+                                           }
+                                           else {
+                                             1.2
+                                           }
+                                         ),
+                                         dpi = 300, device = "pdf")}
+      ) 
   
       
-      output$download_summary_completeness_plot = downloadHandler(
+      output$download_summary_completeness_plot_png = downloadHandler(
         filename = function() {paste0("data_completeness_",str_remove_all(Sys.Date(),"-"),".png")},
         content = function(file) {ggsave(file, 
                                          plot = (completeness_plot() +
@@ -266,8 +470,65 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
                                          dpi = 300, device = "png")}
       )
       
+      
+      
+      
+      observe({
+        if(is.null(input$rnd_jpeg)){
+          runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_jpeg', click)
+            var compare_jpeg = document.getElementById('summary_module-data_completeness_module-download_summary_completeness_plot_jpeg')
+            compare_jpeg.onclick = function() {click += 1; Shiny.onInputChange('rnd_jpeg', click)};
+            ")
+        }
+      })
+      
+      observeEvent(input$rnd_jpeg, {
+        shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                       session$sendCustomMessage("close_drop1_jpeg", ""))
+      })
+      
+      
+      observe({
+        if(is.null(input$rnd_pdf)){
+          runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_pdf', click)
+            var compare_pdf = document.getElementById('summary_module-data_completeness_module-download_summary_completeness_plot_pdf')
+            compare_pdf.onclick = function() {click += 1; Shiny.onInputChange('rnd_pdf', click)};
+            ")
+        }
+      })
+      
+      observeEvent(input$rnd_pdf, {
+        shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                       session$sendCustomMessage("close_drop1_pdf", ""))
+      })
+      
+      
+      observe({
+        if(is.null(input$rnd_png)){
+          runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_png', click)
+            var compare_png = document.getElementById('summary_module-data_completeness_module-download_summary_completeness_plot_png')
+            compare_png.onclick = function() {click += 1; Shiny.onInputChange('rnd_png', click)};
+            ")
+        }
+      })
+      
+      observeEvent(input$rnd_png, {
+        shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                       session$sendCustomMessage("close_drop1_png", ""))
+      })
+      
+      
 
-      output$download_coverage_data = downloadHandler(
+      
+      
+      
+      output$download_completeness_data_xlsx = downloadHandler(
         filename = function() {paste0("data_completeness_",str_remove_all(Sys.Date(),"-"),".xlsx")},
         content = function(file) {writexl::write_xlsx(
           (completeness_test_data() %>%
@@ -279,6 +540,82 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
           format_headers = FALSE,
           path=file)}
       )
+      
+
+      output$download_completeness_data_csv = downloadHandler(
+        filename = function() {paste0("data_completeness_",str_remove_all(Sys.Date(),"-"),".csv")},
+        content = function(file) {write_csv(
+          (completeness_test_data() %>%
+             arrange(column_name) %>%
+             left_join(t.dataset_dashboard %>% select(dataset=Dataset,title=Title)) %>%
+             select(dataset,title,column_name,completeness) %>%
+             mutate(export_date = Sys.Date())),
+
+          path=file)}
+      )
+      
+      
+      output$download_completeness_data_txt = downloadHandler(
+        filename = function() {paste0("data_completeness_",str_remove_all(Sys.Date(),"-"),".txt")},
+        content = function(file) {write_csv(
+          (completeness_test_data() %>%
+             arrange(column_name) %>%
+             left_join(t.dataset_dashboard %>% select(dataset=Dataset,title=Title)) %>%
+             select(dataset,title,column_name,completeness) %>%
+             mutate(export_date = Sys.Date())),
+          
+          path=file)}
+      )
+      
+      
+      observe({
+        if(is.null(input$rnd_csv)){
+          runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_csv', click)
+            var compare_csv = document.getElementById('summary_module-data_completeness_module-download_completeness_data_csv')
+            compare_csv.onclick = function() {click += 1; Shiny.onInputChange('rnd_csv', click)};
+            ")      
+        }
+      })
+      
+      observeEvent(input$rnd_csv, {
+        shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                       session$sendCustomMessage("close_drop2_csv", ""))
+      })
+      
+      
+      observe({
+        if(is.null(input$rnd_excel)){
+          runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_excel', click)
+            var compare_xlsx = document.getElementById('summary_module-data_completeness_module-download_completeness_data_xlsx')
+            compare_xlsx.onclick = function() {click += 1; Shiny.onInputChange('rnd_excel', click)};
+            ")      
+        }
+      })
+      
+      observeEvent(input$rnd_excel, {
+        shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                       session$sendCustomMessage("close_drop2_excel", ""))
+      })
+      
+      observe({
+        if(is.null(input$rnd_txt)){
+          runjs("
+            var click = 0;
+            Shiny.onInputChange('rnd_txt', click)
+            var compare_txt = document.getElementById('summary_module-data_completeness_module-download_completeness_data_txt')
+            compare_txt.onclick = function() {click += 1; Shiny.onInputChange('rnd_txt', click)};
+            ")      
+        }
+      })
+      
+      observeEvent(input$rnd_txt, {
+        shinyjs::delay(100, #adding a delay so data downloaded first before dropdown closes
+                       session$sendCustomMessage("close_drop2_txt", ""))
+      })
 
       
      

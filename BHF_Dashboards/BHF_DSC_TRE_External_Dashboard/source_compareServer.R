@@ -165,7 +165,7 @@ compare_coverage_data_start_date =
       mutate(start_date = min(start_date))%>%
       filter(!start_date >= date_format) %>%
       #using current month but this should be updated to use production ym in future
-      mutate(current_date = as.Date(paste(format(Sys.Date(), "%Y-%m"), 1, sep="-"), "%Y-%m-%d")) %>%
+      mutate(current_date = as.Date("2022-12-01")) %>%  #as.Date(paste(format(Sys.Date(), "%Y-%m"), 1, sep="-"), "%Y-%m-%d")
       filter(date_format <= current_date) %>%
       ungroup()
   })
@@ -497,6 +497,23 @@ output$compare_csv = downloadHandler(
     },
     path=file)}
 )
+
+
+output$compare_txt = downloadHandler(
+  filename = function() {if(input$compare_download_type=="selected"){
+    paste0("data_coverage_",str_remove_all(Sys.Date(),"-"),".txt")} else {
+      paste0("data_coverage_full_",str_remove_all(Sys.Date(),"-"),".txt")}
+  },
+  content = function(file) {write_tsv(
+    
+    if(input$compare_download_type=="selected"){
+      compare_coverage_data_selected_download()
+    } else {
+      compare_coverage_data_full_download()
+    },
+    path=file)}
+)
+
 
 
 compare_coverage_plot_download = reactive({(compare_coverage_plot()) +

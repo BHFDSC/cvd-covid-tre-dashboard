@@ -160,9 +160,10 @@ border:none!important;
 
 
 
-
-
-
+#summary_module-data_coverage_module-download_coverage_data{
+color:#6B6C6F !important;
+border:none!important;
+}
 
 
 .sw-dropdown-in{
@@ -177,6 +178,10 @@ font-size:85%;
 #compare_download_type{
 margin:1%;
 }
+
+
+
+
 
 #testid{width:20%;}
 
@@ -213,6 +218,99 @@ border-bottom-right-radius: 10px !important;
 #compare_png:hover{color:white;background-color:var(--colour_bhf_darkred);}
 #compare_png:active{color:white;background-color:var(--colour_bhf_darkred);}
 #compare_png:focus{color:white;background-color:var(--colour_bhf_darkred);}
+
+#summary_module-data_coverage_module-download_summary_coverage_season_plot_jpeg{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+border-top-left-radius: 10px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 10px !important;
+border-bottom-right-radius: 0px !important;
+}
+#summary_module-data_coverage_module-download_summary_coverage_season_plot_jpeg:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_summary_coverage_season_plot_jpeg:active{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_summary_coverage_season_plot_jpeg:focus{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_summary_coverage_season_plot_pdf{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+border-top:none;
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 0px !important;
+}
+#summary_module-data_coverage_module-download_summary_coverage_season_plot_pdf:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_summary_coverage_season_plot_pdf:active{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_summary_coverage_season_plot_pdf:focus{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_summary_coverage_season_plot_png{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+border-top:none;
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 10px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 10px !important;
+}
+#summary_module-data_coverage_module-download_summary_coverage_season_plot_png:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_summary_coverage_season_plot_png:active{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_summary_coverage_season_plot_png:focus{color:white;background-color:var(--colour_bhf_darkred);}
+
+
+#summary_module-data_coverage_module-download_summary_coverage_plot_jpeg{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+border-top-left-radius: 10px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 10px !important;
+border-bottom-right-radius: 0px !important;
+}
+#summary_module-data_coverage_module-download_summary_coverage_plot_jpeg:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_summary_coverage_plot_jpeg:active{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_summary_coverage_plot_jpeg:focus{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_summary_coverage_plot_pdf{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+border-top:none;
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 0px !important;
+}
+#summary_module-data_coverage_module-download_summary_coverage_plot_pdf:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_summary_coverage_plot_pdf:active{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_summary_coverage_plot_pdf:focus{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_summary_coverage_plot_png{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+border-top:none;
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 10px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 10px !important;
+}
+#summary_module-data_coverage_module-download_summary_coverage_plot_png:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_summary_coverage_plot_png:active{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_summary_coverage_plot_png:focus{color:white;background-color:var(--colour_bhf_darkred);}
+
+
+#summary_module-data_completeness_module-download_summary_completeness_plot_jpeg{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+border-top-left-radius: 10px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 10px !important;
+border-bottom-right-radius: 0px !important;
+}
+#summary_module-data_completeness_module-download_summary_completeness_plot_jpeg:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_completeness_module-download_summary_completeness_plot_jpeg:active{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_completeness_module-download_summary_completeness_plot_jpeg:focus{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_completeness_module-download_summary_completeness_plot_pdf{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+border-top:none;
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 0px !important;
+}
+#summary_module-data_completeness_module-download_summary_completeness_plot_pdf:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_completeness_module-download_summary_completeness_plot_pdf:active{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_completeness_module-download_summary_completeness_plot_pdf:focus{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_completeness_module-download_summary_completeness_plot_png{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+border-top:none;
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 10px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 10px !important;
+}
+#summary_module-data_completeness_module-download_summary_completeness_plot_png:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_completeness_module-download_summary_completeness_plot_png:active{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_completeness_module-download_summary_completeness_plot_png:focus{color:white;background-color:var(--colour_bhf_darkred);}
+
 
 /*Export Data Dropdown Compare - ensure border radius aligns with order of options*/
 #compare_csv{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
@@ -281,6 +379,109 @@ border-bottom-right-radius: 10px !important;
 #download_summary_coverage_season_plot_png:hover{color:white;background-color:var(--colour_bhf_darkred);}
 #download_summary_coverage_season_plot_png:active{color:white;background-color:var(--colour_bhf_darkred);}
 #download_summary_coverage_season_plot_png:focus{color:white;background-color:var(--colour_bhf_darkred);}
+
+
+#summary_module-data_coverage_module-download_coverage_data_csv{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+padding-left:5%;
+border-top-left-radius: 10px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 10px !important;
+border-bottom-right-radius: 0px !important;
+}
+#summary_module-data_coverage_module-download_coverage_data_csv:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_coverage_data_csv:active{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_coverage_data_csv:focus{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_coverage_data_xlsx{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+padding-left:5%;
+border-top:none;
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 0px !important;
+}
+#summary_module-data_coverage_module-download_coverage_data_xlsx:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_coverage_data_xlsx:active{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_coverage_data_xlsx:focus{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_coverage_data_txt{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+padding-left:5%;
+border-top:none;
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 10px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 10px !important;
+}
+#summary_module-data_coverage_module-download_coverage_data_txt:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_coverage_data_txt:active{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_coverage_module-download_coverage_data_txt:focus{color:white;background-color:var(--colour_bhf_darkred);}
+
+
+
+#summary_module-data_completeness_module-download_completeness_data_csv{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+padding-left:5%;
+border-top-left-radius: 10px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 10px !important;
+border-bottom-right-radius: 0px !important;
+}
+#summary_module-data_completeness_module-download_completeness_data_csv:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_completeness_module-download_completeness_data_csv:active{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_completeness_module-download_completeness_data_csv:focus{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_completeness_module-download_completeness_data_xlsx{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+padding-left:5%;
+border-top:none;
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 0px !important;
+}
+#summary_module-data_completeness_module-download_completeness_data_xlsx:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_completeness_module-download_completeness_data_xlsx:active{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_completeness_module-download_completeness_data_xlsx:focus{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_completeness_module-download_completeness_data_txt{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+padding-left:5%;
+border-top:none;
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 10px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 10px !important;
+}
+#summary_module-data_completeness_module-download_completeness_data_txt:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_completeness_module-download_completeness_data_txt:active{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_completeness_module-download_completeness_data_txt:focus{color:white;background-color:var(--colour_bhf_darkred);}
+
+
+#summary_module-data_dictionary_module-download_dd_csv{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+padding-left:5%;
+border-top-left-radius: 10px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 10px !important;
+border-bottom-right-radius: 0px !important;
+}
+#summary_module-data_dictionary_module-download_dd_csv:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_dictionary_module-download_dd_csv:active{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_dictionary_module-download_dd_csv:focus{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_dictionary_module-download_dd_xlsx{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+padding-left:5%;
+border-top:none;
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 0px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 0px !important;
+}
+#summary_module-data_dictionary_module-download_dd_xlsx:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_dictionary_module-download_dd_xlsx:active{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_dictionary_module-download_dd_xlsx:focus{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_dictionary_module-download_dd_txt{color:#3D3C3C;background-color:white;border-color:#BEC3C6;font-size:100%;
+padding-left:5%;
+border-top:none;
+border-top-left-radius: 0px !important;
+border-bottom-left-radius: 10px !important;
+border-top-right-radius: 0px !important;
+border-bottom-right-radius: 10px !important;
+}
+#summary_module-data_dictionary_module-download_dd_txt:hover{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_dictionary_module-download_dd_txt:active{color:white;background-color:var(--colour_bhf_darkred);}
+#summary_module-data_dictionary_module-download_dd_txt:focus{color:white;background-color:var(--colour_bhf_darkred);}
 
 
 
@@ -1050,26 +1251,12 @@ margin-left:-4% !important;
 
 
 #summary_module-data_dictionary_module-download_dd{
-background-color:white !important;
-border-color:white !important;
-color:#3C3C3C !important;
-outline: none !important;
-box-shadow: none !important;
-margin-left:-1% !important;
-margin-bottom:-1% !important;
-margin-top:-0.6% !important;
+
 }
 
 
 #summary_module-data_dictionary_module-download_dd:hover{
-background-color:white !important;
-border-color:white !important;
-color:var(--colour_bhf_neonred) !important;
-outline: none !important;
-box-shadow: none !important;
-margin-left:-1% !important;
-margin-bottom:-1% !important;
-margin-top:-0.6% !important;
+
 }
 
 
@@ -1113,7 +1300,9 @@ color:var(--colour_bhf_neonred);
 }
 
 
-
+#sw-drop-download_dd{
+margin-left:-1%!important;
+}
 
 
 #download_compare_coverage_plot:hover{
@@ -1136,22 +1325,22 @@ margin-left:-4% !important;
 }
 
 #download_coverage_data:hover{
-background-color:var(--colour_bhf_background_lightgrey) !important;
-border-color:var(--colour_bhf_background_lightgrey) !important;
+background-color:white !important;
+border-color:none !important;
 color:var(--colour_bhf_neonred) !important;
 outline: none !important;
 box-shadow: none !important;
-margin-left:-4% !important;
+margin-left:0% !important;
 }
 
 
 #download_coverage_data{
-background-color:var(--colour_bhf_background_lightgrey) !important;
-border-color:var(--colour_bhf_background_lightgrey) !important;
+background-color:white !important;
+border-color:none !important;
 color:#3C3C3C !important;
 outline: none !important;
 box-shadow: none !important;
-margin-left:-4% !important;
+margin-left:0% !important;
 }
 
 

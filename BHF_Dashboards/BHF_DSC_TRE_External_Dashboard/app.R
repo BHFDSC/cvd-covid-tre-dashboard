@@ -3,7 +3,6 @@ Version = "1.1.0"
 
 #Modules scripts are sourced from the R folder
 
-#Libraries
 library(shiny)
 library(bslib)
 library(tidyverse)
@@ -87,8 +86,8 @@ ui = fluidPage(
                           margin-right:3px;padding-right:3px!important;border:0px!important;vertical-align: middle;
                           max-width: 50%; width: 50%;",
                     #fluidRow(column(12,"What is the purpose of this dashboard?",align = "left",style="color:#A0003C;margin:0px;padding-top:20px;border:0px;height:350px;")),
-                    fluidRow(column(12,HTML(paste0('<span style="color:#A0003C">What is the purpose of this dashboard?</span><br><br>
-The dashboard describes the datasets currently available in the BHF Data Science Centre TREs for England, Scotland and Wales. Use the dashboard to explore the data dictionaries, data coverage and data completeness of each of these datasets.'
+                    fluidRow(column(12,HTML(paste0('<span style="color:#A0003C;margin-right:120px;">What is the purpose of this dashboard?</span><br><br>
+<span style="margin-right:120px;display: block;">The dashboard describes the datasets currently available in the BHF Data Science Centre TREs for England, Scotland and Wales. Use the dashboard to explore the data dictionaries, data coverage and data completeness of each of these datasets.</span>'
                                     )))),
                     style="margin:0px;padding-top:20px;border:0px;height:350px;background-color:white;text-align: left;")),
 
@@ -97,8 +96,8 @@ The dashboard describes the datasets currently available in the BHF Data Science
                           margin-left:0px;padding-left:13px!important;border:0px!important;vertical-align: middle;
                           max-width: 50%; width: 50%;",
                     #fluidRow(column(12,"What is the purpose of this dashboard?",align = "left",style="color:#A0003C;margin:0px;padding-top:20px;border:0px;height:350px;")),
-                    fluidRow(column(12,HTML(paste0('<span style="color:#A0003C;margin-left:80px;display: block;">Who is this dashboard for?</span><br>
-                                    <span style="margin-left:80px;display: block;">The dashboard can be used by anyone interested in finding out more about the dataset available within the BHF Data Science Centre TREs. Users additionally have the option of comparing datasets both within and between nations.</span>'
+                    fluidRow(column(12,HTML(paste0('<span style="color:#A0003C;margin-left:120px;display: block;">Who is this dashboard for?</span><br>
+                                    <span style="margin-left:120px;display: block;">The dashboard can be used by anyone interested in finding out more about the dataset available within the BHF Data Science Centre TREs. Users additionally have the option of comparing datasets both within and between nations.</span>'
                                     )))),
                     style="margin:0px;padding-top:0px;border:0px;height:350px;background-color:#F3F2F4;text-align: left;"),
              column(6,img(src = "covid_splash.png",
@@ -122,8 +121,8 @@ The dashboard describes the datasets currently available in the BHF Data Science
                           margin-right:3px;padding-right:3px!important;border:0px!important;vertical-align: middle;
                           max-width: 50%; width: 50%;",
                     #fluidRow(column(12,"What is the purpose of this dashboard?",align = "left",style="color:#A0003C;margin:0px;padding-top:20px;border:0px;height:350px;")),
-                    fluidRow(column(12,HTML(paste0('<span style="color:#A0003C">Using the Dashboard</span><br><br>
-                                    The dashboard describes the datasets currently available in the BHF Data Science Centre TREs for England, Scotland and Wales. This collection spans a substantial number of sets and proportion of the population considering a researnote some sets are not yet accessible to us, so this will not be as comprehensive as the collections presented by each nation on their websites/dashboards.'
+                    fluidRow(column(12,HTML(paste0('<span style="color:#A0003C;margin-right:120px;">Using the Dashboard</span><br><br>
+                                    <span style="margin-right:120px;display: block;">The dashboard describes the datasets currently available in the BHF Data Science Centre TREs for England, Scotland and Wales. This collection spans a substantial number of sets and proportion of the population considering a researnote some sets are not yet accessible to us, so this will not be as comprehensive as the collections presented by each nation on their websites/dashboards.</span>'
                     )))),
                     style="margin:0px;padding-top:20px;border:0px;height:350px;background-color:white;text-align: left;")),
   ),
