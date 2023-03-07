@@ -87,7 +87,7 @@ ui = fluidPage(
                           max-width: 50%; width: 50%;",
                     #fluidRow(column(12,"What is the purpose of this dashboard?",align = "left",style="color:#A0003C;margin:0px;padding-top:20px;border:0px;height:350px;")),
                     fluidRow(column(12,HTML(paste0('<span style="color:#A0003C;margin-right:120px;">What is the purpose of this dashboard?</span><br><br>
-<span style="margin-right:120px;display: block;">The dashboard describes the datasets currently available in the BHF Data Science Centre TREs for England, Scotland and Wales. Use the dashboard to explore the data dictionaries, data coverage and data completeness of each of these datasets.</span>'
+<span style="margin-right:120px;display: block;">The dashboard provides an overview of the datasets currently available in the BHF Data Science Centre Trusted Research Environments (TREs), provided by NHS England for England, the National Data Safe Haven for Scotland and the SAIL databank for Wales. The dashboard can be used to explore the data dictionaries, data coverage and data completeness for each of these datasets. The datasets include those from primary and secondary care, COVID lab tests and vaccinations, deaths, critical care, prescribing/dispensing, cardiovascular and stroke audits, maternity services and mental health.</span>'
                                     )))),
                     style="margin:0px;padding-top:20px;border:0px;height:350px;background-color:white;text-align: left;")),
 
@@ -97,7 +97,7 @@ ui = fluidPage(
                           max-width: 50%; width: 50%;",
                     #fluidRow(column(12,"What is the purpose of this dashboard?",align = "left",style="color:#A0003C;margin:0px;padding-top:20px;border:0px;height:350px;")),
                     fluidRow(column(12,HTML(paste0('<span style="color:#A0003C;margin-left:120px;display: block;">Who is this dashboard for?</span><br>
-                                    <span style="margin-left:120px;display: block;">The dashboard can be used by anyone interested in finding out more about the dataset available within the BHF Data Science Centre TREs. Users additionally have the option of comparing datasets both within and between nations.</span>'
+                                    <span style="margin-left:120px;display: block;">The dashboard is primarily aimed at researchers interested in finding out more about the datasets available within the BHF Data Science Centre TREs. We hope it will be a useful tool to outline the datasets available and to summarise their content.</span>'
                                     )))),
                     style="margin:0px;padding-top:0px;border:0px;height:350px;background-color:#F3F2F4;text-align: left;"),
              column(6,img(src = "covid_splash.png",
@@ -122,7 +122,11 @@ ui = fluidPage(
                           max-width: 50%; width: 50%;",
                     #fluidRow(column(12,"What is the purpose of this dashboard?",align = "left",style="color:#A0003C;margin:0px;padding-top:20px;border:0px;height:350px;")),
                     fluidRow(column(12,HTML(paste0('<span style="color:#A0003C;margin-right:120px;">Using the Dashboard</span><br><br>
-                                    <span style="margin-right:120px;display: block;">The dashboard describes the datasets currently available in the BHF Data Science Centre TREs for England, Scotland and Wales. This collection spans a substantial number of sets and proportion of the population considering a researnote some sets are not yet accessible to us, so this will not be as comprehensive as the collections presented by each nation on their websites/dashboards.</span>'
+                                    <span style="margin-right:120px;display: block;">For each of the datasets available the dashboard presents a basic description and links to sources of more information; the data dictionary; the data coverage over time; and the completeness of each variable available. Datasets are presented individually on the ‘Summary’ tab, but users additionally have the option of comparing datasets, both within and between nations, on the ‘Compare’ tab. The ‘Methodology’ tab provides descriptions of how the data has been generated and definitions of the terminology used in the different components of the dashboard itself. 
+                                                   
+                                                   For further information about the dashboard please contact: bhfdsc_hds@hdruk.ac.uk.
+                                                   
+                                                   For any enquiries about accessing data in the TREs please contact: bhfdsc@hdruk.ac.uk.</span>'
                     )))),
                     style="margin:0px;padding-top:20px;border:0px;height:350px;background-color:white;text-align: left;")),
   ),
