@@ -89,19 +89,78 @@ footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
           <ion-icon name="logo-youtube"></ion-icon>
         </a></li>
     </ul>
+  
+   <p align="left">This dashboard is updated on a monthly basis by nation.</p>
 
 </div>
-<hr>
 
- <p class="copyright-text">This dashboard is updated on a monthly basis by nation.
-</p>
+
 </div>
         
   </footer>
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-</body>
 
+<div class="row">
+
+<div class="columnleft" >
+<div><p style="font-size:120%;font-weight: 500;display: inline-block;text-align: left;margin-bottom:0;margin-left : -100px">We are ....</p></div>
+<div><p style="font-weight: 400;font-size:90%;display: inline-block;text-align: left;margin:0; padding-top:0;">Learn more about our.....partners</p></div>
+</div>
+
+<div class="columnright" >
+<div class="rowtest">
+<div class="slider">
+  <div class="slider-wrap">
+    <div class="slide">
+      <a href="https://www.hdruk.ac.uk" target="_blank">
+      <img src="hdruk_main_rgb_jpeg.jpg" class="slide-image" alt="Partners: HDRUK" ></a>
+    </div>
+    <div class="slide">
+      <a href="https://www.healthdatagateway.org" target="_blank">
+      <img src="gateway_main_rgb_jpg.jpeg" class="slide-image" alt="Partners: HDRUK Innovation Gateway"></a>
+    </div>
+    <div class="slide">
+      <a href="https://saildatabank.com" target="_blank">
+      <img src="SAIL-alt-logo-on-white-transparent-e1654613174323.png" class="slide-image" alt="Partners: SAIL Databank"></a>
+    </div>
+    <div class="slide">
+    <a href="https://www.england.nhs.uk" target="_blank">
+      <img src="NHS-England-Logo-High-Res-1.png" class="slide-image" alt="Partners: NHS England"></a>
+    </div>
+    <div class="slide">
+      <a href="https://www.publichealthscotland.scot" target="_blank">
+      <img src="PHS_logo_positive-1-e1653036329154.png" class="slide-image" alt="Partners: Public Health Scotland"></a>
+    </div>
+    <div class="slide">
+      <a href="https://www.hdruk.ac.uk" target="_blank">
+      <img src="hdruk_main_rgb_jpeg.jpg" class="slide-image" alt="Partners: HDRUK"></a>
+    </div>
+    <div class="slide">
+      <a href="https://www.healthdatagateway.org" target="_blank">
+      <img src="gateway_main_rgb_jpg.jpeg" class="slide-image" alt="Partners: HDRUK Innovation Gateway"></a>
+    </div>
+    <div class="slide">
+      <a href="https://saildatabank.com" target="_blank">
+      <img src="SAIL-alt-logo-on-white-transparent-e1654613174323.png" class="slide-image" alt="Partners: SAIL Databank"></a>
+    </div>
+    <div class="slide">
+      <a href="https://www.england.nhs.uk" target="_blank">
+      <img src="NHS-England-Logo-High-Res-1.png" class="slide-image" alt="Partners: NHS England"></a>
+    </div>
+    <div class="slide">
+      <a href="https://www.publichealthscotland.scot" target="_blank">
+      <img src="PHS_logo_positive-1-e1653036329154.png" class="slide-image" alt="Partners: Public Health Scotland"></a>
+    </div>
+
+  </div>
+  </div>
+  </div>
+  </div>
+</div>
+
+
+</body>
 </html>'
   )
 }
@@ -123,6 +182,8 @@ shinyLink <- function(to, label) {
     label #description of the link: if you want to render the value for label as HTML, then wrap label in the HTML()
   )
 }
+
+
 
 
 not_all_na <- function(x) any(!is.na(x))
