@@ -262,7 +262,10 @@ margin:1%;
 
 
 #testid{width:20%;height:120%;color:#EC2154!important;background-color:#F3F2F4!important;border-radius: 5px;text-decoration: none !important;padding-top:7px;}
-#testid:hover{color:blue!important;}
+#testid a:link{color:#EC2154!important;text-decoration: none; }
+#testid  a:visited{color:#EC2154!important;text-decoration: none; }
+#testid  a:hover{color:var(--colour_bhf_darkred)!important;text-decoration: none; }
+#testid  a:active{color:var(--colour_bhf_darkred)!important;text-decoration: none; }
 
 /*############################################################################*/
 
