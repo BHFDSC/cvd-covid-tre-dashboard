@@ -14,7 +14,8 @@ substr(export_date_england,6,7)
 export_date_scotland = "2022-11-26"
 
 #Wales
-export_date_wales = "2022-11-30"
+export_date_wales = "2023-01-27"
+completeness_dataset_name_wales = "export_dashboard_SAIL_20230127_data_completeness"
 coverage_dataset_name_wales = "export_dashboard_SAIL_20221130_data_coverage"
 
 
@@ -135,7 +136,7 @@ t.data_coverage = t.data_coverage_source %>%
 # Dataset Overview -------------------------------------------------------------
 t.dataset_overview = read.csv(paste0('Data/',overview_dataset_name_england,'.csv'))
 
-# Dataset Overview -------------------------------------------------------------
+# Dataset Completeness -------------------------------------------------------------
 t.dataset_completeness = read.csv(paste0('Data/',completeness_dataset_name_england,'.csv'))
-
-
+t.dataset_completeness_wales = read.csv(paste0('Data/',completeness_dataset_name_wales,'.csv'))
+class(t.dataset_completeness_wales$completeness)
