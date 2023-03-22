@@ -151,45 +151,29 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
       completeness_test_data = reactive({
         
         if(nation_summary() == "England" ){
-            t.dataset_completeness %>%
-            filter(dataset == dataset_summary()) %>%
-            mutate(column_name = trimws(column_name)) %>%
-            mutate(completeness = round(completeness*100,2)) %>%
-            mutate(completeness_tooltip = paste0(column_name, ": ",format(.data$completeness, nsmall=0, big.mark=",", trim=TRUE),"%")) %>%
-            arrange(desc(completeness),column_name) %>%
-            mutate(value_name_order = row_number()) %>%
-            #for alpha order ensure numeric columns ordered correctly too
-            mutate(column_name_rev = stringi::stri_reverse(column_name)) %>%
-            separate(column_name_rev, into="num", remove=FALSE) %>%
-            mutate(num = as.numeric(stringi::stri_reverse(num))) %>%
-            mutate(column_name_order = ifelse(is.na(num),column_name,
-                                              stringi::stri_reverse(split_occurrence(column_name_rev,sep="_",n=1,keep="rhs")))) %>%
-            arrange(column_name_order,num) %>%
-            mutate(column_alpha_order = row_number()) %>%
-            #reset order for colour palette
-            arrange(desc(completeness),column_name)
+          t.dataset_completeness = t.dataset_completeness_eng
         }
-        
-        else if(nation_summary() == "Wales" ){
-            t.dataset_completeness_wales %>%
-            filter(dataset == dataset_summary()) %>%
-            mutate(column_name = trimws(column_name)) %>%
-            mutate(completeness = round(completeness*100,2)) %>%
-            mutate(completeness_tooltip = paste0(column_name, ": ",format(.data$completeness, nsmall=0, big.mark=",", trim=TRUE),"%")) %>%
-            arrange(desc(completeness),column_name) %>%
-            mutate(value_name_order = row_number()) %>%
-            #for alpha order ensure numeric columns ordered correctly too
-            mutate(column_name_rev = stringi::stri_reverse(column_name)) %>%
-            separate(column_name_rev, into="num", remove=FALSE) %>%
-            mutate(num = as.numeric(stringi::stri_reverse(num))) %>%
-            mutate(column_name_order = ifelse(is.na(num),column_name,
-                                              stringi::stri_reverse(split_occurrence(column_name_rev,sep="_",n=1,keep="rhs")))) %>%
-            arrange(column_name_order,num) %>%
-            mutate(column_alpha_order = row_number()) %>%
-            #reset order for colour palette
-            arrange(desc(completeness),column_name)
+        else if (nation_summary() == "Wales" ){
+          t.dataset_completeness = t.dataset_completeness_wales
         }
-        
+        t.dataset_completeness %>%
+        filter(dataset == dataset_summary()) %>%
+        mutate(column_name = trimws(column_name)) %>%
+        mutate(completeness = round(completeness*100,2)) %>%
+        mutate(completeness_tooltip = paste0(column_name, ": ",format(.data$completeness, nsmall=0, big.mark=",", trim=TRUE),"%")) %>%
+        arrange(desc(completeness),column_name) %>%
+        mutate(value_name_order = row_number()) %>%
+        #for alpha order ensure numeric columns ordered correctly too
+        mutate(column_name_rev = stringi::stri_reverse(column_name)) %>%
+        separate(column_name_rev, into="num", remove=FALSE) %>%
+        mutate(num = as.numeric(stringi::stri_reverse(num))) %>%
+        mutate(column_name_order = ifelse(is.na(num),column_name,
+                                          stringi::stri_reverse(split_occurrence(column_name_rev,sep="_",n=1,keep="rhs")))) %>%
+        arrange(column_name_order,num) %>%
+        mutate(column_alpha_order = row_number()) %>%
+        #reset order for colour palette
+        arrange(desc(completeness),column_name)
+
       })
 
 
