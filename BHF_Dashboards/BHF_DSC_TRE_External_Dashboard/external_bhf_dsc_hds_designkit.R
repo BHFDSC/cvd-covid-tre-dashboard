@@ -165,9 +165,11 @@ hr {
 
 body{padding-top: 70px;background:white;max-width: 100%;
     overflow-x: hidden;}
-.container-fluid{margin-top:;margin-bottom:-20px;padding-bottom:-20px;border-bottom:-20px;background:white;border-color:transparent;}
+/*.container-fluid{margin-top:;margin-bottom:-20px;padding-bottom:-20px;border-bottom:-20px;background:white;border-color:transparent;}*/
 
-
+.container-fluid {
+   padding: 0px;
+}
 
 /*SWITCH FOR NAVBAR colour when on About tab only*/
 .navbar.normaltab {
@@ -382,17 +384,19 @@ table.dataTable thead tr {
 
 #overview_counts{color:green;}
 
+/*carousel*/
 .columnleft {
     width: 50%;
     padding: 1%;
     text-align: center;
 
 }
-
 .columnright {
     width: 50%;
     margin-top:15px;
 }
+.rowtest{margin-right:0px;}
+
 
 .columnleftwelcome {
     width: 60%;
@@ -408,7 +412,6 @@ table.dataTable thead tr {
 
 
 
-.rowtest{margin-right:15px;}
 
 
 @keyframes scroll{
@@ -520,6 +523,7 @@ border:none!important;
 .sw-dropdown-in{
 width:200px;
 font-size:85%;
+
 }
 
 #compare_dropdown_data.sw-dropdown-in{
@@ -1704,6 +1708,7 @@ color:var(--colour_bhf_neonred);
 
 #sw-drop-download_dd{
 margin-left:-1%!important;
+
 }
 
 
@@ -1891,11 +1896,13 @@ color:var(--colour_bhf_lightred);
 
 .hint--error:after{position:absolute;}
 
+#compare_coverage_plot_girafe{padding-left:12px;}
+
 "
 
 
 #Global Options FluidRow
-wellpanel_style = "background: white; border-color: transparent;margin-top:20px;"
+wellpanel_style = "background: white; border-color: transparent;padding:50px;"
 bhf_global_options_style = "
 background: #A0003C; /*linear-gradient(to right, #8C0031, #CC0131)*/
 border-top-left-radius: 10px !important; /*Round Edges*/
