@@ -11,10 +11,10 @@ aboutUI<- function(id){
          
          HTML('
               
-              <div class="aboutcontainer">
+          <div aboutpage>
               <div class="div1welcome">  
   
-                  <div class="rowwelcome">
+                  
                   <div class="columnleftwelcome" >
                   <span style="letter-spacing:1px;font-size:34px;text-align:left;">
                   <br>Welcome to the<br>
@@ -32,10 +32,10 @@ aboutUI<- function(id){
                   </div>
                   <div class="columnrightwelcome" >
                   </div>
-                  </div>
+               
   
                   <div class="image">
-                  
+                   <img src="beating_heart_test.png" alt="BHF Beating Heart of Data" style="width:100%;height:100vh;">
                   </div>
               </div>
               
@@ -96,7 +96,7 @@ aboutUI<- function(id){
            
            fluidRow(column(12,
                            
-                           fixedRow(column(12,div(id="testid",shinyLink(to = "summary", label = "Begin Exploring")),align = "center",style="margin:0px;padding-bottom:30px;border:0px;"))
+                           fixedRow(column(12,div(id="testid",shinyLink(to = "summary", label = "Begin Exploring")),align = "center",style=""))
            )),
            
 
