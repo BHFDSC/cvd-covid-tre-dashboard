@@ -126,7 +126,36 @@ family_helvetica = "helvetica_neue"
 #CSS External File that overrides flatly themes
 bhf_dsc_hds_css = "
 
-.pretty p-default p-switch p-fill{z-index:99999!important;position: relative;}
+#navmain .nav-item{padding-right:30px;}
+.navbar{margin-top:-20px;padding-top:-20px;border-top:-20px;background:white;z-index:2147483647 !important;font-size: 18px;
+padding-top:2%;}
+.navbar.navbar-default{background:white;z-index:2147483647 !important;}
+
+
+#pretty_custom_icon{
+color:#7044CB; /*#A052A7*/
+align:left;
+transition-duration: width 2s, height 2s, transform 2s;
+transition-timing-function: ease-in; 
+transition-delay: 0.5s !important;
+margin-left:0% !important;
+font-size: 100%;
+position: absolute
+}
+
+
+
+
+#pretty_custom_icon:hover{
+color:#FF002E;
+align:left;
+transition-duration: width 2s, height 2s, transform 2s;
+transition-timing-function: ease-in; 
+transition-delay: 0.5s !important;
+margin-left:0% !important;
+font-size: 100%;
+position: absolute
+}
 
 hr {
    border: 0;
@@ -137,10 +166,7 @@ hr {
 body{padding-top: 70px;background:white;max-width: 100%;
     overflow-x: hidden;}
 .container-fluid{margin-top:;margin-bottom:-20px;padding-bottom:-20px;border-bottom:-20px;background:white;border-color:transparent;}
-#navmain .nav-item{padding-right:30px;}
-.navbar{margin-top:-20px;padding-top:-20px;border-top:-20px;background:white;z-index:99999 !important;font-size: 18px;
-padding-top:2%;}
-.navbar.navbar-default{background:white;z-index:99999 !important;}
+
 
 
 /*SWITCH FOR NAVBAR colour when on About tab only*/
@@ -1809,55 +1835,6 @@ z-index:999999 !important;
 .copyright-text{margin-left:1%;}
 
 
-#iconer:hover{
-color:#FF002E;
-align:right;
-transition-duration: width 2s, height 2s, transform 2s;
-transition-timing-function: ease-in; 
-transition-delay: 0.5s !important;
-float: right !important;
-
-z-index:99998 !important;
-}
-
-#iconer{
-color:#7044CB;
-align:right;
-transition-duration: width 2s, height 2s, transform 2s;
-transition-timing-function: ease-in; 
-transition-delay: 0.5s !important;
-float: right !important;
-
-
-z-index:99998 !important;
-}
-
-#pretty_custom_icon{
-color:#7044CB; /*#A052A7*/
-align:left;
-transition-duration: width 2s, height 2s, transform 2s;
-transition-timing-function: ease-in; 
-transition-delay: 0.5s !important;
-margin-left:0% !important;
-font-size: 100%;
-z-index:99998 !important;
-}
-
-
-#pretty_custom_icon:hover{
-color:#FF002E;
-align:left;
-transition-duration: width 2s, height 2s, transform 2s;
-transition-timing-function: ease-in; 
-transition-delay: 0.5s !important;
-margin-left:0% !important;
-font-size: 100%;
-z-index:99998 !important;
-}
-
-
-#pretty_custom_label{color:#212529!important; background-color:none!important;font-size:1rem !important;}
-
 #count_heading{color:#212529!important}
 
 /*enforce marging so info box can go beside*/
@@ -1912,7 +1889,7 @@ color:var(--colour_bhf_lightred);
 
 
 
-
+.hint--error:after{position:absolute;}
 
 "
 
@@ -1928,7 +1905,7 @@ border-bottom-right-radius: 10px !important; /*Round Edges*/
 "
 
 bhf_tab_panel_style = "
-position: relative;
+
 z-index:1;
 min-height: 70vh; height: 70vh; overflow-y: scroll;
 background: #EEE8FF;
