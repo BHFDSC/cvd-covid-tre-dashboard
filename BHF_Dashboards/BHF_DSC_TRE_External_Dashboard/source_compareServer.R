@@ -823,7 +823,6 @@ excluding null values">
                        ),
 selected = count_options_selected_season),
 
-
 tags$script(
   "
         $('#compare_coverage_ex .radio span').map(function(choice){
@@ -831,5 +830,14 @@ tags$script(
         });
         "
 )
+
   )
 })
+
+
+#important: the input type_compare is not available before the uiOutput renders so this is important
+#as otherwise the app will fail when choosing Data before going onto Plot tab
+outputOptions(output, "compare_coverage_ex", suspendWhenHidden = FALSE)
+
+observe(print(input$navmain=="Dataset Comparison"))
+
