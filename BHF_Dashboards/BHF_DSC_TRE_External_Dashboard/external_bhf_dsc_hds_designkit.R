@@ -331,30 +331,36 @@ section .text-container .text-box h3{
 }
 */
 
-.aboutcontainer{margin-left:-50px;margin-right:-50px;height:1900px;}
-.rowwelcome{;z-index:1;}
+/*.aboutpage{height:1500px;}*/
+/*.aboutcontainer{margin-left:-50px;margin-right:-50px;height:100px;}*/
+.rowwelcome{z-index:1!important;}
 .div1welcome{position:relative;width:100%;z-index:1;background:#EEE8FF;}
-.div2welcome{position:relative;width:100%;background:#B0E1E8;z-index:6;
-height:1000px;top:-600px;
 
-  align-items: center;
-}
-.image{background-image:url('beating_heart_test.png');
+
+/*.image{background-image:url('beating_heart_test.png');
   height:1160px;
-  object-fit:cover;
+  object-fit:contain;
   margin-left:-35px;margin-right:-35px;
   background-size: 100%;
   background-position: center center;
   background-repeat: no-repeat;
   text-align:center;
   padding:0;
-  z-index:4;
+  z-index:4000!important;
 position: relative;
-}
+
+}*/
+
 .containeraccordioncenter{
   width: 80%;
-  margin: auto;}
+  margin: auto;
+  z-index:6000!important;}
 
+.div2welcome{position:relative;height:700px;
+background:#B0E1E8;z-index:4000!important;top:-400px;margin-bottom:-400px;
+
+  align-items: center;
+}
 
 
 
