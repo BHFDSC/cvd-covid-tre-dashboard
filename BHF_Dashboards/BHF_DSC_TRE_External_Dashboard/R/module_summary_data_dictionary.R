@@ -150,11 +150,13 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
               rename_with(str_to_title) %>%
               mutate(Position = row_number()) %>%
               ungroup() %>%
-              relocate(Position)} else {
+              relocate(Position) %>%
+              rename(Label=`Field Name`,Description=`Field Description`,Type=`Field Type`,Format=`Variable_type`)} else {
                 data_dict() %>%
                   rename_with(str_to_title) %>%
                   mutate(Position = row_number()) %>%
-                  relocate(Position)
+                  relocate(Position) %>%
+                  rename(Label=`Field Name`,Description=`Field Description`,Type=`Field Type`,Format=`Variable_type`)
               },
           
           groupBy = if(dataset_summary() %in% grouped_datasets){"Dataset"} else {NULL},
@@ -174,12 +176,26 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
           defaultColDef = colDef(
             align = "left",
             minWidth = 100,
-            headerStyle = list(background = colour_bhf_darkred, height = 60, color="white", overflow = "visible")
+            headerStyle = list(background = '#8D0033', height = 40, color="white", overflow = "visible") #"#413C45"
+
+          ),
+          
+          theme = reactableTheme(
+            # color = "hsl(233, 9%, 87%)",
+            # backgroundColor = "hsl(233, 9%, 19%)",
+            # borderColor = "hsl(233, 9%, 22%)",
+            # stripedColor = "hsl(233, 12%, 22%)",
+            # highlightColor = "hsl(233, 12%, 24%)",
+            # inputStyle = list(backgroundColor = "hsl(233, 9%, 25%)"),
+            # selectStyle = list(backgroundColor = "hsl(233, 9%, 25%)"),
+            # pageButtonHoverStyle = list(backgroundColor = "hsl(233, 9%, 25%)"),
+            # pageButtonActiveStyle = list(backgroundColor = "hsl(233, 9%, 28%)"),
+            #searchInputStyle = list(width = "100%")
           ),
           
     
 
-          striped = TRUE,
+          #striped = TRUE,
           wrap = FALSE,
           searchable = TRUE,
           

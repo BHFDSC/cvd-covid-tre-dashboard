@@ -8,6 +8,7 @@ dataCoverageUI <- function(id){
       column(3,
 
              fluidRow(column(12,
+             HTML("<br>"),
              sliderInput(inputId = ns("date_range_coverage"),
                          label = "Date Range:",
                          #initialise values
@@ -36,21 +37,24 @@ dataCoverageUI <- function(id){
                               div(id = "css_pair_popup",
                                   
                               fluidRow(column(12,
-                              checkboxGroupInput(inputId = ns("count_coverage"),
-                                                 #label = "Count:",
-                            
-                                                 label = h6(id='count_heading',paste0("Count:",stringi::stri_dup(intToUtf8(160),2)), tags$span(icon("info-circle"), id = "iconer") %>% 
-                                                                
-                                                                add_prompt(
-                                                                  message = type_text,
-                                                                  position = "right", type = "error",
-                                                                  size = "medium", rounded = TRUE,
-                                                                  bounce=FALSE,animate=FALSE
-                                                                )),
-
-                                                 choices = count_options,
-                                                 selected = count_options_selected
-                              ),
+                                tagList(uiOutput(ns("count_coverage_ex"))),
+                                
+                                
+                              # checkboxGroupInput(inputId = ns("count_coverage_asd"),
+                              #                    #label = "Count:",
+                              # 
+                              #                    label = h6(id='count_heading',paste0("Overall Counts:",stringi::stri_dup(intToUtf8(160),2)), tags$span(icon("info-circle"), id = "iconer") %>%
+                              # 
+                              #                                   add_prompt(
+                              #                                     message = type_text,
+                              #                                     position = "right", type = "error",
+                              #                                     size = "medium", rounded = TRUE,
+                              #                                     bounce=FALSE,animate=FALSE
+                              #                                   )),
+                              # 
+                              #                    choices = count_options,
+                              #                    selected = count_options_selected
+                              # ),
                               
                               
                               ),
@@ -327,6 +331,55 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
   moduleServer(
     id,
     function(input, output, session) {
+      
+      output$count_coverage_ex <- renderUI({
+
+        tagList(
+          checkboxGroupInput(inputId = "summary_module-data_coverage_module-count_coverage", #IMPORTANT for using renderUI so inputID can be recognised by plots
+                             label = "Overall Count:", 
+                             choices = c('<span class="count_options_cov">Records'='n',
+
+
+'<span class="count_options_cov">Records with a de-identified PERSON ID 
+
+
+        <div class="pretty p-default p-switch p-fill"></div>
+          <span "te" id="pretty_custom_icon" class="hint--right hint--error hint--medium hint--rounded hint--no-animate"
+          aria-label="Number of records with
+a de-identified person
+identifier that are
+potentially linkable
+across datasets within
+the respective TRE">
+            <i class="fas fa-circle-info" role="presentation" aria-label="circle-info icon"></i>
+            </span></div></span>'='n_id',
+
+
+'<span class="count_options_cov">Distinct de-identified PERSON ID 
+
+
+        <div class="pretty p-default p-switch p-fill"></div>
+          <span "te" id="pretty_custom_icon" class="hint--right hint--error hint--medium hint--rounded hint--no-animate"
+          aria-label="The unique number of 
+de-identified person 
+identifiers in the dataset, 
+excluding null values">
+            <i class="fas fa-circle-info" role="presentation" aria-label="circle-info icon"></i>
+            </span></div></span>'='n_id_distinct'
+),
+selected = count_options_selected),
+          tags$script(
+            "
+        $('#summary_module-data_coverage_module-count_coverage .checkbox label span').map(function(choice){
+            this.innerHTML = $(this).text();
+        });
+        "
+          )
+        )
+      })
+      
+
+
  
       coverage_data_all_records =  reactive({
         t.data_coverage %>%
@@ -432,20 +485,24 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
               group = .data$Type
           )
         ) +
-
-          geom_line_interactive(size = 3,
-                                alpha = if(input$trend_line){0.1} else {0.4},
+         
+          geom_line_interactive(size = 2.5,
+                                alpha = if(input$trend_line){1} else {1},
                                 aes(
                                   data_id = .data$dataset
                                 )) +
+          
+       
+          
           geom_point_interactive(
             aes(tooltip = .data$N_tooltip_date),
-            alpha = if(input$trend_line){0.2} else {0.8},
+            alpha = if(input$trend_line){1} else {1},
             fill = "white",
-            size = 3,
+            size = 2.5,
             stroke = 1.5,
             shape = 20) +
           
+       
           
           {if(input$trend_line)geom_smooth_interactive(aes(fill = .data$Type,
                                                            tooltip = .data$N_tooltip_date), method="auto", se=TRUE, fullrange=FALSE, level=0.95)} +
@@ -456,8 +513,8 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
             text=element_text(family=family_lato),
             panel.grid = element_blank(),
             plot.margin = margin(10,10,0,0),
-            plot.background = element_rect(color=NA),
-            panel.background = element_rect(color = NA),
+            plot.background = element_rect(fill='white',color='white'),
+            panel.background = element_rect(fill='white',color='white'),
             axis.ticks = element_blank(),
             axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size=14, color="#4D4C4C"),
             axis.text.x = element_text(size = 14, face = "bold"),
@@ -516,7 +573,8 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
         girafe(ggobj = summary_coverage_plot() +
                  
                  (geom_text_repel_interactive(
-                   size = 6,
+                   size = 7,
+                   fontface="bold",
                    data = (
                      coverage_data_filtered() %>% 
                        filter(date_format == max(date_format)) %>%
@@ -550,7 +608,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                options = list(
                  opts_tooltip(
                    opacity = 0.95, #opacity of the background box
-                   css = "background-color:#EC2154;
+                   css = "background-color:#FF0030;
             color:white;font-size:10pt;font-style:italic;
             padding:5px;border-radius:10px 10px 10px 10px;"
                  ),
@@ -734,7 +792,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
           )
         ) +
           geom_line(size = 2.6,
-                                alpha = 0.4) +
+                                alpha = 0.8) +
           geom_point_interactive(
             aes(tooltip = .data$N_tooltip_date_season),
             fill = "white",
@@ -802,7 +860,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
         girafe(ggobj = summary_coverage_season_plot() +
                  #add geom text layer separate for girafe object and download as different sizes needed
                  geom_text_repel_interactive(
-                 size = 6,
+                 size = 8,
 
                  data = (coverage_data_filtered_season() %>%
                            group_by(date_y) %>%
@@ -822,7 +880,7 @@ dataCoverageServer <- function(id, dataset_summary, nation_summary, coverage_dat
                options = list(
                  opts_tooltip(
                    opacity = 0.95, #opacity of the background box
-                   css = "background-color:#EC2154;
+                   css = "background-color:#FF0030;
             color:white;font-size:10pt;font-style:italic;
             padding:5px;border-radius:10px 10px 10px 10px;"
                  ),

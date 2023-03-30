@@ -40,7 +40,7 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
       #%>% bindCache(dataset_summary(),nation_summary())
       
       url1 <- a(ifelse(grepl("digital.nhs", 
-                             datasets_available$url1[datasets_available$Dataset == dataset_summary()]),"NHS Digital",
+                             datasets_available$url1[datasets_available$Dataset == dataset_summary()]),"NHS England",
                        ifelse(grepl("nicor", 
                                     datasets_available$url1[datasets_available$Dataset == dataset_summary()]),"NICOR website",
                               ifelse(grepl("scot", 

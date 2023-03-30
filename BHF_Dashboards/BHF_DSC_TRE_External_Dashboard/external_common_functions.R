@@ -1,5 +1,6 @@
 library(tidyverse)
 library(readxl)
+source('external_data.R')
 
 dataset_dashboard_list = function(nation,key="Dataset available"){
   
@@ -70,6 +71,8 @@ split_occurrence = function(x, sep, n, keep = "lhs") {
 }
 
 
+update_date_string = paste(toOrdinal::toOrdinal(lubridate::mday(update_date)),months(update_date),lubridate::year(update_date))
+
 footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
   glue::glue(
     '<html>
@@ -90,7 +93,7 @@ footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
         </a></li>
     </ul>
   
-   <p align="left">This dashboard is updated on a monthly basis by nation.</p>
+   <p align="left">Dashboard last updated on {update_date_string}.</p>
 
 </div>
 
@@ -104,8 +107,8 @@ footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
 <div class="row">
 
 <div class="columnleft" >
-<div><p style="font-size:120%;font-weight: 500;display: inline-block;text-align: left;margin-bottom:0;margin-left : -100px">We are ....</p></div>
-<div><p style="font-weight: 400;font-size:90%;display: inline-block;text-align: left;margin:0; padding-top:0;">Learn more about our.....partners</p></div>
+<div><p style="margin-top:15px;font-size:85%;font-weight: 500;display: inline-block;text-align: left;margin-bottom:0;margin-left :10px;">The CVD-COVID-UK/COVID-IMPACT project makes use of data provided by patients and collected by the NHS as part of their care and support.We would like to acknowledge all data providers who make health relevant data available for research.</p></div>
+
 </div>
 
 <div class="columnright" >
@@ -114,11 +117,11 @@ footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
   <div class="slider-wrap">
     <div class="slide">
       <a href="https://www.hdruk.ac.uk" target="_blank">
-      <img src="hdruk_main_rgb_jpeg.jpg" class="slide-image" alt="Partners: HDRUK" ></a>
+      <img src="hdruk_main_rgb_jpeg.png" class="slide-image" alt="Partners: HDRUK" ></a>
     </div>
     <div class="slide">
       <a href="https://www.healthdatagateway.org" target="_blank">
-      <img src="gateway_main_rgb_jpg.jpeg" class="slide-image" alt="Partners: HDRUK Innovation Gateway"></a>
+      <img src="gateway_main_rgb_jpg.png" class="slide-image" alt="Partners: HDRUK Innovation Gateway"></a>
     </div>
     <div class="slide">
       <a href="https://saildatabank.com" target="_blank">
@@ -134,11 +137,11 @@ footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
     </div>
     <div class="slide">
       <a href="https://www.hdruk.ac.uk" target="_blank">
-      <img src="hdruk_main_rgb_jpeg.jpg" class="slide-image" alt="Partners: HDRUK"></a>
+      <img src="hdruk_main_rgb_jpeg.png" class="slide-image" alt="Partners: HDRUK"></a>
     </div>
     <div class="slide">
       <a href="https://www.healthdatagateway.org" target="_blank">
-      <img src="gateway_main_rgb_jpg.jpeg" class="slide-image" alt="Partners: HDRUK Innovation Gateway"></a>
+      <img src="gateway_main_rgb_jpg.png" class="slide-image" alt="Partners: HDRUK Innovation Gateway"></a>
     </div>
     <div class="slide">
       <a href="https://saildatabank.com" target="_blank">

@@ -14,7 +14,7 @@ dataCompletenessUI <- function(id){
              #   label = "Order:",
              #   selected = "value",
              #   choices = c("Alphabetically"="alpha", "Value"="value"))),
-
+             HTML("<br>"),
              radioButtons(
                inputId = ns("order_complete"),
                label = "Order:",
@@ -157,7 +157,7 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
       })
       
       #colour gradient
-      colorCompleteness = colorRampPalette(c("#94409F", "#BC366C", "#E1324C", "#F82D2E", "#FC7F47", "#FEB958"))
+      colorCompleteness = colorRampPalette(compare_colours)
       
       colour_palette = reactive({completeness_test_data() %>% 
         distinct(completeness) %>% bind_cols(
@@ -233,10 +233,11 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
             #panel.grid.minor = element_blank(),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
-            panel.background = element_blank(),
+            plot.background = element_rect(fill='white',color='white'),
+            panel.background = element_rect(fill='white',color='white'),
             axis.ticks.y = element_blank(),
             axis.text.x = element_text(size = 6, face = "bold"),
-            axis.text.y = element_text(size = if(nrow(completeness_test_data())>=20){3.5}else{4.5}, hjust = 1),
+            axis.text.y = element_text(size = if(nrow(completeness_test_data())>=20){3.5}else{4.5}, hjust = 1,face = "bold"),
             axis.ticks.x = element_blank(),
             plot.margin = margin(0,0,0,0)
           ) 
@@ -252,7 +253,7 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
                                        opts_sizing(rescale = TRUE, width = 1),
                                        opts_tooltip(
                                          opacity = .95,
-                                         css = "background-color:#EC2154;
+                                         css = "background-color:#FF0030;
             color:white;font-size:10pt;font-style:italic;
             padding:5px;border-radius:10px 10px 10px 10px;"
                                        ),

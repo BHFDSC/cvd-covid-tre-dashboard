@@ -28,6 +28,8 @@ library(shinyalert)
 library(reactable)
 library(waiter)
 library(shinycssloaders)
+library(toOrdinal)
+library(sass)
 
 #External Sources
 source('external_common_functions.R')
@@ -35,28 +37,48 @@ source('external_bhf_dsc_hds_designkit.R')
 source('external_data.R')
 source('external_inputs.R')
 
-## change path to a non temp diretory to keep that even after reboot
+## change path to a non temp directory to keep that even after reboot
 # shinyOptions(cache = cachem::cache_disk(file.path(dirname(tempdir()), 
 #                                                   "myapp-cache")))
 
 #shinyOptions(cache = cachem::cache_disk("./bind-cache"))
 # User Interface ---------------------------------------------------------------
 
+
 ui = fluidPage(
   
 
   ## UI Setup and Design #######################################################
   shinyjs::useShinyjs(),
+
   #App Theme
   theme = bhf_dsc_hds_bootstrap_theme,
-  # Load the dependencies for promter
+  # Load the dependencies for prompter
   use_prompt(),
   #CSS Theme Overrides
   tags$head(tags$style(HTML(bhf_dsc_hds_css))),
   #JS Script https://shiny.rstudio.com/articles/packaging-javascript.html
-  #tags$head(tags$script(src="bhf_dsc_design.js")),
+  tags$head(tags$script(src="bhf_dsc_design.js")),
   tags$head(tags$script(src="shinyLink.js")),
+
   useWaitress(),
+  
+
+
+  #SCSS code converted to css using sass (message silenced)
+  capture.output(
+    (sass::sass(
+    input = list(
+      sass::sass_file("www/bhf_dsc_design.scss")
+    ),
+    output = "www/bhf_dsc_design_sass.css",
+    options = sass::sass_options(output_style = "compressed")
+  )),file='NUL'),
+  #Then read in from www
+  tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "bhf_dsc_design_sass.css")
+  ),
+
   
 
 
@@ -69,14 +91,15 @@ ui = fluidPage(
   div(
   id = "main_content",
   ## Navigation Bar ############################################################
-  navbarPage(
-    bhf_navbar_line,
+  navbarPage(id="navmain",
+    position = "fixed-top",
+    #bhf_navbar_line,
     #BHF HDS Logo
     
     
     
     title = tags$a(img(src = "bhf_dsc_logo.png",
-                    style = "margin-top:7% !important;
+                    style = "margin-top:2% !important;
                         justify-content: center !important;
                         align-items: center !important;",
                     height = 70),
@@ -84,94 +107,15 @@ ui = fluidPage(
                    href="https://www.hdruk.ac.uk/helping-with-health-data/bhf-data-science-centre/"),
     
     
-    tabPanel("About",
-
-             
-             div(
-               id = "loading_page",
-               
-               fluidRow(column(12,
-                               style = "width:98%;text-align:center;margin-left:15px;margin-right:-200px !important;padding-right:-200px !important;border-right:-200px !important;background:linear-gradient(to right, #e30020, #ed1f54);",
-                               fixedRow(img(src = "background_test4.png",
-                                            style="margin:0px !important;padding:0px!important;border:0px!important;max-width: 100%; width: 100%;")),
-                               fixedRow(column(12,div(id="testid",shinyLink(to = "summary", label = "Explore the Dashboard")),align = "center",style="margin:0px;padding-bottom:30px;border:0px;"))
-               )),
-               
-               
-               fluidRow(column(6,img(src = "ai-heart_splash.jpeg",
-                                     style="align:centre;display: flex;align-items: center;text-align: center;justify-content: center;
-                          margin:0px !important;padding:0px!important;border:0px!important;vertical-align: middle;
-                          max-width: 50%; width: 50%;"),
-                          style="align:centre;display: flex;align-items: center;text-align: center;justify-content: center;
-                          margin:0px !important;padding:0px!important;border:0px!important;vertical-align: middle;
-                          max-width: 50%; width: 50%;"),
-                        column(6,
-                               style="align:centre;display: flex;align-items: center;text-align: center;justify-content: center;
-                          margin-right:3px;padding-right:3px!important;border:0px!important;vertical-align: middle;
-                          max-width: 50%; width: 50%;",
-                          
-                          #fluidRow(column(12,"What is the purpose of this dashboard?",align = "left",style="color:#A0003C;margin:0px;padding-top:20px;border:0px;height:350px;")),
-                          fluidRow(column(12,HTML(paste0('<span style="color:#A0003C;margin-right:120px;">What is the purpose of this dashboard?</span><br><br>
-<span style="margin-right:120px;display: block;">The dashboard provides an overview of the datasets currently available in the BHF Data Science Centre Trusted Research Environments (TREs), provided by NHS England for England, the National Data Safe Haven for Scotland and the SAIL databank for Wales. The dashboard can be used to explore the data dictionaries, data coverage and data completeness for each of these datasets. The datasets include those from primary and secondary care, COVID lab tests and vaccinations, deaths, critical care, prescribing/dispensing, cardiovascular and stroke audits, maternity services and mental health.</span>'
-                          )))),
-style="margin:0px;padding-top:20px;border:0px;height:350px;background-color:white;text-align: left;")),
-
-
-fluidRow(column(6,
-                style="align:centre;display: flex;align-items: center;text-align: center;justify-content: center;
-                          margin-left:0px;padding-left:13px!important;border:0px!important;vertical-align: middle;
-                          max-width: 50%; width: 50%;",
-
-                #fluidRow(column(12,"What is the purpose of this dashboard?",align = "left",style="color:#A0003C;margin:0px;padding-top:20px;border:0px;height:350px;")),
-                fluidRow(column(12,HTML(paste0('<span style="color:#A0003C;margin-left:120px;display: block;">Who is this dashboard for?</span><br>
-                                    <span style="margin-left:120px;display: block;">The dashboard is primarily aimed at researchers interested in finding out more about the datasets available within the BHF Data Science Centre TREs. We hope it will be a useful tool to outline the datasets available and to summarise their content.</span>'
-                )))),
-                style="margin:0px;padding-top:0px;border:0px;height:350px;background-color:#F3F2F4;text-align: left;"),
-         column(6,img(src = "covid_splash.png",
-                      style=";background-color:#F3F2F4;align:centre;display: flex;align-items: center;text-align: center;justify-content: center;
-
-                          margin:13px !important;padding:13px!important;border:0px!important;vertical-align: middle;
-                          max-width: 50%; width: 50%;"),
-                style=";background-color:#F3F2F4;align:centre;display: flex;align-items: center;text-align: center;justify-content: center;
-                          margin:0px !important;padding:0px!important;border:0px!important;vertical-align: middle;
-                          max-width: 50%; width: 50%;"),
-),
-
-fluidRow(column(6,img(src = "structured_splash.png",
-                      style="align:centre;display: flex;align-items: center;text-align: center;justify-content: center;
-                          margin:0px !important;padding:0px!important;border:0px!important;vertical-align: middle;
-                          max-width: 50%; width: 50%;"),
-                style="align:centre;display: flex;align-items: center;text-align: center;justify-content: center;
-                          margin:0px !important;padding:0px!important;border:0px!important;vertical-align: middle;
-                          max-width: 50%; width: 50%;"),
-         column(6,
-                style="align:centre;display: flex;align-items: center;text-align: center;justify-content: center;
-                          margin-right:3px;padding-right:3px!important;border:0px!important;vertical-align: middle;
-                          max-width: 50%; width: 50%;",
-
-                #fluidRow(column(12,"What is the purpose of this dashboard?",align = "left",style="color:#A0003C;margin:0px;padding-top:20px;border:0px;height:350px;")),
-                fluidRow(column(12,HTML(paste0('<span style="color:#A0003C;margin-right:120px;">Using the Dashboard</span><br><br>
-                                    <span style="margin-right:120px;display: block;">For each of the datasets available the dashboard presents a basic description and links to sources of more information; the data dictionary; the data coverage over time; and the completeness of each variable available. Datasets are presented individually on the ‘Summary’ tab, but users additionally have the option of comparing datasets, both within and between nations, on the ‘Compare’ tab. The ‘Methodology’ tab provides descriptions of how the data has been generated and definitions of the terminology used in the different components of the dashboard itself. 
-                                                   
-                                                   For further information about the dashboard please contact: bhfdsc_hds@hdruk.ac.uk.
-                                                   
-                                                   For any enquiries about accessing data in the TREs please contact: bhfdsc@hdruk.ac.uk.</span>'
-                )))),
-                style="margin:0px;padding-top:20px;border:0px;height:350px;background-color:white;text-align: left;")),
-
-
-
-
-             )),
-
-    
+    ### About Tab ===========================================================
+    tabPanel("About",aboutUI(id = "about_module")),
 
     ### Summary Tab ============================================================
   
-    tabPanel("Summary", value = "summary", summaryUI(id = "summary_module")),
+    tabPanel(HTML('<span style=""><center>Dataset Summary</center></span>'), value = "summary", summaryUI(id = "summary_module")),
     
     ### Compare Tab ============================================================
-    tabPanel("Compare",
+    tabPanel(HTML('<span style=""><center>Dataset Comparison</center></span>'),
              #compareUI(id = "compare_module")
              source("source_compareUI.R",local = TRUE)$value
              ),
@@ -197,14 +141,14 @@ fluidRow(column(6,img(src = "structured_splash.png",
     
     ## Footer ==================================================================
 
-    hr(),
+    #hr(),
     tags$footer(div(
       class = "footer",
       #includeHTML('footer.html') #now archived
       HTML(footer_template(export_date = paste(export_date_england,export_date_scotland,export_date_wales),
                            email_link = "mailto:bhfdsc@hdruk.ac.uk",
                            twitter_link = "https://twitter.com/BHFDataScience?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
-                           youtube_link = "https://www.youtube.com/channel/UCvpInOwkV-Di0Kt6HwizbDw"
+                           youtube_link = "https://www.youtube.com/playlist?list=PLBI5k9SgYrItGXrJo3wO2LtsxwfyvimZ5"
                            ))
 ))
   
@@ -215,6 +159,21 @@ fluidRow(column(6,img(src = "structured_splash.png",
 # Server -----------------------------------------------------------------------
 
 server = function(input, output, session) {
+
+  observeEvent(input$navmain, {
+    if(input$navmain == "About"){
+      addCssClass(class = "abouttab", selector = ".navbar")
+      removeCssClass(class = "normaltab", selector = ".navbar")
+      addCssClass(class = "abouttab", selector = ".container-fluid")
+      removeCssClass(class = "normaltab", selector = ".container-fluid")
+    } else {
+      addCssClass(class = "normaltab", selector = ".navbar")
+      removeCssClass(class = "abouttab", selector = ".navbar")
+      addCssClass(class = "normaltab", selector = ".container-fluid")
+      removeCssClass(class = "abouttab", selector = ".container-fluid")
+    }
+  })
+  
   
   # observeEvent(input$testid,{
   #   hide("loading_page", anim = TRUE, animType = "fade", time = 0.4)
@@ -243,6 +202,7 @@ server = function(input, output, session) {
   # })
 
 
+  aboutServer(id = "about_module")
   ### Summary Tab ============================================================
   summaryServer(id = "summary_module")
   
