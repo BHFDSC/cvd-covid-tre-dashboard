@@ -1,12 +1,16 @@
 ## Data Coverage ===========================================================
-fluidRow(titlePanel(h3(id = 'section_heading_hyper',
-                       shinyLink(to = "dcov_meth", label = "Data Coverage") %>% add_prompt(
-                         message = "Go to methodology",
-                         position = "right", type = "info",
-                         arrow=FALSE,
-                         size = "s", rounded = TRUE,
-                         bounce=FALSE,animate=FALSE)
-                       )),
+wellPanel(style = "z-index:1;background: white; border-color: white;padding-left:0px;padding-right:0px;border-left:0px;border-right:0px;margin-left:0px;margin-right:0px;margin-bottom:60px;",
+          
+fluidRow(titlePanel(h3("Data Coverage")),
+         
+         h6(id = 'section_heading_hyper',
+            shinyLink(to = "dcov_meth", label = "Find out more") %>% add_prompt(
+              message = "Go to methodology",
+              position = "right", type = "info",
+              arrow=FALSE,
+              size = "s", rounded = TRUE,
+              bounce=FALSE,animate=FALSE)
+         ),
          
          #tabset panel styling for pills
          tags$head(tags$style(tabset_panel_compare_styling)),
@@ -62,19 +66,22 @@ fluidRow(titlePanel(h3(id = 'section_heading_hyper',
                                                
                                                #TYPE INPUT
                                                fluidRow(
-                                               radioButtons(
-                                                 inputId = "type_compare",
-                                                 label = h6(id='count_heading',paste0("Count:",stringi::stri_dup(intToUtf8(160),2)),
-                                                            tags$span(icon("info-circle"), id = "iconer") %>% 
-                                                              
-                                                              add_prompt(
-                                                                message = type_text,
-                                                                position = "right", type = "error",
-                                                                size = "medium", rounded = TRUE,
-                                                                bounce=FALSE,animate=FALSE
-                                                              )),
-                                                 selected = count_options_selected_season,
-                                                 choices = count_options)),
+                                               # radioButtons(
+                                               #   inputId = "type_compare",
+                                               #   label = h6(id='count_heading',paste0("Count:",stringi::stri_dup(intToUtf8(160),2)),
+                                               #              tags$span(icon("info-circle"), id = "iconer") %>% 
+                                               #                
+                                               #                add_prompt(
+                                               #                  message = type_text,
+                                               #                  position = "right", type = "error",
+                                               #                  size = "medium", rounded = TRUE,
+                                               #                  bounce=FALSE,animate=FALSE
+                                               #                )),
+                                               #   selected = count_options_selected_season,
+                                               #   choices = count_options)
+                                               
+                                               tagList(uiOutput(("compare_coverage_ex")))
+                                               ),
                                                
                                                #LOG SCALE
                                                prettySwitchCustom(inputId = "log_scale",
@@ -254,3 +261,5 @@ fluidRow(titlePanel(h3(id = 'section_heading_hyper',
                 
          ),
 )
+)
+

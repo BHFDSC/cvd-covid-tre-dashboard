@@ -5,7 +5,7 @@ dataOverviewUI <- function(id){
     # Outputs ------------------------------------------------------------------
     fluidRow(class = "overview_css",
              
-             column(4,
+             column(5,
   
 
              valueBoxOutput(ns("registrations"), width="100%")
@@ -13,7 +13,7 @@ dataOverviewUI <- function(id){
              ),
              
              
-             column(4, 
+             column(5, 
 
                valueBoxOutput(ns("batch_summary"), width="100%")
              
@@ -69,20 +69,48 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
         
         # validate(need(dataset_summary() ,
         #               message = FALSE))
+        
+        
  
         customValueBox(
-          title = "Records",
+          title = "Overall Counts",
           icon = icon("user"),
           subtitle = "",
-          value = HTML(paste(paste0("<b>",names(count_options),":</b>"),
-                              dataset_overview() %>% 
-                                select(n,n_id,n_id_distinct) %>% 
-                                pivot_longer(everything()) %>% 
-                                pull(value),
-                              collapse = '<br/>')),
-          color = colour_bhf_darkred,
-          background = customValueBox_global_colour,
-          border = customValueBox_border_colour,
+          value = HTML(
+            paste0(HTML('<div class="inner" style="margin-top:20px;">'),
+            HTML('<h6 id="count_heading">
+                       <b>Records: </b>'),
+            (dataset_overview() %>% select(n) %>% pivot_longer(everything()) %>% pull(value)),
+            HTML('</h6><h6 id="count_heading">
+                       <b>Records with a de-identified PERSON ID: </b>'),
+                   (dataset_overview() %>% select(n_id) %>% pivot_longer(everything()) %>% pull(value)),
+                   HTML('   
+                       <div class="pretty p-default p-switch p-fill"></div>
+                       <span "te" id="pretty_custom_icon" class="hint--right hint--error hint--medium hint--rounded hint--no-animate" 
+                       aria-label="Number of records with
+a de-identified person 
+identifier that are 
+potentially linkable 
+across datasets within 
+the respective TRE">
+                      <i class="fas fa-circle-info" role="presentation" aria-label="circle-info icon"></i>
+                      </span></h6></div>'),
+HTML('</h6><h6 id="count_heading">
+                       <b>Distinct de-identified PERSON ID: </b>'),
+(dataset_overview() %>% select(n_id_distinct) %>% pivot_longer(everything()) %>% pull(value)),
+HTML('   
+                       <div class="pretty p-default p-switch p-fill"></div>
+                       <span "te" id="pretty_custom_icon" class="hint--right hint--error hint--medium hint--rounded hint--no-animate" 
+                       aria-label="The unique number of 
+de-identified person 
+identifiers in the dataset, 
+excluding null values">
+                      <i class="fas fa-circle-info" role="presentation" aria-label="circle-info icon"></i>
+                      </span></h6></div></div>'))),
+
+          color = '#413C45',
+          background = '#EEE8FF',
+          border = '#EEE8FF',
           href = NULL
         )
       })
@@ -105,12 +133,43 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
           title = "Batch Summary",
           icon = icon("file"),
           subtitle = "",
-          value = HTML(paste0(paste(paste0("<b>",c("Archived On","Exported On"),":</b>"),
-                                    batch_summary(),
-                                    collapse = '<br/>'),"<br/>&nbsp")),
-          color = colour_bhf_darkred,
-          background = customValueBox_global_colour,
-          border = customValueBox_border_colour,
+          value = HTML(
+            paste0(HTML('<div class="inner" style="margin-top:20px;">'),
+
+HTML('</h6><h6 id="count_heading">
+                       <b>Archived on: </b>'),
+(batch_summary()[1]),
+HTML('   
+                       <div class="pretty p-default p-switch p-fill"></div>
+                       <span "te" id="pretty_custom_icon" class="hint--right hint--error hint--medium hint--rounded hint--no-animate" 
+                       aria-label="The date the dataset 
+was provisioned in the 
+respective TRE">
+                      <i class="fas fa-circle-info" role="presentation" aria-label="circle-info icon"></i>
+                      </span></h6></div>'),
+HTML('</h6><h6 id="count_heading">
+                       <b>Exported on: </b>'),
+(batch_summary()[2]),
+HTML('   
+                       <div class="pretty p-default p-switch p-fill"></div>
+                       <span "te" id="pretty_custom_icon" class="hint--right hint--error hint--medium hint--rounded hint--no-animate" 
+                       aria-label="The date the 
+aggregated dataset 
+summary was 
+produced and safely 
+exported from the TRE 
+for inclusion in the 
+dashboard">
+                      <i class="fas fa-circle-info" role="presentation" aria-label="circle-info icon"></i>
+                      </span></h6>'),
+HTML('</h6><h6 id="count_heading">
+                       <b>&nbsp</b></h6></div>'))),
+          # value = HTML(paste0(paste(paste0("<b>",c("Archived On","Exported On"),":</b>"),
+          #                           batch_summary(),
+          #                           collapse = '<br/>'),"<br/>&nbsp")),
+          color = '#413C45',
+          background = '#EEE8FF',
+          border = '#EEE8FF',
           href = NULL
           )
       })

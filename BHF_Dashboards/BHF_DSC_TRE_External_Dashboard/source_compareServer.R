@@ -254,16 +254,16 @@ compare_coverage_plot = reactive({
         group = .data$dataset
     )
   ) +
-    geom_line_interactive(size = 3,
-              alpha = if(input$trend_line){0.1} else {0.4},
+    geom_line_interactive(size = 2.5,
+              alpha = if(input$trend_line){1} else {1},
               aes(
                   data_id = .data$dataset
               )) +
     geom_point_interactive(
       aes(tooltip = .data$N_tooltip_date),
-      alpha = if(input$trend_line){0.2} else {0.8},
+      alpha = if(input$trend_line){1} else {1},
       fill = "white",
-      size = 3,
+      size = 2.5,
       stroke = 1.5,
       shape = 20) +
     
@@ -277,8 +277,8 @@ compare_coverage_plot = reactive({
       text=element_text(family=family_lato),
       panel.grid = element_blank(),
       plot.margin = margin(10,50,0,0),
-      plot.background = element_rect(color=NA),
-      panel.background = element_rect(color = NA),
+      plot.background = element_rect(fill='white',color='white'),
+      panel.background = element_rect(fill='white',color='white'),
       axis.ticks = element_blank(),
       axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size = 12, color="#4D4C4C"),
       axis.text.x = element_text(size = 14, face = "bold"),
@@ -346,7 +346,8 @@ output$compare_coverage_plot_girafe =
   girafe(ggobj = compare_coverage_plot() +
            
            (geom_text_repel_interactive(
-             size = 6,
+             size = 7,
+             fontface="bold",
              data = (
                compare_coverage_data_filtered() %>% 
                  filter(date_format == max(date_format))
@@ -377,7 +378,7 @@ output$compare_coverage_plot_girafe =
          options = list(
            opts_tooltip(
              opacity = 0.95, #opacity of the background box
-             css = "background-color:#EC2154;
+             css = "background-color:#FF002E;
             color:white;font-size:10pt;font-style:italic;
             padding:5px;border-radius:10px 10px 10px 10px;"
            ),
@@ -780,3 +781,55 @@ counter <- reactiveValues(countervalue = 0)
 observeEvent(req(input$add), {
   counter$countervalue <- counter$countervalue + 1
   })
+
+
+# For info boxes in Count on Compare tab
+
+
+output$compare_coverage_ex <- renderUI({
+  
+  tagList(
+    radioButtons(inputId = "type_compare",
+                       label = "Overall Count:", 
+                       choices = c('<span class="count_options_cov">Records'='n',
+                                   
+                                   
+                                   '<span class="count_options_cov">Records with a de-identified PERSON ID 
+
+
+        <div class="pretty p-default p-switch p-fill"></div>
+          <span "te" id="pretty_custom_icon" class="hint--right hint--error hint--medium hint--rounded hint--no-animate"
+          aria-label="Number of records with
+a de-identified person
+identifier that are
+potentially linkable
+across datasets within
+the respective TRE">
+            <i class="fas fa-circle-info" role="presentation" aria-label="circle-info icon"></i>
+            </span></div></span>'='n_id',
+
+
+'<span class="count_options_cov">Distinct de-identified PERSON ID 
+
+
+        <div class="pretty p-default p-switch p-fill"></div>
+          <span "te" id="pretty_custom_icon" class="hint--right hint--error hint--medium hint--rounded hint--no-animate"
+          aria-label="The unique number of 
+de-identified person 
+identifiers in the dataset, 
+excluding null values">
+            <i class="fas fa-circle-info" role="presentation" aria-label="circle-info icon"></i>
+            </span></div></span>'='n_id_distinct'
+                       ),
+selected = count_options_selected_season),
+
+
+tags$script(
+  "
+        $('#compare_coverage_ex .radio span').map(function(choice){
+            this.innerHTML = $(this).text();
+        });
+        "
+)
+  )
+})

@@ -3,24 +3,25 @@ summaryUI <- function(id){
   tagList(
     
     # Global Input =============================================================
+    fluidRow(
     wellPanel(style = wellpanel_style,
               fluidRow(style = bhf_global_options_style,
                        
-                       column(3,div(id = "nation_css",
+                       column(4,div(id = "nation_css",
                                   class = "nation_css",
                                   selectInput(inputId = ns("nation_summary"),
-                                              label = shiny::HTML("<p></p><span style='color: white'>Nation:</span>"),
+                                              label = shiny::HTML("<p></p><span style='color: white;font-weight:500;'>Nation:</span>"),
                                               choices = nations_options))),     
                        
                        
                        column(6,div(id = "dataset_css",
                                   class = "dataset_css",
                                   selectInput(inputId = ns("dataset_summary"),
-                                              label = shiny::HTML("<p></p><span style='color: white'>Dataset:</span>"),
+                                              label = shiny::HTML("<p></p><span style='color: white;font-weight:500;'>Dataset:</span>"),
                                               width = '100%',
                                               choices = NULL))),
                        
-                       column(3)
+                       column(2)
                        
                        ),
               
@@ -32,42 +33,47 @@ summaryUI <- function(id){
 
               ## Data Dictionary ===============================================
               hr(),
-              titlePanel(h3(id = 'section_heading_hyper',
-                            shinyLink(to = "dd_meth", label = "Data Dictionary") %>% add_prompt(
-                              message = "Go to methodology",
-                              position = "right", type = "info",
-                              arrow=FALSE,
-                              size = "s", rounded = TRUE,
-                              bounce=FALSE,animate=FALSE)
-                            )),
-
+              titlePanel(h3("Data Dictionary")),
+              # titlePanel(h3(id = 'section_heading_hyper',
+              #               shinyLink(to = "dd_meth", label = "Data Dictionary") %>% add_prompt(
+              #                 message = "Go to methodology",
+              #                 position = "right", type = "info",
+              #                 arrow=FALSE,
+              #                 size = "s", rounded = TRUE,
+              #                 bounce=FALSE,animate=FALSE)
+              #               )),
+              # 
               dataDictionaryUI(id = ns("data_dictionary_module")),
 
 
               ## Data Coverage =================================================
               hr(),
-              titlePanel(h3(id = 'section_heading_hyper',
-                            shinyLink(to = "dcov_meth", label = "Data Coverage") %>% add_prompt(
+              titlePanel(h3("Data Coverage")),
+              
+              h6(id = 'section_heading_hyper',
+                            shinyLink(to = "dcov_meth", label = "Find out more") %>% add_prompt(
                               message = "Go to methodology",
                               position = "right", type = "info",
                               arrow=FALSE,
                               size = "s", rounded = TRUE,
                               bounce=FALSE,animate=FALSE)
-                            )),
+              ),
 
               dataCoverageUI(id = ns("data_coverage_module")),
 
               ## Data Completeness =============================================
               hr(),
-              titlePanel(h3(id='section_heading_hyper',
-                            shinyLink(to = "dcom_meth", label = "Data Completeness") %>% add_prompt(
-                              message = "Go to methodology",
-                              position = "right", type = "info",
-                              arrow=FALSE,
-                              size = "s", rounded = TRUE,
-                              bounce=FALSE,animate=FALSE)
-                            #tags$a("Data Completeness",href="https://shiny.rstudio.com/articles/basics.html",target="_blank")
-                            )),
+              
+              titlePanel(h3("Data Completeness")),
+              
+              h6(id = 'section_heading_hyper',
+                 shinyLink(to = "dcom_meth", label = "Find out more") %>% add_prompt(
+                   message = "Go to methodology",
+                   position = "right", type = "info",
+                   arrow=FALSE,
+                   size = "s", rounded = TRUE,
+                   bounce=FALSE,animate=FALSE)
+              ),
 
               dataCompletenessUI(id = ns("data_completeness_module")),
 
@@ -78,7 +84,7 @@ summaryUI <- function(id){
 
               #fluidRow()
               
-              )
+              ))
     
     )
 }

@@ -1,6 +1,6 @@
 nations_options = c("England","Scotland","Wales")
 
-count_options = c("Records"="n","Valid IDs"="n_id","Distinct IDs"="n_id_distinct")
+count_options = c("Records"="n","Records with a de-identified PERSON ID"="n_id","Distinct de-identified PERSON ID"="n_id_distinct")
 count_options_selected = c("n","n_id","n_id_distinct")
 count_options_selected_season = "n"
 
