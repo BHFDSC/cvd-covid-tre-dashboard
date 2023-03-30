@@ -798,7 +798,7 @@ output$compare_coverage_ex <- renderUI({
 
 
         <div class="pretty p-default p-switch p-fill"></div>
-          <span "te" id="pretty_custom_icon" class="hint--right hint--error hint--medium hint--rounded hint--no-animate"
+          <span "te" id="pretty_custom_icon" class="hint--left hint--error hint--medium hint--rounded hint--no-animate"
           aria-label="Number of records with
 a de-identified person
 identifier that are
@@ -813,7 +813,7 @@ the respective TRE">
 
 
         <div class="pretty p-default p-switch p-fill"></div>
-          <span "te" id="pretty_custom_icon" class="hint--right hint--error hint--medium hint--rounded hint--no-animate"
+          <span "te" id="pretty_custom_icon" class="hint--left hint--error hint--medium hint--rounded hint--no-animate"
           aria-label="The unique number of 
 de-identified person 
 identifiers in the dataset, 
