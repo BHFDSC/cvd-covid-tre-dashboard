@@ -150,8 +150,9 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
               rename_with(str_to_title) %>%
               mutate(Position = row_number()) %>%
               ungroup() %>%
-              relocate(Position) %>%
- #             rename(Label=`Field Name`,Description=`Field Description`,Type=`Field Type`,Format=`Variable_type`)} else {
+              relocate(Position)# %>%
+ #             rename(Label=`Field Name`,Description=`Field Description`,Type=`Field Type`,Format=`Variable_type`)
+              } else {
                 data_dict() %>%
                   rename_with(str_to_title) %>%
                   mutate(Position = row_number()) %>%
@@ -166,7 +167,7 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
           columns = list(
             Position = colDef(style = list(whiteSpace = "nowrap", textOverflow = "unset")),
             Dataset = colDef(minWidth = 400),
-            Field = colDef(minWidth = 200),   # 50% width, 200px minimum
+            Field = colDef(minWidth = 200)#,   # 50% width, 200px minimum
 #            `Field Name` = colDef(minWidth = 200),   # 25% width, 100px minimum
 #            `Field Description` = colDef(minWidth = 200)  # 25% width, 100px minimum
           ),
