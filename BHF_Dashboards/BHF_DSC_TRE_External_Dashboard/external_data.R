@@ -12,11 +12,17 @@ substr(export_date_england,1,4)
 substr(export_date_england,6,7)
 
 #Scotland
-export_date_scotland = "2022-11-26"
+export_date_scotland = "2023-3-21"
+completeness_dataset_name_scotland = "2021-0102_export_dashboard_scotland_completeness20230321"
+coverage_dataset_name_scotland = "2021-0102_export_dashboard_scotland_coverage20230321"
+overview_dataset_name_scotland = "2021-0102_export_dashboard_scotland_overview20230321"
 
 #Wales
-export_date_wales = "2022-11-30"
+export_date_wales = "2023-01-27"
+completeness_dataset_name_wales = "export_dashboard_SAIL_20230127_data_completeness"
 coverage_dataset_name_wales = "export_dashboard_SAIL_20221130_data_coverage"
+overview_dataset_name_wales = "export_dashboard_SAIL_20230127_data_overview"
+
 
 
 # TRE Dataset Provisioning Dashboard -------------------------------------------
@@ -81,7 +87,16 @@ t.data_dictionaryScot = t.data_dictionaryScot %>%
 t.data_dictionaryWales = read_excel_allsheets( # pathfornow, 
   "Data/DD_Wales.xlsx")
 
+# Dataset Overview -------------------------------------------------------------
+t.dataset_overview_eng = read.csv(paste0('Data/',overview_dataset_name_england,'.csv'))
+t.dataset_overview_wales = read.csv(paste0('Data/',overview_dataset_name_wales,'.csv')) 
+t.dataset_overview_scotland = read.csv(paste0('Data/',overview_dataset_name_scotland,'.csv'))
 
+
+# Dataset Completeness -------------------------------------------------------------
+t.dataset_completeness_eng = read.csv(paste0('Data/',completeness_dataset_name_england,'.csv'))
+t.dataset_completeness_wales = read.csv(paste0('Data/',completeness_dataset_name_wales,'.csv'))
+t.dataset_completeness_scotland = read.csv(paste0('Data/',completeness_dataset_name_scotland,'.csv'))
 
 # # Data Coverage Pre Processed from data_preprocessing -------------------
 
@@ -90,9 +105,14 @@ t.data_dictionaryWales = read_excel_allsheets( # pathfornow,
 # Data Coverage Pre Processed from data_preprocessing
 #t.data_coverage = read_rds("Data/data_coverage")
 
+t.dataset_coverage_eng = read.csv(paste0('Data/',coverage_dataset_name_england,'.csv'))
+t.dataset_coverage_wales = read.csv(paste0('Data/',coverage_dataset_name_wales,'.csv')) %>% rename(n_id_distinct =n_distinct )
+t.dataset_coverage_scotland = read.csv(paste0('Data/',coverage_dataset_name_scotland,'.csv'))
 
-t.data_coverage_source = read.csv(paste0('Data/',coverage_dataset_name_england,'.csv')) %>%
-  rbind(read.csv(paste0('Data/',coverage_dataset_name_wales,'.csv')) %>% rename(n_id_distinct=n_distinct)) %>%
+
+t.data_coverage_source = t.dataset_coverage_eng %>%
+  rbind(t.dataset_coverage_wales) %>%
+  rbind(t.dataset_coverage_scotland) %>% 
   as.data.frame() %>%   
   mutate(date_ym_reformat = ifelse(str_detect(date_ym,"-"),1,ifelse(date_ym=="","",0))) %>%
   mutate(date_ym = ifelse(date_ym_reformat==0,str_pad(date_ym,6,side="left",pad=0),date_ym)) %>%
@@ -133,10 +153,5 @@ t.data_coverage = t.data_coverage_source %>%
 
 
 
-# Dataset Overview -------------------------------------------------------------
-t.dataset_overview = read.csv(paste0('Data/',overview_dataset_name_england,'.csv'))
-
-# Dataset Overview -------------------------------------------------------------
-t.dataset_completeness = read.csv(paste0('Data/',completeness_dataset_name_england,'.csv'))
 
 

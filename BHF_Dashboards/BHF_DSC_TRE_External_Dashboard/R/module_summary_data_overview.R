@@ -32,12 +32,23 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
     function(input, output, session) {
       
       dataset_overview = reactive({
+          
+        if(nation_summary() == "England" ){
+          t.dataset_overview = t.dataset_overview_eng
+        }
+        else if (nation_summary() == "Wales" ){
+          t.dataset_overview = t.dataset_overview_wales  %>% rename(n_distinct = n_id_distinct)
+        }
+        else if (nation_summary() == "Scotland" ){
+          t.dataset_overview = t.dataset_overview_scotland
+        }
+        
         t.dataset_overview %>%
-        mutate(across(c(n,n_id,n_id_distinct),.fn =~as.numeric(.))) %>%
-        mutate(across(c(n,n_id,n_id_distinct), .fn = ~ scales::comma(.))) %>%
-        mutate(across(c(n,n_id,n_id_distinct), .fn = ~ replace_na(.,"null"))) %>%
-        filter(dataset == dataset_summary()) %>%
-        shhh() #suppress warnings about coercing NAs
+          mutate(across(c(n,n_id,n_id_distinct),.fn =~as.numeric(.))) %>%
+          mutate(across(c(n,n_id,n_id_distinct), .fn = ~ scales::comma(.))) %>%
+          mutate(across(c(n,n_id,n_id_distinct), .fn = ~ replace_na(.,"null"))) %>%
+          filter(dataset == dataset_summary()) %>%
+          shhh() #suppress warnings about coercing NAs
       })
       
       archived_on = reactive({
