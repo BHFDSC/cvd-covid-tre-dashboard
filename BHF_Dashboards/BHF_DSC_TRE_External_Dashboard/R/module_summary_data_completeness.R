@@ -156,6 +156,9 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
         else if (nation_summary() == "Wales" ){
           t.dataset_completeness = t.dataset_completeness_wales
         }
+        else if (nation_summary() == "Scotland" ){
+          t.dataset_completeness = t.dataset_completeness_scotland
+        }
         t.dataset_completeness %>%
         filter(dataset == dataset_summary()) %>%
         mutate(column_name = trimws(column_name)) %>%
@@ -216,7 +219,7 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
             left_join((
               t.data_dictionaryScot %>%
                 mutate(position = row_number())
-            ), by=c("column_name"="field","table"="table"))} #need to update what the field name is
+            ), by=c("column_name"="Variable Name Provided","table"="table"))} #need to update what the field name is
         
         else if(nation_summary() == "Wales"){
             completeness_test_data() %>%
