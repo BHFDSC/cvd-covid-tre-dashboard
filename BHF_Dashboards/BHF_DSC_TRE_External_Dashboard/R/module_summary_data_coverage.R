@@ -69,18 +69,19 @@ dataCoverageUI <- function(id){
 
 
                               fluidRow(column(12,
-                              radioButtons(inputId = ns("count_coverage_season"),
-                                           label = h6(id='count_heading',paste0("Count:",stringi::stri_dup(intToUtf8(160),2)), tags$span(icon("info-circle"), id = "iconer") %>% 
-                                                        
-                                                        add_prompt(
-                                                          message = type_text,
-                                                          position = "right", type = "error",
-                                                          size = "medium", rounded = TRUE,
-                                                          bounce=FALSE,animate=FALSE
-                                                        )),
-                                           choices = count_options,
-                                           selected = count_options_selected_season
-                              ),
+                                              tagList(uiOutput(ns("count_coverage_season_ex"))),
+                              # radioButtons(inputId = ns("count_coverage_season"),
+                              #              label = h6(id='count_heading',paste0("Count:",stringi::stri_dup(intToUtf8(160),2)), tags$span(icon("info-circle"), id = "iconer") %>% 
+                              #                           
+                              #                           add_prompt(
+                              #                             message = type_text,
+                              #                             position = "right", type = "error",
+                              #                             size = "medium", rounded = TRUE,
+                              #                             bounce=FALSE,animate=FALSE
+                              #                           )),
+                              #              choices = count_options,
+                              #              selected = count_options_selected_season
+                              # ),
                               
                               #LOG SCALE
                               # prettySwitchCustom(inputId = ns("log_scale_summary_season"),
@@ -378,7 +379,51 @@ selected = count_options_selected),
         )
       })
       
+      output$count_coverage_season_ex <- renderUI({
+        
+        tagList(
+          radioButtons(inputId = "summary_module-data_coverage_module-count_coverage_season", #IMPORTANT for using renderUI so inputID can be recognised by plots
+                             label = "Overall Count:", 
+                             choices = c('<span class="count_options_cov">Records'='n',
+                                         
+                                         
+                                         '<span class="count_options_cov">Records with a de-identified PERSON ID 
 
+
+        <div class="pretty p-default p-switch p-fill"></div>
+          <span "te" id="pretty_custom_icon" class="hint--right hint--error hint--medium hint--rounded hint--no-animate"
+          aria-label="Number of records with
+a de-identified person
+identifier that are
+potentially linkable
+across datasets within
+the respective TRE">
+            <i class="fas fa-circle-info" role="presentation" aria-label="circle-info icon"></i>
+            </span></div></span>'='n_id',
+
+
+'<span class="count_options_cov">Distinct de-identified PERSON ID 
+
+
+        <div class="pretty p-default p-switch p-fill"></div>
+          <span "te" id="pretty_custom_icon" class="hint--right hint--error hint--medium hint--rounded hint--no-animate"
+          aria-label="The unique number of 
+de-identified person 
+identifiers in the dataset, 
+excluding null values">
+            <i class="fas fa-circle-info" role="presentation" aria-label="circle-info icon"></i>
+            </span></div></span>'='n_id_distinct'
+                             ),
+selected = count_options_selected_season),
+tags$script(
+  "
+        $('#summary_module-data_coverage_module-count_coverage_season .radio span').map(function(choice){
+            this.innerHTML = $(this).text();
+        });
+        "
+)
+        )
+      })
 
  
       coverage_data_all_records =  reactive({
