@@ -161,19 +161,19 @@ aboutUI<- function(id){
 
 
  ')
-,
-         div(
-           id = "loading_page", #id = "loading_page"
-
-           fluidRow(column(12,
-
-                           fixedRow(column(12,div(id="testid",shinyLink(to = "summary", label = "Begin Exploring")),align = "center",style=""))
-           )),
-
-
-
-
-         )
+# ,
+#          div(
+#            id = "loading_page", #id = "loading_page"
+#            
+#            fluidRow(column(12,
+#                            
+#                            fixedRow(column(12,div(id="testid",shinyLink(to = "summary", label = "Begin Exploring")),align = "center",style=""))
+#            )),
+#            
+# 
+# 
+# 
+#          )
 )
 
 
