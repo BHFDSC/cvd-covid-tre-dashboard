@@ -11,10 +11,10 @@ aboutUI<- function(id){
          
          HTML('
               
-              <div class="aboutcontainer">
+          <div class="aboutpage">
               <div class="div1welcome">  
   
-                  <div class="rowwelcome">
+                  
                   <div class="columnleftwelcome" >
                   <span style="letter-spacing:1px;font-size:34px;text-align:left;">
                   <br>Welcome to the<br>
@@ -32,77 +32,149 @@ aboutUI<- function(id){
                   </div>
                   <div class="columnrightwelcome" >
                   </div>
-                  </div>
+               
   
                   <div class="image">
-                  
+                   <img src="beating_heart_test.png" alt="BHF Beating Heart of Data" style="width:100%;height:60vh;z-index:10000!important;">
                   </div>
               </div>
               
            <div class="div2welcome">
-           <section>
-
+           
 
 <div class="containeraccordioncenter">
-<div class="containeraccordion">
-  <h2>Frequently Asked Questions</h2>
-  <div class="accordion">
-    <div class="accordion-item">
-      <button id="accordion-button-1" aria-expanded="false"><span class="accordion-title">What is the purpose of this dashboard?</span><span class="icon" aria-hidden="true"></span></button>
-      <div class="accordion-content">
-        <p>The dashboard provides an overview and interactive summaries of the datasets currently available through CVD-COVID-UK/COVID-IMPACT within the secure Trusted Research Environments (TREs) provided by NHS England for England, the National Data Safe Haven for Scotland and the SAIL databank for Wales. 
-        CVD-COVID-UK aims to understand the relationship between COVID-19 and cardiovascular diseases such as heart attack, heart failure, stroke, and blood clots in the lungs through analyses of de-identified, linked, nationally collated healthcare datasets across the four nations of the UK. 
+<section>
+<div class="card-wrapper  | content-cc">
+
+  <div class="faq-card">
+
+
+    <main class="faq-content">
+
+          <div class="faq-title"><p>Frequently Asked Questions</p></div>
+
+      <div class="faq-articles">
+
+        <article class="faq-accordion">
+
+          <input type="checkbox" class="tgg-title" id="tgg-title-1">
+
+          <div class="faq-accordion-title">
+            <label for="tgg-title-1">
+              <h2>What is the purpose of this dashboard?</h2>
+              <span class="arrow-icon">
+                <img src="https://raw.githubusercontent.com/Romerof/FAQ-accordion-card/main/images/icon-arrow-down.svg">
+              </span>
+            </label>
+          </div>
+
+          <div class="faq-accordion-content">
+            <p>The dashboard provides an overview and interactive summaries of the datasets currently available through CVD-COVID-UK/COVID-IMPACT within the secure Trusted Research Environments (TREs) provided by NHS England for England, the National Data Safe Haven for Scotland and the SAIL databank for Wales. 
+        <br><br>CVD-COVID-UK aims to understand the relationship between COVID-19 and cardiovascular diseases such as heart attack, heart failure, stroke, and blood clots in the lungs through analyses of de-identified, linked, nationally collated healthcare datasets across the four nations of the UK. 
         COVID-IMPACT is an expansion of this approach to address research questions looking at the impact of COVID-19 on other health conditions and their related risk factors. 
-        The dashboard can be used to explore the data dictionaries, data coverage and data completeness for each of the datasets provisioned in England, Scotland, and Wales. 
+        <br><br>The dashboard can be used to explore the data dictionaries, data coverage and data completeness for each of the datasets provisioned in England, Scotland, and Wales. 
         The datasets include those from primary and secondary care, COVID lab tests and vaccinations, deaths, critical care, prescribing/dispensing, cardiovascular and stroke audits, maternity services and mental health.</p>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <button id="accordion-button-2" aria-expanded="false"><span class="accordion-title">Who is this dashboard for?</span><span class="icon" aria-hidden="true"></span></button>
-      <div class="accordion-content">
-        <p>The dashboard is primarily aimed at researchers interested in finding out more about the datasets available through CVD-COVID-UK/COVID-IMPACT. 
+          </div>
+
+        </article> <!-- faq accordion -->
+
+        
+
+        <article class="faq-accordion">
+
+          <input class="tgg-title" type="checkbox" id="tgg-title-4">
+
+          <div class="faq-accordion-title">
+            <label for="tgg-title-4">
+              <h2>
+                Who is this dashboard for?
+              </h2>
+              <span class="arrow-icon">
+                <img src="https://raw.githubusercontent.com/Romerof/FAQ-accordion-card/main/images/icon-arrow-down.svg">
+              </span>
+            </label>
+          </div>
+
+          <div class="faq-accordion-content">
+            <p>The dashboard is primarily aimed at researchers interested in finding out more about the datasets available through CVD-COVID-UK/COVID-IMPACT. 
     Researchers preparing a project proposal may find this a useful tool to help plan their project and assess feasibility without having access to the data. 
-    Please contact the <a href="bhfdsc_hds@hdruk.ac.uk" class="aboutMail"><b>BHF DSC Health Data Science Team</b></a> if you would like to discuss the scope and feasibility of a potential project in more detail. 
-    For any enquiries about the application process for accessing data in the TREs please contact the <a href="bhfdsc@hdruk.ac.uk." class="aboutMail"><b>BHF DSC</b></a>. 
-    The dashboard may also be useful for the members of approved project teams that are not accessing data but are actively contributing to the research process.</p>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <button id="accordion-button-5" aria-expanded="false"><span class="accordion-title">Using the dashboard</span><span class="icon" aria-hidden="true"></span></button>
-      <div class="accordion-content">
-        <p>For each of the datasets available, the dashboard provides: a basic description; links to further sources of more information (e.g., Health Data Research Innovation Gateway); the data dictionary; overall number of records; the data coverage over time; and the completeness of each variable. 
-              Datasets are presented individually on the <b>Dataset Summary</b> dashboard, but users additionally have the option of comparing the data coverage over time for datasets, both within and between nations, on the <b>Dataset Comparison</b> dashboard. Please reference the <b>Methodology</b> library which provides descriptions of how the data has been generated, definitions of the terminology used within the different components of the dashboard, and guidance for the interpretation of the information presented. 
-              For further information about the dashboard please contact the <a href="bhfdsc_hds@hdruk.ac.uk" class="aboutMail"><b>BHF DSC Health Data Science Team</b></a>. For any enquiries about the application process for accessing data in the TREs please contact the <a href="bhfdsc@hdruk.ac.uk." class="aboutMail"><b>BHF DSC</b></a>.
+    <br><br>Please contact the <a href="bhfdsc_hds@hdruk.ac.uk" class="aboutMail"><b>BHF DSC Health Data Science Team</b></a> if you would like to discuss the scope and feasibility of a potential project in more detail. 
+    <br><br>For any enquiries about the application process for accessing data in the TREs please contact the <a href="bhfdsc@hdruk.ac.uk." class="aboutMail"><b>BHF DSC</b></a>. 
+    <br><br>The dashboard may also be useful for the members of approved project teams that are not accessing data but are actively contributing to the research process.</p>
+          </div>
+
+        </article> <!-- faq accordion -->
+
+        <article class="faq-accordion">
+
+          <input class="tgg-title" type="checkbox" id="tgg-title-5">
+
+          <div class="faq-accordion-title">
+            <label for="tgg-title-5">
+              <h2>
+                How should the dashboard be used?
+              </h2>
+              <span class="arrow-icon">
+                <img src="https://raw.githubusercontent.com/Romerof/FAQ-accordion-card/main/images/icon-arrow-down.svg">
+              </span>
+            </label>
+          </div>
+
+          <div class="faq-accordion-content">
+            <p>For each of the datasets available, the dashboard provides: a basic description; links to further sources of more information (e.g., Health Data Research Innovation Gateway); the data dictionary; overall number of records; the data coverage over time; and the completeness of each variable. 
+              <br><br>Datasets are presented individually on the <span style="font-weight:bold">Dataset Summary</span> dashboard, but users additionally have the option of comparing the data coverage over time for datasets, both within and between nations, on the <b>Dataset Comparison</b> dashboard. Please reference the <b>Methodology</b> library which provides descriptions of how the data has been generated, definitions of the terminology used within the different components of the dashboard, and guidance for the interpretation of the information presented. 
+              <br><br>For further information about the dashboard please contact the <a href="bhfdsc_hds@hdruk.ac.uk" class="aboutMail"><b>BHF DSC Health Data Science Team</b></a>. For any enquiries about the application process for accessing data in the TREs please contact the <a href="bhfdsc@hdruk.ac.uk." class="aboutMail"><b>BHF DSC</b></a>.
               <br><br>
               Please note that only aggregated data is provided through this dashboard, all of which has had the appropriate disclosure control applied and been approved for export from the each respective TRE by trained output checkers.
               <br><br>
               This dataset summary dashboard will be updated on a monthly basis for each nation.</p>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
+          </div>
+
+        </article> <!-- faq accordion -->
+
+
+
+      </div> <!-- faq articles -->
+
+    </main> <!-- faq -->
+
+  </div> <!-- faq card -->
+
+</div> <!-- card wrapper -->
+
              </section>
 
-
 </div>
 </div>
 
 
 
- '),
+
+
+
+
+
+
+
+</div>
+
+
+
+ ')
+,
          div(
            id = "loading_page", #id = "loading_page"
-           
+
            fluidRow(column(12,
-                           
-                           fixedRow(column(12,div(id="testid",shinyLink(to = "summary", label = "Begin Exploring")),align = "center",style="margin:0px;padding-bottom:30px;border:0px;"))
+
+                           fixedRow(column(12,div(id="testid",shinyLink(to = "summary", label = "Begin Exploring")),align = "center",style=""))
            )),
-           
 
 
 
-         ))
+
+         )
+)
 
 
   )

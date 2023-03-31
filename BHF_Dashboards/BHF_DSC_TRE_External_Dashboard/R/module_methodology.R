@@ -18,7 +18,7 @@ methodologyOutput <- function(id){
       # ),
       # )
     
-    wellPanel(style = "background: white; border-color: white;padding-left:0px;padding-right:0px;margin-left:-10px;margin-right:-10px;",
+    wellPanel(style = "background: white; border-color: white;padding:50px;",
     
     tabsetPanel(
       # tabPanel(

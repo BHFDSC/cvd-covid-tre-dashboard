@@ -1,5 +1,5 @@
 ## Data Coverage ===========================================================
-wellPanel(style = "z-index:1;background: white; border-color: white;padding-left:0px;padding-right:0px;border-left:0px;border-right:0px;margin-left:0px;margin-right:0px;margin-bottom:60px;",
+wellPanel(style = "z-index:1;background: white; border-color: white;padding:30px;",
           
 fluidRow(titlePanel(h3("Data Coverage")),
          
@@ -46,6 +46,8 @@ fluidRow(titlePanel(h3("Data Coverage")),
                             #PLOT INPUT
                             tabPanel(title = "Plot",
                                      value = "plot_input",
+                                     #also added to css page #compare_coverage_plot_girafe{padding-left:12px;} to shift plot over same amount
+                                     style='position:relative; left:12px;',
                                      fluidRow(
                                      wellPanel(style = bhf_tab_panel_style,
                                                
