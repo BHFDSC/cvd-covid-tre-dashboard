@@ -126,6 +126,164 @@ family_helvetica = "helvetica_neue"
 #CSS External File that overrides flatly themes
 bhf_dsc_hds_css = "
 
+
+html {
+  box-sizing: border-box;
+}
+* {box-sizing: inherit;}
+
+.attribution { 
+  font-size: 18px; text-align: center; 
+letter-spacing:1px;
+  padding: 8px 0 5px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+
+
+/* global */
+/*================================================*/
+
+.faq-title{
+display: flex;
+
+letter-spacing:1px;font-size:34px;text-align:left;
+}
+
+.card-wrapper {
+  min-height: 100vh;
+  padding-bottom: 50px; /* footer fixed */
+  padding-top: 25px;
+}
+
+p {
+  margin: 0 0 18px;
+  line-height: 1.5;
+}
+
+h2 {
+  margin: 18px 0;
+}
+
+
+/* generics */
+/*================================================*/
+
+.content-cc{
+  display: flex;
+  justify-content: center;/*still goes up but gets rid of bottom space*/
+  align-items: start; /*doesnt go up but has big bottom part*/
+
+
+marign-top:-200px;
+}
+
+/* FAQ card */
+/*================================================*/
+
+.faq-card {
+
+  background-color: #E2F9FB;
+  border-radius: 20px;
+
+  max-width: 80%;
+
+  
+}
+
+
+/* FAQ card: main */
+/*================================================*/
+
+.faq-content {
+  padding: 9px 25px 3rem; 
+}
+
+.faq-content h1 {
+  font-size: 32px;
+  text-align: center;
+  color: #7044CB;
+}
+
+.faq-accordion {
+
+  padding: 8px 0;
+  border-bottom: 1px solid hsl(240, 5%, 91%);
+}
+
+
+/* FAQ card: main title */
+/*================================================*/
+
+/* checkbox tgg-title*/
+input.tgg-title {
+  appearance: unset;
+  all:unset;
+}
+
+.faq-accordion-title label{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.faq-accordion-title h2{
+letter-spacing:1px;
+  font-size: 18px /*var(--font-size)*/;
+  font-weight: 700;
+  color: #7044CB;
+}
+
+.faq-accordion-title span{
+  margin-left: auto;
+  transition: transform .4s ease-in-out;
+}
+
+
+/* FAQ card: main content */
+/*================================================*/
+
+.faq-accordion-content {
+  color: #474D5B;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height .4s ease-in-out;
+
+}
+
+
+/* Effects */
+/*================================================*/
+
+/* main title, accordion title effects */
+
+.faq-accordion-title:hover h2{
+  color: #7044CB
+}
+
+/* onclick */
+.faq-accordion .tgg-title:checked + div>label>h2 {
+  font-weight: 700;
+}
+
+.faq-accordion .tgg-title:checked + div>label>span {
+  will-change: transform;
+  transform: rotate(180deg);
+}
+
+/* main content, acordion text effect */
+
+.faq-accordion .tgg-title:checked ~ .faq-accordion-content{
+  will-change: max-height;
+  max-height: 1000px;
+}
+
+
+
 #navmain .nav-item{padding-right:30px;}
 .navbar{margin-top:-20px;padding-top:-20px;border-top:-20px;background:white;z-index:2147483647 !important;font-size: 18px;
 padding-top:2%;}
@@ -331,14 +489,15 @@ section .text-container .text-box h3{
 }
 */
 
-/*.aboutpage{height:1500px;}*/
+.aboutpage{background:#B0E1E8;}
 /*.aboutcontainer{margin-left:-50px;margin-right:-50px;height:100px;}*/
 .rowwelcome{z-index:1!important;}
 .div1welcome{position:relative;width:100%;z-index:1;background:#EEE8FF;}
 
-
+/*Old Code - styling now defined in module_about for image*/
 /*.image{background-image:url('beating_heart_test.png');
-  height:1160px;
+  height:10px!important;
+width:10px!important;
   object-fit:contain;
   margin-left:-35px;margin-right:-35px;
   background-size: 100%;
@@ -352,14 +511,14 @@ position: relative;
 }*/
 
 .containeraccordioncenter{
-  width: 80%;
-  margin: auto;
-  z-index:6000!important;}
 
-.div2welcome{position:relative;height:700px;
-background:#B0E1E8;z-index:4000!important;top:-400px;margin-bottom:-400px;
+  position:relative;
+background:#B0E1E8;z-index:1!important;
+overflow:auto;
+  align-items: center;margin-top:-100px;}
 
-  align-items: center;
+.div2welcome{
+
 }
 
 
