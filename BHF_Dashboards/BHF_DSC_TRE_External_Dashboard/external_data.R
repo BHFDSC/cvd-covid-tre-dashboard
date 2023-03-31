@@ -12,7 +12,7 @@ substr(export_date_england,1,4)
 substr(export_date_england,6,7)
 
 #Scotland
-export_date_scotland = "2023-3-21"
+export_date_scotland = "2023-03-21"
 completeness_dataset_name_scotland = "2021-0102_export_dashboard_scotland_completeness20230321"
 coverage_dataset_name_scotland = "2021-0102_export_dashboard_scotland_coverage20230321"
 overview_dataset_name_scotland = "2021-0102_export_dashboard_scotland_overview20230321"
