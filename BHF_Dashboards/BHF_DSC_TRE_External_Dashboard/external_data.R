@@ -75,10 +75,23 @@ t.data_dictionaryScot = Map(cbind, names(t.data_dictionaryScot), t.data_dictiona
 # Renaming the tables in the list so that they can be reactively called
 for (i in (1: length(t.data_dictionaryScot))){ colnames(t.data_dictionaryScot[[i]])[1] <- 'table'}
 
-# Merging and removing blank rows  
-t.data_dictionaryScot = t.data_dictionaryScot %>% 
-  dplyr:: bind_rows() %>% 
-  filter( !is.na(Type))
+# Merging 
+t.data_dictionaryScot = t.data_dictionaryScot %>%
+  dplyr:: bind_rows() 
+  
+# and removing dictionaries for not needed tables   
+t.data_dictionaryScot = as.data.frame(t.data_dictionaryScot ) %>% 
+  filter( (str_to_lower(t.data_dictionaryScot$table) %in% str_to_lower(datasets_available$dataset_dataset) ) ) %>% 
+  filter( !is.na(Type)) %>% 
+  select(where(not_all_na)) %>% 
+  select( -"For Processing only? Y/N") %>% 
+  rename(`field` =  "Source Variable Name",
+         `field name` = "Variable Name Provided",
+         `field description` = Description,
+         `field type` = Type ) %>% 
+  relocate( "field", .before = "field name") %>% 
+  relocate( "field description", .before = "field type" ) %>% 
+  relocate( "Derived" , .after = "Comments")
 
 
 # Wales-------------------------------------------------------------------
