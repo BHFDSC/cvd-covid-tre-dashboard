@@ -81,7 +81,7 @@ t.data_dictionaryScot = t.data_dictionaryScot %>%
   
 # and removing dictionaries for not needed tables   
 t.data_dictionaryScot = as.data.frame(t.data_dictionaryScot ) %>% 
-  filter( (str_to_lower(t.data_dictionaryScot$table) %in% str_to_lower(datasets_available$dataset_dataset) ) ) %>% 
+  filter( (str_to_lower(t.data_dictionaryScot$table) %in% str_to_lower(datasets_available$table) ) ) %>% 
   filter( !is.na(Type)) %>% 
   select(where(not_all_na)) %>% 
   select( -"For Processing only? Y/N") %>% 
