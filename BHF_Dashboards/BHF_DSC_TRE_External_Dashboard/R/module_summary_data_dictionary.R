@@ -106,10 +106,10 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
                       message = FALSE))
         
         if(nation_summary() == "Scotland"){
-          t.data_dictionaryScot %>% 
-            left_join(select(datasets_available, c("table","Dataset")), by=c("table")) %>%
-            filter(Dataset == dataset_summary())  %>%
-            select(-Dataset, -table)  %>% 
+          t.data_dictionaryScot  %>% 
+            left_join(select(datasets_available, c("table","dataset_dataset")), by=c("table")) %>%
+            filter(dataset_dataset == dataset_summary())  %>%
+            select(-dataset_dataset, -table)  %>% 
             select_if(~!(all(is.na(.)) | all(. == "")))
         }
         
