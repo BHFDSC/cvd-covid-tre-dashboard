@@ -40,7 +40,8 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
           t.dataset_overview = t.dataset_overview_wales  %>% rename(n_distinct = n_id_distinct)
         }
         else if (nation_summary() == "Scotland" ){
-          t.dataset_overview = t.dataset_overview_scotland
+          t.dataset_overview = t.dataset_overview_scotland %>% 
+            mutate(archived_on = as.Date( archived_on, tryFormats = c("%d/%m/%Y")))
         }
         
         t.dataset_overview %>%
