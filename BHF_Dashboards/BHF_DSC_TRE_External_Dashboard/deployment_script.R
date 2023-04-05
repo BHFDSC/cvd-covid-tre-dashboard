@@ -58,7 +58,8 @@ rsconnect::deployApp()
 #                roxygen2, rversions, sessioninfo, textshaping, urlchecker, usethis, whisker, xopen, zip, gh, jJava, shinyvalidate,
 #                xlsx, xlsxjars)
 
-
+# pacman::p_load(checkmate, crul, fontBitstreamVera , fontLiberation, fontquiver, fresh,
+#                gdtools, gfonts, httpcode)
 
 
 
