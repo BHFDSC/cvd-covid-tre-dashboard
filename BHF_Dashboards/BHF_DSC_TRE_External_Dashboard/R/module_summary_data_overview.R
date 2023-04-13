@@ -37,7 +37,7 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
           t.dataset_overview = t.dataset_overview_eng
         }
         else if (nation_summary() == "Wales" ){
-          t.dataset_overview = t.dataset_overview_wales  %>% rename(n_distinct = n_id_distinct)
+          t.dataset_overview = t.dataset_overview_wales  %>% rename(n_id_distinct = n_distinct)  
         }
         else if (nation_summary() == "Scotland" ){
           t.dataset_overview = t.dataset_overview_scotland %>% 
