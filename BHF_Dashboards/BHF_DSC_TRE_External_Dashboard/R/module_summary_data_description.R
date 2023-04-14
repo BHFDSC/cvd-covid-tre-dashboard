@@ -16,7 +16,8 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
 
       dataset_desc_filter = reactive({
         datasets_available %>%
-        filter(.data$Dataset == dataset_summary())
+          filter(.data$Nation == nation_summary()) %>% 
+          filter(.data$Dataset == dataset_summary())
       }) #%>% bindCache(dataset_summary(),nation_summary())
 
          
@@ -40,18 +41,23 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
       #%>% bindCache(dataset_summary(),nation_summary())
       
       url1 <- a(ifelse(grepl("digital.nhs", 
-                             datasets_available$url1[datasets_available$Dataset == dataset_summary()]),"NHS England",
+                             datasets_available$url1[datasets_available$Dataset == dataset_summary() & 
+                                                       datasets_available$Nation == nation_summary() ]),"NHS England",
                        ifelse(grepl("nicor", 
-                                    datasets_available$url1[datasets_available$Dataset == dataset_summary()]),"NICOR website",
+                                    datasets_available$url1[datasets_available$Dataset == dataset_summary() & 
+                                                              datasets_available$Nation == nation_summary()]),"NICOR website",
                               ifelse(grepl("scot", 
-                                           datasets_available$url1[datasets_available$Dataset == dataset_summary()]), "Public Health Scotland",
+                                           datasets_available$url1[datasets_available$Dataset == dataset_summary() & 
+                                                                     datasets_available$Nation == nation_summary()]), "Public Health Scotland",
                                      ""))),
-                href = datasets_available$url1[datasets_available$Dataset == dataset_summary()],
+                href = datasets_available$url1[datasets_available$Dataset == dataset_summary() & 
+                                                 datasets_available$Nation == nation_summary()],
                 target = "_blank")
                 
                 
       url2 <- a("Health Data Research Innovation Gateway", 
-                       href = datasets_available$url2[datasets_available$Dataset == dataset_summary()],
+                       href = datasets_available$url2[datasets_available$Dataset == dataset_summary() & 
+                                                        datasets_available$Nation == nation_summary()],
                 target = "_blank")
       
       output$tab <- renderUI({
@@ -60,12 +66,14 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
         validate(need(dataset_summary() ,
                       message = FALSE))
         
-        if(is.na(datasets_available$url2[datasets_available$Dataset == dataset_summary()]))
+        if(is.na(datasets_available$url2[datasets_available$Dataset == dataset_summary() & 
+                                         datasets_available$Nation == nation_summary()]))
 
        
         {tagList(url1)} 
         
-        else if(is.na(datasets_available$url1[datasets_available$Dataset == dataset_summary()]))
+        else if(is.na(datasets_available$url1[datasets_available$Dataset == dataset_summary() & 
+                                              datasets_available$Nation == nation_summary()]))
           
         {tagList(url2)}
         
