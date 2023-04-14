@@ -1,6 +1,5 @@
 library(tidyverse)
 library(readxl)
-source('external_data.R')
 
 dataset_dashboard_list = function(nation,key="Dataset available"){
   
@@ -71,7 +70,6 @@ split_occurrence = function(x, sep, n, keep = "lhs") {
 }
 
 
-update_date_string = paste(toOrdinal::toOrdinal(lubridate::mday(update_date)),months(update_date),lubridate::year(update_date))
 
 footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
   glue::glue(
