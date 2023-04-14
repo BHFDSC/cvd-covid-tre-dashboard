@@ -160,12 +160,26 @@ ui = fluidPage(
 
 server = function(input, output, session) {
 
-  observeEvent(input$navmain, {
+  # observeEvent(input$navmain, {
+  #   if(input$navmain == "About"){
+  #     addCssClass(class = "abouttab", selector = ".navbar")
+  #     removeCssClass(class = "normaltab", selector = ".navbar")
+  #     #addCssClass(class = "abouttab", selector = ".container-fluid")
+  #    # removeCssClass(class = "normaltab", selector = ".container-fluid")
+  #   } else {
+  #     addCssClass(class = "normaltab", selector = ".navbar")
+  #     removeCssClass(class = "abouttab", selector = ".navbar")
+  #     #addCssClass(class = "normaltab", selector = ".container-fluid")
+  #     #removeCssClass(class = "abouttab", selector = ".container-fluid")
+  #   }
+  # })
+  
+  observe({
     if(input$navmain == "About"){
       addCssClass(class = "abouttab", selector = ".navbar")
       removeCssClass(class = "normaltab", selector = ".navbar")
       #addCssClass(class = "abouttab", selector = ".container-fluid")
-     # removeCssClass(class = "normaltab", selector = ".container-fluid")
+      # removeCssClass(class = "normaltab", selector = ".container-fluid")
     } else {
       addCssClass(class = "normaltab", selector = ".navbar")
       removeCssClass(class = "abouttab", selector = ".navbar")

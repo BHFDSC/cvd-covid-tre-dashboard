@@ -136,6 +136,14 @@ footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
       <img src="PHS_logo_positive-1-e1653036329154.png" class="slide-image" alt="Partners: Public Health Scotland"></a>
     </div>
     <div class="slide">
+      <a href="https://www.diabetes.org.uk" target="_blank">
+      <img src="diabetes_1.png" class="slide-image" alt="Partners: Diabetes UK"></a>
+    </div>
+    <div class="slide">
+      <a href="https://www.bhf.org.uk" target="_blank">
+      <img src="British-Heart-Foundation-logo_1.png" class="slide-image" alt="Partners: British Heart Foundation"></a>
+    </div>
+    <div class="slide">
       <a href="https://www.hdruk.ac.uk" target="_blank">
       <img src="hdruk_main_rgb_jpeg.png" class="slide-image" alt="Partners: HDRUK"></a>
     </div>
@@ -154,6 +162,14 @@ footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
     <div class="slide">
       <a href="https://www.publichealthscotland.scot" target="_blank">
       <img src="PHS_logo_positive-1-e1653036329154.png" class="slide-image" alt="Partners: Public Health Scotland"></a>
+    </div>
+    <div class="slide">
+      <a href="https://www.diabetes.org.uk" target="_blank">
+      <img src="diabetes_1.png" class="slide-image" alt="Partners: Diabetes UK"></a>
+    </div>
+    <div class="slide">
+      <a href="https://www.bhf.org.uk" target="_blank">
+      <img src="British-Heart-Foundation-logo_1.png" class="slide-image" alt="Partners: British Heart Foundation"></a>
     </div>
 
   </div>

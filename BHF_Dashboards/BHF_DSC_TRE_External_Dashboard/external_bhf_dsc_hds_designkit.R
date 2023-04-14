@@ -144,6 +144,40 @@ letter-spacing:1px;
 }
 
 
+.acknowledge{
+background:#7044CB;
+height:1000px;
+}
+
+.acknowledge_title{
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-top: 3%;
+    letter-spacing:1px;font-size:34px;text-align:left;
+font-weight: bold;
+color:white;
+    margin-left:65px;
+}
+
+.acknowledge_body{
+    padding-left: 3%;
+    padding-right: 3%;
+    letter-spacing:1px;font-size:17px;text-align:left;
+    margin-left:65px;
+    margin-right:15px;
+color:#FFC335;
+}
+
+.acknowledge_body_wrangler{
+    padding-left: 3%;
+    padding-right: 3%;
+    letter-spacing:1px;font-size:19px;text-align:left;
+    margin-left:65px;
+    margin-right:15px;
+color:white;
+font-weight: bold;
+}
+
 
 /* global */
 /*================================================*/
@@ -155,7 +189,7 @@ letter-spacing:1px;font-size:34px;text-align:left;
 }
 
 .card-wrapper {
-  min-height: 100vh;
+  min-height: 60vh;
   padding-bottom: 50px; /* footer fixed */
   padding-top: 25px;
 }
@@ -178,8 +212,8 @@ h2 {
   justify-content: center;/*still goes up but gets rid of bottom space*/
   align-items: start; /*doesnt go up but has big bottom part*/
 
-
-marign-top:-200px;
+marign-top:-100px;
+row-gap: 200px;
 }
 
 /* FAQ card */
@@ -252,7 +286,7 @@ letter-spacing:1px;
   overflow: hidden;
   max-height: 0;
   transition: max-height .4s ease-in-out;
-
+  font-size: 18px;
 }
 
 
@@ -489,7 +523,7 @@ section .text-container .text-box h3{
 }
 */
 
-.aboutpage{background:#B0E1E8;}
+.aboutpage{background:#B0E1E8;overflow:auto;}
 /*.aboutcontainer{margin-left:-50px;margin-right:-50px;height:100px;}*/
 .rowwelcome{z-index:1!important;}
 .div1welcome{position:relative;width:100%;z-index:1;background:#EEE8FF;}
@@ -511,10 +545,9 @@ position: relative;
 }*/
 
 .containeraccordioncenter{
-
   position:relative;
 background:#B0E1E8;z-index:1!important;
-overflow:auto;
+
   align-items: center;margin-top:-100px;}
 
 .div2welcome{
