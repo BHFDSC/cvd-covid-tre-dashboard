@@ -98,12 +98,13 @@ aboutUI<- function(id){
           <div class="faq-accordion-content">
             <p>The dashboard is primarily aimed at researchers interested in finding out more about the datasets available through CVD-COVID-UK/COVID-IMPACT. 
     Researchers preparing a project proposal may find this a useful tool to help plan their project and assess feasibility without having access to the data. 
-    <br><br>Please contact the <a href="bhfdsc_hds@hdruk.ac.uk" class="aboutMail"><b>BHF DSC Health Data Science Team</b></a> if you would like to discuss the scope and feasibility of a potential project in more detail. 
-    <br><br>For any enquiries about the application process for accessing data in the TREs please contact the <a href="bhfdsc@hdruk.ac.uk." class="aboutMail"><b>BHF DSC</b></a>. 
+    <br><br>Please contact the <a href="bhfdsc_hds@hdruk.ac.uk" class="aboutMail"><b>BHF Data Science Centre Health Data Science Team</b></a> if you would like to discuss the scope and feasibility of a potential project in more detail. 
+    <br><br>For any enquiries about the application process for accessing data in the TREs please contact the <a href="bhfdsc@hdruk.ac.uk." class="aboutMail"><b>BHF Data Science Centre</b></a>. 
     <br><br>The dashboard may also be useful for the members of approved project teams that are not accessing data but are actively contributing to the research process.</p>
           </div>
 
         </article> <!-- faq accordion -->
+
 
         <article class="faq-accordion">
 
@@ -123,14 +124,16 @@ aboutUI<- function(id){
           <div class="faq-accordion-content">
             <p>For each of the datasets available, the dashboard provides: a basic description; links to further sources of more information (e.g., Health Data Research Innovation Gateway); the data dictionary; overall number of records; the data coverage over time; and the completeness of each variable. 
               <br><br>Datasets are presented individually on the <span style="font-weight:bold">Dataset Summary</span> dashboard, but users additionally have the option of comparing the data coverage over time for datasets, both within and between nations, on the <b>Dataset Comparison</b> dashboard. Please reference the <b>Methodology</b> library which provides descriptions of how the data has been generated, definitions of the terminology used within the different components of the dashboard, and guidance for the interpretation of the information presented. 
-              <br><br>For further information about the dashboard please contact the <a href="bhfdsc_hds@hdruk.ac.uk" class="aboutMail"><b>BHF DSC Health Data Science Team</b></a>. For any enquiries about the application process for accessing data in the TREs please contact the <a href="bhfdsc@hdruk.ac.uk." class="aboutMail"><b>BHF DSC</b></a>.
+              <br><br>For further information about the dashboard please contact the <a href="bhfdsc_hds@hdruk.ac.uk" class="aboutMail"><b>BHF Data Science Centre Health Data Science Team</b></a>. For any enquiries about the application process for accessing data in the TREs please contact the <a href="bhfdsc@hdruk.ac.uk." class="aboutMail"><b>BHF Data Science Centre</b></a>.
               <br><br>
               Please note that only aggregated data is provided through this dashboard, all of which has had the appropriate disclosure control applied and been approved for export from the each respective TRE by trained output checkers.
               <br><br>
               This dataset summary dashboard will be updated on a monthly basis for each nation.</p>
           </div>
 
+
         </article> <!-- faq accordion -->
+
 
 
 
@@ -143,6 +146,30 @@ aboutUI<- function(id){
 </div> <!-- card wrapper -->
 
              </section>
+
+<div class="acknowledge">
+<div class="acknowledge_title">
+<p>
+Funding & Acknowledgements
+</p>
+</div>
+<div class="acknowledge_body">
+<p>
+<br>The British Heart Foundation Data Science Centre (grant No SP/19/3/34678, awarded to Health Data Research (HDR) UK) funded co-development (with NHS Digital) of the trusted research environment, provision of linked datasets, data access, user software licences, computational usage, and data management and wrangling support, with additional contributions from the HDR UK Data and Connectivity component of the UK Government Chief Scientific Adviser’s National Core Studies programme to coordinate national COVID-19 priority research. Consortium partner organisations funded the time of contributing data analysts, biostatisticians, epidemiologists, and clinicians.
+<br>This research is part of the Data and Connectivity National Core Study, led by Health Data Research UK in partnership with the Office for National Statistics and funded by UK Research and Innovation (grant ref MC_PC_20058). This work was also supported by The Alan Turing Institute via ‘Towards Turing 2.0’ EPSRC Grant Funding.
+<br>This work is carried out with the support of the BHF Data Science Centre led by HDR UK (BHF Grant no. SP/19/3/34678). This study makes use of de-identified data held in NHS Digital’s TRE for England and made available via the BHF Data Science Centre’s CVD-COVID-UK/COVID-IMPACT consortium. This work uses data provided by patients and collected by the NHS as part of their care and support. We would also like to acknowledge all data providers who make health relevant data available for research.
+<br><br><b>Data availability</b>
+<br>The North East - Newcastle and North Tyneside 2 research ethics committee provided ethical approval for the CVD-COVID-UK/COVID-IMPACT research programme (REC No 20/NE/0161) to access, within secure trusted research environments, unconsented, whole-population, de-identified data from electronic health records collected as part of patients’ routine healthcare.
+The data used in this study are available in NHS Digital’s TRE for England, but as restrictions apply they are not publicly available (https://digital.nhs.uk/coronavirus/coronavirus-data-services-updates/trusted-research-environment-service-for-england). The CVD-COVID-UK/COVID-IMPACT programme led by the BHF Data Science Centre (https://www.hdruk.ac.uk/helping-with-health-data/bhf-data-science-centre/) received approval to access data in NHS Digital’s TRE for England from the Independent Group Advising on the Release of Data (IGARD) (https://digital.nhs.uk/about-nhs-digital/corporate-information-and-documents/independent-group-advising-on-the-release-of-data) via an application made in the Data Access Request Service (DARS) Online system (ref. DARS-NIC-381078-Y9C5K) (https://digital.nhs.uk/services/data-access-request-service-dars/dars-products-and-services). The CVD-COVID-UK/COVID-IMPACT Approvals & Oversight Board (https://www.hdruk.ac.uk/projects/cvd-covid-uk-project/) subsequently granted approval to this project to access the data within NHS Digital’s TRE for England. The de-identified data used in this study were made available to accredited researchers only. Those wishing to gain access to the data should contact bhfdsc@hdruk.ac.uk in the first instance.
+</p>
+</div>
+<div class="acknowledge_body_wrangler">
+<p>
+<br>We would like to thank the NHS England Data Wrangler team for producing the data summaries for England and collaborating with the BHF Data Science Centre Health Data Science team.
+</p>
+</div>
+
+</div>
 
 </div>
 </div>
