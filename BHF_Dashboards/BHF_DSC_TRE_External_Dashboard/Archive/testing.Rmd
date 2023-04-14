@@ -163,6 +163,10 @@ state = state %>%
 state = state %>% 
   mutate(colors = c(colors_memory,rep(NA,(nrow(state)-length(colors_memory))))) %>%
   mutate(colors = ifelse(is.na(colors), setdiff(compare_palette,filter(state,!is.na(colors))$colors)[1], colors))
+
+
+t.data_dictionaryScot%>%
+  mutate(field=stringr::str_to_lower(field))
 ```
 
 
