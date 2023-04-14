@@ -1,6 +1,5 @@
 library(tidyverse)
 library(readxl)
-source('external_data.R')
 
 dataset_dashboard_list = function(nation,key="Dataset available"){
   
@@ -71,7 +70,6 @@ split_occurrence = function(x, sep, n, keep = "lhs") {
 }
 
 
-update_date_string = paste(toOrdinal::toOrdinal(lubridate::mday(update_date)),months(update_date),lubridate::year(update_date))
 
 footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
   glue::glue(
@@ -107,7 +105,7 @@ footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
 <div class="row">
 
 <div class="columnleft" >
-<div><p style="margin-top:15px;font-size:85%;font-weight: 500;display: inline-block;text-align: left;margin-bottom:0;margin-left :10px;">The CVD-COVID-UK/COVID-IMPACT project makes use of data provided by patients and collected by the NHS as part of their care and support.We would like to acknowledge all data providers who make health relevant data available for research.</p></div>
+<div><p style="margin-top:15px;font-size:85%;font-weight: 500;display: inline-block;text-align: left;margin-bottom:0;margin-left :10px;">The CVD-COVID-UK/COVID-IMPACT project makes use of data provided by patients and collected by the NHS as part of their care and support. We would like to acknowledge all data providers who make health relevant data available for research.</p></div>
 
 </div>
 
