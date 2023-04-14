@@ -93,7 +93,8 @@ t.data_dictionaryScot = as.data.frame(t.data_dictionaryScot ) %>%
          `field type` = Type ) %>% 
   relocate( "field", .before = "field name") %>% 
   relocate( "field description", .before = "field type" ) %>% 
-  relocate( "Derived" , .after = "Comments")
+  relocate( "Derived" , .after = "Comments") %>%
+  mutate(field=stringr::str_to_lower(field))
 
 
 # Wales-------------------------------------------------------------------
