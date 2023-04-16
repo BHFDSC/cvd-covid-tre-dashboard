@@ -745,7 +745,16 @@ z-index:100;margin-bottom:20px;margin-top:-200px;}
 #testid  a:active{color:#7044CB!important;text-decoration: none; }
 
 
-a.aboutMail:link, a.aboutMail:hover, a.aboutMail:visited a.aboutMail:active{color:#A0003C;text-decoration: none;}
+a.aboutMail:link{color:#A0003C;text-decoration: none;}
+a.aboutMail:hover{color:#ff0030;text-decoration: none;}
+a.aboutMail:visited{color:#A0003C;text-decoration: none;}
+a.aboutMail:active{color:#ff0030;text-decoration: none;}
+
+
+.aboutFund:visited{color:#FFC335;}
+.aboutFund:hover{color:#ff0030!important;}
+.aboutFund:link{color:#FFC335;}
+.aboutFund:active{color:#ff0030!important;}
 
 
 /*############################################################################*/
