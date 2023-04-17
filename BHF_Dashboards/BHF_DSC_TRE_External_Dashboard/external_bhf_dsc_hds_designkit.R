@@ -127,6 +127,20 @@ family_helvetica = "helvetica_neue"
 bhf_dsc_hds_css = "
 
 
+#summary_module-data_coverage_module-summary_coverage_plot_render{
+color:#3db08c;
+text-align:center;
+align-items: center;
+margin-top:20%;
+}
+
+#summary_module-data_coverage_module-summary_coverage_season_plot_render{
+color:#3db08c;
+text-align:center;
+align-items: center;
+margin-top:20%;
+}
+
 html {
   box-sizing: border-box;
 }
