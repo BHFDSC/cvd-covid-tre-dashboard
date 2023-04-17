@@ -1,8 +1,9 @@
 # Setup ########################################################################
 Version = "1.1.0"
 
-#Modules scripts are sourced from the R folder
+options(shiny.sanitize.errors = TRUE)
 
+#Modules scripts are sourced from the R folder
 library(shiny)
 library(bslib)
 library(tidyverse)
