@@ -167,6 +167,13 @@ state = state %>%
 
 t.data_dictionaryScot%>%
   mutate(field=stringr::str_to_lower(field))
+
+
+tibble(
+            count_options=c("Records","Records with a de-identified PERSON ID","Distinct de-identified PERSON ID"),
+            count_options_1=c("Records","Records with a \nde-identified PERSON ID","Distinct \nde-identified PERSON ID")
+            )
 ```
+
 
 
