@@ -1,6 +1,8 @@
 dataCoverageUI <- function(id){
   ns <- NS(id)
+  
   tagList(
+
 
     fluidRow(
       
@@ -301,26 +303,54 @@ tags$head(tags$script("Shiny.addCustomMessageHandler('close_drop1_season_png', f
              tabsetPanel(
                
                id = ns("tab_selected_summary_coverage"),
-               
+
+               #conditionalPanel(
+                 #condition = "output.coverage_render_binary == 0",
                tabPanel(title = "Trend", 
                         value = "summary_coverage_plot",
                         class = "one",
                         tags$div(girafeOutput(ns("summary_coverage_plot_girafe"),
                                               width = '100%', height = '100%')),
+
+                        uiOutput(ns("summary_coverage_plot_render"))
+                        # conditionalPanel((condition = paste0("output.", ns("coverage_render_binary"), "==0")),
+                        #                  span("groups of words", style = "color:red") 
+                        # ), 
+                        # conditionalPanel((condition = paste0("output.", ns("coverage_render_binary"), "==1")),
+                        #                  span("groups of words", style = "color:blue") 
+                        # )
+                        
+                          # tags$div(girafeOutput(ns("summary_coverage_plot_girafe"),
+                          #                       width = '100%', height = '100%')) 
+                        #)
                ),
+               #conditionalPanel(
+                 #condition = "output.coverage_render_binary == 1",
+               # tabPanel(title = "Trend", 
+               #          value = "summary_coverage_plot",
+               #          class = "one",
+               #          span("groups of words", style = "color:blue") 
+               #)
+               #),
                tabPanel(title = "Seasonality", 
                         value = "compare_plot", 
                         class = "one",
-                        fluidRow(
+                        #uiOutput(ns("coverage_render_binary"))
+                        #htmlOutput("coverage_render_binary")
+                        
                         tags$div(girafeOutput(ns("summary_coverage_season_plot_girafe"),
                                               width = '100%', height = '100%')
+                                 
                                  # %>% shinycssloaders::withSpinner(type = 4
-                                 #                                  #,color = colour_bhf_lightred 
+                                 #                                  #,color = colour_bhf_lightred
                                  #                                  ,size = 0.7
                                  #                                  ,custom.css = TRUE
                                  #                                  ,id = "custom_spinner"
                                  #                                  )
-                                 )))
+                                 ),
+                        uiOutput(ns("summary_coverage_season_plot_render"))
+                        
+                        )
              )),
       
     )
@@ -425,6 +455,21 @@ tags$script(
         )
       })
 
+      
+      coverage_render = reactive({datasets_available %>%
+        filter(.data$Dataset == dataset_summary()) %>%
+          select(.data$coverage,.data$coverage_reason)
+      })
+      
+      #observe(print(coverage_render()))
+      
+      output$coverage_render_binary = renderUI({coverage_render() %>% pull(coverage)})
+      #observe(print(coverage_render_binary))
+
+      output$summary_coverage_plot_render = renderUI({coverage_render() %>% pull(coverage_reason)})
+      output$summary_coverage_season_plot_render = renderUI({coverage_render() %>% pull(coverage_reason)})
+      #observe(print(ccoverage_render_text))
+      outputOptions(output, "coverage_render_binary", suspendWhenHidden = FALSE)
  
       coverage_data_all_records =  reactive({
         t.data_coverage %>%
@@ -1419,6 +1464,15 @@ tags$script(
       })
       
 
+      
+      observe({
+        toggle(id = "summary_coverage_plot_render", condition = isTRUE(dataset_summary() %in% coverage_render_messages))
+        toggle(id = "summary_coverage_season_plot_render", condition = isTRUE(dataset_summary() %in% coverage_render_messages))
+      })
+      observe({
+        toggle(id = "summary_coverage_plot_girafe", condition = isFALSE(dataset_summary() %in% coverage_render_messages))
+        toggle(id = "summary_coverage_season_plot_girafe", condition = isFALSE(dataset_summary() %in% coverage_render_messages))
+      })
       
     }
   )
