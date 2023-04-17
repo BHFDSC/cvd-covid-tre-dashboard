@@ -654,6 +654,7 @@ tags$script(
       })
       
 
+
       output$summary_coverage_plot_girafe = renderGirafe({
         
         validate(
@@ -670,7 +671,12 @@ tags$script(
                        filter(date_format == max(date_format)) %>%
                        left_join(as.data.frame(count_options) %>% 
                                    rename(Type=count_options) %>% 
-                                   rownames_to_column("count_options"),by="Type")
+                                   rownames_to_column("count_options"),by="Type") %>%
+                       left_join(tibble(
+                         count_options=c("Records","Records with a de-identified PERSON ID","Distinct de-identified PERSON ID"),
+                         count_options_1=c("Records","Records with PERSON ID","Distinct PERSON IDs")
+                       ),by="count_options"
+                       )
                    ),
                    
                    aes(
@@ -685,10 +691,12 @@ tags$script(
                          ) /30)
                      )},
                      color = .data$Type,
-                     label = .data$count_options
+                     label = .data$count_options_1
                    ),
 
                    direction = "y",
+                   #box.padding = 1, max.overlaps = Inf,
+                   #hjust=1, #right just
                    family=family_lato,
                    segment.color = 'transparent'))
                
