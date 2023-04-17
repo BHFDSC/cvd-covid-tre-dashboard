@@ -3,7 +3,8 @@ dataDescriptionUI <- function(id){
   tagList(
     # Outputs ------------------------------------------------------------------
     textOutput(ns("description")),
-    br(),textOutput(ns("info")),
+    br(),
+    textOutput(ns("info")),
     uiOutput(ns("tab"))
   )
 }
@@ -12,7 +13,7 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
   moduleServer(
     id,
     function(input, output, session){
-      
+    
 
       dataset_desc_filter = reactive({
         datasets_available %>%
@@ -30,17 +31,25 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
         cat(dataset_desc_filter() %>%
           select(Description) %>%
             pull())
+      })
+      )
       
-        
+      
+
       output$info <- renderText({
-        
+
         validate(need(dataset_summary() ,
                       message = FALSE))
         
-        "For more information see:"}) 
+        validate(need(nation_summary() ,
+                      message = FALSE))
+        
+        "For more information see:"})
+      
       #%>% bindCache(dataset_summary(),nation_summary())
       
-      url1 <- a(ifelse(grepl("digital.nhs", 
+      
+      url1 <- reactive({a(ifelse(grepl("digital.nhs", 
                              datasets_available$url1[datasets_available$Dataset == dataset_summary() & 
                                                        datasets_available$Nation == nation_summary() ]),"NHS England",
                        ifelse(grepl("nicor", 
@@ -53,40 +62,72 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
                 href = datasets_available$url1[datasets_available$Dataset == dataset_summary() & 
                                                  datasets_available$Nation == nation_summary()],
                 target = "_blank")
+
+        })
                 
-                
-      url2 <- a("Health Data Research Innovation Gateway", 
+      #observe(print(url1()))
+      
+      url2 <- reactive({a("Health Data Research Innovation Gateway", 
                        href = datasets_available$url2[datasets_available$Dataset == dataset_summary() & 
                                                         datasets_available$Nation == nation_summary()],
-                target = "_blank")
+                target = "_blank")})
       
-      output$tab <- renderUI({
+      #observe(print(url2()))
+      
+      
+      
+      current_df = reactive({datasets_available%>%filter(Dataset==dataset_summary())%>%filter(Nation==nation_summary())})
+      
+      #observe(print(current_df()))
+      
+      toListen <- reactive({
+        list(nation_summary(), dataset_summary())
+      })
+      
+      
+      
+      print_urls = reactive({
         
-
-        validate(need(dataset_summary() ,
+        req(nation_summary(), dataset_summary())
+        
+        validate(need(current_df() ,
                       message = FALSE))
         
-        if(is.na(datasets_available$url2[datasets_available$Dataset == dataset_summary() & 
-                                         datasets_available$Nation == nation_summary()]))
-
-       
-        {tagList(url1)} 
+        validate(need(nation_summary() ,
+                      message = FALSE))
         
-        else if(is.na(datasets_available$url1[datasets_available$Dataset == dataset_summary() & 
-                                              datasets_available$Nation == nation_summary()]))
-          
-        {tagList(url2)}
+        if(is.na(current_df()$url1) & !is.na(current_df()$url2)) {tagList(url2())} 
+        
+        else if(is.na(current_df()$url2) & !is.na(current_df()$url1)) {tagList(url1())} 
+        
+        else if(is.na(current_df()$url1) & is.na(current_df()$url2)) {"Test"} 
         
         else 
-           
-          {tagList(url1, "and", url2)}
-                       
-          }) #%>% bindCache(dataset_summary(),nation_summary())
+          
+        {tagList(url1(), "and", url2())}
+        
+      })
+      
+      observeEvent(dataset_summary(), {
+      output$tab <- renderUI({
+        
+        #need this to stop the error printing between country changes
+        if (nrow(dataset_desc_filter())==0){
+        ""
+        } else
+        {print_urls()}
+        
         }) #%>% bindCache(dataset_summary(),nation_summary())
-      )
+         #%>% bindCache(dataset_summary(),nation_summary())
+
+      })
+      
+      observe(print(nrow(dataset_desc_filter())))
+
     }
   )
 }
+
 
 
 
