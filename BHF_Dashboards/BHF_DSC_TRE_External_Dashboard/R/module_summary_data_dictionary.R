@@ -5,6 +5,9 @@ dataDictionaryUI <- function(id){
   ns <- NS(id)
   tagList(
     
+    
+    
+    
     #possible solution to the no data available - refresh
     # div(
     #     use_hover(),
@@ -94,6 +97,12 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
     id,
     function(input, output, session){
       
+      dataset_desc_filter = reactive({
+        datasets_available %>%
+          filter(.data$Nation == nation_summary()) %>% 
+          filter(.data$Dataset == dataset_summary())
+      })
+      
       grouped_datasets = datasets_available %>% filter(Dataset != dataset_dataset) %>%
         distinct(Dataset) %>%
         pull(Dataset)
@@ -143,6 +152,13 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
 
       data_dict_react = reactive({
 
+        #needed to prevent error when changing nation
+        if (nrow(dataset_desc_filter())==0){
+          tibble()
+        } else {
+        
+        
+      
         reactable(
           data = if(dataset_summary() %in% grouped_datasets){
             data_dict() %>%
@@ -210,12 +226,20 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
           onClick = "expand"
         )
 
-      })
+      }})
+    
       
       
-      output$tbl = renderReactable(data_dict_react())
       
-      
+
+      output$tbl = renderReactable(
+
+        {data_dict_react()}
+        
+        )
+
+
+
       output$download_dd_csv = downloadHandler(
         filename = function() {paste0("data_dictionary_",str_remove_all(Sys.Date(),"-"),".csv")},
         content = function(file) {write_csv(
