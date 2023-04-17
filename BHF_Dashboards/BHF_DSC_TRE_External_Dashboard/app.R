@@ -3,6 +3,7 @@ Version = "1.1.0"
 
 options(shiny.sanitize.errors = TRUE)
 
+
 #Modules scripts are sourced from the R folder
 library(shiny)
 library(bslib)

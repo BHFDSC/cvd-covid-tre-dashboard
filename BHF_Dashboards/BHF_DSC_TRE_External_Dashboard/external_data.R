@@ -171,3 +171,9 @@ t.data_coverage = t.data_coverage_source %>%
 
 
 
+# Dataset Coverage Custom Messages -------------------------------------------------------------
+coverage_render_messages = datasets_available %>%
+  filter(coverage==1) %>%
+  select(Dataset) %>%
+  pull(Dataset)
+
