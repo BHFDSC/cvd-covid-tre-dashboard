@@ -1,25 +1,25 @@
-"dataset","n","n_id","n_distinct"
-"Annual District Birth Extract",870890,865670,865670
-"Annual District Death Daily",108165,107560,107555
-"Annual District Death Extract",893295,857585,857585
-"Critical Care Data Set",148350,146890,119310
-"Consolidated Death Data Source",140905,140840,140840
-"COVID-19 Test, Trace and Protect",3419905,1765665,1057690
-"COVID-19 Lateral Flow Data",19294450,17921570,2109310
-"COVID-19 Shielded People List",556470,556460,194775
-"COVID-19 Vaccination Data (RRDA)",8788690,8788690,2661580
-"Emergency Department Dataset Daily",11637875,10084585,2717220
-"Emergency Department Data Set",13196995,12751965,3133670
-"Intensive Care National Audit & Research Centre",136220,134520,110340
-"Intensive Care National Audit & Research Centre (Covid-19 Admissions Only)",2425,2405,2265
-"Maternity Indicators Dataset (Birth)",231720,231675,231315
-"Maternity Indicators Dataset (Initial Assessment)",285980,284105,191850
-"Out Patient Dataset for Wales",76461000,76231915,3694630
-"OutPatient Referral Dataset",16315390,16273370,3187120
-"Pathology Data COVID-19 Daily (Antibody Results)",89925,88690,76615
-"Pathology Data COVID-19 Daily (Test Results)",9170390,8743320,2176150
-"Wales Dispensing DataSet (RRDA)",896524085,896524085,3336520
-"Welsh Longitudinal General Practice",3919410180,3914365040,4951360
-"Mortality Dataset (RRDA)",128025,128025,128025
-"Patient Episode Datbase for Wales (Spells)",25077260,24026290,3666640
-"Patient Episode Datbase for Wales (Episodes)",28557190,27415895,3666640
+dataset,n,n_id,n_distinct,archived_on
+Annual District Birth Extract,870890,865670,865670,18/04/2023
+Annual District Death Daily,108165,107560,107555,18/04/2023
+Annual District Death Extract,893295,857585,857585,18/04/2023
+Critical Care Data Set,148350,146890,119310,18/04/2023
+Consolidated Death Data Source,140905,140840,140840,18/04/2023
+"COVID-19 Test, Trace and Protect",3419905,1765665,1057690,18/04/2023
+COVID-19 Lateral Flow Data,19294450,17921570,2109310,18/04/2023
+COVID-19 Shielded People List,556470,556460,194775,18/04/2023
+COVID-19 Vaccination Data (RRDA),8788690,8788690,2661580,18/04/2023
+Emergency Department Dataset Daily,11637875,10084585,2717220,18/04/2023
+Emergency Department Data Set,13196995,12751965,3133670,18/04/2023
+Intensive Care National Audit & Research Centre,136220,134520,110340,18/04/2023
+Intensive Care National Audit & Research Centre (Covid-19 Admissions Only),2425,2405,2265,18/04/2023
+Maternity Indicators Dataset (Birth),231720,231675,231315,18/04/2023
+Maternity Indicators Dataset (Initial Assessment),285980,284105,191850,18/04/2023
+Out Patient Dataset for Wales,76461000,76231915,3694630,18/04/2023
+OutPatient Referral Dataset,16315390,16273370,3187120,18/04/2023
+Pathology Data COVID-19 Daily (Antibody Results),89925,88690,76615,18/04/2023
+Pathology Data COVID-19 Daily (Test Results),9170390,8743320,2176150,18/04/2023
+Wales Dispensing DataSet (RRDA),896524085,896524085,3336520,18/04/2023
+Welsh Longitudinal General Practice,3919410180,3914365040,4951360,18/04/2023
+Mortality Dataset (RRDA),128025,128025,128025,18/04/2023
+Patient Episode Datbase for Wales (Spells),25077260,24026290,3666640,18/04/2023
+Patient Episode Datbase for Wales (Episodes),28557190,27415895,3666640,18/04/2023
