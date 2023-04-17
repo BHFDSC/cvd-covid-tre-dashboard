@@ -4,8 +4,8 @@ dataDescriptionUI <- function(id){
     # Outputs ------------------------------------------------------------------
     textOutput(ns("description")),
     br(),
-    textOutput(ns("info")),
     uiOutput(ns("tab"))
+    #textOutput(ns("info")),
   )
 }
 
@@ -36,15 +36,8 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
       
       
 
-      output$info <- renderText({
+      
 
-        validate(need(dataset_summary() ,
-                      message = FALSE))
-        
-        validate(need(nation_summary() ,
-                      message = FALSE))
-        
-        "For more information see:"})
       
       #%>% bindCache(dataset_summary(),nation_summary())
       
@@ -96,15 +89,15 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
         validate(need(nation_summary() ,
                       message = FALSE))
         
-        if(is.na(current_df()$url1) & !is.na(current_df()$url2)) {tagList(url2())} 
+        if(is.na(current_df()$url1) & !is.na(current_df()$url2)) {tagList("For more information see:",br(),url2())} 
         
-        else if(is.na(current_df()$url2) & !is.na(current_df()$url1)) {tagList(url1())} 
+        else if(is.na(current_df()$url2) & !is.na(current_df()$url1)) {tagList("For more information see:",br(),url1())} 
         
-        else if(is.na(current_df()$url1) & is.na(current_df()$url2)) {"Test"} 
+        else if(is.na(current_df()$url1) & is.na(current_df()$url2)) {""} 
         
         else 
           
-        {tagList(url1(), "and", url2())}
+        {tagList("For more information see:",br(),url1(), "and", url2())}
         
       })
       
@@ -122,7 +115,7 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
 
       })
       
-      observe(print(nrow(dataset_desc_filter())))
+      #observe(print(nrow(dataset_desc_filter())))
 
     }
   )
