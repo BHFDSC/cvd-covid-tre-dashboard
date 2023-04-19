@@ -1305,7 +1305,8 @@ tags$script(
             
             t.data_coverage_source %>%
               arrange(dataset,date_ym) %>%
-              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              left_join(datasets_available  %>%select(dataset=Dataset,title=Title, Nation),by = c("dataset", "Nation2" = "Nation"  )) %>%
+              filter(.data$Nation2 == nation_summary()) %>%
               filter(.data$dataset == dataset_summary()) %>%
               ungroup() %>%
               mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
@@ -1319,7 +1320,8 @@ tags$script(
             
           } else {t.data_coverage_source %>%
               arrange(dataset,date_ym) %>%
-              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              left_join(datasets_available  %>%select(dataset=Dataset,title=Title, Nation),by = c("dataset", "Nation2" = "Nation"  )) %>%
+              filter(.data$Nation2 == nation_summary()) %>% 
               filter(.data$dataset == dataset_summary()) %>%
               ungroup() %>%
               mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
@@ -1342,7 +1344,8 @@ tags$script(
             
             t.data_coverage_source %>%
               arrange(dataset,date_ym) %>%
-              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              left_join(datasets_available  %>%select(dataset=Dataset,title=Title, Nation),by = c("dataset", "Nation2" = "Nation"  )) %>%
+              filter(.data$Nation2 == nation_summary()) %>%
               filter(.data$dataset == dataset_summary()) %>%
               ungroup() %>%
               mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
@@ -1356,7 +1359,8 @@ tags$script(
             
           } else {t.data_coverage_source %>%
               arrange(dataset,date_ym) %>%
-              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              left_join(datasets_available  %>%select(dataset=Dataset,title=Title, Nation),by = c("dataset", "Nation2" = "Nation"  )) %>%
+              filter(.data$Nation2 == nation_summary()) %>%
               filter(.data$dataset == dataset_summary()) %>%
               ungroup() %>%
               mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
@@ -1379,7 +1383,8 @@ tags$script(
             
             t.data_coverage_source %>%
               arrange(dataset,date_ym) %>%
-              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              left_join(datasets_available  %>%select(dataset=Dataset,title=Title, Nation),by = c("dataset", "Nation2" = "Nation"  )) %>%
+              filter(.data$Nation2 == nation_summary()) %>%
               filter(.data$dataset == dataset_summary()) %>%
               ungroup() %>%
               mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
@@ -1393,7 +1398,8 @@ tags$script(
             
           } else {t.data_coverage_source %>%
               arrange(dataset,date_ym) %>%
-              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              left_join(datasets_available  %>%select(dataset=Dataset,title=Title, Nation),by = c("dataset", "Nation2" = "Nation"  )) %>%
+              filter(.data$Nation2 == nation_summary()) %>%
               filter(.data$dataset == dataset_summary()) %>%
               ungroup() %>%
               mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
