@@ -120,10 +120,11 @@ t.dataset_completeness_scotland = read.csv(paste0('Data/',completeness_dataset_n
 
 # Data Coverage Pre Processed from data_preprocessing
 #t.data_coverage = read_rds("Data/data_coverage")
+#folderpath = "C:/Users/LarsMurdock/Documents/Repo/BHF_DSC_HDS/BHF_Dashboards/BHF_DSC_TRE_External_Dashboard"
 
-t.dataset_coverage_eng = read.csv(paste0('Data/',coverage_dataset_name_england,'.csv'))
-t.dataset_coverage_wales = read.csv(paste0('Data/',coverage_dataset_name_wales,'.csv')) %>% rename(n_id_distinct =n_distinct )
-t.dataset_coverage_scotland = read.csv(paste0('Data/',coverage_dataset_name_scotland,'.csv'))
+t.dataset_coverage_eng = read.csv(paste0('Data/',coverage_dataset_name_england,'.csv')) %>% mutate(Nation2 = "England")
+t.dataset_coverage_wales = read.csv(paste0('Data/',coverage_dataset_name_wales,'.csv')) %>% rename(n_id_distinct =n_distinct ) %>% mutate(Nation2 = "Wales")
+t.dataset_coverage_scotland = read.csv(paste0('Data/',coverage_dataset_name_scotland,'.csv')) %>% mutate(Nation2 = "Scotland")
 
 
 t.data_coverage_source = t.dataset_coverage_eng %>%
@@ -151,11 +152,11 @@ t.data_coverage = t.data_coverage_source %>%
                           "-",
                           str_pad(date_m,width=2,pad=0,side="left"))) %>% 
   left_join(t.data_coverage_source, by = c("date_ym","dataset")) %>%
-  mutate(across(.cols = starts_with('n'),
+  mutate(across(.cols = starts_with('n', ignore.case = FALSE),
                 .fn = ~ replace_na(.,0))) %>%
   group_by(dataset) %>%
   arrange(dataset,date_y,date_m) %>%
-  mutate(across(.cols = starts_with("n"),
+  mutate(across(.cols = starts_with("n", ignore.case = FALSE),
                 .names = "{.col}_cum",
                 .fn = ~ cumsum(.))) %>% 
   filter(!if_all(ends_with("cum"), ~ . == 0)) %>% 
@@ -164,7 +165,7 @@ t.data_coverage = t.data_coverage_source %>%
   mutate(date_name = paste0(month.name[date_m]," ", date_y, ": ")) %>%
   mutate(date_name_season = paste0(date_y, ": ")) %>%
   mutate(date_m_name = paste0(month.name[date_m])) %>%
-  pivot_longer(cols=starts_with("n"), names_to="Type",values_to="N") %>%
+  pivot_longer(cols=starts_with("n", ignore.case = FALSE), names_to="Type",values_to="N") %>%
   mutate(date_format = as.Date(paste(date_ym, 1, sep="-"), "%Y-%m-%d"))
 
 
