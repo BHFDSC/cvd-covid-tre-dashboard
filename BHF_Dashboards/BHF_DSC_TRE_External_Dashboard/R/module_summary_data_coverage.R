@@ -473,7 +473,9 @@ tags$script(
  
       coverage_data_all_records =  reactive({
         t.data_coverage %>%
-          left_join(datasets_available, by = c("dataset"="Dataset", "Nation2" = "Nation") ) %>%
+          left_join(datasets_available, 
+                    by = c("dataset"="Dataset", "Nation2" = "Nation"), 
+                    relationship = "many-to-one" ) %>%
           filter(.data$Nation2==nation_summary()) %>% 
           filter(.data$dataset==dataset_summary()) %>%
           #tooltips for plot
