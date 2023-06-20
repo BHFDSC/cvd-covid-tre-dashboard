@@ -6,10 +6,10 @@ update_date_string = paste(toOrdinal::toOrdinal(lubridate::mday(update_date)),mo
 # Current Dataset Names --------------------------------------------------------
 
 #England
-export_date_england = "2022-11-29"
-completeness_dataset_name_england = "export_dashboard_NHSD_20221108_data_completeness"
-coverage_dataset_name_england = "export_dashboard_NHSD_20221102_data_coverage"
-overview_dataset_name_england = "export_dashboard_NHSD_20221108_date_overview"
+export_date_england = "2023-06-15"
+completeness_dataset_name_england = "export_dashboard_NHSD_20230502_data_completeness"
+coverage_dataset_name_england = "export_dashboard_NHSD_20230615_data_coverage"
+overview_dataset_name_england = "export_dashboard_NHSD_20230615_data_overview"
 substr(export_date_england,1,4)
 substr(export_date_england,6,7)
 
@@ -121,7 +121,7 @@ t.dataset_completeness_scotland = read.csv(paste0('Data/',completeness_dataset_n
 # Data Coverage Pre Processed from data_preprocessing
 #t.data_coverage = read_rds("Data/data_coverage")
 
-t.dataset_coverage_eng = read.csv(paste0('Data/',coverage_dataset_name_england,'.csv'))
+t.dataset_coverage_eng = read.csv(paste0('Data/',coverage_dataset_name_england,'.csv')) %>% select(-archived_on)
 t.dataset_coverage_wales = read.csv(paste0('Data/',coverage_dataset_name_wales,'.csv')) %>% rename(n_id_distinct =n_distinct )
 t.dataset_coverage_scotland = read.csv(paste0('Data/',coverage_dataset_name_scotland,'.csv'))
 
