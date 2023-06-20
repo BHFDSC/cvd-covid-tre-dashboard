@@ -110,7 +110,7 @@ ui = fluidPage(
     
     
     ### About Tab ===========================================================
-    tabPanel("About",aboutUI(id = "about_module")),
+    tabPanel("About",value = "aboutdefault", aboutUI(id = "about_module")),
 
     ### Summary Tab ============================================================
   
@@ -118,6 +118,7 @@ ui = fluidPage(
     
     ### Compare Tab ============================================================
     tabPanel(HTML('<span style=""><center>Dataset Comparison</center></span>'),
+             value = "comparing",
              #compareUI(id = "compare_module")
              source("source_compareUI.R",local = TRUE)$value
              ),
@@ -175,18 +176,20 @@ server = function(input, output, session) {
   #     #removeCssClass(class = "abouttab", selector = ".container-fluid")
   #   }
   # })
+
+  addCssClass(class = "abouttab", selector = ".navbar")
   
   observe({
-    if(input$navmain == "About"){
-      addCssClass(class = "abouttab", selector = ".navbar")
-      removeCssClass(class = "normaltab", selector = ".navbar")
-      #addCssClass(class = "abouttab", selector = ".container-fluid")
-      # removeCssClass(class = "normaltab", selector = ".container-fluid")
-    } else {
+    if(input$navmain == "summary" | input$navmain == "comparing" | input$navmain == "Methodology"){
       addCssClass(class = "normaltab", selector = ".navbar")
       removeCssClass(class = "abouttab", selector = ".navbar")
       #addCssClass(class = "normaltab", selector = ".container-fluid")
       #removeCssClass(class = "abouttab", selector = ".container-fluid")
+    } else {
+      addCssClass(class = "abouttab", selector = ".navbar")
+      removeCssClass(class = "normaltab", selector = ".navbar")
+      #addCssClass(class = "abouttab", selector = ".container-fluid")
+      # removeCssClass(class = "normaltab", selector = ".container-fluid")
     }
   })
   
