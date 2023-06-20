@@ -91,7 +91,7 @@ footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
         </a></li>
     </ul>
   
-   <p align="left">Dashboard last updated on {update_date_string}.</p>
+   <p align="centre">Dashboard last updated {update_date_string}.</p>
 
 </div>
 
