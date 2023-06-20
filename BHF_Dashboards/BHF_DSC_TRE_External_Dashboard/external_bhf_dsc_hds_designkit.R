@@ -391,6 +391,16 @@ background:white!important;
   background:#EEE8FF!important;
 }
 
+.navbar {
+  background:#EEE8FF!important;
+}
+.navbar.aboutdefault {
+  background:#EEE8FF!important;
+}
+#aboutdefault {
+  background:#EEE8FF!important;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
 * {
   margin: 0;
@@ -2004,13 +2014,19 @@ z-index:999999 !important;
   flex-direction: column;
 }
 
+
+
 .social-icon,
 .menu {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px 0;
+  margin-left:0;
+  margin-right:0;
+  margin-top:10px;
+  margin-bottom:5px;
+  padding:0;
   flex-wrap: wrap;
 
 }
@@ -2024,7 +2040,9 @@ z-index:999999 !important;
 .social-icon__link {
   font-size: 2rem;
   color: #fff !important;
-  margin: 0 10px;
+  margin-left: 7px;
+  margin-right: 7px;
+  margin-top:10px;
   display: inline-block;
   transition: 0.5s;
 
