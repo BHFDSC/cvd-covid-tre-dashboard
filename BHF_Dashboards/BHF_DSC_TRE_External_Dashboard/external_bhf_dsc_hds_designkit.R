@@ -391,15 +391,7 @@ background:white!important;
   background:#EEE8FF!important;
 }
 
-.navbar {
-  background:#EEE8FF!important;
-}
-.navbar.aboutdefault {
-  background:#EEE8FF!important;
-}
-#aboutdefault {
-  background:#EEE8FF!important;
-}
+
 
 @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
 * {

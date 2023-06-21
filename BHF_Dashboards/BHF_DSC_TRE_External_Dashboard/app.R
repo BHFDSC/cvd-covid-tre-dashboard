@@ -177,19 +177,18 @@ server = function(input, output, session) {
   #   }
   # })
 
-  addCssClass(class = "abouttab", selector = ".navbar")
   
   observe({
-    if(input$navmain == "summary" | input$navmain == "comparing" | input$navmain == "Methodology"){
-      addCssClass(class = "normaltab", selector = ".navbar")
-      removeCssClass(class = "abouttab", selector = ".navbar")
-      #addCssClass(class = "normaltab", selector = ".container-fluid")
-      #removeCssClass(class = "abouttab", selector = ".container-fluid")
-    } else {
+    if(input$navmain == "aboutdefault"){
       addCssClass(class = "abouttab", selector = ".navbar")
       removeCssClass(class = "normaltab", selector = ".navbar")
       #addCssClass(class = "abouttab", selector = ".container-fluid")
       # removeCssClass(class = "normaltab", selector = ".container-fluid")
+    } else {
+      addCssClass(class = "normaltab", selector = ".navbar")
+      removeCssClass(class = "abouttab", selector = ".navbar")
+      #addCssClass(class = "normaltab", selector = ".container-fluid")
+      #removeCssClass(class = "abouttab", selector = ".container-fluid")
     }
   })
   
