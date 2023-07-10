@@ -7,7 +7,7 @@ aboutUI<- function(id){
     
 
     
-    tabPanel("About",
+    
          
          HTML('
               
@@ -205,7 +205,7 @@ The <a href="https://www.hdruk.ac.uk/projects/cvd-covid-uk-project/" class="abou
 # 
 # 
 #          )
-)
+
 
 
   )

@@ -52,7 +52,9 @@ ui = fluidPage(
 
   ## UI Setup and Design #######################################################
   shinyjs::useShinyjs(),
-
+  # This creates a google analytics tag, which allows traffic to be tracked once deployed
+  # see https://shiny.posit.co/r/articles/build/google-analytics/ for more instructions
+  tags$head(includeHTML(("google-analytics.html"))),
   #App Theme
   theme = bhf_dsc_hds_bootstrap_theme,
   # Load the dependencies for prompter
@@ -110,7 +112,7 @@ ui = fluidPage(
     
     
     ### About Tab ===========================================================
-    tabPanel("About",aboutUI(id = "about_module")),
+    tabPanel("About",value = "aboutdefault", aboutUI(id = "about_module")),
 
     ### Summary Tab ============================================================
   
@@ -118,6 +120,7 @@ ui = fluidPage(
     
     ### Compare Tab ============================================================
     tabPanel(HTML('<span style=""><center>Dataset Comparison</center></span>'),
+             value = "comparing",
              #compareUI(id = "compare_module")
              source("source_compareUI.R",local = TRUE)$value
              ),
@@ -175,9 +178,10 @@ server = function(input, output, session) {
   #     #removeCssClass(class = "abouttab", selector = ".container-fluid")
   #   }
   # })
+
   
   observe({
-    if(input$navmain == "About"){
+    if(input$navmain == "aboutdefault"){
       addCssClass(class = "abouttab", selector = ".navbar")
       removeCssClass(class = "normaltab", selector = ".navbar")
       #addCssClass(class = "abouttab", selector = ".container-fluid")
