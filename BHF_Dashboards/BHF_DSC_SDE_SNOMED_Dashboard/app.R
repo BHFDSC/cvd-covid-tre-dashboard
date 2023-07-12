@@ -22,29 +22,29 @@ General_Information <- separate(df, date_ym, into=c('year', 'month'), sep = '-')
 
 #app 
 ui <- dashboardPage(skin = 'black',
-                    dashboardHeader(title = 'Medical Datasets'),
-                    dashboardSidebar(
-                      sidebarMenu(
-                        selectInput('data', "What Dataset would you like to view?", 
-                                    choices = c(unique(df$dataset)), 
-                                    multiple = FALSE)
-                      )
-                    ),
-                    dashboardBody(
-                      fluidRow(valueBoxOutput('dataname', width = 6),
-                               valueBoxOutput('datayear', width = 6)),
-                      fluidRow(
-                        box(title = 'Dataset Overview', solidHeader = TRUE, status = 'primary',
-                            collapsibleTreeOutput('generalInfo', height = 300)),
-                        box(title = 'Dataset Timeseries', solidHeader = TRUE, status = 'primary',
-                            plotlyOutput('timeseries', height = 300)))
-                    )
+  dashboardHeader(title = 'Medical Datasets'),
+  dashboardSidebar(
+    sidebarMenu(
+      selectInput('data', "What Dataset would you like to view?", 
+                  choices = c(unique(df$dataset)), 
+                  multiple = FALSE)
+      )
+    ),
+  dashboardBody(
+    fluidRow(valueBoxOutput('dataname', width = 6),
+             valueBoxOutput('datayear', width = 6)),
+              fluidRow(
+                box(title = 'Dataset Overview', solidHeader = TRUE, status = 'primary',
+                collapsibleTreeOutput('generalInfo', height = 300)),
+                box(title = 'Dataset Timeseries', solidHeader = TRUE, status = 'primary',
+                    plotlyOutput('timeseries', height = 300)))
+  )
 )
 
 server <- function(input, output, session){
   filtered <- reactive({df[df$dataset == input$data, ]})
   output$dataname <- renderValueBox({valueBox(subtitle = "Dataset", value = input$data,icon=icon('chart-simple'),
-                                              color='light-blue')})
+                                            color='light-blue')})
   output$datayear <- renderValueBox({
     dataset <- filtered()
     years <- range(year(dataset$date_ym))
