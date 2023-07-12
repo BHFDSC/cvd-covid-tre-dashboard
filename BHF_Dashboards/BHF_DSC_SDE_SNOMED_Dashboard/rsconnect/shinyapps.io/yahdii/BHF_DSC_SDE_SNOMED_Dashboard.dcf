@@ -1,0 +1,13 @@
+name: BHF_DSC_SDE_SNOMED_Dashboard
+title: BHF_DSC_SDE_SNOMED_Dashboard
+username:
+account: yahdii
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 9446982
+bundleId: 7449322
+url: https://yahdii.shinyapps.io/BHF_DSC_SDE_SNOMED_Dashboard/
+when: 1689183168.58529
+lastSyncTime: 1689183168.58532
+asMultiple: FALSE
+asStatic: FALSE
