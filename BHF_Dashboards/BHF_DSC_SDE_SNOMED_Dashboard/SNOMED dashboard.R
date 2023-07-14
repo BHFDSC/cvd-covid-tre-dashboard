@@ -21,17 +21,17 @@ df$date_ym <- ymd(df$date_ym)
 General_Information <- separate(df, date_ym, into=c('year', 'month'), sep = '-')
 
 #app 
-ui <- 
-  dashboardPage(skin = 'black',
+ui <-
+dashboardPage(
                     dashboardHeader(title = tags$div(
                       tags$a(
                         href = 'https://www.hdruk.ac.uk/helping-with-health-data/bhf-data-science-centre/',
-                        tags$img(src = "logo.jpg", style = 'height: 40px; width: auto;'),
+                        tags$img(src = "logo.jpg", style = 'height: 30px; width: auto;'),
                         style = 'display: inline-block; vertical-align: middle;'
                       ),
                       tags$span('Medical Datasets', style = 'display: inline-block; margin-left: 10px; vertical-align: middle;')
                     ), 
-                                    titleWidth = 500,
+                                    titleWidth = 300,
                                     tags$li(class = 'dropdown',
                                             tags$a(
                                               href = 'https://forms.gle/deVEvdWHVD6JKXJ89',
@@ -46,12 +46,12 @@ ui <-
                                     multiple = FALSE)
                       )
                     ),
-                    dashboardBody(
+                    dashboardBody(tags$head(tags$link(rel = 'stylesheet', type = 'text/css', href='custom.css')),
                       fluidRow(valueBoxOutput('dataname', width = 4),
                                valueBoxOutput('datayear', width = 4),
                                valueBoxOutput('datasum', width = 4)),
                       fluidRow(
-                        box(title = 'Dataset Overview', solidHeader = TRUE, status = 'primary',
+                        box(title = 'Dataset Overview: Dataset, Year, Month, Distinct Cases', solidHeader = TRUE, status = 'primary',
                             collapsibleTreeOutput('generalInfo', height = 300)),
                         box(title = 'Dataset Timeseries', solidHeader = TRUE, status = 'primary',
                             plotlyOutput('timeseries', height = 300)))
@@ -71,7 +71,7 @@ server <- function(input, output, session){
   
   output$datasum <- renderValueBox({
     valueBox(subtitle = 'Dataset with the most Distinct Cases', value = df %>% group_by(dataset) %>% summarise(data_sum = sum(n_id_distinct)) %>% 
-               filter(data_sum == max(data_sum)) %>% select(-data_sum), icon = icon('gauge-high'), color = 'navy')})
+               filter(data_sum == max(data_sum)) %>% select(-data_sum), icon = icon('gauge-high'), color = 'black')})
   
   output$generalInfo <- renderCollapsibleTree({
     collapsibleTree(General_Information, c('dataset', 'year', 'month', 'n'),
