@@ -21,8 +21,24 @@ df$date_ym <- ymd(df$date_ym)
 General_Information <- separate(df, date_ym, into=c('year', 'month'), sep = '-')
 
 #app 
-ui <- dashboardPage(skin = 'black',
-                    dashboardHeader(title = 'Medical Datasets'),
+ui <- 
+  dashboardPage(skin = 'black',
+                    dashboardHeader(title = tags$div(
+                      tags$a(
+                        href = 'https://www.hdruk.ac.uk/helping-with-health-data/bhf-data-science-centre/',
+                        tags$img(src = "logo.jpg", style = 'height: 40px; width: auto;'),
+                        style = 'display: inline-block; vertical-align: middle;'
+                      ),
+                      tags$span('Medical Datasets', style = 'display: inline-block; margin-left: 10px; vertical-align: middle;')
+                    ), 
+                                    titleWidth = 500,
+                                    tags$li(class = 'dropdown',
+                                            tags$a(
+                                              href = 'https://forms.gle/deVEvdWHVD6JKXJ89',
+                                              icon('envelope'),
+                                              'Feedback or Suggestions?'
+                                            )
+                                    )),
                     dashboardSidebar(
                       sidebarMenu(
                         selectInput('data', "What Dataset would you like to view?", 
@@ -75,4 +91,3 @@ server <- function(input, output, session){
 }
 shinyApp(ui,server)
 #this dashboard works with SNOMED
-
