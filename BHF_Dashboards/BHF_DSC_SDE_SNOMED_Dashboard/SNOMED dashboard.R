@@ -31,8 +31,9 @@ ui <- dashboardPage(skin = 'black',
                       )
                     ),
                     dashboardBody(
-                      fluidRow(valueBoxOutput('dataname', width = 6),
-                               valueBoxOutput('datayear', width = 6)),
+                      fluidRow(valueBoxOutput('dataname', width = 4),
+                               valueBoxOutput('datayear', width = 4),
+                               valueBoxOutput('datasum', width = 4)),
                       fluidRow(
                         box(title = 'Dataset Overview', solidHeader = TRUE, status = 'primary',
                             collapsibleTreeOutput('generalInfo', height = 300)),
@@ -42,6 +43,7 @@ ui <- dashboardPage(skin = 'black',
 )
 
 server <- function(input, output, session){
+  session$allowReconnect(TRUE)
   filtered <- reactive({df[df$dataset == input$data, ]})
   output$dataname <- renderValueBox({valueBox(subtitle = "Dataset", value = input$data,icon=icon('chart-simple'),
                                               color='light-blue')})
@@ -50,6 +52,10 @@ server <- function(input, output, session){
     years <- range(year(dataset$date_ym))
     valueBox(subtitle = "Years included", value = paste0(years[1], " - ", years[2]), icon = icon('calendar'), color = 'light-blue')
   })
+  
+  output$datasum <- renderValueBox({
+    valueBox(subtitle = 'Dataset with the most Distinct Cases', value = df %>% group_by(dataset) %>% summarise(data_sum = sum(n_id_distinct)) %>% 
+               filter(data_sum == max(data_sum)) %>% select(-data_sum), icon = icon('gauge-high'), color = 'navy')})
   
   output$generalInfo <- renderCollapsibleTree({
     collapsibleTree(General_Information, c('dataset', 'year', 'month', 'n'),
@@ -69,7 +75,4 @@ server <- function(input, output, session){
 }
 shinyApp(ui,server)
 #this dashboard works with SNOMED
-
-
-
 
