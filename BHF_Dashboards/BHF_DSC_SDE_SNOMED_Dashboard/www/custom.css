@@ -1,0 +1,27 @@
+body{
+    font-family: "Arial"; 
+}
+.skin-blue .main-sidebar{
+    background-color: lightslategray;
+}
+
+.skin-blue .main-header .logo{
+    background-color: maroon;
+    }
+    .skin-blue .main-header .logo:hover {
+        background-color: white;
+        }
+.skin-blue .main-header .navbar {
+    background-color: maroon;
+    }
+    .content-wrapper, .right-side {
+        background-color: whitesmoke;
+        }
+
+.skin-blue .main-header .navbar .sidebar-toggle:hover{
+    background-color: white;
+        }
+.small-box.bg-black { background-color: maroon !important; color: whitesmoke !important; }
+
+.small-box.bg-light-blue { background-color: maroon !important; color: whitesmoke !important; }
+        
