@@ -39,28 +39,64 @@ dashboardPage(
                                               'Feedback or Suggestions?'
                                             )
                                     )),
-                    dashboardSidebar(
-                      sidebarMenu(
-                        selectInput('data', "What Dataset would you like to view?", 
-                                    choices = c(unique(df$dataset)), 
-                                    multiple = FALSE)
-                      )
+                    dashboardSidebar(sidebarMenu(id = 'sidebar',
+                      menuItem('Overview', tabName = 'page1'),
+                      menuItem('Dashboard', tabName = 'page2')
+                    )
+                                     
+                      
+                                    
+                      
                     ),
-                    dashboardBody(tags$head(tags$link(rel = 'stylesheet', type = 'text/css', href='custom.css')),
-                      fluidRow(valueBoxOutput('dataname', width = 4),
-                               valueBoxOutput('datayear', width = 4),
-                               valueBoxOutput('datasum', width = 4)),
-                      fluidRow(
-                        box(title = 'Dataset Overview: Dataset, Year, Month, Distinct Cases', solidHeader = TRUE, status = 'primary',
-                            collapsibleTreeOutput('generalInfo', height = 300)),
-                        box(title = 'Dataset Timeseries', solidHeader = TRUE, status = 'primary',
-                            plotlyOutput('timeseries', height = 300)))
+                    dashboardBody(tags$head(tags$link(rel = 'stylesheet', 
+                                                      type = 'text/css', 
+                                                      href='custom.css')),
+                                  tabItems(
+                                    tabItem(tabName = 'page1', 
+                                            fluidRow(
+                                              column(width = 6,
+                                              box(title = "Overview", height = 500, 
+                                                         width = 500,
+                                      textOutput('overviewtext')
+                                      )),
+                                      column(width = 6, 
+                                             box(title = "SNOMED CT", 
+                                                 height = 500, width = 500, 
+                                                 textOutput('snomed'))),
+                                      actionButton('nextbtn', 'Click to view the dashboard!')
+                                    
+                                    )),
+                                    tabItem(tabName = 'page2', 
+                                            selectInput('data', "What Dataset would you like to view?", 
+                                                        choices = c(unique(df$dataset)), 
+                                                        multiple = FALSE),
+                                      fluidRow(valueBoxOutput('dataname', width = 4),
+                                               valueBoxOutput('datayear', width = 4),
+                                               valueBoxOutput('datasum', width = 4)),
+                                      fluidRow(
+                                        box(title = 'Dataset Overview: Dataset, Year, Month, Distinct Cases', solidHeader = TRUE, status = 'primary',
+                                            collapsibleTreeOutput('generalInfo', height = 300)),
+                                        box(title = 'Dataset Timeseries', solidHeader = TRUE, status = 'primary',
+                                            plotlyOutput('timeseries', height = 300)))
+                                    )
+                                  )
+                      
                     )
 )
 
 server <- function(input, output, session){
   session$allowReconnect(TRUE)
   filtered <- reactive({df[df$dataset == input$data, ]})
+  
+  output$overviewtext <- renderText({'Welcome to this interactive App!'})
+  output$snomed <- renderText({'SNOMED CT stands for Systemised Nomencleture of Medicine - Clinical Terms. That is, 
+  it is a system used to standardise the description of clinical terms
+    in Hospitals and GP practices'})
+  
+  observeEvent(input$nextbtn, {
+    updateTabItems(session, "sidebar", "page2")
+  })
+  
   output$dataname <- renderValueBox({valueBox(subtitle = "Dataset", value = input$data,icon=icon('chart-simple'),
                                               color='light-blue')})
   output$datayear <- renderValueBox({
@@ -91,3 +127,6 @@ server <- function(input, output, session){
 }
 shinyApp(ui,server)
 #this dashboard works with SNOMED
+
+
+

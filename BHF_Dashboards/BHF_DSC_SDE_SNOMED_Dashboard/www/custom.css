@@ -1,6 +1,6 @@
-body{
-    font-family: "Arial"; 
-}
+body {
+    font-family: Arial, sans-serif !important;
+  }
 .skin-blue .main-sidebar{
     background-color: lightslategray;
 }
@@ -24,4 +24,15 @@ body{
 .small-box.bg-black { background-color: maroon !important; color: whitesmoke !important; }
 
 .small-box.bg-light-blue { background-color: maroon !important; color: whitesmoke !important; }
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #f8f9fa;
+    padding: 10px;
+    text-align: center;
+    font-size: 12px;
+  }
+  
         
