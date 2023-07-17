@@ -1,0 +1,17 @@
+Cluster_ID,Cluster_Desc,Cluster_Category,n_code,n,n_id_distinct,pre_1990_n_pct
+ANTIHYP_COD,Antihypertensive medications,Medications,1836,909192375,14249080,0 (0.00%)
+BMI_COD,Body mass index (BMI) codes,Observation measurement assessment and screening,40,347143055,50034415,"252,090 (0.07%)"
+BP_COD,Blood pressure (BP) recording codes,Observation measurement assessment and screening,112,300260180,37777250,0 (0.00%)
+CHOL_COD,Total cholesterol codes,Investigations test and results,13,71627315,25043215,0 (0.00%)
+DIETINT_COD,Diet Intervention and Advice,Management and treatment,52,30480000,12805955,0 (0.00%)
+ETHNALL_COD,Active and inactive ethnicity codes,Patient factors,274,129692515,59366485,"1,095,625 (0.84%)"
+EXSMOK_COD,Code for ex-smoker,Observation measurement assessment and screening,26,119340500,18387055,"1,497,335 (1.25%)"
+FLU_COD,Seasonal flu vaccination codes,Vaccinations and immunisations,19,125252690,30008170,"55,800 (0.04%)"
+MHINVITE_COD,Invite mental health care review codes,Review and monitoring,10,5182120,2382790,0 (0.00%)
+MH_COD,Psychosis and schizophrenia and bipolar affective disease codes,Diagnoses and findings (including resolved and remission),183,6011270,673340,"89,435 (1.49%)"
+NDADM_COD,National diabetes audit (NDA) diabetes mellitus diagnosis codes,Diagnoses and findings (including resolved and remission),404,76893330,4367415,"168,935 (0.22%)"
+POSSPOSTCOVID_COD,Possible post-COVID19 illness recovery or assessment,COVID-19 activity,17,940120,630435,0 (0.00%)
+REQINTERPRETER_COD,Requires interpreter codes,Patient factors,190,8127945,5313115,"1,820 (0.02%)"
+SMOK_COD,Smoking habit codes,Observation measurement assessment and screening,70,457830725,50672300,"1,920,190 (0.42%)"
+STAT_COD,Statin codes,Medications,230,448727825,9910805,0 (0.00%)
+XSTAT_COD,Statin contraindications (persisting),Declines contraindications and other exceptions,10,129910,63450,0 (0.00%)

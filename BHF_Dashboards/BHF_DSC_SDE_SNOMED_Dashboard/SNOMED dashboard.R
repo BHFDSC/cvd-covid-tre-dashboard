@@ -64,7 +64,12 @@ dashboardPage(skin = 'blue',
                                       column(width = 6, 
                                              box(title = "SNOMED CT", 
                                                  height = 250, width = 300, 
-                                                 textOutput('snomed'), actionButton('nextbtn', 'Click to view the dashboard!')))
+                                                 textOutput('snomed'),tags$head(
+                                                   tags$style(HTML(
+                                                     '#nextbtn{background-color:grey; color:white} 
+                                                     #nextbtn:hover{background-color: maroon; color:white}'))),
+                                                 actionButton('nextbtn', 'Click to view the dashboard!', 
+                                                                                    icon('paper-plane'))))
                                       
                                     
                                     ))),
@@ -75,10 +80,11 @@ dashboardPage(skin = 'blue',
                                       fluidRow(valueBoxOutput('dataname', width = 4),
                                                valueBoxOutput('datayear', width = 4),
                                                valueBoxOutput('datasum', width = 4)),
-                                      fluidRow(
-                                        box(title = 'Dataset Overview: Dataset, Year, Month, Distinct Cases', solidHeader = TRUE, status = 'primary',
+                                      fluidRow(tags$style(HTML('.box.box-solid.box-danger>.box-header{color:whitestone; background: maroon}')),
+                                        box(title = 'Data View: Dataset, Year, Month, Distinct Cases', 
+                                            solidHeader = TRUE, status='danger',
                                             collapsibleTreeOutput('generalInfo', height = 300)),
-                                        box(title = 'Dataset Timeseries', solidHeader = TRUE, status = 'primary',
+                                        box(title = 'Data Coverage', solidHeader = TRUE, status = 'danger',
                                             plotlyOutput('timeseries', height = 300)))
                                     )
                                   )
@@ -129,7 +135,8 @@ server <- function(input, output, session){
       geom_line(aes(y=n), colour = 'lightslateblue', alpha = 0.7) +
       geom_line(aes(y = n_id_distinct), colour = 'tomato', alpha = 0.7) +
       labs(x = 'Date', y='Cases')
-  )
+  ) %>% layout(plot_bgcolor = "white",
+               paper_bgcolor = "white")
     
   })
   
