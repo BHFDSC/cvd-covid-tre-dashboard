@@ -22,7 +22,7 @@ General_Information <- separate(df, date_ym, into=c('year', 'month'), sep = '-')
 
 #app 
 ui <-
-dashboardPage(
+dashboardPage(skin = 'blue',
                     dashboardHeader(title = tags$div(
                       tags$a(
                         href = 'https://www.hdruk.ac.uk/helping-with-health-data/bhf-data-science-centre/',
@@ -52,20 +52,22 @@ dashboardPage(
                                                       type = 'text/css', 
                                                       href='custom.css')),
                                   tabItems(
-                                    tabItem(tabName = 'page1', 
+                                    tabItem(tabName = 'page1',
+                                            fluidRow(
+                                              column(width = 12, box(height = 200, width = 600)),
                                             fluidRow(
                                               column(width = 6,
-                                              box(title = "Overview", height = 500, 
-                                                         width = 500,
+                                              box(title = "Overview", height = 250, 
+                                                         width = 300,
                                       textOutput('overviewtext')
                                       )),
                                       column(width = 6, 
                                              box(title = "SNOMED CT", 
-                                                 height = 500, width = 500, 
-                                                 textOutput('snomed'))),
-                                      actionButton('nextbtn', 'Click to view the dashboard!')
+                                                 height = 250, width = 300, 
+                                                 textOutput('snomed'), actionButton('nextbtn', 'Click to view the dashboard!')))
+                                      
                                     
-                                    )),
+                                    ))),
                                     tabItem(tabName = 'page2', 
                                             selectInput('data', "What Dataset would you like to view?", 
                                                         choices = c(unique(df$dataset)), 
@@ -88,10 +90,17 @@ server <- function(input, output, session){
   session$allowReconnect(TRUE)
   filtered <- reactive({df[df$dataset == input$data, ]})
   
-  output$overviewtext <- renderText({'Welcome to this interactive App!'})
-  output$snomed <- renderText({'SNOMED CT stands for Systemised Nomencleture of Medicine - Clinical Terms. That is, 
+  output$overviewtext <- renderText({'Welcome to this interactive Dashboard! 
+  The Dashboard provides information on certain groups of patients, 
+  each identified by a dataset and time period.
+    This dashboard aims to provide researchers with an
+    overview of the data available for research as well as cutting down 
+    on time spent performing exploratory data analysis (EDA).'})
+  
+  output$snomed <- renderText({'SNOMED CT stands for Systemised Nomencleture 
+  of Medicine - Clinical Terms. That is, 
   it is a system used to standardise the description of clinical terms
-    in Hospitals and GP practices'})
+    in Hospitals and GP practices.'})
   
   observeEvent(input$nextbtn, {
     updateTabItems(session, "sidebar", "page2")

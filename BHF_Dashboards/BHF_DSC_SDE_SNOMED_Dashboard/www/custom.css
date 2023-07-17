@@ -2,14 +2,14 @@ body {
     font-family: Arial, sans-serif !important;
   }
 .skin-blue .main-sidebar{
-    background-color: lightslategray;
+    background-color: maroon !important;
 }
 
 .skin-blue .main-header .logo{
     background-color: maroon;
     }
     .skin-blue .main-header .logo:hover {
-        background-color: white;
+        background-color: crimson;
         }
 .skin-blue .main-header .navbar {
     background-color: maroon;
@@ -19,20 +19,12 @@ body {
         }
 
 .skin-blue .main-header .navbar .sidebar-toggle:hover{
-    background-color: white;
+    background-color: crimson;
         }
-.small-box.bg-black { background-color: maroon !important; color: whitesmoke !important; }
+.small-box.bg-black {background-color: lightslategray !important;
 
-.small-box.bg-light-blue { background-color: maroon !important; color: whitesmoke !important; }
+}
 
-.footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #f8f9fa;
-    padding: 10px;
-    text-align: center;
-    font-size: 12px;
-  }
-  
-        
+.small-box.bg-light-blue {background-color: maroon !important;
+
+}
