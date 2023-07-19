@@ -133,7 +133,7 @@ server <- function(input, output, session){
   output$timeseries <- renderPlotly({ggplotly(
     ggplot(filtered(), aes(x = date_ym)) + 
       geom_line(aes(y=n), colour = 'lightslateblue', alpha = 0.7) +
-      geom_line(aes(y = n_id_distinct), colour = 'tomato', alpha = 0.7) +
+      #geom_line(aes(y = n_id_distinct), colour = 'tomato', alpha = 0.7) +
       labs(x = 'Date', y='Cases')
   ) %>% layout(plot_bgcolor = "white",
                paper_bgcolor = "white")
@@ -143,6 +143,5 @@ server <- function(input, output, session){
 }
 shinyApp(ui,server)
 #this dashboard works with SNOMED
-
 
 
