@@ -143,5 +143,3 @@ server <- function(input, output, session){
 }
 shinyApp(ui,server)
 #this dashboard works with SNOMED
-
-
