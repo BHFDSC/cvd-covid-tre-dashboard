@@ -22,9 +22,16 @@ df$date_ym <- anydate(df$date_ym)
 df$date_ym <- ymd(df$date_ym)
 df <- replace(df, is.na(df), 0)
 
+
+#add comma to numeric columns for cluster and timeseries
+`Cluster Descriptions`$n <- format(`Cluster Descriptions`$n, big.mark = ",")
+#separate into month and year for dendro
 `Data Tree` <- separate(df, date_ym, into=c('year', 'month'), sep = '-')
+#remove all \
 `Data Tree`$ConceptId_Description_2 <- gsub("\\([^\\)]+\\)|\\[[^\\]]+\\]", "", `Data Tree`$ConceptId_Description_2)
+#remove all :
 `Data Tree`$ConceptId_Description_2 <- sub(".*:", "", `Data Tree`$ConceptId_Description_2)
+#convert ID to cluster
 `Data Tree`$Cluster_ID <- as.factor(`Data Tree`$Cluster_ID)
 
 
@@ -58,21 +65,26 @@ ui <- dashboardPage(
       tabItem(
         tabName = 'page2',
         tabBox(width = 12,id = 'tabbox', title = 'Data Overview',
-          tabPanel(title = 'Clusters', 
-                  collapsibleTreeOutput('cluster')),
-          tabPanel(title = 'Distinct Data', 
-                  collapsibleTreeOutput('tree'))
+               tabPanel(title = 'Clusters', 
+                        collapsibleTreeOutput('cluster')),
+               tabPanel(title = 'Distinct Data', 
+                        collapsibleTreeOutput('tree'))
         ),
         fluidRow(column(width = 12, box(width = 600,
                                         selectInput('data', "What Cluster would you like to view?", 
-                                               choices = c(unique(df2$Cluster_Desc)), 
-                                               multiple = FALSE)))),
+                                                    choices = c(unique(`Cluster Descriptions`$Cluster_Desc)), 
+                                                    multiple = FALSE)))),
         fluidRow(valueBoxOutput('clustername', width = 6),
-                 valueBoxOutput('clustern', width = 6),
+                 valueBoxOutput('clustern', width = 6), 
                  valueBoxOutput('clusterdesc', width = 12)
-                 ),
-        fluidRow(column(width = 12, box(width = 600, title = 'Timeseries', solidHeader = TRUE, status = 'danger',
-                     plotlyOutput('timeseries', height = 300))))
+        ),
+        fluidRow(column(width = 12, box(title = 'Graph Resizer', width = 200, 
+                                        actionButton('resize', 'Click to view cases above 1000', width = '200px'),
+                                       actionButton('reset', 'Click to Reset Plot')))),
+        
+                 fluidRow(column(width = 12, box(width = 500, title = 'Timeseries', 
+                                       solidHeader = TRUE, status = 'danger',
+                                       plotlyOutput('timeseries', height = 300))))
       )
     )
   )
@@ -80,7 +92,7 @@ ui <- dashboardPage(
 
 server <- function(input, output, session) {
   session$allowReconnect(TRUE)
-  filtered <- reactive({df2[df2$Cluster_Desc == input$data, ]})
+  filtered <- reactive({`Cluster Descriptions`[`Cluster Descriptions`$Cluster_Desc == input$data, ]})
   
   output$overviewtext <- renderText({'Welcome to this interactive Dashboard! 
   The Dashboard provides information on certain groups of patients, 
@@ -97,6 +109,7 @@ server <- function(input, output, session) {
   observeEvent(input$nextbtn, {
     updateTabItems(session, "sidebar", "page2")
   })
+  
   
   output$dictionary <- DT::renderDataTable(dict, options = list(pageLength = 5))
   
@@ -117,28 +130,46 @@ server <- function(input, output, session) {
     value <- selected_data$Cluster_ID
     valueBox(subtitle = "Cluster ID", value = value)
   })
-
+  
   output$clusterdesc <- renderValueBox({
     selected_data <- filtered()
     valueBox(subtitle = "Cluster Category", value = selected_data$Cluster_Category)})
   
-
+  
   output$clustern <- renderValueBox({
     selected_data <- filtered()
     value <- selected_data$n
     valueBox(subtitle = "Records in GDPPR", value = value)
   })
   
+  filtered_data <- reactiveVal(NULL)
+  
+  observeEvent(input$resize, {
+    selected_data <- filtered()
+    filtered_data(df[df$Cluster_ID %in% selected_data & df$n > 1000, ])
+  })
+  
+  observeEvent(input$reset, {
+    filtered_data(NULL)
+  })
   
   output$timeseries <- renderPlotly({
     selected_data <- filtered()
     filtered_plot_data <- df[df$Cluster_ID %in% selected_data, ]
+    
+    if (is.null(filtered_data())) {
+      plot_data <- filtered_plot_data
+    } else {
+      plot_data <- filtered_data()
+    }
+    
     ggplotly(
-    ggplot(filtered_plot_data, aes(x = date_ym)) + 
-      geom_line(aes(y=n), colour = 'lightslateblue', alpha = 0.7) +
-      labs(x = 'Date', y='Cases')
-  ) %>% layout(plot_bgcolor = "white",
-               paper_bgcolor = "white")
+      ggplot(plot_data, aes(x = date_ym)) + 
+        geom_area(aes(y = n), fill = 'lightslateblue') +
+        geom_line(aes(y=n), colour = 'lightslateblue', alpha = 0.7) +
+        labs(x = 'Date', y='Cases') + scale_y_continuous(labels = scales::comma)
+    ) %>% layout(plot_bgcolor = "white",
+                 paper_bgcolor = "white")
     
   })
   
@@ -149,16 +180,3 @@ server <- function(input, output, session) {
 
 shinyApp(ui, server)
 
-
-
-
-
-ggplotly(
-  ggplot(df, aes(x = date_ym)) + 
-    geom_line(aes(y=n), colour = 'lightslateblue', alpha = 0.7) +
-    labs(x = 'Date', y='Cases')
-) %>% layout(plot_bgcolor = "white",
-             paper_bgcolor = "white")
-
-selected_data <- df2[df2$Cluster_Desc == 'Antihypertensive medications', ]
-filtered_plot_data <- df[df$Cluster_ID %in% selected_data, ]
