@@ -126,27 +126,23 @@ server <- function(input, output, session) {
   
   
   output$clustername <- renderValueBox({
-    selected_data <- filtered()
-    value <- selected_data$Cluster_ID
+    value <- filtered()$Cluster_ID
     valueBox(subtitle = "Cluster ID", value = value)
   })
   
   output$clusterdesc <- renderValueBox({
-    selected_data <- filtered()
-    valueBox(subtitle = "Cluster Category", value = selected_data$Cluster_Category)})
+    valueBox(subtitle = "Cluster Category", value = filtered()$Cluster_Category)})
   
   
   output$clustern <- renderValueBox({
-    selected_data <- filtered()
-    value <- selected_data$n
+    value <- filtered()$n
     valueBox(subtitle = "Records in GDPPR", value = value)
   })
   
-  filtered_data <- reactiveVal(NULL)
+  filtered_data <- reactiveVal()
   
   observeEvent(input$resize, {
-    selected_data <- filtered()
-    filtered_data(df[df$Cluster_ID %in% selected_data & df$n > 1000, ])
+    filtered_data(df[df$Cluster_ID %in% filtered() & df$n > 1000, ])
   })
   
   observeEvent(input$reset, {
@@ -154,8 +150,7 @@ server <- function(input, output, session) {
   })
   
   output$timeseries <- renderPlotly({
-    selected_data <- filtered()
-    filtered_plot_data <- df[df$Cluster_ID %in% selected_data, ]
+    filtered_plot_data <- df[df$Cluster_ID %in% filtered(), ]
     
     if (is.null(filtered_data())) {
       plot_data <- filtered_plot_data
@@ -164,9 +159,9 @@ server <- function(input, output, session) {
     }
     
     ggplotly(
-      ggplot(plot_data, aes(x = date_ym)) + 
-        geom_area(aes(y = n), fill = 'lightslateblue') +
-        geom_line(aes(y=n), colour = 'lightslateblue', alpha = 0.7) +
+      ggplot(plot_data, aes(x = date_ym, colour = ConceptId_Description_2)) + 
+        geom_area(aes(y = n)) +
+        geom_line(aes(y=n), alpha = 0.7) +
         labs(x = 'Date', y='Cases') + scale_y_continuous(labels = scales::comma)
     ) %>% layout(plot_bgcolor = "white",
                  paper_bgcolor = "white")
@@ -179,4 +174,5 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui, server)
+
 
