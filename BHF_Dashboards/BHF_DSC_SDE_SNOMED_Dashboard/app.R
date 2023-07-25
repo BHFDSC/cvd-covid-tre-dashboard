@@ -7,24 +7,33 @@ library(anytime)
 library(plotly)
 library(collapsibleTree)
 library(shinydashboard)
+library(shinyalert)
 library(readxl)
 library(reactable)
+library(viridis)
 options(scipen=99999)
 
+#df <- read_csv('full_df.csv')
 df <- read_csv("table2.csv")
 `Cluster Descriptions` <- read_csv("table1.csv")
+final <- read_csv('full_df.csv')
 dict <- read_excel('data dictionary.xlsx')
 
-sum(is.na(df))
-head(df)
+
 sum(is.na(df$ConceptId_2))
 df$date_ym <- anydate(df$date_ym)
 df$date_ym <- ymd(df$date_ym)
 df <- replace(df, is.na(df), 0)
 
+cluster_desc <- read_csv('cluster_desc.csv')
+df <- merge(df, cluster_desc, by = "Cluster_ID", all.x = TRUE)
+
+
 
 #add comma to numeric columns for cluster and timeseries
 `Cluster Descriptions`$n <- format(`Cluster Descriptions`$n, big.mark = ",")
+`Cluster Descriptions`$n_id_distinct <- format(`Cluster Descriptions`$n_id_distinct, big.mark = ",")
+
 #separate into month and year for dendro
 `Data Tree` <- separate(df, date_ym, into=c('year', 'month'), sep = '-')
 #remove all \
@@ -74,16 +83,20 @@ ui <- dashboardPage(
                                         selectInput('data', "What Cluster would you like to view?", 
                                                     choices = c(unique(`Cluster Descriptions`$Cluster_Desc)), 
                                                     multiple = FALSE)))),
-        fluidRow(valueBoxOutput('clustername', width = 6),
-                 valueBoxOutput('clustern', width = 6), 
-                 valueBoxOutput('clusterdesc', width = 12)
+        fluidRow(valueBoxOutput('clustername', width = 4),
+                 valueBoxOutput('clustern', width = 4),
+                 valueBoxOutput('individuals', width = 4),
+                 valueBoxOutput('clusterdesc', width = 12),
+                 valueBoxOutput('clustercat', width = 12)
+                 
         ),
-        fluidRow(column(width = 12, box(title = 'Graph Resizer', width = 200, 
+        fluidRow(column(width = 12, box(title = 'Graph Toolkit', width = 200, 
                                         actionButton('resize', 'Click to view cases above 1000', width = '200px'),
-                                       actionButton('reset', 'Click to Reset Plot')))),
+                                       actionButton('reset', 'Click to Reset Plot'),
+                                       actionButton('earlydates', 'Click to View percentage before 1990')))),
         
                  fluidRow(column(width = 12, box(width = 500, title = 'Timeseries', 
-                                       solidHeader = TRUE, status = 'danger',
+                                       solidHeader = TRUE, status = 'success',
                                        plotlyOutput('timeseries', height = 300))))
       )
     )
@@ -130,7 +143,7 @@ server <- function(input, output, session) {
     valueBox(subtitle = "Cluster ID", value = value)
   })
   
-  output$clusterdesc <- renderValueBox({
+  output$clustercat <- renderValueBox({
     valueBox(subtitle = "Cluster Category", value = filtered()$Cluster_Category)})
   
   
@@ -139,19 +152,33 @@ server <- function(input, output, session) {
     valueBox(subtitle = "Records in GDPPR", value = value)
   })
   
+  output$individuals <- renderValueBox({
+    value <- filtered()$n_id_distinct
+    valueBox(subtitle = "Distinct Individuals", value = value)
+  })
+  
+  output$clusterdesc <- renderValueBox({
+    valueBox(subtitle = "Cluster Description", value = filtered()$Cluster_Desc)})
+  
+  observeEvent(input$earlydates, {shinyalert(text = filtered()$pre_1990_n_pct, 
+                                             animation = T, type = 'info')})
+  
   filtered_data <- reactiveVal()
+  
   
   observeEvent(input$resize, {
     filtered_data(df[df$Cluster_ID %in% filtered() & df$n > 1000, ])
   })
   
+  
   observeEvent(input$reset, {
     filtered_data(NULL)
   })
   
+  
   output$timeseries <- renderPlotly({
     filtered_plot_data <- df[df$Cluster_ID %in% filtered(), ]
-    
+
     if (is.null(filtered_data())) {
       plot_data <- filtered_plot_data
     } else {
@@ -159,10 +186,14 @@ server <- function(input, output, session) {
     }
     
     ggplotly(
-      ggplot(plot_data, aes(x = date_ym, colour = ConceptId_Description_2)) + 
-        geom_area(aes(y = n)) +
-        geom_line(aes(y=n), alpha = 0.7) +
-        labs(x = 'Date', y='Cases') + scale_y_continuous(labels = scales::comma)
+      ggplot(plot_data, aes(x = date_ym, fill = ConceptId_Description_2)) + 
+        geom_area(aes(y = n, fill = ConceptId_Description_2)) +
+        #geom_line(aes(y=n), alpha = 0.7) +
+        labs(x = 'Date', y='Cases') + 
+        scale_y_continuous(labels = scales::comma) +
+        scale_fill_viridis_d() +
+        #scale_y_log10(labels = scales::comma) +
+        theme(legend.position = 'none'), tooltip = 'fill'
     ) %>% layout(plot_bgcolor = "white",
                  paper_bgcolor = "white")
     
@@ -170,9 +201,11 @@ server <- function(input, output, session) {
   
   
   
-  
 }
 
 shinyApp(ui, server)
+
+
+
 
 
