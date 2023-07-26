@@ -82,7 +82,12 @@ ui <- dashboardPage(
         fluidRow(column(width = 12, box(width = 600,
                                         selectInput('data', "What Cluster would you like to view?", 
                                                     choices = c(unique(`Cluster Descriptions`$Cluster_Desc)), 
-                                                    multiple = FALSE)))),
+                                                    multiple = FALSE),
+                                        checkboxInput('compare', 'Would you like to compare it?', F),
+                                        conditionalPanel(condition = 'input.compare',
+                                                         selectInput('otherdata', 'Pick a plot to Compare',
+                                                                     choices = c(unique(`Cluster Descriptions`$Cluster_Desc)),
+                                                                     multiple = F))))),
         fluidRow(valueBoxOutput('clustername', width = 4),
                  valueBoxOutput('clustern', width = 4),
                  valueBoxOutput('individuals', width = 4),
@@ -92,12 +97,15 @@ ui <- dashboardPage(
         ),
         fluidRow(column(width = 12, box(title = 'Graph Toolkit', width = 200, 
                                         actionButton('resize', 'Click to view cases above 1000', width = '200px'),
-                                       actionButton('reset', 'Click to Reset Plot'),
-                                       actionButton('earlydates', 'Click to View percentage before 1990')))),
+                                        actionButton('reset', 'Click to Reset Plot'),
+                                        actionButton('earlydates', 'Click to View percentage before 1990'),
+                                        ))),
         
-                 fluidRow(column(width = 12, box(width = 500, title = 'Timeseries', 
-                                       solidHeader = TRUE, status = 'success',
-                                       plotlyOutput('timeseries', height = 300))))
+        fluidRow(column(width = 12, box(width = 500, title = 'Timeseries', 
+                                        solidHeader = TRUE, status = 'success',
+                                        plotlyOutput('timeseries', height = 300),
+                                        conditionalPanel(condition = 'input.compare',
+                                                         plotlyOutput('timeseriestwo', height = 300)))))
       )
     )
   )
@@ -106,6 +114,7 @@ ui <- dashboardPage(
 server <- function(input, output, session) {
   session$allowReconnect(TRUE)
   filtered <- reactive({`Cluster Descriptions`[`Cluster Descriptions`$Cluster_Desc == input$data, ]})
+  filteredtwo <- reactive({`Cluster Descriptions`[`Cluster Descriptions`$Cluster_Desc == input$otherdata, ]})
   
   output$overviewtext <- renderText({'Welcome to this interactive Dashboard! 
   The Dashboard provides information on certain groups of patients, 
@@ -164,21 +173,24 @@ server <- function(input, output, session) {
                                              animation = T, type = 'info')})
   
   filtered_data <- reactiveVal()
+  filtered_datatwo <- reactiveVal()
   
   
   observeEvent(input$resize, {
     filtered_data(df[df$Cluster_ID %in% filtered() & df$n > 1000, ])
+    filtered_datatwo(df[df$Cluster_ID %in% filteredtwo() & df$n > 1000, ])
   })
   
   
   observeEvent(input$reset, {
     filtered_data(NULL)
+    filtered_datatwo(NULL)
   })
   
   
   output$timeseries <- renderPlotly({
     filtered_plot_data <- df[df$Cluster_ID %in% filtered(), ]
-
+    
     if (is.null(filtered_data())) {
       plot_data <- filtered_plot_data
     } else {
@@ -199,13 +211,31 @@ server <- function(input, output, session) {
     
   })
   
-  
+  output$timeseriestwo <- renderPlotly({
+    req(input$compare)
+    filtered_plot_datatwo <- df[df$Cluster_ID %in% filteredtwo(), ]
+    
+    if (is.null(filtered_datatwo())) {
+      plot_data <- filtered_plot_datatwo
+    } else {
+      plot_data <- filtered_datatwo()
+    }
+    
+    ggplotly(
+      ggplot(plot_data, aes(x = date_ym, fill = ConceptId_Description_2)) + 
+        geom_area(aes(y = n, fill = ConceptId_Description_2)) +
+        #geom_line(aes(y=n), alpha = 0.7) +
+        labs(x = 'Date', y='Cases') + 
+        scale_y_continuous(labels = scales::comma) +
+        scale_fill_viridis_d() +
+        #scale_y_log10(labels = scales::comma) +
+        theme(legend.position = 'none'), tooltip = 'fill'
+    ) %>% layout(plot_bgcolor = "white",
+                 paper_bgcolor = "white")
+    
+  })
   
 }
 
 shinyApp(ui, server)
-
-
-
-
 
