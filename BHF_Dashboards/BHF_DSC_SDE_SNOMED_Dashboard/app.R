@@ -16,7 +16,7 @@ options(scipen=99999)
 #df <- read_csv('full_df.csv')
 df <- read_csv("table2.csv")
 `Cluster Descriptions` <- read_csv("table1.csv")
-final <- read_csv('full_df.csv')
+#final <- read_csv('full_df.csv')
 dict <- read_excel('data dictionary.xlsx')
 
 
@@ -52,11 +52,12 @@ ui <- dashboardPage(
       tabItem(
         tabName = 'page1',
         fluidRow(
-          column(width = 12, box(title = 'picture', height = 200, width = 600))
+          column(width = 12, 
+                 imageOutput("pic", height = "auto", width = "auto"))
         ),
         fluidRow(
-          column(width = 6, box(title = 'Overview', height = 250, width = 300, textOutput('overviewtext'))),
-          column(width = 6, box(title = 'SNOMED/GDPPR', height = 250, width = 300, textOutput('snomed'))),
+          column(width = 12, box(title = 'Overview', height = 250, width = 300, textOutput('overviewtext'))),
+          #column(width = 6, box(title = 'SNOMED/GDPPR', height = 250, width = 300, textOutput('snomed'))),
           column(
             width = 12,
             class = 'table-output-column',
@@ -116,12 +117,20 @@ server <- function(input, output, session) {
   filtered <- reactive({`Cluster Descriptions`[`Cluster Descriptions`$Cluster_Desc == input$data, ]})
   filteredtwo <- reactive({`Cluster Descriptions`[`Cluster Descriptions`$Cluster_Desc == input$otherdata, ]})
   
+  output$pic <- renderImage({
+    return(list(src = "www/Heart_data_title_slide.jpg", contentType = "image/jpeg", width = "100%", height = 600))
+  }, deleteFile = FALSE) #where the src is wherever you have the picture
+  
   output$overviewtext <- renderText({'Welcome to this interactive Dashboard! 
   The Dashboard provides information on certain groups of patients, 
   each identified by a dataset and time period.
     This dashboard aims to provide researchers with an
     overview of the data available for research as well as cutting down 
-    on time spent performing exploratory data analysis (EDA).'})
+    on time spent performing exploratory data analysis (EDA).  \n SNOMED CT stands for Systemised Nomencleture 
+  of Medicine - Clinical Terms. That is, 
+  it is a system used to standardise the description of clinical terms
+    in Hospitals and GP practices.'
+    })
   
   output$snomed <- renderText({'SNOMED CT stands for Systemised Nomencleture 
   of Medicine - Clinical Terms. That is, 
@@ -239,3 +248,44 @@ server <- function(input, output, session) {
 
 shinyApp(ui, server)
 
+
+#ggplotly(
+#  ggplot(df[df$Cluster_ID == 'ANTIHYP_COD', ], aes(x = date_ym, fill = ConceptId_Description_2)) + 
+#    geom_area(aes(y = n, fill = ConceptId_Description_2)) +
+    #geom_line(aes(y=records_month), alpha = 0.7) +
+#    labs(x = 'Date', y='Cases') + 
+#    scale_y_continuous(labels = scales::comma) +
+#    scale_fill_viridis_d() +
+    #scale_y_log10(labels = scales::comma) +
+#    theme(legend.position = 'none'), tooltip = 'fill'
+#) %>% layout(plot_bgcolor = "white",
+#             paper_bgcolor = "white")
+
+
+# header <- dashboardHeader()
+# sidebar <- dashboardSidebar(
+#   sidebarMenu(id = "test",
+#               menuItem("Alignment", tabname = "AlignmentTab")
+#   )
+# )
+# body <- dashboardBody(
+#   tabItem(tabName = "AlignmentTab",
+#           fluidRow(column(width = 12,
+#             
+#               imageOutput("Alignment", height = "auto", width = "auto")
+#             
+#           ))
+#   )
+# )
+# 
+# ui <- dashboardPage(header, sidebar, body)
+# server <- function(input, output, session) {
+#   
+#   output$Alignment <- renderImage({
+#     return(list(src = "www/Heart_data_title_slide.jpg",alt = "Alignment"))
+#   }, deleteFile = FALSE) #where the src is wherever you have the picture
+#   
+# }
+# 
+# #Combines Dasboard and Data together----
+# shinyApp(ui, server)
