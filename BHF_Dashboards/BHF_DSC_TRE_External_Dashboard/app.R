@@ -108,7 +108,7 @@ ui = fluidPage(
                         align-items: center !important;",
                     height = 70),
                    target = "_blank", #open in new tab
-                   href="https://www.hdruk.ac.uk/helping-with-health-data/bhf-data-science-centre/"),
+                   href="http://bhfdatasciencecentre.org/"),
     
     
     ### About Tab ===========================================================
