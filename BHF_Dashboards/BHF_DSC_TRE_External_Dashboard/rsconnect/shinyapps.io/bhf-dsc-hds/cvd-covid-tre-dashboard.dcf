@@ -1,0 +1,14 @@
+name: cvd-covid-tre-dashboard
+title: cvd-covid-tre-dashboard
+username:
+account: bhf-dsc-hds
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 9499670
+bundleId: 7490047
+url: https://bhf-dsc-hds.shinyapps.io/cvd-covid-tre-dashboard/
+when: 1690194018.20452
+lastSyncTime: 1690194018.20454
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: Archive|bind-cache
