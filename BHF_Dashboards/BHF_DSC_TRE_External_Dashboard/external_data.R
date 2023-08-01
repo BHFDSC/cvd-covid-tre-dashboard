@@ -1,23 +1,24 @@
 #current_dir_data = dirname(rstudioapi::getSourceEditorContext()$path)
-update_date = as.Date("2023-03-01")
-update_date_string = paste(toOrdinal::toOrdinal(lubridate::mday(update_date)),months(update_date),lubridate::year(update_date))
+update_date = as.Date("2023-06-20")
+#update_date_string = paste(toOrdinal::toOrdinal(lubridate::mday(update_date)),months(update_date),lubridate::year(update_date))
+update_date_string = paste(months(update_date),lubridate::year(update_date))
 
 
 # Current Dataset Names --------------------------------------------------------
 
 #England
-export_date_england = "2022-11-29"
-completeness_dataset_name_england = "export_dashboard_NHSD_20221108_data_completeness"
-coverage_dataset_name_england = "export_dashboard_NHSD_20221102_data_coverage"
-overview_dataset_name_england = "export_dashboard_NHSD_20221108_date_overview"
+export_date_england = "2023-06-15"
+completeness_dataset_name_england = "export_dashboard_NHSD_20230615_data_completeness"
+coverage_dataset_name_england = "export_dashboard_NHSD_20230615_data_coverage"
+overview_dataset_name_england = "export_dashboard_NHSD_20230615_data_overview"
 substr(export_date_england,1,4)
 substr(export_date_england,6,7)
 
 #Scotland
-export_date_scotland = "2023-03-21"
-completeness_dataset_name_scotland = "2021-0102_export_dashboard_scotland_completeness20230321"
-coverage_dataset_name_scotland = "2021-0102_export_dashboard_scotland_coverage20230321"
-overview_dataset_name_scotland = "2021-0102_export_dashboard_scotland_overview20230321"
+export_date_scotland = "2023-06-14"
+completeness_dataset_name_scotland = "export_dashboard_scotland_completeness20230614"
+coverage_dataset_name_scotland = "export_dashboard_scotland_coverage20230614"
+overview_dataset_name_scotland = "export_dashboard_scotland_overview20230614"
 
 #Wales
 export_date_wales = "2023-01-27"
@@ -106,7 +107,8 @@ t.data_dictionaryWales = read_excel_allsheets( # pathfornow,
 # Dataset Overview -------------------------------------------------------------
 t.dataset_overview_eng = read.csv(paste0('Data/',overview_dataset_name_england,'.csv'))
 t.dataset_overview_wales = read.csv(paste0('Data/',overview_dataset_name_wales,'.csv')) 
-t.dataset_overview_scotland = read.csv(paste0('Data/',overview_dataset_name_scotland,'.csv'))
+t.dataset_overview_scotland = read.csv(paste0('Data/',overview_dataset_name_scotland,'.csv')) %>%
+  mutate(archived_on=as.Date(substr(archived_on,1,10)))
 
 
 # Dataset Completeness -------------------------------------------------------------
@@ -122,9 +124,11 @@ t.dataset_completeness_scotland = read.csv(paste0('Data/',completeness_dataset_n
 #t.data_coverage = read_rds("Data/data_coverage")
 #folderpath = "C:/Users/LarsMurdock/Documents/Repo/BHF_DSC_HDS/BHF_Dashboards/BHF_DSC_TRE_External_Dashboard"
 
-t.dataset_coverage_eng = read.csv(paste0('Data/',coverage_dataset_name_england,'.csv')) %>% mutate(Nation2 = "England")
+
+t.dataset_coverage_eng = read.csv(paste0('Data/',coverage_dataset_name_england,'.csv')) %>% select(-archived_on) %>% mutate(Nation2 = "England")
 t.dataset_coverage_wales = read.csv(paste0('Data/',coverage_dataset_name_wales,'.csv')) %>% rename(n_id_distinct =n_distinct ) %>% mutate(Nation2 = "Wales")
 t.dataset_coverage_scotland = read.csv(paste0('Data/',coverage_dataset_name_scotland,'.csv')) %>% mutate(Nation2 = "Scotland")
+
 
 
 t.data_coverage_source = t.dataset_coverage_eng %>%
