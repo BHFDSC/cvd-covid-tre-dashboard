@@ -534,8 +534,8 @@ tags$script(
                           min = date_range_coverage_min(),
                           max = date_range_coverage_max(),
                           value = c(
-                            date_range_coverage_min_start_date(),
-                            date_range_coverage_max_start_date()
+                           date_range_coverage_min_start_date(),
+                           date_range_coverage_max_start_date()
                           ),
                           step=1
                           )
