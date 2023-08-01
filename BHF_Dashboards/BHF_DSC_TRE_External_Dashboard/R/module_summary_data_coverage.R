@@ -473,7 +473,10 @@ tags$script(
  
       coverage_data_all_records =  reactive({
         t.data_coverage %>%
-          left_join(datasets_available,by = c("dataset"="Dataset")) %>%
+          left_join(datasets_available, 
+                    by = c("dataset"="Dataset", "Nation2" = "Nation"), 
+                    relationship = "many-to-one" ) %>%
+          filter(.data$Nation2==nation_summary()) %>% 
           filter(.data$dataset==dataset_summary()) %>%
           #tooltips for plot
           mutate(N_tooltip = format(.data$N, nsmall=0, big.mark=",", trim=TRUE)) %>%
@@ -1305,7 +1308,10 @@ tags$script(
             
             t.data_coverage_source %>%
               arrange(dataset,date_ym) %>%
-              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              left_join(datasets_available  %>%select(dataset=Dataset,title=Title, Nation),
+                        by = c("dataset", "Nation2" = "Nation"  ), 
+                        relationship = "many-to-one") %>%
+              filter(.data$Nation2 == nation_summary()) %>%
               filter(.data$dataset == dataset_summary()) %>%
               ungroup() %>%
               mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
@@ -1319,7 +1325,10 @@ tags$script(
             
           } else {t.data_coverage_source %>%
               arrange(dataset,date_ym) %>%
-              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              left_join(datasets_available  %>%select(dataset=Dataset,title=Title, Nation),
+                        by = c("dataset", "Nation2" = "Nation"  ), 
+                        relationship = "many-to-one") %>%
+              filter(.data$Nation2 == nation_summary()) %>% 
               filter(.data$dataset == dataset_summary()) %>%
               ungroup() %>%
               mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
@@ -1342,7 +1351,10 @@ tags$script(
             
             t.data_coverage_source %>%
               arrange(dataset,date_ym) %>%
-              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              left_join(datasets_available  %>%select(dataset=Dataset,title=Title, Nation),
+                        by = c("dataset", "Nation2" = "Nation"  ), 
+                        relationship = "many-to-one") %>%
+              filter(.data$Nation2 == nation_summary()) %>%
               filter(.data$dataset == dataset_summary()) %>%
               ungroup() %>%
               mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
@@ -1356,7 +1368,10 @@ tags$script(
             
           } else {t.data_coverage_source %>%
               arrange(dataset,date_ym) %>%
-              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              left_join(datasets_available  %>%select(dataset=Dataset,title=Title, Nation),
+                        by = c("dataset", "Nation2" = "Nation"  ), 
+                        relationship = "many-to-one") %>%
+              filter(.data$Nation2 == nation_summary()) %>%
               filter(.data$dataset == dataset_summary()) %>%
               ungroup() %>%
               mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
@@ -1379,7 +1394,10 @@ tags$script(
             
             t.data_coverage_source %>%
               arrange(dataset,date_ym) %>%
-              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              left_join(datasets_available  %>%select(dataset=Dataset,title=Title, Nation),
+                        by = c("dataset", "Nation2" = "Nation"  ), 
+                        relationship = "many-to-one") %>%
+              filter(.data$Nation2 == nation_summary()) %>%
               filter(.data$dataset == dataset_summary()) %>%
               ungroup() %>%
               mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
@@ -1393,7 +1411,10 @@ tags$script(
             
           } else {t.data_coverage_source %>%
               arrange(dataset,date_ym) %>%
-              left_join(datasets_available%>%select(dataset=Dataset,title=Title),by = c("dataset")) %>%
+              left_join(datasets_available  %>%select(dataset=Dataset,title=Title, Nation),
+                        by = c("dataset", "Nation2" = "Nation"  ), 
+                        relationship = "many-to-one") %>%
+              filter(.data$Nation2 == nation_summary()) %>%
               filter(.data$dataset == dataset_summary()) %>%
               ungroup() %>%
               mutate(date_ym = ifelse(date_ym=="", NA, date_ym)) %>%
