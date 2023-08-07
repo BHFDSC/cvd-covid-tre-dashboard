@@ -147,11 +147,12 @@ ui <- dashboardPage(
         
         fluidRow(column(width = 12, box(width = 500, title = 'Cluster Timeseries', 
                                         solidHeader = TRUE, #status = 'success',
-                                        plotlyOutput('timeseries', height = 300)%>% withSpinner(color="maroon"),
-                                        conditionalPanel(condition = 'input.compare',
-                                                         plotlyOutput('timeseriestwo', height = 300)),
-                                        conditionalPanel(condition = 'input.log', 
-                                                         plotlyOutput('timeseriesthree', height = 300)))))
+                                        plotlyOutput('timeseries', height = 600)%>% withSpinner(color="maroon"),
+                                        conditionalPanel(condition = 'input.compare')
+                                                         #plotlyOutput('timeseriestwo'))
+                                        # conditionalPanel(condition = 'input.log', 
+                                        #                  plotlyOutput('timeseriesthree', height = 300))
+                                        )))
       )
     )
   )
@@ -284,76 +285,112 @@ server <- function(input, output, session) {
     filtered_data(NULL)
   })
   
-  
-  
-  output$timeseries <- renderPlotly({Sys.sleep(1)
+  output$timeseries <- renderPlotly({
+    Sys.sleep(1)
     filtered_plot_data <- filtered() #df2[df2$Cluster_ID %in% filtered(), ]
     filtered_plot_datatwo <- filteredtwo()
-
-    if (is.null(filtered_data())) {
-      plot_data <- filtered_plot_data
-    } else {
-      plot_data <- filtered_data()
-    }
+    combined_data <- rbind(filtered_plot_data, filtered_plot_datatwo)
     
-    
-    ggplotly(
-      ggplot(plot_data, aes(x = date_ym, fill = ConceptId_Description_2)) +
+    if (input$compare) {
+      plot_data <- combined_data
+      p <- ggplot(plot_data, aes(x = date_ym, fill = ConceptId_Description_2)) +
         geom_area(aes(y = records_month, fill = ConceptId_Description_2)) +
-        #geom_line(aes(y=n), alpha = 0.7) +
-        labs(x = 'Date', y='Cases') +
+        labs(x = 'Date', y = 'Cases') +
         scale_y_continuous(labels = scales::comma) +
         scale_fill_viridis_d() +
-        theme_minimal()+
-        #scale_y_log10(labels = scales::comma) +
-        theme(legend.position = 'none'), tooltip = 'fill'
-    ) %>% layout(plot_bgcolor = "white",
-                 paper_bgcolor = "white")
+        theme_minimal() +
+        theme(legend.position = 'none')
+      
+      p <- p + facet_grid(Cluster_Desc ~ .)
+    } else {
+      if (is.null(filtered_data())) {
+        plot_data <- filtered_plot_data
+      } else {
+        plot_data <- filtered_data()
+      }
+      
+      p <- ggplot(plot_data, aes(x = date_ym, fill = ConceptId_Description_2)) +
+        geom_area(aes(y = records_month, fill = ConceptId_Description_2)) +
+        labs(x = 'Date', y = 'Cases') +
+        scale_y_continuous(labels = scales::comma) +
+        scale_fill_viridis_d() +
+        theme_minimal() +
+        theme(legend.position = 'none')
+    }
     
-    
-    
-    # if(input$compare){
-    # combined_data <- rbind(filtered_plot_data, filtered_plot_datatwo)
-    # 
-    #   ggplotly(
-    #     ggplot(combined_data, aes(x = date_ym, fill = ConceptId_Description_2)) +
-    #       geom_area(aes(y = records_month)) +
-    #       facet_grid(Cluster_Desc ~ .) +
-    #       labs(x = 'Date', y = 'Cases') +
-    #       scale_y_continuous(labels = scales::comma) +
-    #       scale_fill_viridis_d() +
-    #       theme_minimal() +
-    #       theme(legend.position = 'none'), tooltip = 'fill'
-    #   ) %>% layout(plot_bgcolor = "white", paper_bgcolor = "white")}
-
-
-    
+    ggplotly(p, tooltip = 'fill') %>% layout(plot_bgcolor = 'white', paper_bgcolor = 'white')
   })
   
-  output$timeseriestwo <- renderPlotly({
-    req(input$compare)
-    filtered_plot_datatwo <- filteredtwo() #df[df$Cluster_ID %in% filteredtwo(), ]
-
-    if (is.null(filtered_datatwo())) {
-      plot_data <- filtered_plot_datatwo
-    } else {
-      plot_data <- filtered_datatwo()
-    }
-
-    ggplotly(
-      ggplot(plot_data, aes(x = date_ym, fill = ConceptId_Description_2)) +
-        geom_area(aes(y = records_month, fill = ConceptId_Description_2)) +
-        #geom_line(aes(y=n), alpha = 0.7) +
-        labs(x = 'Date', y='Cases') +
-        scale_y_continuous(labels = scales::comma) +
-        scale_fill_viridis_d() +
-        theme_minimal()+
-        #scale_y_log10(labels = scales::comma) +
-        theme(legend.position = 'none'), tooltip = 'fill'
-    ) %>% layout(plot_bgcolor = "white",
-                 paper_bgcolor = "white")
-
-  })
+  
+  # output$timeseries <- renderPlotly({Sys.sleep(1)
+  #   filtered_plot_data <- filtered() #df2[df2$Cluster_ID %in% filtered(), ]
+  #   filtered_plot_datatwo <- filteredtwo()
+  #   combined_data <- rbind(filtered_plot_data, filtered_plot_datatwo)
+  # 
+  #   if (is.null(filtered_data())) {
+  #     plot_data <- filtered_plot_data
+  #   } else {
+  #     plot_data <- filtered_data()
+  #   }
+  #   
+  #   
+  #   ggplotly(
+  #     ggplot(plot_data, aes(x = date_ym, fill = ConceptId_Description_2)) +
+  #       geom_area(aes(y = records_month, fill = ConceptId_Description_2)) +
+  #       #geom_line(aes(y=n), alpha = 0.7) +
+  #       labs(x = 'Date', y='Cases') +
+  #       scale_y_continuous(labels = scales::comma) +
+  #       scale_fill_viridis_d() +
+  #       theme_minimal()+
+  #       #scale_y_log10(labels = scales::comma) +
+  #       theme(legend.position = 'none'), tooltip = 'fill'
+  #   ) %>% layout(plot_bgcolor = "white",
+  #                paper_bgcolor = "white")
+  #   
+  # 
+  # 
+  #   # req(input$compare)
+  #   # ggplotly(
+  #   #   ggplot(combined_data, aes(x = date_ym, fill = ConceptId_Description_2)) +
+  #   #     geom_area(aes(y = records_month)) +
+  #   #     facet_grid(Cluster_Desc ~ .) +
+  #   #     labs(x = 'Date', y = 'Cases') +
+  #   #     scale_y_continuous(labels = scales::comma) +
+  #   #     scale_fill_viridis_d() +
+  #   #     theme_minimal() +
+  #   #     theme(legend.position = 'none'), tooltip = 'fill'
+  #   # ) %>% layout(plot_bgcolor = "white", paper_bgcolor = "white")
+  # 
+  # 
+  #   
+  # })
+  
+ 
+  
+  # output$timeseriestwo <- renderPlotly({
+  #   req(input$compare)
+  #   filtered_plot_datatwo <- filteredtwo() #df[df$Cluster_ID %in% filteredtwo(), ]
+  # 
+  #   if (is.null(filtered_datatwo())) {
+  #     plot_data <- filtered_plot_datatwo
+  #   } else {
+  #     plot_data <- filtered_datatwo()
+  #   }
+  # 
+  #   ggplotly(
+  #     ggplot(plot_data, aes(x = date_ym, fill = ConceptId_Description_2)) +
+  #       geom_area(aes(y = records_month, fill = ConceptId_Description_2)) +
+  #       #geom_line(aes(y=n), alpha = 0.7) +
+  #       labs(x = 'Date', y='Cases') +
+  #       scale_y_continuous(labels = scales::comma) +
+  #       scale_fill_viridis_d() +
+  #       theme_minimal()+
+  #       #scale_y_log10(labels = scales::comma) +
+  #       theme(legend.position = 'none'), tooltip = 'fill'
+  #   ) %>% layout(plot_bgcolor = "white",
+  #                paper_bgcolor = "white")
+  # 
+  # })
 
 
   # output$timeseriesthree <- renderPlotly({
@@ -385,30 +422,5 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui, server)
-
-
-
-
-# output$facet_plot <- renderPlotly({
-#   req(input$compare)
-#   filtered_plot_data <- filtered()
-#   filtered_plot_datatwo <- filteredtwo()
-#   
-#   combined_data <- rbind(filtered_plot_data, filtered_plot_datatwo)
-#   
-#   ggplotly(
-#     ggplot(combined_data, aes(x = date_ym, fill = ConceptId_Description_2)) +
-#       geom_area(aes(y = records_month)) +
-#       facet_grid(. ~ Cluster_Desc) +
-#       labs(x = 'Date', y = 'Cases') +
-#       scale_y_continuous(labels = scales::comma) +
-#       scale_fill_viridis_d() +
-#       theme_minimal() +
-#       theme(legend.position = 'none'), tooltip = 'fill'
-#   ) %>% layout(plot_bgcolor = "white", paper_bgcolor = "white")
-# })
-
-
-
 
 
