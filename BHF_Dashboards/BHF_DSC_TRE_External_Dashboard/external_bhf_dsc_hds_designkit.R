@@ -2282,11 +2282,11 @@ customValueBox <- function (value, title, subtitle, icon = NULL, color, backgrou
   boxContent = div(class = "small-box", 
                    style = style,
                    if (!is.null(icon))
-                     div(class = "icon-large", h4(icon,title), style=""),
+                     div(class = "icon-large", h4(icon,title), style="margin-top:20px;"),
                    div(class = "inner", 
                        h6(value, style="line-height: 150%;"), 
                        p(subtitle,style="font-size: 25px;"), 
-                       style="margin-top:20px;"))
+                       style="margin-top:20px;margin-bottom:20px;"))
   
   if (!is.null(href))
     boxContent = a(href = href, boxContent)
