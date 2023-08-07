@@ -53,6 +53,7 @@ t.data_dictionaryEng = read_excel_allsheets('Data/TRE_DD_391419_j3w9t.xlsx',
                                        skip = 2) %>%
   mutate(table = str_replace(table, paste0("_", database),"")) %>%
   mutate(table = str_replace(table,"_[{]fyear[}]" ,"")) %>%
+  mutate(table = str_replace(table, "deaths" ,"death")) %>%
   filter(!is.na(table)) %>%
   rename(`field` = display_name,
          `field name` = display_name_label,
