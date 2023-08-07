@@ -88,7 +88,11 @@ ui <- dashboardPage(
       tabItem(
         tabName = 'page2',
         tabBox(width = 12,id = 'tabbox', title = 'Data Overview',
-               tabPanel(title = 'Concepts', 
+               tabPanel(title = 'Concepts', actionButton(inputId = 'conceptinfo', label = icon('info')
+                                                         ), tags$head(
+                                                           tags$style(HTML(
+                                                             '#conceptinfo{background-color:grey; color:white} 
+                                                     #conceptinfo:hover{background-color: maroon; color:white}'))), 
                         collapsibleTreeOutput('cluster')%>% withSpinner(color="maroon")),
                # tabPanel(title = 'Cluster Codes', 
                #          collapsibleTreeOutput('tree')),
@@ -147,7 +151,7 @@ ui <- dashboardPage(
         
         fluidRow(column(width = 12, box(width = 500, title = 'Cluster Timeseries', 
                                         solidHeader = TRUE, #status = 'success',
-                                        plotlyOutput('timeseries', height = 600)%>% withSpinner(color="maroon"),
+                                        plotlyOutput('timeseries', height = 500)%>% withSpinner(color="maroon"),
                                         conditionalPanel(condition = 'input.compare')
                                                          #plotlyOutput('timeseriestwo'))
                                         # conditionalPanel(condition = 'input.log', 
@@ -264,6 +268,9 @@ server <- function(input, output, session) {
     valueBox(subtitle = "Cluster Description", value = filteredval()$Cluster_Desc)})
   
   observeEvent(input$earlydates, {shinyalert(text = filteredval()$pre_1990_n_pct,
+                                             animation = T, type = 'info')})
+  
+  observeEvent(input$conceptinfo, {shinyalert(text = 'Click through to view SNOMED CT Cluster Categories, Clusters and Concepts',
                                              animation = T, type = 'info')})
   
   filtered_data <- reactiveVal()
