@@ -95,6 +95,7 @@ ui <- dashboardPage(
                tabPanel(title = 'Data Coverage',
                         selectInput('clusterchoice', 'Pick a Category to view its Coverage Period', 
                                     choices = c(unique(category$Cluster_category)), multiple = F),
+                        uiOutput('daterange'),
                         plotlyOutput('clusterplot', height = 300)%>% withSpinner(color="maroon"))
         ),
         fluidRow(column(width = 12, box(width = 600,
@@ -163,6 +164,7 @@ server <- function(input, output, session) {
   filteredval <- reactive({df2[df2$Cluster_Desc == input$data, ][1, ]})
   clusterfilter <- reactive({category[category$Cluster_category == input$clusterchoice, ]})
   
+  
   output$pic <- renderImage({
     return(list(src = "www/Heart_data_title_slide.jpg", contentType = "image/jpeg", width = "100%", height = 470))
   }, deleteFile = FALSE) #where the src is wherever you have the picture
@@ -203,12 +205,24 @@ server <- function(input, output, session) {
   # })
   
   output$cluster <- renderCollapsibleTree({Sys.sleep(1)
-    collapsibleTree(df2, root = 'GDPPR', linkLength = 200,
+    collapsibleTree(df2, root = 'SNOMED CT', linkLength = 200,
                     c('Cluster_Category', 'Cluster_Desc', 'ConceptId_Description_2')
                     )
   })
   
+  output$daterange <- renderUI({
+    sliderInput('date', 'Pick a date range to view', min= min(clusterfilter()$date_ym), 
+                max = max(clusterfilter()$date_ym), 
+                value = c(min= min(clusterfilter()$date_ym), max = max(clusterfilter()$date_ym)))
+  })
+  
+  observeEvent(input$date, {
+    updateSliderInput(session, 'date', value = input$date)
+  })
+
+  
   output$clusterplot <- renderPlotly({Sys.sleep(1)
+    req(input$date)
     ggplotly(
       ggplot(clusterfilter(), aes(x = date_ym)) +
         geom_line(aes(y = records_month, colour = 'Records Month'), alpha = 0.7, show.legend = TRUE) +
@@ -216,11 +230,12 @@ server <- function(input, output, session) {
         geom_line(aes(y = distinct_id, colour = 'Distinct Id'), alpha = 0.7, show.legend = TRUE) +
         labs(x = 'Date', y = 'Cases', colour = 'Key') +
         scale_y_continuous(labels = scales::comma) +
+        scale_x_date(limits = c(input$date[1], input$date[2])) +
         scale_color_manual(values = c('Records Month' = '#440154',
                                       'Valid Id' = '#31688E',
                                       'Distinct Id' = '#6DCD59')) +
         theme_minimal()+
-        theme(legend.position = 'right')
+        theme(legend.position = 'right') 
     ) %>% layout(plot_bgcolor = "white", paper_bgcolor = "white")
   })
   
@@ -273,12 +288,14 @@ server <- function(input, output, session) {
   
   output$timeseries <- renderPlotly({Sys.sleep(1)
     filtered_plot_data <- filtered() #df2[df2$Cluster_ID %in% filtered(), ]
-    
+    filtered_plot_datatwo <- filteredtwo()
+
     if (is.null(filtered_data())) {
       plot_data <- filtered_plot_data
     } else {
       plot_data <- filtered_data()
     }
+    
     
     ggplotly(
       ggplot(plot_data, aes(x = date_ym, fill = ConceptId_Description_2)) +
@@ -293,23 +310,41 @@ server <- function(input, output, session) {
     ) %>% layout(plot_bgcolor = "white",
                  paper_bgcolor = "white")
     
+    
+    
+    # if(input$compare){
+    # combined_data <- rbind(filtered_plot_data, filtered_plot_datatwo)
+    # 
+    #   ggplotly(
+    #     ggplot(combined_data, aes(x = date_ym, fill = ConceptId_Description_2)) +
+    #       geom_area(aes(y = records_month)) +
+    #       facet_grid(Cluster_Desc ~ .) +
+    #       labs(x = 'Date', y = 'Cases') +
+    #       scale_y_continuous(labels = scales::comma) +
+    #       scale_fill_viridis_d() +
+    #       theme_minimal() +
+    #       theme(legend.position = 'none'), tooltip = 'fill'
+    #   ) %>% layout(plot_bgcolor = "white", paper_bgcolor = "white")}
+
+
+    
   })
   
   output$timeseriestwo <- renderPlotly({
     req(input$compare)
     filtered_plot_datatwo <- filteredtwo() #df[df$Cluster_ID %in% filteredtwo(), ]
-    
+
     if (is.null(filtered_datatwo())) {
       plot_data <- filtered_plot_datatwo
     } else {
       plot_data <- filtered_datatwo()
     }
-    
+
     ggplotly(
-      ggplot(plot_data, aes(x = date_ym, fill = ConceptId_Description_2)) + 
+      ggplot(plot_data, aes(x = date_ym, fill = ConceptId_Description_2)) +
         geom_area(aes(y = records_month, fill = ConceptId_Description_2)) +
         #geom_line(aes(y=n), alpha = 0.7) +
-        labs(x = 'Date', y='Cases') + 
+        labs(x = 'Date', y='Cases') +
         scale_y_continuous(labels = scales::comma) +
         scale_fill_viridis_d() +
         theme_minimal()+
@@ -317,37 +352,63 @@ server <- function(input, output, session) {
         theme(legend.position = 'none'), tooltip = 'fill'
     ) %>% layout(plot_bgcolor = "white",
                  paper_bgcolor = "white")
-    
+
   })
-  
-  output$timeseriesthree <- renderPlotly({
-    req(input$log)
-    filtered_plot_datatwo <- filteredtwo() #df[df$Cluster_ID %in% filteredtwo(), ]
-    
-    if (is.null(filtered_datatwo())) {
-      plot_data <- filtered_plot_datatwo
-    } else {
-      plot_data <- filtered_datatwo()
-    }
-    
-    ggplotly(
-      ggplot(plot_data, aes(x = date_ym, colour = ConceptId_Description_2)) + 
-        #geom_area(aes(y = n, fill = ConceptId_Description_2)) +
-        geom_line(aes(y=records_month), alpha = 0.7) +
-        labs(x = 'Date', y='Cases') + 
-        #scale_y_continuous(labels = scales::comma) +
-        scale_fill_viridis_d() +
-        scale_y_log10(labels = scales::comma) +
-        theme_minimal()+
-        theme(legend.position = 'none'), tooltip = 'colour'
-    ) %>% layout(plot_bgcolor = "white",
-                 paper_bgcolor = "white")
-    
-  })
-  
+
+
+  # output$timeseriesthree <- renderPlotly({
+  #   req(input$log)
+  #   filtered_plot_datatwo <- filteredtwo() #df[df$Cluster_ID %in% filteredtwo(), ]
+  #   
+  #   if (is.null(filtered_datatwo())) {
+  #     plot_data <- filtered_plot_datatwo
+  #   } else {
+  #     plot_data <- filtered_datatwo()
+  #   }
+  #   
+  #   ggplotly(
+  #     ggplot(plot_data, aes(x = date_ym, colour = ConceptId_Description_2)) + 
+  #       #geom_area(aes(y = n, fill = ConceptId_Description_2)) +
+  #       geom_line(aes(y=records_month), alpha = 0.7) +
+  #       labs(x = 'Date', y='Cases') + 
+  #       #scale_y_continuous(labels = scales::comma) +
+  #       scale_fill_viridis_d() +
+  #       scale_y_log10(labels = scales::comma) +
+  #       theme_minimal()+
+  #       theme(legend.position = 'none'), tooltip = 'colour'
+  #   ) %>% layout(plot_bgcolor = "white",
+  #                paper_bgcolor = "white")
+  #   
+  # })
+  # 
   
 }
 
 shinyApp(ui, server)
+
+
+
+
+# output$facet_plot <- renderPlotly({
+#   req(input$compare)
+#   filtered_plot_data <- filtered()
+#   filtered_plot_datatwo <- filteredtwo()
+#   
+#   combined_data <- rbind(filtered_plot_data, filtered_plot_datatwo)
+#   
+#   ggplotly(
+#     ggplot(combined_data, aes(x = date_ym, fill = ConceptId_Description_2)) +
+#       geom_area(aes(y = records_month)) +
+#       facet_grid(. ~ Cluster_Desc) +
+#       labs(x = 'Date', y = 'Cases') +
+#       scale_y_continuous(labels = scales::comma) +
+#       scale_fill_viridis_d() +
+#       theme_minimal() +
+#       theme(legend.position = 'none'), tooltip = 'fill'
+#   ) %>% layout(plot_bgcolor = "white", paper_bgcolor = "white")
+# })
+
+
+
 
 
