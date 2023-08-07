@@ -90,3 +90,10 @@ a {
     background-color:#FCC;
 }
 
+.irs--shiny .irs-bar {
+    top: 25px;
+    height: 8px;
+    border-top: 1px solid maroon;
+    border-bottom: 1px solid maroon;
+    background: maroon;
+}
