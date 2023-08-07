@@ -2311,6 +2311,54 @@ input_ui = function(input_id, input_element, help, margin = 4) {
 }
 
 
+# customValueBox <- function (value, title, subtitle, icon = NULL, color, background, border, width = 4, href = NULL){
+#   
+#   style = paste0("color: ", color,
+#                  "; background-color: ", background,
+#                  ";", "
+#                   border-top-left-radius: 10px !important; /*Round Edges*/
+#                   border-bottom-left-radius: 10px !important; /*Round Edges*/
+#                   border-top-right-radius: 10px !important; /*Round Edges*/
+#                   border-bottom-right-radius: 10px !important; /*Round Edges*/
+#                   padding-left:10px; 
+#                   padding-bottom:5px;
+#                   padding-right:10px;
+#                   margin-top:20px;
+#                   height:100%;
+#                   border-style: solid; border-width: 1px; border-color: ", border, ";")
+#   
+#   boxContent = div(class = "small-box", 
+#                    style = style,
+#                    if (!is.null(icon))
+#                      div(class = "icon-large", h4(icon,title), style=""),
+#                    div(class = "inner", 
+#                        h6(value, style="line-height: 150%;"), 
+#                        p(subtitle,style="font-size: 25px;"), 
+#                        style="margin-top:20px;"))
+#   
+#   if (!is.null(href))
+#     boxContent = a(href = href, boxContent)
+#   div(class = if (!is.null(width))
+#     paste0("col-sm-", width), boxContent)
+# }
+# 
+# 
+# 
+# input_ui = function(input_id, input_element, help, margin = 4) {
+#   div(style = 'display: inline-block; vertical-align: bottom; min-width: 100%;',
+#       column(12, style = 'padding-left: 0',
+#              input_element
+#       ),
+#       column(1, style = paste0('margin-top: ', margin, 'px; margin-left: -14px;'),
+#              br(),
+#              actionButton(paste0(input_id, '_help'), NULL, icon = icon('question', lib = 'font-awesome')),
+#              bsPopover(paste0(input_id, '_help'), placement = 'right', trigger = 'focus', title = NULL,
+#                        content = help)
+#       )
+#   )
+# }
+
+
 
 # shinyWidgets pretty switch hack ==============================================
 #https://github.com/dreamRs/shinyWidgets/blob/master/R/input-pretty.R
