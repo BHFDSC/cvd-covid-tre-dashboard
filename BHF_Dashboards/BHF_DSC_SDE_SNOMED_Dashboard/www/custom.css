@@ -2,38 +2,38 @@ body {
     font-family: Arial, sans-serif !important;
   }
 .skin-blue .main-sidebar{
-    background-color: maroon !important;
+    background-color:cornflowerblue !important;
 }
 
 .skin-blue .main-header .logo{
-    background-color: maroon;
+    background-color: cornflowerblue;
     }
     .skin-blue .main-header .logo:hover {
-        background-color: maroon;
+        background-color: lightslategray;
         }
         .skin-blue .main-header .text:hover{
-            background-color: #FCC;
+            background-color: lightslategray;
         }
 .skin-blue .main-header .navbar {
-    background-color: maroon;
+    background-color: cornflowerblue;
     }
     .content-wrapper, .right-side {
         background-color: whitesmoke;
         }
 
 .skin-blue .main-header .navbar .sidebar-toggle:hover{
-    background-color: rosybrown;
+    background-color: lightslategray;
         }
 .small-box.bg-black {background-color: lightslategray !important;
 
 }
 
-.small-box.bg-light-blue {background-color: maroon !important;
+.small-box.bg-aqua {background-color: navy !important;
 
 }
 
 .box-header {
-    color: maroon;
+    color: navy;
     display: block;
     padding: 10px;
     position: relative;
@@ -42,8 +42,8 @@ body {
 
 .skin-blue .sidebar-menu>li.active>a, .skin-blue .sidebar-menu>li:hover>a {
     color: #fff;
-    background: rosybrown;
-    border-left-color: crimson;
+    background: lightslategray;
+    border-left-color: navy;
 }
 
 
@@ -51,12 +51,12 @@ body {
     line-height: 35px;
     padding: 0 10px;
     font-size: 20px;
-    color: maroon;
+    color: navy;
 }
 
 .nav-tabs-custom>.nav-tabs>li.active:hover>a, .nav-tabs-custom>.nav-tabs>li.active>a {
     background-color: #fff;
-    color: maroon;
+    color: navy;
 }
 
 .sweet-alert button {
@@ -74,7 +74,7 @@ body {
 }
 
 .nav-tabs-custom>.nav-tabs>li.active {
-    border-top-color: rosybrown;
+    border-top-color: lightslategray;
 }
 
 a {
@@ -97,3 +97,6 @@ a {
     border-bottom: 1px solid maroon;
     background: maroon;
 }
+
+
+
