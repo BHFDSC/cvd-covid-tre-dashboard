@@ -1,4 +1,4 @@
-Cluster_ID,date_ym,ConceptId_2,ConceptId_Description_2,_grp,n_codes,records_month,Cluster_Desc,Cluster_Category,n_code,records_total,individuals,pre_1990_n_pct
+Cluster_ID,date_ym,ConceptId_2 ,ConceptId_Description_2,_grp,n_codes,records_month,Cluster_Desc,Cluster_Category,n_code,records_total,individuals,pre_1990_n_pct
 ANTIHYP_COD,01/01/1993,319283006,319283006: Product containing precisely amlodipine besilate 5 milligram/1 each conventional release oral tablet (clinical drug),1,null,10,Antihypertensive medications,Medications,1836,"909,192,375",14249080,0 (0.00%)
 ANTIHYP_COD,01/07/1995,0,"Other codes (1,827)",99,1827,10,Antihypertensive medications,Medications,1836,"909,192,375",14249080,0 (0.00%)
 ANTIHYP_COD,01/04/2000,0,"Other codes (1,827)",99,1827,10,Antihypertensive medications,Medications,1836,"909,192,375",14249080,0 (0.00%)
