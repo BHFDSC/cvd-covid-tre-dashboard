@@ -49,7 +49,7 @@ category$date_ym <- ymd(category$date_ym)
 #dashboard header
 header <- dashboardHeader(
                             title = div(
-    a(href = 'https://www.hdruk.ac.uk/helping-with-health-data/bhf-data-science-centre/',
+    a(href = 'https://bhfdatasciencecentre.org/',
       HTML('<img src="headerlogo.png" alt="Logo" height="30" style="vertical-align: left;">')
     ),
     "SNOMED Codes and Clusters in GDPPR"
