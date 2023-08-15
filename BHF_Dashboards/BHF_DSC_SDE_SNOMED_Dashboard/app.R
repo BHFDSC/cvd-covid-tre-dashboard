@@ -46,7 +46,6 @@ category <- read_csv('second_import.csv')
 category$date_ym <- anydate(category$date_ym)
 category$date_ym <- ymd(category$date_ym)
 
-
 #dashboard header
 header <- dashboardHeader(
                             title = div(
@@ -74,7 +73,6 @@ sidebar <- dashboardSidebar(collapsed = T, width = 180, sidebarMenu(id = 'sideba
 body <- dashboardBody(tags$head(tags$link(rel = 'stylesheet', 
                                     type = 'text/css', 
                                     href='custom.css')),
-                      tags$head(tags$link(rel="shortcut icon", href='C:/Users/Yahdii/OneDrive/Desktop/Internship/BHF_DSC_HDS/BHF_Dashboards/BHF_DSC_SDE_SNOMED_Dashboard/www/favicon.ico')),
     tabItems(
       tabItem(
         tabName = 'page1',
@@ -124,11 +122,17 @@ body <- dashboardBody(tags$head(tags$link(rel = 'stylesheet',
         fluidRow(column(width = 12, box(width = 600,
                                         
                                         selectInput('data', "Pick a Category to Visualise",
+                                                    choices = c(unique(df2$Cluster_Category)),
+                                                    multiple = FALSE),
+                                        selectInput('datatwo', "Pick a Cluster to Visualise",
                                                     choices = c(unique(df2$Cluster_Desc)),
                                                     multiple = FALSE),
                                         checkboxInput('compare', 'Would you like to compare it?', F),
                                         conditionalPanel(condition = 'input.compare',
-                                                         selectInput('otherdata', 'Pick a plot to Compare',
+                                                         selectInput('otherdata', 'Pick a Category to Compare',
+                                                                     choices = c(unique(df2$Cluster_Category)),
+                                                                     multiple = F),
+                                                         selectInput('otherdatatwo', 'Pick a Cluster to Compare',
                                                                      choices = c(unique(df2$Cluster_Desc)),
                                                                      multiple = F))))),
         fluidRow(valueBoxOutput('clustername', width = 4),
@@ -180,7 +184,7 @@ body <- dashboardBody(tags$head(tags$link(rel = 'stylesheet',
         fluidRow(column(width = 12, box(width = 500, title = 'Cluster Timeseries', 
                                         solidHeader = TRUE,
                                         actionButton(inputId = 'timeseriesinfo', label = icon('info')
-                                        ), tags$head(
+                                        ),checkboxInput("showLegend", "Show Legend", value = TRUE), tags$head(
                                           tags$style(HTML(
                                             '#timeseriesinfo{background-color:grey; color:white} 
                                                      #timeseriesinfo:hover{background-color: navy; color:white}'))),
@@ -210,10 +214,37 @@ ui <- dashboardPage(header, sidebar, body)
 
 #server
 server <- function(input, output, session) {
+  observeEvent(input$data, {
+    selected_category <- input$data
+    if (!is.null(selected_category)) {
+      updateSelectInput(session, "datatwo",
+                        label = "Pick a Cluster to Visualise",
+                        choices = unique(df2$Cluster_Desc[df2$Cluster_Category == selected_category]))
+    } else {
+      updateSelectInput(session, "datatwo",
+                        label = "Pick a Cluster to Visualise",
+                        choices = NULL)
+    }
+  })
+  
+  observeEvent(input$otherdata, {
+    selected_categorytwo <- input$otherdata
+    if (!is.null(selected_categorytwo)) {
+      updateSelectInput(session, "otherdatatwo",
+                        label = "Pick a Cluster to Compare",
+                        choices = unique(df2$Cluster_Desc[df2$Cluster_Category == selected_categorytwo]))
+                        
+    } else {
+      updateSelectInput(session, "otherdatatwo",
+                        label = "Pick a Cluster to Compare",
+                        choices = NULL)
+    }
+  })
+  
   session$allowReconnect(TRUE)
-  filtered <- reactive({df2[df2$Cluster_Desc == input$data, ]})
-  filteredtwo <- reactive({df2[df2$Cluster_Desc == input$otherdata, ]})
-  filteredval <- reactive({df2[df2$Cluster_Desc == input$data, ][1, ]})
+  filtered <- reactive({df2[df2$Cluster_Desc == input$datatwo, ]})
+  filteredtwo <- reactive({df2[df2$Cluster_Desc == input$otherdatatwo, ]})
+  filteredval <- reactive({df2[df2$Cluster_Desc == input$datatwo, ][1, ]})
   clusterfilter <- reactive({category[category$Cluster_category == input$clusterchoice, ]})
   
   #cover picture
@@ -380,7 +411,7 @@ server <- function(input, output, session) {
     }
   })
   
-  observeEvent(input$data, {
+  observeEvent(input$datatwo, {
     filtered_data(NULL)
   })
   
@@ -423,6 +454,9 @@ server <- function(input, output, session) {
         theme(legend.position = 'none')
     } 
     
+    if (input$showLegend) {
+      p <- p + theme(legend.position = "left")
+    }
     
     
     ggplotly(p, tooltip = 'fill') %>% layout(plot_bgcolor = 'white', paper_bgcolor = 'white')
@@ -432,6 +466,9 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui, server)
+
+
+
 
 
 
