@@ -77,13 +77,11 @@ body <- dashboardBody(tags$head(tags$link(rel = 'stylesheet',
       tabItem(
         tabName = 'page1',
         fluidRow(
-          #column(width = 12, 
           imageOutput("pic", height = "auto", width = "auto")
         ),
         div(style = "margin-top: 20px;"),
         fluidRow(
           column(width = 12, box(title = 'Overview', height = 280, width = 300, htmlOutput('overviewtext'))),
-          #column(width = 6, box(title = 'SNOMED/GDPPR', height = 250, width = 300, textOutput('snomed'))),
           column(
             width = 12,
             class = 'table-output-column',
@@ -111,8 +109,6 @@ body <- dashboardBody(tags$head(tags$link(rel = 'stylesheet',
                                                              '#conceptinfo{background-color:grey; color:white} 
                                                      #conceptinfo:hover{background-color: navy; color:white}'))), 
                         collapsibleTreeOutput('cluster')%>% withSpinner(color="navy")),
-               # tabPanel(title = 'Cluster Codes', 
-               #          collapsibleTreeOutput('tree')),
                tabPanel(title = 'Data Coverage',
                         selectInput('clusterchoice', 'Pick a Category to view its Coverage Period', 
                                     choices = c(unique(category$Cluster_category)), multiple = F),
@@ -175,10 +171,7 @@ body <- dashboardBody(tags$head(tags$link(rel = 'stylesheet',
                                           ),
                                           
                                         style = "margin-bottom: 20px;"  # Adjust the margin to create spacing
-                                        # actionButton('resize', 'Click to view cases above 1000', width = '200px'),
-                                        # actionButton('reset', 'Click to Reset Plot', width = '200px'),
-                                        # actionButton('earlydates', 'Click to View percentage before 1990', width = '400px'),
-                                        # checkboxInput('log',"Tick to view Log Scale", F)
+                                        
         ))),
         
         fluidRow(column(width = 12, box(width = 500, title = 'Cluster Timeseries', 
@@ -190,9 +183,6 @@ body <- dashboardBody(tags$head(tags$link(rel = 'stylesheet',
                                                      #timeseriesinfo:hover{background-color: navy; color:white}'))),
                                         plotlyOutput('timeseries', height = 500)%>% withSpinner(color="navy"),
                                         conditionalPanel(condition = 'input.compare')
-                                                         #plotlyOutput('timeseriestwo'))
-                                        # conditionalPanel(condition = 'input.log', 
-                                        #                  plotlyOutput('timeseriesthree', height = 300))
                                         ))),
         fluidRow(
           column(
@@ -274,10 +264,6 @@ server <- function(input, output, session) {
   
   
   
-  # output$snomed <- renderText({'SNOMED CT stands for Systemised Nomencleture
-  # of Medicine - Clinical Terms. That is,
-  # it is a system used to standardise the description of clinical terms
-  #   in Hospitals and GP practices.'})
   
   
   #page navigation
@@ -321,15 +307,11 @@ server <- function(input, output, session) {
     ggplotly(
       ggplot(clusterfilter(), aes(x = date_ym)) +
         geom_line(aes(y = records_month, colour = 'Records Month'), alpha = 0.7, show.legend = TRUE) +
-        #geom_point(aes(y = records_month, colour = 'Records Month'), alpha = 0.7, size = 1) +
         geom_line(aes(y = valid_idmonth, colour = 'Valid Id'), alpha = 0.7, show.legend = TRUE) +
-        #geom_point(aes(y = valid_idmonth, colour = 'Valid Id'), alpha = 0.7, size = 1) +
         geom_line(aes(y = distinct_id, colour = 'Distinct Id'), alpha = 0.7, show.legend = TRUE) +
-        #geom_point(aes(y = distinct_id, colour = 'Distinct Id'), alpha = 0.7, size = 1) +
-        
+
         labs(x = 'Date', y = 'Cases', colour = 'Key') +
         scale_y_continuous(labels = label_number(scale_cut = cut_short_scale())) +
-        #scale_y_continuous(labels = scales::comma) +
         scale_x_date(limits = c(input$date[1], input$date[2])) +
         scale_color_manual(values = c('Records Month' = '#440154',
                                       'Valid Id' = '#31688E',
@@ -381,7 +363,7 @@ server <- function(input, output, session) {
   
   #resize plot
   observeEvent(input$resize, {
-    filtered_data(filtered()[filtered()$records_month > 1000, ]) #(df2[df2$Cluster_ID %in% filtered() & df2$records_month > 1000, ])
+    filtered_data(filtered()[filtered()$records_month > 1000, ]) 
     filtered_datatwo(filteredtwo()[filteredtwo()$records_month > 1000, ])
   })
   
@@ -420,7 +402,7 @@ server <- function(input, output, session) {
   #timeseries plot
   output$timeseries <- renderPlotly({
     Sys.sleep(1)
-    filtered_plot_data <- filtered() #df2[df2$Cluster_ID %in% filtered(), ]
+    filtered_plot_data <- filtered() 
     filtered_plot_datatwo <- filteredtwo()
     combined_data <- rbind(filtered_plot_data, filtered_plot_datatwo)
     
@@ -430,7 +412,6 @@ server <- function(input, output, session) {
       p <- ggplot(plot_data, aes(x = date_ym, fill = ConceptId_Description_2)) +
         geom_area(aes(y = records_month, fill = ConceptId_Description_2)) +
         labs(x = 'Date', y = 'Cases') +
-        #scale_y_continuous(labels = scales::comma) +
         scale_y_continuous(labels = label_number(scale_cut = cut_short_scale())) +
         scale_fill_viridis_d() +
         theme_minimal() +
@@ -447,7 +428,6 @@ server <- function(input, output, session) {
       p <- ggplot(plot_data, aes(x = date_ym, fill = ConceptId_Description_2)) +
         geom_area(aes(y = records_month, fill = ConceptId_Description_2)) +
         labs(x = 'Date', y = 'Cases') +
-        #scale_y_continuous(labels = scales::comma) +
         scale_y_continuous(labels = label_number(scale_cut = cut_short_scale())) +
         scale_fill_viridis_d() +
         theme_minimal() +
@@ -466,9 +446,3 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui, server)
-
-
-
-
-
-
