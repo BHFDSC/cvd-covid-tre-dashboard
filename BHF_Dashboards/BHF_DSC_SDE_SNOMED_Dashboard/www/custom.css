@@ -2,30 +2,101 @@ body {
     font-family: Arial, sans-serif !important;
   }
 .skin-blue .main-sidebar{
-    background-color: maroon !important;
+    background-color:cornflowerblue !important;
 }
 
 .skin-blue .main-header .logo{
-    background-color: maroon;
+    background-color: cornflowerblue;
     }
     .skin-blue .main-header .logo:hover {
-        background-color: crimson;
+        background-color: lightslategray;
+        }
+        .skin-blue .main-header .text:hover{
+            background-color: lightslategray;
         }
 .skin-blue .main-header .navbar {
-    background-color: maroon;
+    background-color: cornflowerblue;
     }
     .content-wrapper, .right-side {
         background-color: whitesmoke;
         }
 
 .skin-blue .main-header .navbar .sidebar-toggle:hover{
-    background-color: crimson;
+    background-color: lightslategray;
         }
 .small-box.bg-black {background-color: lightslategray !important;
 
 }
 
-.small-box.bg-light-blue {background-color: maroon !important;
+.small-box.bg-aqua {background-color: navy !important;
 
 }
+
+.box-header {
+    color: navy;
+    display: block;
+    padding: 10px;
+    position: relative;
+}
+
+
+.skin-blue .sidebar-menu>li.active>a, .skin-blue .sidebar-menu>li:hover>a {
+    color: #fff;
+    background: lightslategray;
+    border-left-color: navy;
+}
+
+
+.nav-tabs-custom>.nav-tabs>li.header {
+    line-height: 35px;
+    padding: 0 10px;
+    font-size: 20px;
+    color: navy;
+}
+
+.nav-tabs-custom>.nav-tabs>li.active:hover>a, .nav-tabs-custom>.nav-tabs>li.active>a {
+    background-color: #fff;
+    color: navy;
+}
+
+.sweet-alert button {
+    background-color: maroon;
+    color: #fff;
+    border: none;
+    box-shadow: none;
+    font-size: 17px;
+    font-weight: 500;
+    -webkit-border-radius: 4px;
+    border-radius: 5px;
+    padding: 10px 32px;
+    margin: 26px 5px 0;
+    cursor: pointer;
+}
+
+.nav-tabs-custom>.nav-tabs>li.active {
+    border-top-color: lightslategray;
+}
+
+a {
+    color: whitesmoke;
+}
+
+a {
+    color: whitesmoke;
+    text-decoration: none;
+}
+
+.nav > li > a:hover{
+    background-color:#FCC;
+}
+
+.irs--shiny .irs-bar {
+    top: 25px;
+    height: 8px;
+    border-top: 1px solid maroon;
+    border-bottom: 1px solid maroon;
+    background: maroon;
+}
+
+
 
