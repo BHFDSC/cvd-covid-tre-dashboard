@@ -13,9 +13,7 @@ library(readxl)
 library(reactable)
 library(viridis)
 library(scales)
-library(NestedMenu)
 library(shinycssloaders)
-options(scipen=99999)
 
 #reading in datasets 
 df2 <- read_csv('full_df.csv')
@@ -47,6 +45,7 @@ category$date_ym <- anydate(category$date_ym)
 category$date_ym <- ymd(category$date_ym)
 
 #dashboard header
+
 header <- dashboardHeader(
                             title = div(
     a(href = 'https://bhfdatasciencecentre.org/',
@@ -62,8 +61,10 @@ header <- dashboardHeader(
                             icon('envelope'),
                             'Feedback or Suggestions?'
                           )
-                          
+
                   ))
+
+
   
 #dashboard sidebar
 sidebar <- dashboardSidebar(collapsed = T, width = 180, sidebarMenu(id = 'sidebar', 
@@ -435,7 +436,7 @@ server <- function(input, output, session) {
     } 
     
     if (input$showLegend) {
-      p <- p + theme(legend.position = "left")
+      p <- p + theme(legend.position = "bottom")
     }
     
     
@@ -446,3 +447,5 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui, server)
+
+
