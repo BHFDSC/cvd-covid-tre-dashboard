@@ -48,7 +48,7 @@ category$date_ym <- ymd(category$date_ym)
 
 header <- dashboardHeader(
                             title = 
-                              div(tags$head(tags$title('SNOMED Codes and Clusters in GDPPR')),
+                              div(tags$head(tags$title('SNOMED Codes and Clusters in GDPPR - BHF DSC')),
     a(href = 'https://bhfdatasciencecentre.org/',
       HTML('<img src="headerlogo.png" alt="Logo" height="30" style="vertical-align: left;">')
     ),
@@ -179,7 +179,7 @@ body <- dashboardBody(tags$head(tags$link(rel = 'stylesheet',
         fluidRow(column(width = 12, box(width = 500, title = 'Cluster Timeseries', 
                                         solidHeader = TRUE,
                                         actionButton(inputId = 'timeseriesinfo', label = icon('info')
-                                        ),checkboxInput("showLegend", "Show Legend", value = TRUE), tags$head(
+                                        ),checkboxInput("showLegend", "Show Legend", value = F), tags$head(
                                           tags$style(HTML(
                                             '#timeseriesinfo{background-color:grey; color:white} 
                                                      #timeseriesinfo:hover{background-color: navy; color:white}'))),
