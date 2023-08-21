@@ -13,9 +13,7 @@ library(readxl)
 library(reactable)
 library(viridis)
 library(scales)
-library(NestedMenu)
 library(shinycssloaders)
-options(scipen=99999)
 
 #reading in datasets 
 df2 <- read_csv('full_df.csv')
@@ -47,8 +45,10 @@ category$date_ym <- anydate(category$date_ym)
 category$date_ym <- ymd(category$date_ym)
 
 #dashboard header
+
 header <- dashboardHeader(
-                            title = div(
+                            title = 
+                              div(tags$head(tags$title('SNOMED Codes and Clusters in GDPPR - BHF DSC')),
     a(href = 'https://bhfdatasciencecentre.org/',
       HTML('<img src="headerlogo.png" alt="Logo" height="30" style="vertical-align: left;">')
     ),
@@ -62,8 +62,10 @@ header <- dashboardHeader(
                             icon('envelope'),
                             'Feedback or Suggestions?'
                           )
-                          
+
                   ))
+
+
   
 #dashboard sidebar
 sidebar <- dashboardSidebar(collapsed = T, width = 180, sidebarMenu(id = 'sidebar', 
@@ -177,7 +179,7 @@ body <- dashboardBody(tags$head(tags$link(rel = 'stylesheet',
         fluidRow(column(width = 12, box(width = 500, title = 'Cluster Timeseries', 
                                         solidHeader = TRUE,
                                         actionButton(inputId = 'timeseriesinfo', label = icon('info')
-                                        ),checkboxInput("showLegend", "Show Legend", value = TRUE), tags$head(
+                                        ),checkboxInput("showLegend", "Show Legend", value = F), tags$head(
                                           tags$style(HTML(
                                             '#timeseriesinfo{background-color:grey; color:white} 
                                                      #timeseriesinfo:hover{background-color: navy; color:white}'))),
@@ -435,7 +437,7 @@ server <- function(input, output, session) {
     } 
     
     if (input$showLegend) {
-      p <- p + theme(legend.position = "left")
+      p <- p + theme(legend.position = "bottom")
     }
     
     
@@ -446,3 +448,5 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui, server)
+
+
