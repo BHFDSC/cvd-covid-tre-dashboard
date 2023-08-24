@@ -235,14 +235,162 @@ ggplot(multipleCODEtable, aes(x=year, y=freq, fill= codename)) +
 This looks much more like the variety you see between clusters or within a cluster.
 
 
+###4) Introducing different starting points
+
+
+Some series start long ago (like 1990) whereas some only started in the last 4 years. We want to see if we can build this characteristic into our loop
+
+
+It's easier to demonstrate this by going back to our simpler chunk from step 2. We're going to sample from a set of values
+
+```{r}
+
+start_years <- c(1990:2018)
+
+startyear <- sample( start_years, 1, replace = TRUE)
+sum(start_years < startyear)
+
+
+```
+If you keep running the above it'll keep picking at random a year for the data to start from
+
+So we incorporate this into our loop now
+
+```{r}
+# Establishing parameters
+year_series <- c(1990:2021)
+number_of_series <- 5
+set.seed(007)
+
+# Establishing all the possible years the data could start in 
+start_years <- c(1990:2018)
+selected_start_years <- sample( start_years, 5, replace = TRUE)
+
+
+# Establishing the possible values before this point. They're negligible but sometimes rounded to 10 due to suppression
+low_values <- c(0, 10)
+
+
+# Creating fake frequencies by sampling the normal distribution - and making there is a freq for each interval
+
+listofseries <- list()
+
+for(n in c(1:number_of_series)){
+  # creating the series same as before
+  basic_freq <- rnorm( length(year_series), 1000000, 50000)
+  fake_table <- cbind(year_series, basic_freq)
+  fake_table <- as.data.frame(fake_table)
+  
+  # label it and the cols
+  fake_table[3] <- paste0("dummySNOMEDcode", n)
+  colnames(fake_table) <- c("year", "freq", "codename")
+  head(fake_table)  
+  
+  # Now introducing a start year  
+  start_year <- selected_start_years[n]
+  # Establishing how many years preceed this
+  yearsbefore <- sum(start_years < start_year)
+  # Replacing the earlier frequencies with a negligible value
+  fake_table$freq[ 1:yearsbefore] <- sample( low_values, yearsbefore, replace = TRUE)
+
+  
+  listofseries[[n]] <- fake_table
+
+# now saving we've created a time series for a code and labelled it, we can save this to our list and move onto the next loop  
+  
+}
+
+multipleCODEtable <- do.call("rbind", listofseries)
+multipleCODEtable
+
+
+```
+We can plot these lines to see what they look like.
+
+
+```{r}
+
+library(ggplot2)
+
+ ggplot(multipleCODEtable,  aes(x=year, y= freq, group=codename, color=codename)) +
+    geom_line() + expand_limits(y=0)
+
+```
 
 
 
 
 
 
+### 6) generating 'n' , 'n_id' and 'n_id_distinct'
+
+The three measures given for concepts/clusters are 'n' , 'n_id' and 'n_id_distinct'.
+
+- n means how many applicable records there were.
+
+- n_id means how many applicable records there were that has an individual tied to it.
+
+- n_id_distinct means how many different individuals have at least one record.
+
+Seems like all the records had an id attached, when looking at the actual data, so we'll mimic that.
+
+n_id_distinct must be lower than n, and is fairly proportional to the overall volume. So we'll randomly determine what proportion it is.
 
 
+```{r}
+# Establishing parameters
+year_series <- c(1990:2021)
+number_of_series <- 5
+set.seed(007)
+# Here we randomly generate the averages
+random_averages <- rnorm( number_of_series, 10000, 5000)*100
+
+# Some proportions to decide how the relationship between records and people
+random_props <- rnorm( length(year_series), 0.6 , 0.075)
+
+# Creating fake frequencies by sampling the normal distribution - and making there is a freq for each interval
+
+listofseries <- list()
+
+for(i in c(1:number_of_series)){
+  # creating the series same as before
+  n <- rnorm( length(year_series), random_averages[i], 50000)
+  n_id <- n
+  n_distinct_id <- n * random_props
+  fake_table <- cbind(year_series, n)
+  fake_table <- as.data.frame(fake_table)
+  fake_table$n_id <- n_id
+  fake_table$n_distinct_id <- n_distinct_id
+  # label it and the cols
+  fake_table[5] <- paste0("dummyConceptcode", i)
+  colnames(fake_table)[1] <- c("year")
+  colnames(fake_table)[5] <- c("concept")
+  head(fake_table)
+  listofseries[[i]] <- fake_table
+
+# now saving we've created a time series for a code and labelled it, we can save this to our list and move onto the next loop  
+  
+}
+
+multipleCODEtable <- do.call("rbind", listofseries)
+head(multipleCODEtable)
+
+
+```
+
+```{r}
+
+library(ggplot2)
+library(dplyr)
+
+specificCode <- multipleCODEtable %>% filter( concept == "dummyConceptcode1"  )
+
+ggplot(specificCode,  aes(x = year)) +
+  geom_line(aes(y = n), color = "black") +
+  geom_line(aes(y = n_distinct_id), color = "green") + 
+  expand_limits(y = 0)
+
+```
 
 
 
