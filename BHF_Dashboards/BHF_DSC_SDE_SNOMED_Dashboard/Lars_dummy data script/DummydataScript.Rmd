@@ -107,7 +107,7 @@ Now lets try looping our first attempt so that we're generating multiple time se
 ```{r}
 # Establishing parameters
 year_series <- c(1990:2021)
-number_of_series <- 5
+number_of_series <- 16
 set.seed(007)
 
 # Creating fake frequencies by sampling the normal distribution - and making there is a freq for each interval
@@ -177,7 +177,7 @@ Some series represent large datasets, some smaller.... see if you can build this
 ```{r}
 # Establishing parameters
 year_series <- c(1990:2021)
-number_of_series <- 5
+number_of_series <- 9
 set.seed(007)
 # Here we randomly generate the averages
 random_averages <- rnorm( number_of_series, 10000, 5000)*100
@@ -192,8 +192,8 @@ for(n in c(1:number_of_series)){
   fake_table <- cbind(year_series, basic_freq)
   fake_table <- as.data.frame(fake_table)
   # label it and the cols
-  fake_table[3] <- paste0("dummySNOMEDcode", n)
-  colnames(fake_table) <- c("year", "freq", "codename")
+  fake_table[3] <- paste0("dummySNOMEDconcept", n)
+  colnames(fake_table) <- c("year", "cases", "codename")
   head(fake_table)
   listofseries[[n]] <- fake_table
 
@@ -212,7 +212,7 @@ multipleCODEtable
 
 library(ggplot2)
 
- ggplot(multipleCODEtable,  aes(x=year, y= freq, group=codename, color=codename)) +
+ ggplot(multipleCODEtable,  aes(x=year, y= cases, group=codename, color=codename)) +
     geom_line() + expand_limits(y=0)
 
 ```
@@ -223,11 +223,13 @@ library(ggplot2)
 ```{r}
 
 library(ggplot2)
+library(viridis)
 
 options(scipen = 100, digits = 22)
 
-ggplot(multipleCODEtable, aes(x=year, y=freq, fill= codename)) + 
-    geom_area() 
+ggplot(multipleCODEtable, aes(x=year, y=cases, fill= codename)) + 
+    geom_area() +
+  scale_fill_viridis(discrete = TRUE)
 
 
 ```
@@ -383,11 +385,12 @@ head(multipleCODEtable)
 library(ggplot2)
 library(dplyr)
 
-specificCode <- multipleCODEtable %>% filter( concept == "dummyConceptcode1"  )
+specificCode <- multipleCODEtable %>% filter( concept == "dummyConceptcode2"  )
 
 ggplot(specificCode,  aes(x = year)) +
   geom_line(aes(y = n), color = "black") +
   geom_line(aes(y = n_distinct_id), color = "green") + 
+  geom_line(aes(y = n_id), color = "blue") +
   expand_limits(y = 0)
 
 ```

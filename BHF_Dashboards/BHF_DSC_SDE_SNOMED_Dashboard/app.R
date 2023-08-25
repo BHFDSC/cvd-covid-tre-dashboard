@@ -446,3 +446,60 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui, server)
+# 
+# a <- rnorm(35122, mean=1000000, sd=50000)
+# typeof(a)
+# a <- data.frame(a)
+# 
+# colnames(a) <- c("records_month")
+# 
+# 
+# # Set the seed for reproducibility
+# set.seed(123)
+# 
+# # Define the number of time points
+# num_time_points <- 40000
+# 
+# # Generate a time vector
+# time <- seq(from = as.Date("1990-01-01"), by = "months", length.out = 40000)
+# 
+# # Generate normally distributed random values
+# random_values <- rnorm(num_time_points, mean = 500000, sd = 1000)
+# 
+# # Create a time series dataframe
+# time_series <- data.frame(Time = time, Value = random_values)
+# 
+# # Print the first few rows of the time series
+# print(head(time_series))
+# 
+# time_series$Time <- anydate(time_series$Time)
+# 
+# time_series$Time <- ymd(time_series$Time)
+# 
+# library(plyr)
+# 
+# time_series$Value <- round_any(time_series$Value, 10, ceiling)
+# 
+# 
+# library(ggplot2)
+# 
+# # Create a line plot using ggplot2
+# ggplot(time_series[1:100, ], aes(x = Time, y = Value)) +
+#   geom_line() +
+#   labs(title = "Random Time Series Plot", x = "Time", y = "Value")
+# 
+# 
+# #Characterising Data
+# 
+# library(dplyr)
+# #group df2 by cluster id and find min and max dates and number of observations in each
+# b <- df2 %>% group_by(Cluster_ID)%>%summarise(mindate = min(date_ym), maxdate=max(date_ym))
+# 
+# 
+# 
+# #for loop to generate random data that fits this
+# 
+# # for (i in b) {
+# #   if 
+# #   print(paste("I like", fruit))
+# # }
