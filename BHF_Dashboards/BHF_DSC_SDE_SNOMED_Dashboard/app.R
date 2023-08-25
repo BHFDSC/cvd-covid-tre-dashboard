@@ -13,9 +13,7 @@ library(readxl)
 library(reactable)
 library(viridis)
 library(scales)
-library(NestedMenu)
 library(shinycssloaders)
-options(scipen=99999)
 
 #reading in datasets 
 df2 <- read_csv('full_df.csv')
@@ -47,8 +45,10 @@ category$date_ym <- anydate(category$date_ym)
 category$date_ym <- ymd(category$date_ym)
 
 #dashboard header
+
 header <- dashboardHeader(
-                            title = div(
+                            title = 
+                              div(tags$head(tags$title('SNOMED Codes and Clusters in GDPPR - BHF DSC')),
     a(href = 'https://bhfdatasciencecentre.org/',
       HTML('<img src="headerlogo.png" alt="Logo" height="30" style="vertical-align: left;">')
     ),
@@ -62,8 +62,10 @@ header <- dashboardHeader(
                             icon('envelope'),
                             'Feedback or Suggestions?'
                           )
-                          
+
                   ))
+
+
   
 #dashboard sidebar
 sidebar <- dashboardSidebar(collapsed = T, width = 180, sidebarMenu(id = 'sidebar', 
@@ -177,7 +179,7 @@ body <- dashboardBody(tags$head(tags$link(rel = 'stylesheet',
         fluidRow(column(width = 12, box(width = 500, title = 'Cluster Timeseries', 
                                         solidHeader = TRUE,
                                         actionButton(inputId = 'timeseriesinfo', label = icon('info')
-                                        ),checkboxInput("showLegend", "Show Legend", value = TRUE), tags$head(
+                                        ),checkboxInput("showLegend", "Show Legend", value = F), tags$head(
                                           tags$style(HTML(
                                             '#timeseriesinfo{background-color:grey; color:white} 
                                                      #timeseriesinfo:hover{background-color: navy; color:white}'))),
@@ -435,7 +437,7 @@ server <- function(input, output, session) {
     } 
     
     if (input$showLegend) {
-      p <- p + theme(legend.position = "left")
+      p <- p + theme(legend.position = "bottom")
     }
     
     
@@ -446,60 +448,3 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui, server)
-# 
-# a <- rnorm(35122, mean=1000000, sd=50000)
-# typeof(a)
-# a <- data.frame(a)
-# 
-# colnames(a) <- c("records_month")
-# 
-# 
-# # Set the seed for reproducibility
-# set.seed(123)
-# 
-# # Define the number of time points
-# num_time_points <- 40000
-# 
-# # Generate a time vector
-# time <- seq(from = as.Date("1990-01-01"), by = "months", length.out = 40000)
-# 
-# # Generate normally distributed random values
-# random_values <- rnorm(num_time_points, mean = 500000, sd = 1000)
-# 
-# # Create a time series dataframe
-# time_series <- data.frame(Time = time, Value = random_values)
-# 
-# # Print the first few rows of the time series
-# print(head(time_series))
-# 
-# time_series$Time <- anydate(time_series$Time)
-# 
-# time_series$Time <- ymd(time_series$Time)
-# 
-# library(plyr)
-# 
-# time_series$Value <- round_any(time_series$Value, 10, ceiling)
-# 
-# 
-# library(ggplot2)
-# 
-# # Create a line plot using ggplot2
-# ggplot(time_series[1:100, ], aes(x = Time, y = Value)) +
-#   geom_line() +
-#   labs(title = "Random Time Series Plot", x = "Time", y = "Value")
-# 
-# 
-# #Characterising Data
-# 
-# library(dplyr)
-# #group df2 by cluster id and find min and max dates and number of observations in each
-# b <- df2 %>% group_by(Cluster_ID)%>%summarise(mindate = min(date_ym), maxdate=max(date_ym))
-# 
-# 
-# 
-# #for loop to generate random data that fits this
-# 
-# # for (i in b) {
-# #   if 
-# #   print(paste("I like", fruit))
-# # }
