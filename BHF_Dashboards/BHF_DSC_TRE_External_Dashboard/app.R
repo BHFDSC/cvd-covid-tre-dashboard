@@ -54,7 +54,7 @@ ui = fluidPage(
   shinyjs::useShinyjs(),
   # This creates a google analytics tag, which allows traffic to be tracked once deployed
   # see https://shiny.posit.co/r/articles/build/google-analytics/ for more instructions
-  tags$head(includeHTML(("google-analytics.html"))),
+  #tags$head(includeHTML(("google-analytics.html"))),
   #App Theme
   theme = bhf_dsc_hds_bootstrap_theme,
   # Load the dependencies for prompter
