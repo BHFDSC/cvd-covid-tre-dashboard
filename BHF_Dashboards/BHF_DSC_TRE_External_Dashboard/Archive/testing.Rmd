@@ -178,6 +178,10 @@ tibble(
 update_date = as.Date("2023-06-15")
 update_date_string = paste(months(update_date),lubridate::year(update_date))
 
+
+t.dataset_overview_wales  %>% rename(n_id_distinct = n_distinct) %>%
+            mutate(archived_on = as.Date( archived_on, tryFormats = c("%d/%m/%Y")))
+
 ```
 
 
