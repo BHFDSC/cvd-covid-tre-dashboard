@@ -15,16 +15,16 @@ substr(export_date_england,1,4)
 substr(export_date_england,6,7)
 
 #Scotland
-export_date_scotland = "2023-06-14"
-completeness_dataset_name_scotland = "export_dashboard_scotland_completeness20230614"
-coverage_dataset_name_scotland = "export_dashboard_scotland_coverage20230614"
-overview_dataset_name_scotland = "export_dashboard_scotland_overview20230614"
+export_date_scotland = "2023-08-11"
+completeness_dataset_name_scotland = "export_dashboard_scotland_completeness20230811"
+coverage_dataset_name_scotland = "export_dashboard_scotland_coverage20230811"
+overview_dataset_name_scotland = "export_dashboard_scotland_overview20230811"
 
 #Wales
-export_date_wales = "2023-01-27"
-completeness_dataset_name_wales = "export_dashboard_SAIL_20230127_data_completeness"
-coverage_dataset_name_wales = "export_dashboard_SAIL_20221130_data_coverage"
-overview_dataset_name_wales = "export_dashboard_SAIL_20230127_data_overview"
+export_date_wales = "2023-08-09"
+completeness_dataset_name_wales = "export_dashboard_SAIL_20230809_data_completeness"
+coverage_dataset_name_wales = "export_dashboard_SAIL_20230809_data_coverage"
+overview_dataset_name_wales = "export_dashboard_SAIL_20230809_data_overview"
 
 
 
