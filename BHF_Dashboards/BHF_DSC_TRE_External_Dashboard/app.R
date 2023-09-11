@@ -152,7 +152,7 @@ ui = fluidPage(
       #includeHTML('footer.html') #now archived
       HTML(footer_template(export_date = paste(export_date_england,export_date_scotland,export_date_wales),
                            email_link = "mailto:bhfdsc@hdruk.ac.uk",
-                           twitter_link = "https://twitter.com/BHFDataScience?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
+                           twitter_link = "https://twitter.com/HDR_UK",
                            youtube_link = "https://www.youtube.com/playlist?list=PLBI5k9SgYrItGXrJo3wO2LtsxwfyvimZ5"
                            ))
 ))
