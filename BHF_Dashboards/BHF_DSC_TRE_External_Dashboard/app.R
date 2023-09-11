@@ -49,6 +49,9 @@ source('external_inputs.R')
 
 ui = fluidPage(
   
+  #tags$head(HTML("<title>BHF DSC Dashboard</title>")), #window title on the browser
+  tags$head(HTML("<title>BHF DSC Dashboard</title> <link rel='icon' type='image/png' sizes = '32x32' href='/test.png'>")),
+  
 
   ## UI Setup and Design #######################################################
   shinyjs::useShinyjs(),
