@@ -18,7 +18,7 @@ aboutUI<- function(id){
                   <div class="columnleftwelcome" >
                   <span style="letter-spacing:1px;font-size:34px;text-align:left;">
                   <br>Welcome to the<br>
-                  <a href="https://www.hdruk.ac.uk/projects/cvd-covid-uk-project/" target = "_blank" >CVD-COVID-UK/COVID-IMPACT</a> <br>
+                  <a href="https://bhfdatasciencecentre.org/areas/cvd-covid-uk-covid-impact/" target = "_blank" >CVD-COVID-UK/COVID-IMPACT</a> <br>
                   Dataset Summary Dashboard<br>
 
 
