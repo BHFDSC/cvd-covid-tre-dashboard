@@ -202,10 +202,22 @@ display: flex;
 letter-spacing:1px;font-size:34px;text-align:left;
 }
 
+.faq-titlefunding{
+display: flex;
+
+letter-spacing:1px;font-size:34px;text-align:left;
+}
+
 .card-wrapper {
   min-height: 60vh;
   padding-bottom: 50px; /* footer fixed */
   padding-top: 25px;
+}
+
+.card-wrapperfunding {
+  min-height: 60vh;
+  padding-bottom: 100px; /* footer fixed */
+  padding-top: 100px;
 }
 
 p {
@@ -244,10 +256,25 @@ row-gap: 200px;
 }
 
 
+.faq-cardfunding {
+
+  background-color: #FFF9ED;
+  border-radius: 20px;
+
+  max-width: 80%;
+
+  
+}
+
+
 /* FAQ card: main */
 /*================================================*/
 
 .faq-content {
+  padding: 9px 25px 3rem; 
+}
+
+.faq-contentfunding {
   padding: 9px 25px 3rem; 
 }
 
@@ -257,10 +284,22 @@ row-gap: 200px;
   color: #7044CB;
 }
 
+.faq-contentfunding h1 {
+  font-size: 32px;
+  text-align: center;
+  color: #7044CB;
+}
+
 .faq-accordion {
 
   padding: 8px 0;
-  border-bottom: 1px solid hsl(240, 5%, 91%);
+  border-bottom: 1px solid #B0E1E8;
+}
+
+.faq-accordionfunding {
+
+  padding: 8px 0;
+  border-bottom: 1px solid #FFC335;
 }
 
 
@@ -273,7 +312,25 @@ input.tgg-title {
   all:unset;
 }
 
+/* checkbox tgg-titlefunding*/
+input.tgg-titlefunding {
+  appearance: unset;
+  all:unset;
+}
+
 .faq-accordion-title label{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.faq-accordion-titlefunding label{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.faq-accordionfunding-title label{
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -286,7 +343,19 @@ letter-spacing:1px;
   color: #7044CB;
 }
 
+.faq-accordionfunding-title h2{
+letter-spacing:1px;
+  font-size: 18px /*var(--font-size)*/;
+  font-weight: 700;
+  color: #7044CB;
+}
+
 .faq-accordion-title span{
+  margin-left: auto;
+  transition: transform .4s ease-in-out;
+}
+
+.faq-accordionfunding-title span{
   margin-left: auto;
   transition: transform .4s ease-in-out;
 }
@@ -296,6 +365,14 @@ letter-spacing:1px;
 /*================================================*/
 
 .faq-accordion-content {
+  color: #474D5B;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height .4s ease-in-out;
+  font-size: 18px;
+}
+
+.faq-accordionfunding-content {
   color: #474D5B;
   overflow: hidden;
   max-height: 0;
@@ -313,8 +390,16 @@ letter-spacing:1px;
   color: #7044CB
 }
 
+.faq-accordionfunding-title:hover h2{
+  color: #7044CB
+}
+
 /* onclick */
 .faq-accordion .tgg-title:checked + div>label>h2 {
+  font-weight: 700;
+}
+
+.faq-accordionfunding .tgg-titlefunding:checked + div>label>h2 {
   font-weight: 700;
 }
 
@@ -323,9 +408,19 @@ letter-spacing:1px;
   transform: rotate(180deg);
 }
 
+.faq-accordionfunding .tgg-title:checked + div>label>span {
+  will-change: transform;
+  transform: rotate(180deg);
+}
+
 /* main content, acordion text effect */
 
 .faq-accordion .tgg-title:checked ~ .faq-accordion-content{
+  will-change: max-height;
+  max-height: 1000px;
+}
+
+.faq-accordionfunding .tgg-titlefunding:checked ~ .faq-accordionfunding-content{
   will-change: max-height;
   max-height: 1000px;
 }
@@ -566,6 +661,13 @@ background:#B0E1E8;z-index:1!important;
 
   align-items: center;margin-top:-100px;}
 
+
+.containeraccordioncenterfunding{
+  position:relative;
+background:#FFC335;z-index:1!important;
+
+  align-items: center;margin-top:10px;}
+
 .div2welcome{
 
 }
@@ -767,10 +869,11 @@ a.aboutMail:visited{color:#A0003C;text-decoration: none;}
 a.aboutMail:active{color:#ff0030;text-decoration: none;}
 
 
-.aboutFund:visited{color:#FFC335;}
+.aboutFund:visited{color:#A0003C;}
 .aboutFund:hover{color:#ff0030!important;}
-.aboutFund:link{color:#FFC335;}
+.aboutFund:link{color:#A0003C;}
 .aboutFund:active{color:#ff0030!important;}
+
 
 
 /*############################################################################*/
