@@ -28,12 +28,18 @@ dataset_dashboard_list = function(nation,key="Dataset available"){
 
 
 
-read_excel_allsheets <- function(filename, tibble = FALSE, except_sheet_no = NA, skip = 0, collate = TRUE) {
+
+
+read_excel_allsheets <- function(filename, tibble = FALSE, except_sheet_no = NA, sheets_to_remove = c("Home","Reference Data"),
+                                 skip = 0, collate = TRUE) {
   # reading all the names of the sheets
   sheets <- readxl::excel_sheets(filename)
   # applying any exceptions eg cover sheets  
   if (!sum(is.na(except_sheet_no))){
     sheets <- sheets[-except_sheet_no]
+  }
+  if (length(sheets_to_remove>0)){
+    sheets <- setdiff(sheets,sheets_to_remove)
   }
   
   
