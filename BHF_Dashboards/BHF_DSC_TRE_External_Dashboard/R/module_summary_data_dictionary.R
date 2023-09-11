@@ -143,7 +143,7 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
             select(-Title,-title_dataset) %>%
             select(where(not_all_na)) %>%
             left_join(t.data_dictionaryEng, by = "table") %>%
-            select(-table,-database,-x,-dataset_dataset)
+            select(-table,-database,-dataset_dataset,-path) #-x
         }
         
       })
