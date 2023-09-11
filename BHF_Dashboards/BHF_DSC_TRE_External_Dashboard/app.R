@@ -133,13 +133,13 @@ ui = fluidPage(
     
     ### Feedback Button ===========================================================
     
-    tabPanel(actionBttn(inputId='ab1', label="Provide Feedback", color = "success", 
-                        position = "right",
-                        # icon = icon("th"), 
-                        # size = lg ,
-                        style = "unite"  , 
-                        onclick ="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=saxMhCdwY0Kdihj6pb8IOe1OSlBUSpBCq1NpVakPfMJURTY0TTZCRFlHOUEyMTM3QUJWTkxFR1AwUC4u',)"))
-    
+    # tabPanel(actionBttn(inputId='ab1', label="Provide Feedback", color = "success", 
+    #                     position = "right",
+    #                     # icon = icon("th"), 
+    #                     # size = lg ,
+    #                     style = "unite"  , 
+    #                     onclick ="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=saxMhCdwY0Kdihj6pb8IOe1OSlBUSpBCq1NpVakPfMJURTY0TTZCRFlHOUEyMTM3QUJWTkxFR1AwUC4u',)"))
+    # 
 
     )
   ),
