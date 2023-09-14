@@ -63,7 +63,8 @@ t.data_dictionaryEng = read_excel_allsheets('Data/TRE_DD_391419_j3w9t.xlsx',
          `variable_type` = data_type
          #`x` = gdppr
   ) %>%
-  mutate(database='dars_nic_391419_j3w9t')
+  mutate(database='dars_nic_391419_j3w9t') %>%
+  mutate(field=ifelse(str_starts(table,"iapt_"),str_to_lower(field),field))
 
 
 
@@ -117,9 +118,18 @@ t.dataset_overview_scotland = read.csv(paste0('Data/',overview_dataset_name_scot
 
 
 # Dataset Completeness -------------------------------------------------------------
-t.dataset_completeness_eng = read.csv(paste0('Data/',completeness_dataset_name_england,'.csv')) %>% mutate(dataset=ifelse(dataset=="deaths","death",dataset))
+t.dataset_completeness_eng = read.csv(paste0('Data/',completeness_dataset_name_england,'.csv')) %>% mutate(dataset=ifelse(dataset=="deaths","death",dataset)) %>%
+  mutate(column_name_temp = str_to_lower(column_name))
 t.dataset_completeness_wales = read.csv(paste0('Data/',completeness_dataset_name_wales,'.csv'))
 t.dataset_completeness_scotland = read.csv(paste0('Data/',completeness_dataset_name_scotland,'.csv'))
+
+#update DD for misaligned MSDS fieds
+t.data_dictionaryEng = t.data_dictionaryEng %>%
+  left_join((t.dataset_completeness_eng%>%select(-completeness)%>% 
+               mutate(dataset=str_remove(dataset,"_all_years")))
+            ,by=c("table"="dataset","field"="column_name_temp")) %>%
+  mutate(field = ifelse(table%in%c("msds_care_activities","msds_demographics_booking_and_pregnancy","msds_hospital_provider_spell"),column_name,field)) %>%
+  select(-column_name)
 
 # # Data Coverage Pre Processed from data_preprocessing -------------------
 
