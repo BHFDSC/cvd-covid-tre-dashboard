@@ -259,7 +259,8 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
                 select(-Dataset) %>%
                 #mutate(Dataset = ifelse(Title==Title_dataset, NA, Title_dataset)) %>%
                 #select(where(not_all_na)) %>%
-                select(-Dataset.y)
+                select(-Dataset.y) %>%
+                rename(Description = "Field Description", Label="Field Name",Type="Field Type",Notes=Comments)
               
             } else if (nation_summary() == "England" ){
               
@@ -271,7 +272,8 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
                 select(-Dataset) %>%
                 #mutate(Dataset = ifelse(Title==Title_dataset, NA, Title_dataset)) %>%
                 #select(where(not_all_na)) %>%
-                select(-Title,-Title_dataset,-dataset)
+                select(-Title,-Title_dataset,-dataset) %>%
+                rename(Description="Field Description",Format="Variable_type",Label="Field Name",Type="Field Type")
               
             } else if (nation_summary() == "Wales" ){
               
@@ -282,7 +284,7 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
                 rename(Field=Variable) %>%
                 left_join((color_data()%>%select(-Dataset)%>%rename(Dataset=dataset)), by=c("Dataset"="Dataset","Field"="column_name")) %>%
                 select(-Dataset) %>%
-                rename(`Field Description` = Description)
+                rename(Format=`Data Type`)
                 #mutate(Dataset = ifelse(Title==Title_dataset, NA, Title_dataset)) %>%
                 #select(where(not_all_na)) %>%
                 #select(-dataset)
@@ -315,7 +317,9 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
         } else {
       
         reactable(
-          data = my_data()%>%mutate(completeness=(sprintf("%5.1f", completeness))),
+          data = my_data()%>%mutate(completeness=(sprintf("%5.1f", completeness)))
+          
+          ,
           
           groupBy = if(dataset_summary() %in% grouped_datasets){"Dataset"} else {NULL},
           paginateSubRows = TRUE,
@@ -325,9 +329,15 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
             Position = colDef(style = list(whiteSpace = "nowrap", textOverflow = "unset"),maxWidth = 100,sticky = "left"),
             #Dataset = colDef(minWidth = 400),
             Field = colDef(minWidth = 200,sticky = "left"),   # 50% width, 200px minimum
-            `Field Name` = colDef(minWidth = 200),   # 25% width, 100px minimum
-            `Field Description` = colDef(
+            `Label` = colDef(minWidth = 200),   # 25% width, 100px minimum
+            `Description` = colDef(
               minWidth = 400,
+              html = TRUE,
+              cell =  function(value, index, name) {
+                render.reactable.cell.with.tippy(text = value, tooltip = value)}
+            ),
+            `Values` = colDef(
+              minWidth = 200,
               html = TRUE,
               cell =  function(value, index, name) {
                 render.reactable.cell.with.tippy(text = value, tooltip = value)}
