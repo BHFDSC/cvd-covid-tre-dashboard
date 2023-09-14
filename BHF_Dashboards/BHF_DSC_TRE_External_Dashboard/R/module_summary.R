@@ -7,14 +7,14 @@ summaryUI <- function(id){
     wellPanel(style = wellpanel_style,
               fluidRow(style = bhf_global_options_style,
                        
-                       column(4,div(id = "nation_css",
+                       column(3,div(id = "nation_css",
                                   class = "nation_css",
                                   selectInput(inputId = ns("nation_summary"),
                                               label = shiny::HTML("<p></p><span style='color: white;font-weight:500;'>Nation:</span>"),
                                               choices = nations_options))),     
                        
                        
-                       column(6,div(id = "dataset_css",
+                       column(8,div(id = "dataset_css",
                                   class = "dataset_css",
                                   selectInput(inputId = ns("dataset_summary"),
                                               label = shiny::HTML("<p></p><span style='color: white;font-weight:500;'>Dataset:</span>"),
