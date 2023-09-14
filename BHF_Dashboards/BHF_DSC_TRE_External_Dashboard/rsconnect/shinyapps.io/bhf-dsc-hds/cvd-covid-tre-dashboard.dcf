@@ -5,10 +5,10 @@ account: bhf-dsc-hds
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 9499670
-bundleId: 7670418
+bundleId: 7670520
 url: https://bhf-dsc-hds.shinyapps.io/cvd-covid-tre-dashboard/
-when: 1694446817.04847
-lastSyncTime: 1694446817.04849
+when: 1694448249.7264
+lastSyncTime: 1694448249.7264
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: Dev/~$Modules Example.pptx|Dev/Modules Example.pptx|google-analytics.html|NUL|README.md|Archive|bind-cache
+ignoredFiles: Dev/~$Modules Example.pptx|Dev/Modules Example.pptx|google-analytics.html|README.md|Archive|bind-cache

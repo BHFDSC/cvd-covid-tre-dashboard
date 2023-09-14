@@ -126,6 +126,36 @@ family_helvetica = "helvetica_neue"
 #CSS External File that overrides flatly themes
 bhf_dsc_hds_css = "
 
+#dd_completeness
+{width: 50px;
+    white-space:pre-wrap;
+text-align: right;
+}
+
+
+
+/*https://kabbouchi.github.io/tippyjs-v4-docs/themes/*/
+.tippy-tooltip{
+  background-color: #FF002E;
+  color: white;
+}
+
+.tippy-tooltip[data-animatefill] {
+  background-color: transparent;
+}
+
+.tippy-tooltip .tippy-backdrop {
+  background-color: #FF002E;
+}
+
+
+
+
+
+
+
+
+
 
 #summary_module-data_coverage_module-summary_coverage_plot_render{
 color:#3db08c;
@@ -139,6 +169,12 @@ color:#3db08c;
 text-align:center;
 align-items: center;
 margin-top:20%;
+}
+
+
+#summary_module-data_dictionary_module-summary_dd_plot_render{
+color:#3db08c;
+
 }
 
 html {

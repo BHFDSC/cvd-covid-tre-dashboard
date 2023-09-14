@@ -115,6 +115,7 @@ footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
 
 </div>
 
+
 <div class="columnright" >
 <div class="rowtest">
 <div class="slider">
@@ -144,6 +145,10 @@ footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
       <img src="diabetes_1.png" class="slide-image" alt="Partners: Diabetes UK"></a>
     </div>
     <div class="slide">
+      <a href="https://www.stroke.org.uk" target="_blank">
+      <img src="stroke.png" class="slide-image" alt="Partners: Stroke Association"></a>
+    </div>
+    <div class="slide">
       <a href="https://www.bhf.org.uk" target="_blank">
       <img src="British-Heart-Foundation-logo_1.png" class="slide-image" alt="Partners: British Heart Foundation"></a>
     </div>
@@ -170,6 +175,10 @@ footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
     <div class="slide">
       <a href="https://www.diabetes.org.uk" target="_blank">
       <img src="diabetes_1.png" class="slide-image" alt="Partners: Diabetes UK"></a>
+    </div>
+    <div class="slide">
+      <a href="https://www.stroke.org.uk" target="_blank">
+      <img src="stroke.png" class="slide-image" alt="Partners: Stroke Association"></a>
     </div>
     <div class="slide">
       <a href="https://www.bhf.org.uk" target="_blank">

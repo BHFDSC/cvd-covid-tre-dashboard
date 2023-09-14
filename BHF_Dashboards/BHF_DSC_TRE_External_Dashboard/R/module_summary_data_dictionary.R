@@ -22,6 +22,7 @@ dataDictionaryUI <- function(id){
     fluidRow(column(12,
                     
     reactableOutput(ns("tbl")),
+    uiOutput(ns("summary_dd_plot_render")),
     
     dropdown(
       
@@ -107,7 +108,33 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
         distinct(Dataset) %>%
         pull(Dataset)
       
-## England and Scotland reactive  - designed for table format
+      ##########################################################################
+      
+      
+      dd_render = reactive({datasets_available %>%
+          filter(.data$Dataset == dataset_summary()) %>%
+          select(.data$dictionary,.data$dictionary_reason)
+      })
+      
+      output$dd_render_binary = renderUI({dd_render() %>% pull(dictionary)})
+      output$summary_dd_plot_render = renderUI({dd_render() %>% pull(dictionary_reason)})
+      outputOptions(output, "dd_render_binary", suspendWhenHidden = FALSE)
+
+      observe({
+        toggle(id = "summary_dd_plot_render", condition = isTRUE(dataset_summary() %in% dd_render_messages))
+      })
+      observe({
+        toggle(id = "tbl", condition = isFALSE(dataset_summary() %in% dd_render_messages))
+      })
+  
+      ##########################################################################
+      dataset_names = reactive({(
+        t.dataset_dashboard %>%
+          filter(dataset_dataset == dataset_summary()) %>%
+          select(dataset="dataset_dataset","Dataset"=title_dataset))
+      })
+      
+     ## England and Scotland reactive  - designed for table format
       data_dict = reactive({
         
         
@@ -118,7 +145,9 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
           t.data_dictionaryScot  %>% 
             left_join(select(datasets_available, c("table","dataset_dataset")), by=c("table")) %>%
             filter(dataset_dataset == dataset_summary())  %>%
-            select(-dataset_dataset, -table)  %>% 
+            mutate(Dataset = table) %>%
+            mutate(dataset=dataset_dataset) %>%
+            select(-dataset_dataset,-table)  %>% 
             select_if(~!(all(is.na(.)) | all(. == "")))
         }
         
@@ -126,7 +155,7 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
           t.data_dictionaryWales %>% 
             left_join(select(datasets_available, c("table","Dataset")), by=c("table"))  %>% 
             filter(Dataset == dataset_summary()) %>%
-            select(-Dataset, -table) 
+            select(-table) 
           
         }
 
@@ -138,10 +167,9 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
                       by=c("table")) %>%
             filter(Dataset == dataset_summary()) %>%
             select(-Dataset) %>%
+            mutate(Dataset = title_dataset) %>%
             distinct() %>%
-            mutate(Dataset = ifelse(Title==title_dataset, NA, title_dataset)) %>%
-            select(-Title,-title_dataset) %>%
-            select(where(not_all_na)) %>%
+            #select(-Title,-title_dataset) %>%
             left_join(t.data_dictionaryEng, by = "table") %>%
             select(-table,-database,-dataset_dataset,-path) #-x
         }
@@ -149,44 +177,174 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
       })
       
       
-
-      data_dict_react = reactive({
-
-        #needed to prevent error when changing nation
-        if (nrow(dataset_desc_filter())==0){
-          tibble()
-        } else {
-        
-        
+      ##########################################################################
+      bar_chart <- function(label, width = "100%", height = "1rem", fill = "#00bfc4", background = NULL) {
+        bar <- div(style = list(background = fill, width = width, height = height))
+        chart <- div(style = list(flexGrow = 1, marginLeft = "0.8rem", background = background), bar)
+        div(style = list(display = "flex", alignItems = "center"), div(label, id="dd_completeness"), chart)
+      }
       
-        reactable(
-          data = if(dataset_summary() %in% grouped_datasets){
+      
+      render.reactable.cell.with.tippy <- function(text, tooltip){
+        div(
+
+          style = "
+                cursor: info;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;",
+          tippy(text = text, tooltip = div(tooltip,id = "tippy_dd"), placement = "top") #see app.R
+        )
+      }
+
+      
+      
+      ##########################################################################
+      completeness_data = reactive({
+        
+        if(nation_summary() == "England" ){
+          t.dataset_completeness = t.dataset_completeness_eng
+        }
+        else if (nation_summary() == "Wales" ){
+          t.dataset_completeness = t.dataset_completeness_wales
+        }
+        else if (nation_summary() == "Scotland" ){
+          t.dataset_completeness = t.dataset_completeness_scotland
+        }
+        
+        t.dataset_completeness %>%
+          filter(dataset == dataset_summary()) %>%
+          mutate(column_name = trimws(column_name)) %>%
+          mutate(completeness = round(completeness*100,2)) %>%
+          arrange(desc(completeness),column_name)
+          #left_join(dataset_names())
+        
+      })
+      
+      
+      ##########################################################################
+      
+      #colour gradient
+      colorCompleteness = colorRampPalette(compare_colours)
+      
+      color_data = reactive({completeness_data() %>%
+          distinct(completeness) %>% bind_cols(
+            tibble(colours = colorCompleteness(nrow(completeness_data() %>% distinct(completeness))))) %>%
+          left_join(select(completeness_data(),c(completeness,column_name,dataset)),by = "completeness") %>%
+          left_join(dataset_names())
+        })
+      
+      
+      ##########################################################################
+        
+          
+          my_data = reactive({ if(dataset_summary() %in% grouped_datasets){
             data_dict() %>%
               group_by(Dataset) %>%
               rename_with(str_to_title) %>%
               mutate(Position = row_number()) %>%
               ungroup() %>%
               relocate(Position)# %>%
- #             rename(Label=`Field Name`,Description=`Field Description`,Type=`Field Type`,Format=`Variable_type`)
-              } else {
-                data_dict() %>%
-                  rename_with(str_to_title) %>%
-                  mutate(Position = row_number()) %>%
-                  relocate(Position) #%>%
- #                 rename(Label=`Field Name`,Description=`Field Description`,Type=`Field Type`,Format=`Variable_type`)
-              },
+            #             rename(Label=`Field Name`,Description=`Field Description`,Type=`Field Type`,Format=`Variable_type`)
+          } else {
+            
+            if(nation_summary() == "Scotland" ){
+              data_dict() %>%
+                select(-Dataset) %>%
+                rename_with(str_to_title) %>%
+                mutate(Position = row_number()) %>%
+                relocate(Position) %>%
+                left_join((color_data()),
+                          by=c("Dataset"="dataset","Field"="column_name")) %>%
+                select(-Dataset) %>%
+                #mutate(Dataset = ifelse(Title==Title_dataset, NA, Title_dataset)) %>%
+                #select(where(not_all_na)) %>%
+                select(-Dataset.y)
+              
+            } else if (nation_summary() == "England" ){
+              
+              data_dict() %>%
+                rename_with(str_to_title) %>%
+                mutate(Position = row_number()) %>%
+                relocate(Position) %>%
+                left_join(color_data(), by=c("Dataset"="Dataset","Field"="column_name")) %>%
+                select(-Dataset) %>%
+                #mutate(Dataset = ifelse(Title==Title_dataset, NA, Title_dataset)) %>%
+                #select(where(not_all_na)) %>%
+                select(-Title,-Title_dataset,-dataset)
+              
+            } else if (nation_summary() == "Wales" ){
+              
+              data_dict() %>%
+                rename_with(str_to_title) %>%
+                mutate(Position = row_number()) %>%
+                relocate(Position) %>%
+                rename(Field=Variable) %>%
+                left_join((color_data()%>%select(-Dataset)%>%rename(Dataset=dataset)), by=c("Dataset"="Dataset","Field"="column_name")) %>%
+                select(-Dataset) %>%
+                rename(`Field Description` = Description)
+                #mutate(Dataset = ifelse(Title==Title_dataset, NA, Title_dataset)) %>%
+                #select(where(not_all_na)) %>%
+                #select(-dataset)
+
+              
+            }
+            
+
+          }})
+      
+      
+          
+          
+          ##########################################################################
+        
+          # observe({print(data_dict() %>%head(1))})
+          # observe({print(completeness_data() %>%head(1))})
+          # observe({print(color_data() %>%head(1))})
+          # observe({print(my_data() %>%head(1))})
+          
+          
+          
+          ##########################################################################
+      
+      data_dict_react = reactive({
+        
+        #needed to prevent error when changing nation
+        if (nrow(dataset_desc_filter())==0){
+          tibble()
+        } else {
+      
+        reactable(
+          data = my_data()%>%mutate(completeness=(sprintf("%5.1f", completeness))),
           
           groupBy = if(dataset_summary() %in% grouped_datasets){"Dataset"} else {NULL},
           paginateSubRows = TRUE,
           
           class = "my-tbl",
           columns = list(
-            Position = colDef(style = list(whiteSpace = "nowrap", textOverflow = "unset")),
-            Dataset = colDef(minWidth = 400),
-            Field = colDef(minWidth = 200),   # 50% width, 200px minimum
+            Position = colDef(style = list(whiteSpace = "nowrap", textOverflow = "unset"),maxWidth = 100,sticky = "left"),
+            #Dataset = colDef(minWidth = 400),
+            Field = colDef(minWidth = 200,sticky = "left"),   # 50% width, 200px minimum
             `Field Name` = colDef(minWidth = 200),   # 25% width, 100px minimum
-            `Field Description` = colDef(minWidth = 400)  # 25% width, 100px minimum
+            `Field Description` = colDef(
+              minWidth = 400,
+              html = TRUE,
+              cell =  function(value, index, name) {
+                render.reactable.cell.with.tippy(text = value, tooltip = value)}
+            ),
+            completeness = colDef(name = "Completeness (%)",
+                                  sticky = "right",
+                          align = "left",
+                          minWidth = 200,
+                          cell = function(value,index) {
+                            width = paste0(value,"%")
+              bar_chart(value, width = width, #(sprintf("%5.1f", value))
+                        fill = my_data()$colours[index],
+                        background = "#e1e1e1") #see css dd_completness for how padded the completeness values
+            }),
+            `colours` = colDef(show = FALSE)
           ),
+ 
 
       
           showSortable = TRUE,
