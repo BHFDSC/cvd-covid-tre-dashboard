@@ -33,6 +33,8 @@ library(shinycssloaders)
 library(toOrdinal)
 library(sass)
 
+library(tippy)
+
 #External Sources
 source('external_common_functions.R')
 source('external_bhf_dsc_hds_designkit.R')
@@ -50,7 +52,7 @@ source('external_inputs.R')
 ui = fluidPage(
   
   #tags$head(HTML("<title>BHF DSC Dashboard</title>")), #window title on the browser
-  tags$head(HTML("<title>BHF DSC Dashboard</title> <link rel='icon' type='image/png' sizes = '32x32' href='/test.png'>")),
+  tags$head(HTML("<title>BHF DSC Dashboard</title> <link rel='icon' type='image/png' sizes = '32x32' href='/browser_logo.png'>")),
   
 
   ## UI Setup and Design #######################################################
@@ -69,7 +71,7 @@ ui = fluidPage(
   tags$head(tags$script(src="shinyLink.js")),
 
   useWaitress(),
-  
+
 
 
   #SCSS code converted to css using sass (message silenced)
