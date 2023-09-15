@@ -2268,6 +2268,17 @@ color:var(--colour_bhf_lightred);
 
 #compare_coverage_plot_girafe{padding-left:12px;}
 
+
+
+.border-left {
+  border-left: 1.5px solid #F2F2F2;
+}
+
+.border-right{
+  border-right: 1.5px solid #F2F2F2;
+}
+
+
 "
 
 
