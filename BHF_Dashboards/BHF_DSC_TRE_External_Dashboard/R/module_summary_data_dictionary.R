@@ -328,11 +328,12 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
           columns = list(
             Position = colDef(style = list(whiteSpace = "nowrap", textOverflow = "unset"),maxWidth = 100,sticky = "left"),
             #Dataset = colDef(minWidth = 400),
-            Field = colDef(minWidth = 200,sticky = "left"),   # 50% width, 200px minimum
+            Field = colDef(minWidth = 200,sticky = "left",class = "border-right"),   # 50% width, 200px minimum
             `Label` = colDef(minWidth = 200),   # 25% width, 100px minimum
             `Description` = colDef(
               minWidth = 400,
               html = TRUE,
+              #https://stackoverflow.com/questions/64591293/r-reactable-how-to-truncate-cell-content-and-display-upon-hovering
               cell =  function(value, index, name) {
                 render.reactable.cell.with.tippy(text = value, tooltip = value)}
             ),
@@ -344,6 +345,7 @@ dataDictionaryServer <- function(id, dataset_summary, nation_summary){
             ),
             completeness = colDef(name = "Completeness (%)",
                                   sticky = "right",
+                                  class = "border-left", #find css label in external design kit
                           align = "left",
                           minWidth = 200,
                           cell = function(value,index) {
