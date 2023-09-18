@@ -247,3 +247,5 @@ server = function(input, output, session) {
 # Run the application ----------------------------------------------------------
 shinyApp(ui = ui, server = server)
 #runGadget(ui, server, viewer = browserViewer(browser = getOption("browser")))
+
+
