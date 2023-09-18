@@ -461,7 +461,7 @@ tags$script(
           select(.data$coverage,.data$coverage_reason)
       })
       
-      #observe(print(coverage_render()))
+      observe(print(coverage_data_all_records()))
       
       output$coverage_render_binary = renderUI({coverage_render() %>% pull(coverage)})
       #observe(print(coverage_render_binary))
