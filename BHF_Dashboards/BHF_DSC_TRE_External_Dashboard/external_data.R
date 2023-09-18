@@ -1,5 +1,5 @@
 #current_dir_data = dirname(rstudioapi::getSourceEditorContext()$path)
-update_date = as.Date("2023-08-03")
+update_date = as.Date("2023-09-12")
 #update_date_string = paste(toOrdinal::toOrdinal(lubridate::mday(update_date)),months(update_date),lubridate::year(update_date))
 update_date_string = paste(months(update_date),lubridate::year(update_date))
 
@@ -7,24 +7,24 @@ update_date_string = paste(months(update_date),lubridate::year(update_date))
 # Current Dataset Names --------------------------------------------------------
 
 #England
-export_date_england = "2023-08-03"
-completeness_dataset_name_england = "export_dashboard_NHSD_20230803_data_completeness"
-coverage_dataset_name_england = "export_dashboard_NHSD_20230803_data_coverage"
-overview_dataset_name_england = "export_dashboard_NHSD_20230803_data_overview"
+export_date_england = "2023-09-11"
+completeness_dataset_name_england = "export_dashboard_NHSD_20230911_data_completeness"
+coverage_dataset_name_england = "export_dashboard_NHSD_20230911_data_coverage"
+overview_dataset_name_england = "export_dashboard_NHSD_20230911_data_overview"
 substr(export_date_england,1,4)
 substr(export_date_england,6,7)
 
 #Scotland
-export_date_scotland = "2023-06-14"
-completeness_dataset_name_scotland = "export_dashboard_scotland_completeness20230614"
-coverage_dataset_name_scotland = "export_dashboard_scotland_coverage20230614"
-overview_dataset_name_scotland = "export_dashboard_scotland_overview20230614"
+export_date_scotland = "2023-08-11"
+completeness_dataset_name_scotland = "export_dashboard_scotland_completeness20230811"
+coverage_dataset_name_scotland = "export_dashboard_scotland_coverage20230811"
+overview_dataset_name_scotland = "export_dashboard_scotland_overview20230811"
 
 #Wales
-export_date_wales = "2023-01-27"
-completeness_dataset_name_wales = "export_dashboard_SAIL_20230127_data_completeness"
-coverage_dataset_name_wales = "export_dashboard_SAIL_20221130_data_coverage"
-overview_dataset_name_wales = "export_dashboard_SAIL_20230127_data_overview"
+export_date_wales = "2023-08-09"
+completeness_dataset_name_wales = "export_dashboard_SAIL_20230809_data_completeness"
+coverage_dataset_name_wales = "export_dashboard_SAIL_20230809_data_coverage"
+overview_dataset_name_wales = "export_dashboard_SAIL_20230809_data_overview"
 
 
 
@@ -49,19 +49,24 @@ datasets_available = t.dataset_dashboard %>%
 #England------------------------------------------------------------------------
 t.data_dictionaryEng = read_excel_allsheets('Data/TRE_DD_391419_j3w9t.xlsx',
                                        tibble = FALSE,
-                                       except_sheet_no = 1,
+                                       sheets_to_remove = c("Home","Reference Data"),
                                        skip = 2) %>%
-  mutate(table = str_replace(table, paste0("_", database),"")) %>%
+  mutate(table = str_replace(table, paste0("_", path),"")) %>%
   mutate(table = str_replace(table,"deaths" ,"death")) %>%
   mutate(table = str_replace(table,"_[{]fyear[}]" ,"")) %>%
   filter(!is.na(table)) %>%
+  select(-1) %>%
   rename(`field` = display_name,
          `field name` = display_name_label,
          `field description` = field_description,
          `field type` = variable_type,
-         `variable_type` = data_type,
-         `x` = gdppr
-  )
+         `variable_type` = data_type
+         #`x` = gdppr
+  ) %>%
+  mutate(database='dars_nic_391419_j3w9t') %>%
+  mutate(field=ifelse(str_starts(table,"iapt_"),str_to_lower(field),field))
+
+
 
 
 #Scotland------------------------------------------------------------------
@@ -106,16 +111,25 @@ t.data_dictionaryWales = read_excel_allsheets( # pathfornow,
   "Data/DD_Wales.xlsx")
 
 # Dataset Overview -------------------------------------------------------------
-t.dataset_overview_eng = read.csv(paste0('Data/',overview_dataset_name_england,'.csv'))
-t.dataset_overview_wales = read.csv(paste0('Data/',overview_dataset_name_wales,'.csv')) 
+t.dataset_overview_eng = read.csv(paste0('Data/',overview_dataset_name_england,'.csv')) %>% mutate(dataset=ifelse(dataset=="deaths","death",dataset))
+t.dataset_overview_wales = read.csv(paste0('Data/',overview_dataset_name_wales,'.csv'))
 t.dataset_overview_scotland = read.csv(paste0('Data/',overview_dataset_name_scotland,'.csv')) %>%
   mutate(archived_on=as.Date(substr(archived_on,1,10)))
 
 
 # Dataset Completeness -------------------------------------------------------------
-t.dataset_completeness_eng = read.csv(paste0('Data/',completeness_dataset_name_england,'.csv'))
+t.dataset_completeness_eng = read.csv(paste0('Data/',completeness_dataset_name_england,'.csv')) %>% mutate(dataset=ifelse(dataset=="deaths","death",dataset)) %>%
+  mutate(column_name_temp = str_to_lower(column_name))
 t.dataset_completeness_wales = read.csv(paste0('Data/',completeness_dataset_name_wales,'.csv'))
 t.dataset_completeness_scotland = read.csv(paste0('Data/',completeness_dataset_name_scotland,'.csv'))
+
+#update DD for misaligned MSDS fieds
+t.data_dictionaryEng = t.data_dictionaryEng %>%
+  left_join((t.dataset_completeness_eng%>%select(-completeness)%>% 
+               mutate(dataset=str_remove(dataset,"_all_years")))
+            ,by=c("table"="dataset","field"="column_name_temp")) %>%
+  mutate(field = ifelse(table%in%c("msds_care_activities","msds_demographics_booking_and_pregnancy","msds_hospital_provider_spell"),column_name,field)) %>%
+  select(-column_name)
 
 # # Data Coverage Pre Processed from data_preprocessing -------------------
 
@@ -126,7 +140,8 @@ t.dataset_completeness_scotland = read.csv(paste0('Data/',completeness_dataset_n
 #folderpath = "C:/Users/LarsMurdock/Documents/Repo/BHF_DSC_HDS/BHF_Dashboards/BHF_DSC_TRE_External_Dashboard"
 
 
-t.dataset_coverage_eng = read.csv(paste0('Data/',coverage_dataset_name_england,'.csv')) %>% select(-archived_on) %>% mutate(Nation2 = "England")
+t.dataset_coverage_eng = read.csv(paste0('Data/',coverage_dataset_name_england,'.csv')) %>% filter(date_ym!='null') %>% select(-archived_on) %>% 
+  mutate(Nation2 = "England") %>% mutate(dataset=ifelse(dataset=="deaths","death",dataset))
 t.dataset_coverage_wales = read.csv(paste0('Data/',coverage_dataset_name_wales,'.csv')) %>% rename(n_id_distinct =n_distinct ) %>% mutate(Nation2 = "Wales")
 t.dataset_coverage_scotland = read.csv(paste0('Data/',coverage_dataset_name_scotland,'.csv')) %>% mutate(Nation2 = "Scotland")
 
@@ -180,6 +195,12 @@ t.data_coverage = t.data_coverage_source %>%
 # Dataset Coverage Custom Messages -------------------------------------------------------------
 coverage_render_messages = datasets_available %>%
   filter(coverage==1) %>%
+  select(Dataset) %>%
+  pull(Dataset)
+
+# Dataset DD Custom Messages -------------------------------------------------------------
+dd_render_messages = datasets_available %>%
+  filter(dictionary==1) %>%
   select(Dataset) %>%
   pull(Dataset)
 

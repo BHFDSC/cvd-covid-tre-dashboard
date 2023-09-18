@@ -18,7 +18,7 @@ aboutUI<- function(id){
                   <div class="columnleftwelcome" >
                   <span style="letter-spacing:1px;font-size:34px;text-align:left;">
                   <br>Welcome to the<br>
-                  <a href="https://www.hdruk.ac.uk/projects/cvd-covid-uk-project/" target = "_blank" >CVD-COVID-UK/COVID-IMPACT</a> <br>
+                  <a href="https://bhfdatasciencecentre.org/areas/cvd-covid-uk-covid-impact/" target = "_blank" >CVD-COVID-UK/COVID-IMPACT</a> <br>
                   Dataset Summary Dashboard<br>
 
 
@@ -43,7 +43,9 @@ aboutUI<- function(id){
            
 
 <div class="containeraccordioncenter">
+
 <section>
+
 <div class="card-wrapper  | content-cc">
 
   <div class="faq-card">
@@ -145,35 +147,158 @@ aboutUI<- function(id){
 
 </div> <!-- card wrapper -->
 
+
+
              </section>
 
-<div class="acknowledge">
-<div class="acknowledge_title">
-<p>
-Funding & Acknowledgements
+
+
+
+
+
+<div class="containeraccordioncenterfunding">
+<section>
+
+<div class="card-wrapperfunding  | content-cc">
+
+  <div class="faq-cardfunding">
+
+
+    <main class="faq-contentfunding">
+
+          <div class="faq-titlefunding"><p>Funding & Acknowledgements </p></div>
+
+      <div class="faq-articlesfunding">
+
+        <article class="faq-accordionfunding">
+
+          <input type="checkbox" class="tgg-titlefunding" id="tgg-title-1funding">
+
+          <div class="faq-accordionfunding-title">
+            <label for="tgg-title-1funding">
+              <h2>Funding</h2>
+              <span class="arrow-iconfundingfunding">
+                <img src="https://raw.githubusercontent.com/Romerof/FAQ-accordion-card/main/images/icon-arrow-down.svg">
+              </span>
+            </label>
+          </div>
+
+          <div class="faq-accordionfunding-content">
+            <p>The British Heart Foundation Data Science Centre (grant No SP/19/3/34678, awarded to Health Data Research (HDR) UK) funded co-development (with NHS England) of the Secure Data Environment service for England, provision of linked datasets, data access, user software licences, computational usage, and data management and wrangling support, with additional contributions from the HDR UK Data and Connectivity component of the UK Government Chief Scientific Adviser’s National Core Studies programme to coordinate national COVID-19 priority research. Consortium partner organisations funded the time of contributing data analysts, biostatisticians, epidemiologists, and clinicians.
+
+<br><br>This research is part of the Data and Connectivity National Core Study, led by Health Data Research UK in partnership with the Office for National Statistics and funded by UK Research and Innovation (grant ref MC_PC_20058). This work was also supported by The Alan Turing Institute via ‘Towards Turing 2.0’ EPSRC Grant Funding.
+
+<br><br>This work was supported by the Con-COV team funded by the Medical Research Council (grant number: MR/V028367/1), HDR UK (HDR-9006) and the ADR Wales programme of work, part of the Economic and Social Research Council (part of UK Research and Innovation) funded ADR UK (grant ES/S007393/1).
+
+<br><br>This work was supported by Health Data Research UK, which receives its funding from HDR UK Ltd (HDR-9006) funded by the UK Medical Research Council, Engineering and Physical Sciences Research Council, Economic and Social Research Council, Department of Health and Social Care (England), Chief Scientist Office of the Scottish Government Health and Social Care Directorates, Health and Social Care Research and Development Division (Welsh Government), Public Health Agency (Northern Ireland), British Heart Foundation (BHF) and the Wellcome Trust.
+
+<br><br>This work was supported by the Wales COVID-19 Evidence Centre, funded by Health and Care Research Wales.</p>
+          </div>
+
+        </article> <!-- faq accordion -->
+
+        
+
+        <article class="faq-accordionfunding">
+
+          <input class="tgg-titlefunding" type="checkbox" id="tgg-title-4funding">
+
+          <div class="faq-accordionfunding-title">
+            <label for="tgg-title-4funding">
+              <h2>
+                Acknowledgements
+              </h2>
+              <span class="arrow-iconfunding">
+                <img src="https://raw.githubusercontent.com/Romerof/FAQ-accordion-card/main/images/icon-arrow-down.svg">
+              </span>
+            </label>
+          </div>
+
+          <div class="faq-accordionfunding-content">
+            <p>This work is carried out with the support of the BHF Data Science Centre led by HDR UK (BHF Grant no. SP/19/3/34678). This study makes use of de-identified data held in NHS England’s Secure Data Environment service for England, the SAIL Databank and the Scottish National Data Safe Haven and made available via the BHF Data Science Centre’s CVD-COVID-UK/COVID-IMPACT consortium. This work uses data provided by patients and collected by the NHS as part of their care and support. We would also like to acknowledge all data providers who make health relevant data available for research.
+
+<br><br>The study makes use of anonymised data held in the Scottish National Safe Haven. The authors would like to acknowledge the support of the eDRIS Team (Public Health Scotland) for their involvement in obtaining approvals, provisioning and linking data and the use of the secure analytical platform within the National Safe Haven.
+
+<br><br>This study makes use of anonymised data held in the Secure Anonymised Information Linkage (SAIL) Databank. This work uses data provided by patients and collected by the NHS as part of their care and support. We would also like to acknowledge all data providers who make anonymised data available for research. We wish to acknowledge the collaborative partnership that enabled acquisition and access to the de-identified data, which led to this output. The collaboration was led by the Swansea University Health Data Research UK team under the direction of the Welsh Government Technical Advisory Cell (TAC) and includes the following groups and organisations: the SAIL Databank, Administrative Data Research (ADR) Wales, Digital Health and Care Wales (DHCW), Public Health Wales, NHS Shared Services Partnership (NWSSP) and the Welsh Ambulance Service Trust (WAST). All research conducted has been completed under the permission and approval of the SAIL independent Information Governance Review Panel (IGRP) project number 0911.
+
+<br><br><b>
+Finally, we would like to thank the NHS England Data Wrangler team for producing the data summaries for England and collaborating with the BHF Data Science Centre Health Data Science team.
+</b></p>
+
 </p>
-</div>
-<div class="acknowledge_body">
-<p>
-<br>The British Heart Foundation Data Science Centre (grant No SP/19/3/34678, awarded to Health Data Research (HDR) UK) funded co-development (with NHS Digital) of the trusted research environment, provision of linked datasets, data access, user software licences, computational usage, and data management and wrangling support, with additional contributions from the HDR UK Data and Connectivity component of the UK Government Chief Scientific Adviser’s National Core Studies programme to coordinate national COVID-19 priority research. Consortium partner organisations funded the time of contributing data analysts, biostatisticians, epidemiologists, and clinicians.
-<br>This research is part of the Data and Connectivity National Core Study, led by Health Data Research UK in partnership with the Office for National Statistics and funded by UK Research and Innovation (grant ref MC_PC_20058). This work was also supported by The Alan Turing Institute via ‘Towards Turing 2.0’ EPSRC Grant Funding.
-<br>This work is carried out with the support of the BHF Data Science Centre led by HDR UK (BHF Grant no. SP/19/3/34678). This study makes use of de-identified data held in NHS Digital’s TRE for England and made available via the BHF Data Science Centre’s CVD-COVID-UK/COVID-IMPACT consortium. This work uses data provided by patients and collected by the NHS as part of their care and support. We would also like to acknowledge all data providers who make health relevant data available for research.
-<br><br><b>Data availability</b>
-<br>The North East - Newcastle and North Tyneside 2 research ethics committee provided ethical approval for the CVD-COVID-UK/COVID-IMPACT research programme (REC No 20/NE/0161) to access, within secure trusted research environments, unconsented, whole-population, de-identified data from electronic health records collected as part of patients’ routine healthcare.
-The data used in this study are available in <a href="https://digital.nhs.uk/coronavirus/coronavirus-data-services-updates/trusted-research-environment-service-for-england" class="aboutFund" target = "_blank">NHS Digital’s TRE for England</a>, but as restrictions apply they are not publicly available.
-The CVD-COVID-UK/COVID-IMPACT programme led by the <a href="https://www.hdruk.ac.uk/helping-with-health-data/bhf-data-science-centre/" class="aboutFund" target = "_blank">BHF Data Science Centre</a> received approval to access data in NHS Digital’s TRE for England from the 
-<a href="https://digital.nhs.uk/about-nhs-digital/corporate-information-and-documents/independent-group-advising-on-the-release-of-data" class="aboutFund" target = "_blank">Independent Group Advising on the Release of Data</a> (IGARD) via an application made in the 
-<a href="https://digital.nhs.uk/services/data-access-request-service-dars/dars-products-and-services" class="aboutFund" target = "_blank">Data Access Request Service</a> (DARS) Online system (ref. DARS-NIC-381078-Y9C5K). 
-The <a href="https://www.hdruk.ac.uk/projects/cvd-covid-uk-project/" class="aboutFund" target = "_blank">CVD-COVID-UK/COVID-IMPACT</a> Approvals & Oversight Board subsequently granted approval to this project to access the data within NHS Digital’s TRE for England. The de-identified data used in this study were made available to accredited researchers only. Those wishing to gain access to the data should contact the <a href="mailto:bhfdsc@hdruk.ac.uk" class="aboutFund" target = "_blank">BHF Data Science Centre</a> in the first instance.
-</p>
-</div>
-<div class="acknowledge_body_wrangler">
-<p>
-<br>We would like to thank the NHS England Data Wrangler team for producing the data summaries for England and collaborating with the BHF Data Science Centre Health Data Science team.
-</p>
+          </div>
+
+        </article> <!-- faq accordion -->
+
+
+        <article class="faq-accordionfunding">
+
+          <input class="tgg-titlefunding" type="checkbox" id="tgg-title-5funding">
+
+          <div class="faq-accordion-title">
+            <label for="tgg-title-5funding">
+              <h2>
+                Ethical approval and data availability
+              </h2>
+              <span class="arrow-iconfunding">
+                <img src="https://raw.githubusercontent.com/Romerof/FAQ-accordion-card/main/images/icon-arrow-down.svg">
+              </span>
+            </label>
+          </div>
+
+          <div class="faq-accordionfunding-content">
+            <p>The North East - Newcastle and North Tyneside 2 research ethics committee provided ethical approval for the CVD-COVID-UK/COVID-IMPACT research programme (REC No 20/NE/0161) to access, within secure trusted research environments, unconsented, whole-population, de-identified data from electronic health records collected as part of patients’ routine healthcare.
+
+<br><br>The data used in this study are available in NHS England’s <a href="https://digital.nhs.uk/services/secure-data-environment-service" class="aboutFund" target = "_blank">Secure Data Environment (SDE)</a> service for England, but as restrictions apply they are not publicly available.
+The CVD-COVID-UK/COVID-IMPACT programme, led by the <a href="https://bhfdatasciencecentre.org/" class="aboutFund" target = "_blank">BHF Data Science Centre</a>, received approval to access data in NHS England’s SDE service for England from the 
+<a href="https://digital.nhs.uk/about-nhs-digital/corporate-information-and-documents/independent-group-advising-on-the-release-of-data" class="aboutFund" target = "_blank">Independent Group Advising on the Release of Data (IGARD)</a> via an application made in the 
+<a href="https://digital.nhs.uk/services/data-access-request-service-dars/dars-products-and-services" class="aboutFund" target = "_blank">Data Access Request Service (DARS)</a> Online system (ref. DARS-NIC-381078-Y9C5K). 
+The <a href="https://bhfdatasciencecentre.org/areas/cvd-covid-uk-covid-impact/" class="aboutFund" target = "_blank">CVD-COVID-UK/COVID-IMPACT</a> Approvals & Oversight Board subsequently granted approval to this project to access the data within NHS England’s SDE service for England, the Scottish National Safe Haven and the Secure Anonymised Information Linkage (SAIL) Databank.
+The de-identified data used in this study were made available to accredited researchers only.  
+Those wishing to gain access to the data should contact the <a href="mailto:bhfdsc@hdruk.ac.uk." class="aboutMail"><b>BHF Data Science Centre</b></a> in the first instance.
+
+<br><br>Data used in this study are available in the Scottish National Safe Haven (Project Number: 2021-0102), but as restrictions apply they are not publicly available.
+Access to data may be granted on application to, and subject to approval by, the 
+<a href="https://www.informationgovernance.scot.nhs.uk/pbpphsc/" class="aboutFund" target = "_blank">Public Benefit and Privacy Panel for Health and Social Care (PBPP)</a>. 
+Applications are co-ordinated by <a href="https://www.isdscotland.org/Products-and-services/Edris/" class="aboutFund" target = "_blank">eDRIS (electronic Data Research and Innovation Service)</a>. 
+The anonymised data used in this study was made available to accredited researchers only through the Public Health Scotland (PHS) <a href="https://www.isdscotland.org/Products-and-services/Edris/_docs/eDRIS-User-Agreement-v16.pdf" class="aboutFund" target = "_blank">eDRIS User Agreement</a>.
+
+<br><br>The data used in this study are available in the SAIL Databank at Swansea University, Swansea, UK, but as restrictions apply they are not publicly available. 
+All proposals to use SAIL data are subject to review by an independent Information Governance Review Panel (IGRP). Before any data can be accessed, approval must be given by the IGRP. 
+The IGRP gives careful consideration to each project to ensure proper and appropriate use of SAIL data. When access has been granted, it is gained through a privacy protecting safe haven and remote access system referred to as the SAIL Gateway. 
+All research conducted has been completed under the permission and approval of the SAIL independent Information Governance Review Panel (IGRP) project number 0911. 
+SAIL has established an application process to be followed by anyone who would like to access data via <a href="https://www.saildatabank.com/application-process" class="aboutFund" target = "_blank">SAIL</a>.</p>
+          </div>
+
+
+
+
+
+        </article> <!-- faq accordion -->
+
+
+
+
+      </div> <!-- faq articles -->
+
+    </main> <!-- faq -->
+
+  </div> <!-- faq card -->
+
+</div> <!-- card wrapper -->
+
+             </section>
 </div>
 
-</div>
+
+
+
+
+
+
+
+
+
 
 </div>
 </div>

@@ -33,6 +33,8 @@ library(shinycssloaders)
 library(toOrdinal)
 library(sass)
 
+library(tippy)
+
 #External Sources
 source('external_common_functions.R')
 source('external_bhf_dsc_hds_designkit.R')
@@ -49,12 +51,15 @@ source('external_inputs.R')
 
 ui = fluidPage(
   
+  #tags$head(HTML("<title>BHF DSC Dashboard</title>")), #window title on the browser
+  tags$head(HTML("<title>BHF DSC Dashboard</title> <link rel='icon' type='image/png' sizes = '32x32' href='/browser_logo.png'>")),
+  
 
   ## UI Setup and Design #######################################################
   shinyjs::useShinyjs(),
   # This creates a google analytics tag, which allows traffic to be tracked once deployed
   # see https://shiny.posit.co/r/articles/build/google-analytics/ for more instructions
-  tags$head(includeHTML(("google-analytics.html"))),
+  #tags$head(includeHTML(("google-analytics.html"))),
   #App Theme
   theme = bhf_dsc_hds_bootstrap_theme,
   # Load the dependencies for prompter
@@ -66,7 +71,7 @@ ui = fluidPage(
   tags$head(tags$script(src="shinyLink.js")),
 
   useWaitress(),
-  
+
 
 
   #SCSS code converted to css using sass (message silenced)
@@ -133,13 +138,13 @@ ui = fluidPage(
     
     ### Feedback Button ===========================================================
     
-    tabPanel(actionBttn(inputId='ab1', label="Provide Feedback", color = "success", 
-                        position = "right",
-                        # icon = icon("th"), 
-                        # size = lg ,
-                        style = "unite"  , 
-                        onclick ="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=saxMhCdwY0Kdihj6pb8IOe1OSlBUSpBCq1NpVakPfMJURTY0TTZCRFlHOUEyMTM3QUJWTkxFR1AwUC4u',)"))
-    
+    # tabPanel(actionBttn(inputId='ab1', label="Provide Feedback", color = "success", 
+    #                     position = "right",
+    #                     # icon = icon("th"), 
+    #                     # size = lg ,
+    #                     style = "unite"  , 
+    #                     onclick ="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=saxMhCdwY0Kdihj6pb8IOe1OSlBUSpBCq1NpVakPfMJURTY0TTZCRFlHOUEyMTM3QUJWTkxFR1AwUC4u',)"))
+    # 
 
     )
   ),
@@ -152,7 +157,7 @@ ui = fluidPage(
       #includeHTML('footer.html') #now archived
       HTML(footer_template(export_date = paste(export_date_england,export_date_scotland,export_date_wales),
                            email_link = "mailto:bhfdsc@hdruk.ac.uk",
-                           twitter_link = "https://twitter.com/BHFDataScience?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
+                           twitter_link = "https://twitter.com/HDR_UK",
                            youtube_link = "https://www.youtube.com/playlist?list=PLBI5k9SgYrItGXrJo3wO2LtsxwfyvimZ5"
                            ))
 ))
@@ -242,3 +247,5 @@ server = function(input, output, session) {
 # Run the application ----------------------------------------------------------
 shinyApp(ui = ui, server = server)
 #runGadget(ui, server, viewer = browserViewer(browser = getOption("browser")))
+
+

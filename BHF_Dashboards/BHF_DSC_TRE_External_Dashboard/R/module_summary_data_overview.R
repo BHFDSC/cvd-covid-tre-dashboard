@@ -34,14 +34,15 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
       dataset_overview = reactive({
           
         if(nation_summary() == "England" ){
-          t.dataset_overview = t.dataset_overview_eng
+          t.dataset_overview = t.dataset_overview_eng %>%
+            mutate(archived_on = as.Date( archived_on, tryFormats = c("%d/%m/%Y")))
         }
         else if (nation_summary() == "Wales" ){
-          t.dataset_overview = t.dataset_overview_wales  %>% rename(n_id_distinct = n_distinct) %>%
+          t.dataset_overview = t.dataset_overview_wales  %>% rename(n_id_distinct = n_distinct)  %>%
             mutate(archived_on = as.Date( archived_on, tryFormats = c("%d/%m/%Y")))
         }
         else if (nation_summary() == "Scotland" ){
-          t.dataset_overview = t.dataset_overview_scotland %>% 
+          t.dataset_overview = t.dataset_overview_scotland %>%
             mutate(archived_on = as.Date( archived_on, tryFormats = c("%d/%m/%Y")))
         }
         
@@ -52,6 +53,8 @@ dataOverviewServer <- function(id, dataset_summary, nation_summary) {
           filter(dataset == dataset_summary()) %>%
           shhh() #suppress warnings about coercing NAs
       })
+      
+      observe(print(dataset_overview()))
       
       archived_on = reactive({
         

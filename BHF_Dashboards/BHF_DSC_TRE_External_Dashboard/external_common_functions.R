@@ -28,12 +28,18 @@ dataset_dashboard_list = function(nation,key="Dataset available"){
 
 
 
-read_excel_allsheets <- function(filename, tibble = FALSE, except_sheet_no = NA, skip = 0, collate = TRUE) {
+
+
+read_excel_allsheets <- function(filename, tibble = FALSE, except_sheet_no = NA, sheets_to_remove = c("Home","Reference Data"),
+                                 skip = 0, collate = TRUE) {
   # reading all the names of the sheets
   sheets <- readxl::excel_sheets(filename)
   # applying any exceptions eg cover sheets  
   if (!sum(is.na(except_sheet_no))){
     sheets <- sheets[-except_sheet_no]
+  }
+  if (length(sheets_to_remove>0)){
+    sheets <- setdiff(sheets,sheets_to_remove)
   }
   
   
@@ -109,6 +115,7 @@ footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
 
 </div>
 
+
 <div class="columnright" >
 <div class="rowtest">
 <div class="slider">
@@ -138,6 +145,10 @@ footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
       <img src="diabetes_1.png" class="slide-image" alt="Partners: Diabetes UK"></a>
     </div>
     <div class="slide">
+      <a href="https://www.stroke.org.uk" target="_blank">
+      <img src="stroke.png" class="slide-image" alt="Partners: Stroke Association"></a>
+    </div>
+    <div class="slide">
       <a href="https://www.bhf.org.uk" target="_blank">
       <img src="British-Heart-Foundation-logo_1.png" class="slide-image" alt="Partners: British Heart Foundation"></a>
     </div>
@@ -164,6 +175,10 @@ footer_template <- function(export_date,email_link,twitter_link,youtube_link) {
     <div class="slide">
       <a href="https://www.diabetes.org.uk" target="_blank">
       <img src="diabetes_1.png" class="slide-image" alt="Partners: Diabetes UK"></a>
+    </div>
+    <div class="slide">
+      <a href="https://www.stroke.org.uk" target="_blank">
+      <img src="stroke.png" class="slide-image" alt="Partners: Stroke Association"></a>
     </div>
     <div class="slide">
       <a href="https://www.bhf.org.uk" target="_blank">

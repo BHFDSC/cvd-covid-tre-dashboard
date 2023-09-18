@@ -178,7 +178,212 @@ tibble(
 update_date = as.Date("2023-06-15")
 update_date_string = paste(months(update_date),lubridate::year(update_date))
 
+
+t.dataset_overview_wales  %>% rename(n_id_distinct = n_distinct) %>%
+            mutate(archived_on = as.Date( archived_on, tryFormats = c("%d/%m/%Y")))
+
 ```
 
 
+
+```{r}
+completeness_data =
+t.dataset_completeness %>%
+          filter(dataset == "gdppr") %>%
+          mutate(column_name = trimws(column_name)) %>%
+          mutate(completeness = round(completeness*100,2)) %>%
+          arrange(desc(completeness),column_name)
+      
+      colour_palette = ({completeness_data %>% 
+        distinct(completeness) %>% bind_cols(
+          tibble(colours = colorCompleteness(nrow(completeness_data %>% distinct(completeness))))) %>%
+        left_join(select(completeness_data,c(completeness,column_name)),by = "completeness")})
+      
+
+      
+      
+      
+      
+      
+      
+      
+t.data_dictionaryEng %>%
+            select("table") %>%
+            left_join(select(datasets_available, c("table","Dataset","Title","title_dataset","dataset_dataset")),
+                      by=c("table")) %>%
+            filter(Dataset == "gdppr") %>%
+            select(-Dataset) %>%
+            distinct() %>%
+            mutate(Dataset = title_dataset) %>%
+            select(-Title,-title_dataset) %>%
+            select(where(not_all_na)) %>%
+            left_join(t.data_dictionaryEng, by = "table") %>%
+            select(-table,-database,-dataset_dataset,-path)
+
+```
+
+
+
+
+
+
+```{r}
+
+
+
+data_dict = ({
+
+          t.data_dictionaryScot %>% 
+            left_join(select(datasets_available, c("table","Dataset")), by=c("table"))  %>%
+            filter(table == "COVID Tests") %>%
+            select(-table) 
+          
+
+        
+      })
+
+      
+             t.dataset_completeness = t.dataset_completeness_scotland
+      ##########################################################################
+      completeness_data = ({
+
+        t.dataset_completeness %>%
+          filter(dataset == "ecoss") %>%
+          mutate(column_name = trimws(column_name)) %>%
+          mutate(completeness = round(completeness*100,2)) %>%
+          arrange(desc(completeness),column_name)
+          #left_join(dataset_names())
+        
+      })
+      
+      
+        dataset_names = ({(
+        t.dataset_dashboard %>%
+          filter(dataset_dataset == "ecoss") %>%
+          select(dataset="dataset_dataset","Dataset"=title_dataset))
+      })
+      ##########################################################################
+      
+      #colour gradient
+      colorCompleteness = colorRampPalette(compare_colours)
+      
+      color_data = ({completeness_data %>%
+          distinct(completeness) %>% bind_cols(
+            tibble(colours = colorCompleteness(nrow(completeness_data %>% distinct(completeness))))) %>%
+          left_join(select(completeness_data,c(completeness,column_name,dataset)),by = "completeness") %>%
+          left_join(dataset_names)
+        })
+      
+      
+      ##########################################################################
+        
+          
+          my_data = ({
+              
+              data_dict %>%
+                rename_with(str_to_title) %>%
+                left_join((color_data%>%select(-Dataset)%>%rename(Dataset=dataset)), by=c("Dataset"="Dataset","Field"="column_name")) %>%
+                select(-Dataset) %>%
+                distinct() %>%
+                mutate(Position = row_number())
+                #mutate(Dataset = ifelse(Title==Title_dataset, NA, Title_dataset)) %>%
+                #select(where(not_all_na)) %>%
+              
+            }
+
+
+
+color_data%>%select(-Dataset)%>%rename(Dataset=dataset)
+
+```
+
+
+
+
+
+```{r}
+
+ dataset_names = ({
+        t.dataset_dashboard %>%
+          filter(dataset_dataset == "iapt_care_activities_all_years") %>%
+          select(dataset="dataset_dataset","Dataset"=title_dataset)
+      })
+      
+
+data_dict = ({
+
+          t.data_dictionaryEng %>%
+            select("table") %>%
+            left_join(select(datasets_available, c("table","Dataset","Title","title_dataset","dataset_dataset")),
+                      by=c("table")) %>%
+            filter(Dataset == "iapt_care_activities_all_years") %>%
+            select(-Dataset) %>%
+            mutate(Dataset = title_dataset) %>%
+            distinct() %>%
+            #select(-Title,-title_dataset) %>%
+            left_join(t.data_dictionaryEng, by = "table") %>%
+            select(-table,-database,-dataset_dataset,-path) #-x
+        
+        
+      })
+      
+
+      t.dataset_completeness = t.dataset_completeness_eng
+      ##########################################################################
+      completeness_data = ({
+
+        t.dataset_completeness %>%
+          filter(dataset == "iapt_care_activities_all_years") %>%
+          mutate(column_name = trimws(column_name)) %>%
+          mutate(completeness = round(completeness*100,2)) %>%
+          arrange(desc(completeness),column_name)
+          #left_join(dataset_names())
+        
+      })
+      
+      
+      ##########################################################################
+      
+      #colour gradient
+      colorCompleteness = colorRampPalette(compare_colours)
+      
+      color_data = ({completeness_data %>%
+          distinct(completeness) %>% bind_cols(
+            tibble(colours = colorCompleteness(nrow(completeness_data %>% distinct(completeness))))) %>%
+          left_join(select(completeness_data,c(completeness,column_name,dataset)),by = "completeness") %>%
+          left_join(dataset_names)
+        })
+      
+      
+      ##########################################################################
+        
+          
+          my_data = ({
+
+              data_dict %>%
+                rename_with(str_to_title) %>%
+                mutate(Position = row_number()) %>%
+                relocate(Position) %>%
+                left_join(color_data, by=c("Dataset"="Dataset","Field"="column_name")) %>%
+                select(-Dataset) %>%
+                #mutate(Dataset = ifelse(Title==Title_dataset, NA, Title_dataset)) %>%
+                #select(where(not_all_na)) %>%
+                select(-Title,-Title_dataset,-dataset)
+
+
+          })
+      
+
+ 
+```
+
+```{r}
+
+paste0(format(99, nsmall=0, big.mark=",", trim=FALSE),"%")
+
+
+paste(sprintf("%5.1f", 100))
+paste(sprintf("%5.1f%%", 99.2))
+paste(sprintf("%5.1f%%", 5.12))
+```
 
