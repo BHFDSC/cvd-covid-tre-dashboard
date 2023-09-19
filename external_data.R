@@ -1,4 +1,4 @@
-#current_dir_data = dirname(rstudioapi::getSourceEditorContext()$path)
+# current_dir_data = dirname(rstudioapi::getSourceEditorContext()$path)
 update_date = as.Date("2023-09-12")
 #update_date_string = paste(toOrdinal::toOrdinal(lubridate::mday(update_date)),months(update_date),lubridate::year(update_date))
 update_date_string = paste(months(update_date),lubridate::year(update_date))
