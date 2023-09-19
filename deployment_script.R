@@ -1,8 +1,7 @@
 #######################################
 ##### Shinyapp deployment script ######
 #######################################
-### SHOULD NOT BE ABLE TO SEE THIS
-#BLAH
+### ATTEMPT3
 # Running a shinyapp creates a temporary version (appearing in your browser normally) that only you can view. If you want to share the
 # app with others though you need to host a public version. You can do this by setting up an account on shinyapps.io
 
