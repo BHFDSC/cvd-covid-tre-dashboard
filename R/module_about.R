@@ -139,6 +139,61 @@ aboutUI<- function(id){
 
 
 
+
+
+
+
+        <article class="faq-accordion">
+
+          <input class="tgg-title" type="checkbox" id="tgg-title-6">
+
+          <div class="faq-accordion-title">
+            <label for="tgg-title-6">
+              <h2>
+                How can I cite the dashboard?
+              </h2>
+              <span class="arrow-icon">
+                <img src="https://raw.githubusercontent.com/Romerof/FAQ-accordion-card/main/images/icon-arrow-down.svg">
+              </span>
+            </label>
+          </div>
+
+          <div class="faq-accordion-content">
+            <p>Please share, cite or link the Dataset Summary Dashboard using our DOI: <br> <a href="https://zenodo.org/badge/latestdoi/693238306"><img src="https://zenodo.org/badge/693238306.svg" alt="DOI"></a></p>
+          </div>
+
+
+        </article> <!-- faq accordion -->
+
+
+
+        <article class="faq-accordion">
+
+          <input class="tgg-title" type="checkbox" id="tgg-title-7">
+
+          <div class="faq-accordion-title">
+            <label for="tgg-title-7">
+              <h2>
+                Can I access the code that made this dashboard?
+              </h2>
+              <span class="arrow-icon">
+                <img src="https://raw.githubusercontent.com/Romerof/FAQ-accordion-card/main/images/icon-arrow-down.svg">
+              </span>
+            </label>
+          </div>
+
+
+
+          <div class="faq-accordion-content">
+            <p>Yes! We are committed to producing open source, transparent and reproducible research. Please find our repository at <a href="https://github.com/BHFDSC/cvd-covid-tre-dashboard" class="aboutFund" target = "_blank">BHFDSC GitHub</a>.</p>
+          </div>
+
+
+        </article> <!-- faq accordion -->
+
+
+
+
       </div> <!-- faq articles -->
 
     </main> <!-- faq -->
