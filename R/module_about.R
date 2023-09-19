@@ -159,7 +159,7 @@ aboutUI<- function(id){
           </div>
 
           <div class="faq-accordion-content">
-            <p>Please share, cite or link the Dataset Summary Dashboard using our DOI: <br> <a href="https://zenodo.org/badge/latestdoi/693238306"><img src="https://zenodo.org/badge/693238306.svg" alt="DOI"></a></p>
+            <p>Please share, cite or link the Dataset Summary Dashboard using our DOI: <br> <a href="https://zenodo.org/badge/latestdoi/693238306" target = "_blank"><img src="https://zenodo.org/badge/693238306.svg" alt="DOI"></a></p>
           </div>
 
 
