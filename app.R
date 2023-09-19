@@ -1,5 +1,5 @@
 # Setup ########################################################################
-Version = "1.1.0"
+Version = "1.0"
 
 options(shiny.sanitize.errors = TRUE)
 
