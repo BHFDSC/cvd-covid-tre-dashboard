@@ -194,6 +194,40 @@ aboutUI<- function(id){
 
 
 
+        <article class="faq-accordion">
+
+          <input class="tgg-title" type="checkbox" id="tgg-title-8">
+
+          <div class="faq-accordion-title">
+            <label for="tgg-title-8">
+              <h2>
+                How do I access the data used in this dashboard?
+              </h2>
+              <span class="arrow-icon">
+                <img src="https://raw.githubusercontent.com/Romerof/FAQ-accordion-card/main/images/icon-arrow-down.svg">
+              </span>
+            </label>
+          </div>
+
+
+
+          <div class="faq-accordion-content">
+            <p>To access the <b>summary data</b>, such as those used to create the visualisations in this dashboard, 
+           you will find a <b>Download Data</b> option beside each plot, specific to your chosen dataset. 
+          You can also find this data in our source code.
+
+        To access patient-level data in the described datasets, 
+      you will need to follow an approvals process with the relevant data provider. 
+     If you would like to do this via the consortium, please <a href="mailto:bhfdsc@hdruk.ac.uk." class="aboutMail"><b>get in touch</b></a>,
+   for advice and support.</p>
+          </div>
+
+
+        </article> <!-- faq accordion -->
+
+
+
+
       </div> <!-- faq articles -->
 
     </main> <!-- faq -->
