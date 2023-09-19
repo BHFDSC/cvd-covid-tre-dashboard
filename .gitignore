@@ -1,4 +1,4 @@
 *.Rhistory
 .Rproj.user
 .DS_Store
-deployment_script.R
+cvd-covid-tre-dashboard/deployment_script.R
