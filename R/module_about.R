@@ -19,7 +19,7 @@ aboutUI<- function(id){
                   <span style="letter-spacing:1px;font-size:34px;text-align:left;">
                   <br>Welcome to the<br>
                   <a href="https://bhfdatasciencecentre.org/areas/cvd-covid-uk-covid-impact/" target = "_blank" >CVD-COVID-UK/COVID-IMPACT</a> <br>
-                  Dataset Summary Dashboard<br>
+                  Dataset Insight Resource<br>
 
 
           
