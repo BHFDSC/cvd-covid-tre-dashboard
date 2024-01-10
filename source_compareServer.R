@@ -291,7 +291,7 @@ compare_coverage_plot = reactive({
 
     coord_cartesian(clip = "off") +
 
-    scale_y_continuous(labels = scales::label_number_si(), #limits = c(0, NA),
+    scale_y_continuous(labels = scales::label_number(scale_cut = cut_short_scale()), #limits = c(0, NA),
                        trans=if(input$log_scale){scales::pseudo_log_trans(base = 10)} else {trend="identity"}
                        ) 
     
