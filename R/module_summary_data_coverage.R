@@ -620,7 +620,7 @@ tags$script(
           scale_colour_manual(values=summary_coverage_palette, name = "colour_summary") +
           scale_fill_manual(values=summary_coverage_palette, name = "colour_summary")  +
           
-          scale_y_continuous(labels = scales::label_number_si(),
+          scale_y_continuous(labels = scales::label_number(scale_cut = cut_short_scale()),
                              trans=if(input$log_scale_summary){scales::pseudo_log_trans(base = 10)} else {trend="identity"}
           ) 
         
