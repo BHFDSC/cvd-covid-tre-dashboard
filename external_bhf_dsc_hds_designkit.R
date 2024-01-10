@@ -153,6 +153,10 @@ text-align: right;
 
 
 
+.option.selected{
+  background-color: #F5F5F4!important;
+  color:#3D3C3C;
+}
 
 
 
