@@ -173,7 +173,7 @@ t.data_coverage = t.data_coverage_source %>%
                           str_pad(date_m,width=2,pad=0,side="left"))) %>% 
   left_join(t.data_coverage_source, by = c("date_ym","dataset")) %>%
   mutate(across(.cols = starts_with('n', ignore.case = FALSE),
-                .fn = ~ replace_na(.,0))) %>%
+                .fn = ~ replace_na(.,10))) %>%
   group_by(dataset) %>%
   arrange(dataset,date_y,date_m) %>%
   mutate(across(.cols = starts_with("n", ignore.case = FALSE),
