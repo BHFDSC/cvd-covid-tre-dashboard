@@ -9,7 +9,7 @@ update_date_string = paste(months(update_date),lubridate::year(update_date))
 #England
 export_date_england = "2024-01-10"
 completeness_dataset_name_england = "export_dashboard_NHSD_20240108_data_completeness"
-coverage_dataset_name_england = "export_dashboard_NHSD_20240108_data_coverage"
+coverage_dataset_name_england = "export_dashboard_NHSD_20240112_data_coverage"
 overview_dataset_name_england = "export_dashboard_NHSD_20240109_data_overview"
 substr(export_date_england,1,4)
 substr(export_date_england,6,7)
