@@ -186,7 +186,11 @@ t.data_coverage = t.data_coverage_source %>%
   mutate(date_name_season = paste0(date_y, ": ")) %>%
   mutate(date_m_name = paste0(month.name[date_m])) %>%
   pivot_longer(cols=starts_with("n", ignore.case = FALSE), names_to="Type",values_to="N") %>%
-  mutate(date_format = as.Date(paste(date_ym, 1, sep="-"), "%Y-%m-%d"))
+  mutate(date_format = as.Date(paste(date_ym, 1, sep="-"), "%Y-%m-%d")) %>%
+  mutate(N=ifelse(N<=10,10,N)) %>%
+  left_join((t.data_coverage_source%>%distinct(dataset,Nation3=Nation2))) %>%
+  mutate(Nation2=ifelse(is.na(Nation2),Nation3,Nation2)) %>%
+  select(-Nation3)
 
 
 

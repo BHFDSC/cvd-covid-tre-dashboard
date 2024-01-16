@@ -165,7 +165,7 @@ compare_coverage_data_start_date =
       mutate(start_date = min(start_date))%>%
       filter(!start_date >= date_format) %>%
       #using current month but this should be updated to use production ym in future
-      mutate(current_date = as.Date("2022-12-01")) %>%  #as.Date(paste(format(Sys.Date(), "%Y-%m"), 1, sep="-"), "%Y-%m-%d")
+      mutate(current_date = as.Date("2024-01-01")) %>%  #as.Date(paste(format(Sys.Date(), "%Y-%m"), 1, sep="-"), "%Y-%m-%d")
       filter(date_format <= current_date) %>%
       ungroup()
   })
@@ -213,7 +213,11 @@ observe({
                     step=1
   )})
 
-
+observe({print(compare_coverage_data_start_date())})
+observe({print(compare_date_range_coverage_min2())})
+observe({print(compare_date_range_coverage_max2())})
+observe({print(compare_date_range_coverage_min_start_date2())})
+observe({print(compare_date_range_coverage_max_start_date2())})
 
 #date filtered dataset
 compare_coverage_data_filtered = reactive({
@@ -291,7 +295,7 @@ compare_coverage_plot = reactive({
 
     coord_cartesian(clip = "off") +
 
-    scale_y_continuous(labels = scales::label_number(scale_cut = cut_short_scale()), #limits = c(0, NA),
+    scale_y_continuous(#limits = c(0, NA),
                        trans=if(input$log_scale){scales::pseudo_log_trans(base = 10)} else {trend="identity"}
                        ) 
     
