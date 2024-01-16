@@ -147,7 +147,8 @@ compare_coverage_data_all_records_before =  reactive({
     #tooltips for plot
     mutate(N_tooltip = format(.data$N, nsmall=0, big.mark=",", trim=TRUE)) %>%
     mutate(N_tooltip_date = paste0(date_name,N_tooltip)) %>%
-    mutate(N_tooltip_date_season = paste0(date_name_season,N_tooltip))
+    mutate(N_tooltip_date_season = paste0(date_name_season,N_tooltip)) %>%
+    filter(!is.na(N))
 })
     
 compare_coverage_data_all_records =  reactive({ 
@@ -213,11 +214,11 @@ observe({
                     step=1
   )})
 
-observe({print(compare_coverage_data_start_date())})
-observe({print(compare_date_range_coverage_min2())})
-observe({print(compare_date_range_coverage_max2())})
-observe({print(compare_date_range_coverage_min_start_date2())})
-observe({print(compare_date_range_coverage_max_start_date2())})
+observe({print(compare_coverage_data_start_date()%>%filter(N<10))})
+# observe({print(compare_date_range_coverage_min2())})
+# observe({print(compare_date_range_coverage_max2())})
+# observe({print(compare_date_range_coverage_min_start_date2())})
+# observe({print(compare_date_range_coverage_max_start_date2())})
 
 #date filtered dataset
 compare_coverage_data_filtered = reactive({
@@ -295,7 +296,7 @@ compare_coverage_plot = reactive({
 
     coord_cartesian(clip = "off") +
 
-    scale_y_continuous(#limits = c(0, NA),
+    scale_y_continuous(labels=scales::label_number(scale_cut = append(scales::cut_short_scale(), 1, 1)), #limits = c(0, NA),
                        trans=if(input$log_scale){scales::pseudo_log_trans(base = 10)} else {trend="identity"}
                        ) 
     

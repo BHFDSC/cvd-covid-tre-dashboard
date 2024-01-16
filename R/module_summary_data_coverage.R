@@ -559,6 +559,15 @@ tags$script(
       
       ## Trend Plot ============================================================
       
+      max_y = reactive({coverage_data_filtered()%>%summarise(max = max(.data$N))%>%pull(max)})
+      observe({print(max_y())})
+      
+      custom_label <- function(x) {
+        suffix <- ifelse(x >= 1e9, "B", ifelse(x >= 1e6, "M", ifelse(x >= 1e3, "K", "")))
+        formatted <- sapply(strsplit((prettyNum(x, big.mark = ",", scientific = FALSE, format = "f", drop0trailing = TRUE)), ","), "[", 1)
+        return(paste0(formatted, suffix))
+      }
+      
       y_axis = reactive({paste(ifelse(input$log_scale_summary,"Monthly Count (Log Scale)","Monthly Count (Linear Scale)"))})
       
       coverage_title_download = reactive({paste("Data Coverage - ", pull(filter(t.dataset_dashboard,Dataset==dataset_summary()),Title))})
@@ -620,10 +629,10 @@ tags$script(
           scale_colour_manual(values=summary_coverage_palette, name = "colour_summary") +
           scale_fill_manual(values=summary_coverage_palette, name = "colour_summary")  +
           
-          scale_y_continuous(labels = scales::label_number(scale_cut = cut_short_scale()),
+          scale_y_continuous(labels=scales::label_number(scale_cut = append(scales::cut_short_scale(), 1, 1)),
                              trans=if(input$log_scale_summary){scales::pseudo_log_trans(base = 10)} else {trend="identity"}
           ) 
-        
+      
           #{if(input$log_scale_summary)scale_y_continuous(labels = scales::label_number_si()) else {scale_y_continuous(labels = scales::label_number_si())}} #, limits = c(0, NA)
       })
       
@@ -927,7 +936,7 @@ tags$script(
             
             )) +
           
-          scale_y_continuous(labels = scales::label_number_si()) +
+          scale_y_continuous(labels=scales::label_number(scale_cut = append(scales::cut_short_scale(), 1, 1))) + #custom_label
           scale_x_continuous(breaks = 1:12, #c(1, 4, 7, 10),
                              label = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
       })
