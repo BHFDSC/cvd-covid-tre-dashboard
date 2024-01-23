@@ -22,9 +22,9 @@ overview_dataset_name_scotland = "export_dashboard_scotland_overview20230811"
 
 #Wales
 export_date_wales = "2023-08-09"
-completeness_dataset_name_wales = "export_dashboard_SAIL_20230809_data_completeness"
-coverage_dataset_name_wales = "export_dashboard_SAIL_20230809_data_coverage"
-overview_dataset_name_wales = "export_dashboard_SAIL_20230809_data_overview"
+completeness_dataset_name_wales = "export_dashboard_SAIL_20240111_data_completeness"
+coverage_dataset_name_wales = "export_dashboard_SAIL_20240111_data_coverage"
+overview_dataset_name_wales = "export_dashboard_SAIL_20240111_data_overview"
 
 
 
@@ -112,7 +112,7 @@ t.data_dictionaryWales = read_excel_allsheets( # pathfornow,
 
 # Dataset Overview -------------------------------------------------------------
 t.dataset_overview_eng = read.csv(paste0('Data/',overview_dataset_name_england,'.csv')) %>% mutate(dataset=ifelse(dataset=="deaths","death",dataset))
-t.dataset_overview_wales = read.csv(paste0('Data/',overview_dataset_name_wales,'.csv'))
+t.dataset_overview_wales = read.csv(paste0('Data/',overview_dataset_name_wales,'.csv')) %>% mutate(archived_on = format(lubridate::dmy(archived_on), "%Y-%m-%d"))
 t.dataset_overview_scotland = read.csv(paste0('Data/',overview_dataset_name_scotland,'.csv')) %>%
   mutate(archived_on=as.Date(substr(archived_on,1,10)))
 
