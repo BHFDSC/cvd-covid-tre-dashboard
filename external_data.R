@@ -22,9 +22,9 @@ overview_dataset_name_scotland = "export_dashboard_scotland_overview20230811"
 
 #Wales
 export_date_wales = "2023-08-09"
-completeness_dataset_name_wales = "export_dashboard_SAIL_20230809_data_completeness"
-coverage_dataset_name_wales = "export_dashboard_SAIL_20230809_data_coverage"
-overview_dataset_name_wales = "export_dashboard_SAIL_20230809_data_overview"
+completeness_dataset_name_wales = "export_dashboard_SAIL_20240111_data_completeness"
+coverage_dataset_name_wales = "export_dashboard_SAIL_20240111_data_coverage"
+overview_dataset_name_wales = "export_dashboard_SAIL_20240111_data_overview"
 
 
 
