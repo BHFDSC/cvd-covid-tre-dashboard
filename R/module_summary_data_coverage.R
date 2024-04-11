@@ -603,7 +603,7 @@ tags$script(
         labs(x = NULL, y = y_axis()) +
           theme_minimal() +
           theme(
-            text=element_text(family=family_lato),
+            text=element_text(family="Rubik"), #family_lato
             panel.grid = element_blank(),
             plot.margin = margin(10,10,0,0),
             plot.background = element_rect(fill='white',color='white'),
@@ -700,7 +700,7 @@ tags$script(
                    direction = "y",
                    #box.padding = 1, max.overlaps = Inf,
                    #hjust=1, #right just
-                   family=family_lato,
+                   family="Rubik",
                    segment.color = 'transparent'))
                
                ,
@@ -758,7 +758,7 @@ tags$script(
                                              ),
                                              
                                              direction = "y",
-                                             family=family_lato,
+                                             family="Rubik",
                                              segment.color = 'transparent')) +
                                            #new theme for download
                                            theme(plot.margin = margin(20,50,20,50),
@@ -806,7 +806,7 @@ tags$script(
                                              ),
                                              
                                              direction = "y",
-                                             family=family_lato,
+                                             family="Rubik",
                                              segment.color = 'transparent')) +
                                            #new theme for download
                                            theme(plot.margin = margin(20,50,20,50),
@@ -854,7 +854,7 @@ tags$script(
                                              ),
                                              
                                              direction = "y",
-                                             family=family_lato,
+                                             family="Rubik", #family_lato
                                              segment.color = 'transparent')) +
                                            #new theme for download
                                            theme(plot.margin = margin(20,50,20,50),
@@ -906,7 +906,7 @@ tags$script(
 
           theme_minimal() +
           theme(
-            text=element_text(family=family_lato),
+            text=element_text(family="Rubik"), #family_lato
             panel.grid = element_blank(),
             plot.margin = margin(10,50,0,0),
             plot.background = element_rect(color=NA),
@@ -973,7 +973,7 @@ tags$script(
                      label = as.factor(.data$date_y)),
 
                  direction = "y",
-                 family=family_lato,
+                 family="Rubik",
                  segment.color = 'transparent'),
                
                width_svg = 16,
@@ -1020,7 +1020,7 @@ tags$script(
                                              
                                              
                                              direction = "y",
-                                             family=family_lato,
+                                             family="Rubik",
                                              segment.color = 'transparent') +
                                            #custom theme for download
                                            theme(plot.margin = margin(20,50,20,50),
@@ -1058,7 +1058,7 @@ tags$script(
                                              
                                              
                                              direction = "y",
-                                             family=family_lato,
+                                             family="Rubik",
                                              segment.color = 'transparent') +
                                            #custom theme for download
                                            theme(plot.margin = margin(20,50,20,50),
@@ -1097,7 +1097,7 @@ tags$script(
                                              
                                              
                                              direction = "y",
-                                             family=family_lato,
+                                             family="Rubik",
                                              segment.color = 'transparent') +
                                            #custom theme for download
                                            theme(plot.margin = margin(20,50,20,50),
