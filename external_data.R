@@ -9,7 +9,7 @@ update_date_string = paste(months(update_date),lubridate::year(update_date))
 #England
 export_date_england = "2024-01-10"
 completeness_dataset_name_england = "export_dashboard_NHSD_20240108_data_completeness"
-coverage_dataset_name_england = "export_dashboard_NHSD_20240108_data_coverage"
+coverage_dataset_name_england = "export_dashboard_NHSD_20240112_data_coverage"
 overview_dataset_name_england = "export_dashboard_NHSD_20240109_data_overview"
 substr(export_date_england,1,4)
 substr(export_date_england,6,7)
@@ -173,7 +173,7 @@ t.data_coverage = t.data_coverage_source %>%
                           str_pad(date_m,width=2,pad=0,side="left"))) %>% 
   left_join(t.data_coverage_source, by = c("date_ym","dataset")) %>%
   mutate(across(.cols = starts_with('n', ignore.case = FALSE),
-                .fn = ~ replace_na(.,0))) %>%
+                .fn = ~ replace_na(.,10))) %>%
   group_by(dataset) %>%
   arrange(dataset,date_y,date_m) %>%
   mutate(across(.cols = starts_with("n", ignore.case = FALSE),
@@ -186,7 +186,11 @@ t.data_coverage = t.data_coverage_source %>%
   mutate(date_name_season = paste0(date_y, ": ")) %>%
   mutate(date_m_name = paste0(month.name[date_m])) %>%
   pivot_longer(cols=starts_with("n", ignore.case = FALSE), names_to="Type",values_to="N") %>%
-  mutate(date_format = as.Date(paste(date_ym, 1, sep="-"), "%Y-%m-%d"))
+  mutate(date_format = as.Date(paste(date_ym, 1, sep="-"), "%Y-%m-%d")) %>%
+  mutate(N=ifelse(N<=10,10,N)) %>%
+  left_join((t.data_coverage_source%>%distinct(dataset,Nation3=Nation2))) %>%
+  mutate(Nation2=ifelse(is.na(Nation2),Nation3,Nation2)) %>%
+  select(-Nation3)
 
 
 
