@@ -112,6 +112,7 @@ bhf_dsc_hds_bootstrap_theme = bs_theme(version = 5, bootswatch = "flatly",
 #bhf_navbar_line = hr(style=paste0("color:","#000000","!important;"))
 
 #Google fonts for ggplots - in order of preference from flatly theme
+gdtools::register_gfont(family="Rubik")
 font_add_google("Rubik", "rb")
 font_add_google("Noto Sans", "segoe_ui")
 font_add_google("Roboto", "helvetica_neue")

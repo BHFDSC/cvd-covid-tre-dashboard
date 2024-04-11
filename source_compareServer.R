@@ -274,7 +274,7 @@ compare_coverage_plot = reactive({
     labs(x = NULL, y = y_axis()) +
     theme_minimal() +
     theme(
-      text=element_text(family=family_lato),
+      text=element_text(family="Rubik"), #family_lato
       panel.grid = element_blank(),
       plot.margin = margin(10,50,0,0),
       plot.background = element_rect(fill='white',color='white'),

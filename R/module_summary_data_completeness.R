@@ -263,7 +263,7 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
                              labels = function(i) {return(paste0(i,"%"))}) +
         
           theme(
-            text=element_text(family=family_lato),
+            text=element_text(family="Rubik"), #family_lato
             plot.subtitle = element_markdown(size = 11, lineheight = 1.2),
             legend.position = "none",
             plot.title.position = 'plot', #align to outer margin; applies to subtitle too
