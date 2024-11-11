@@ -116,7 +116,6 @@ ui = fluidPage(
     
     
     ### About Tab ===========================================================
-    tabPanel("About",value = "aboutdefault", aboutUI(id = "about_module")),
 
     ### Summary Tab ============================================================
   
@@ -134,6 +133,8 @@ ui = fluidPage(
     
     ### Methodology Tab ===========================================================
     tabPanel("Methodology",methodologyOutput(id = "methodology")) ,
+    
+    tabPanel("Find out more",value = "aboutdefault", aboutUI(id = "about_module")),
     
     ### Feedback Button ===========================================================
     
