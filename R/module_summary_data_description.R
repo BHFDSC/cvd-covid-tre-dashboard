@@ -60,7 +60,7 @@ dataDescriptionServer <- function(id, dataset_summary, nation_summary){
                 
       #observe(print(url1()))
       
-      url2 <- reactive({a("Health Data Research Innovation Gateway", 
+      url2 <- reactive({a("Health Data Research Gateway", 
                        href = datasets_available$url2[datasets_available$Dataset == dataset_summary() & 
                                                         datasets_available$Nation == nation_summary()],
                 target = "_blank")})
