@@ -47,10 +47,33 @@ datasets_available = t.dataset_dashboard %>%
 # TRE Data Dictionary ----------------------------------------------------------
 
 #England------------------------------------------------------------------------
-t.data_dictionaryEng = read_excel_allsheets('Data/TRE_DD_391419_j3w9t.xlsx',
-                                       tibble = FALSE,
-                                       sheets_to_remove = c("Home","Reference Data"),
-                                       skip = 2) %>%
+# t.data_dictionaryEng = read_excel_allsheets('Data/TRE_DD_391419_j3w9t.xlsx',
+#                                        tibble = FALSE,
+#                                        sheets_to_remove = c("Home","Reference Data"),
+#                                        skip = 2) %>%
+#   mutate(table = str_replace(table, paste0("_", path),"")) %>%
+#   mutate(table = str_replace(table,"deaths" ,"death")) %>%
+#   mutate(table = str_replace(table,"_[{]fyear[}]" ,"")) %>%
+#   filter(!is.na(table)) %>%
+#   select(-1) %>%
+#   rename(`field` = display_name,
+#          `field name` = display_name_label,
+#          `field description` = field_description,
+#          `field type` = variable_type,
+#          `variable_type` = data_type
+#          #`x` = gdppr
+#   ) %>%
+#   mutate(database='dars_nic_391419_j3w9t') %>%
+#   mutate(field=ifelse(str_starts(table,"iapt_"),str_to_lower(field),field))
+
+
+
+# England  ----------------------------------------------------------
+
+t.data_dictionaryEng = read_excel_allsheets('Data/20240624_SDE_DD_391419_j3w9t.xlsx',
+                                            tibble = FALSE,
+                                            sheets_to_remove = c("Home","Reference Data"),
+                                            skip = 2) %>%
   mutate(table = str_replace(table, paste0("_", path),"")) %>%
   mutate(table = str_replace(table,"deaths" ,"death")) %>%
   mutate(table = str_replace(table,"_[{]fyear[}]" ,"")) %>%
