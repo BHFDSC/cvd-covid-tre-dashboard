@@ -57,7 +57,7 @@ methodologyOutput <- function(id){
         tags$h4("Extreme Dates"),
         tags$p(
           "Datasets can contain extreme dates that are outside feasible ranges. For example, future dates, or historic dates prior to the known start of data coverage, arising from input error, system default dates (for unknown or missing dates) or other reasons.
-          These dates have been included in the underlying data that feeds the dashboard. By default, extreme dates (dates < 1900 and >= 2024) are not shown on the Data Coverage plot, but can be seen by selecting the “Show Extreme Dates” switch on the plot panel menu.
+          These dates have been included in the underlying data that feeds the dashboard. By default, extreme dates (dates < 1900 and those in the future) are not shown on the Data Coverage plot, but can be seen by selecting the “Show Extreme Dates” switch on the plot panel menu.
       "
         ),
         tags$h4("Suppression"),
