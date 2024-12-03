@@ -1,5 +1,5 @@
 # current_dir_data = dirname(rstudioapi::getSourceEditorContext()$path)
-update_date = as.Date("2024-01-10")
+update_date = as.Date("2024-12-01")
 #update_date_string = paste(toOrdinal::toOrdinal(lubridate::mday(update_date)),months(update_date),lubridate::year(update_date))
 update_date_string = paste(months(update_date),lubridate::year(update_date))
 
@@ -7,10 +7,10 @@ update_date_string = paste(months(update_date),lubridate::year(update_date))
 # Current Dataset Names --------------------------------------------------------
 
 #England
-export_date_england = "2024-01-10"
-completeness_dataset_name_england = "export_dashboard_NHSD_20240108_data_completeness"
-coverage_dataset_name_england = "export_dashboard_NHSD_20240112_data_coverage"
-overview_dataset_name_england = "export_dashboard_NHSD_20240109_data_overview"
+export_date_england = "2024-12-01"
+completeness_dataset_name_england = "EDSD_Completeness_20241024"
+coverage_dataset_name_england = "EDSD_Coverage_20241024"
+overview_dataset_name_england = "EDSD_Overall_20241024"
 substr(export_date_england,1,4)
 substr(export_date_england,6,7)
 
