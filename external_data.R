@@ -179,8 +179,8 @@ t.data_coverage = t.data_coverage_source %>%
   arrange(dataset,date_y,date_m) %>%
   mutate(across(.cols = starts_with("n", ignore.case = FALSE),
                 .names = "{.col}_cum",
-                .fn = ~ cumsum(.))) %>% 
-  filter(!if_all(ends_with("cum"), ~ . == 0)) %>% 
+                .fn = ~ cumsum(replace_na(as.numeric(.), 0)))) %>%
+  filter(!if_all(ends_with("cum"), ~ . == 0)) %>%
   select(!ends_with("cum")) %>%
   #date month names for plot annotation
   mutate(date_name = paste0(month.name[date_m]," ", date_y, ": ")) %>%
