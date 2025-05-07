@@ -65,7 +65,24 @@ t.data_dictionaryEng = read_excel_allsheets('Data/20240624_SDE_DD_391419_j3w9t.x
          #`x` = gdppr
   ) %>%
   mutate(database='dars_nic_391419_j3w9t') %>%
-  mutate(field=ifelse(str_starts(table,"iapt_"),str_to_lower(field),field))
+  mutate(field=ifelse(str_starts(table,"iapt_"),str_to_lower(field),field)) %>%
+  
+  mutate(table=ifelse(str_detect(table,"iapt_v2_1_coded_scored_assessme"),
+                      str_replace(table,"iapt_v2_1_coded_scored_assessme","iapt_v2_1_coded_scored_assessments"),table)) %>%
+  
+  mutate(table=ifelse(str_detect(table,"iapt_v2_1_demographics_and_refe"),
+                      str_replace(table,"iapt_v2_1_demographics_and_refe","iapt_v2_1_demographics_and_referral"),table)) %>%
+  
+  mutate(table=ifelse(str_detect(table,"iapt_v2_1_internet_enabled_ther"),
+                      str_replace(table,"iapt_v2_1_internet_enabled_ther","iapt_v2_1_internet_enabled_therapies"),table)) %>%
+  
+  mutate(table=ifelse(str_detect(table,"iapt_v2_1_mental_and_physical_h"),
+                      str_replace(table,"iapt_v2_1_mental_and_physical_h","iapt_v2_1_mental_and_physical_health"),table)) %>%
+  
+  mutate(field = str_to_lower(field))
+
+
+
 
 
 
@@ -120,7 +137,8 @@ t.dataset_overview_scotland = read.csv(paste0('Data/',overview_dataset_name_scot
 
 # Dataset Completeness -------------------------------------------------------------
 t.dataset_completeness_eng = read.csv(paste0('Data/',completeness_dataset_name_england,'.csv')) %>% mutate(dataset=ifelse(dataset=="deaths","death",dataset)) %>%
-  mutate(column_name_temp = str_to_lower(column_name))
+  mutate(column_name_temp = str_to_lower(column_name)) %>%
+  mutate(column_name = str_to_lower(column_name))
 t.dataset_completeness_wales = read.csv(paste0('Data/',completeness_dataset_name_wales,'.csv'))
 t.dataset_completeness_scotland = read.csv(paste0('Data/',completeness_dataset_name_scotland,'.csv'))
 
