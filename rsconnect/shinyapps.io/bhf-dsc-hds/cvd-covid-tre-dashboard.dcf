@@ -5,7 +5,7 @@ account: bhf-dsc-hds
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 9499670
-bundleId: 10286348
+bundleId: 10734787
 url: https://bhf-dsc-hds.shinyapps.io/cvd-covid-tre-dashboard/
 asMultiple: FALSE
 asStatic: FALSE
