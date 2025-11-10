@@ -1,5 +1,5 @@
 # current_dir_data = dirname(rstudioapi::getSourceEditorContext()$path)
-update_date = as.Date("2025-08-05")
+update_date = as.Date("2025-11-04")
 #update_date_string = paste(toOrdinal::toOrdinal(lubridate::mday(update_date)),months(update_date),lubridate::year(update_date))
 update_date_string = paste(months(update_date),lubridate::year(update_date))
 
@@ -7,10 +7,10 @@ update_date_string = paste(months(update_date),lubridate::year(update_date))
 # Current Dataset Names --------------------------------------------------------
 
 #England
-export_date_england = "2025-08-05"
-completeness_dataset_name_england = "export_dashboard_england_20250705_data_completeness"
-coverage_dataset_name_england = "export_dashboard_england_20250705_data_coverage"
-overview_dataset_name_england = "export_dashboard_england_20250705_data_overall"
+export_date_england = "2025-11-04"
+completeness_dataset_name_england = "export_dashboard_england_20251104_data_completeness"
+coverage_dataset_name_england = "export_dashboard_england_20251104_data_coverage"
+overview_dataset_name_england = "export_dashboard_england_20251104_data_overall"
 substr(export_date_england,1,4)
 substr(export_date_england,6,7)
 
@@ -138,7 +138,7 @@ t.dataset_overview_scotland = read.csv(paste0('Data/',overview_dataset_name_scot
 # Dataset Completeness -------------------------------------------------------------
 t.dataset_completeness_eng = read.csv(paste0('Data/',completeness_dataset_name_england,'.csv')) %>% mutate(dataset=ifelse(dataset=="deaths","death",dataset)) %>%
   mutate(column_name_temp = str_to_lower(column_name)) %>%
-  mutate(column_name = str_to_lower(column_name))
+  mutate(column_name = str_to_lower(column_name)) %>% mutate(completeness=completeness/100)
 t.dataset_completeness_wales = read.csv(paste0('Data/',completeness_dataset_name_wales,'.csv'))
 t.dataset_completeness_scotland = read.csv(paste0('Data/',completeness_dataset_name_scotland,'.csv'))
 
