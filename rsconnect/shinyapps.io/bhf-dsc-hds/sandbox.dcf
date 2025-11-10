@@ -1,0 +1,12 @@
+name: sandbox
+title: sandbox
+username: bhf-dsc-hds
+account: bhf-dsc-hds
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14706856
+bundleId: 10730508
+url: https://bhf-dsc-hds.shinyapps.io/sandbox/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
