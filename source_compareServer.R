@@ -243,63 +243,87 @@ validate_plots = reactive({compare_coverage_data_filtered() %>% distinct(dataset
 
 
 
-compare_coverage_plot = reactive({
+compare_coverage_plot <- reactive({
   
-  #dont render until have 2 datasets
+  # don't render until have 2 datasets
   validate(
     need(nrow(validate_plots()) > 1, message = FALSE)
   )
-
+  
   ggplot(
     data = compare_coverage_data_filtered(),
-    aes(x = .data$date_format,
-        if(input$log_scale){y=.data$N} else {y=.data$N},
-        color = .data$dataset,
-        data_id = .data$dataset,
-        group = .data$dataset
+    aes(
+      x      = .data$date_format,
+      y      = .data$N,
+      color  = .data$dataset,
+      group  = .data$dataset
     )
   ) +
-    geom_line_interactive(size = 2.5,
-              alpha = if(input$trend_line){1} else {1},
-              aes(
-                  data_id = .data$dataset
-              )) +
+    # 1) non-interactive lines
+    geom_line(
+      size  = 2.5,
+      alpha = if (input$trend_line) 1 else 1
+    ) +
+    
+    # 2) interactive points for tooltips / hover
     geom_point_interactive(
-      aes(tooltip = .data$N_tooltip_date),
-      alpha = if(input$trend_line){1} else {1},
-      fill = "white",
-      size = 2.5,
+      aes(
+        tooltip = .data$N_tooltip_date,
+        data_id = .data$dataset
+      ),
+      alpha  = if (input$trend_line) 1 else 1,
+      fill   = "white",
+      size   = 2.5,
       stroke = 1.5,
-      shape = 20) +
+      shape  = 20
+    ) +
     
-    {if(input$trend_line)geom_smooth_interactive(aes(fill = .data$dataset,
-                                                     tooltip = .data$N_tooltip_date), method="auto", se=TRUE, fullrange=FALSE, level=0.95)} +
+    # 3) non-interactive smooth if trend line is on
+    { if (input$trend_line)
+      geom_smooth(
+        aes(fill = .data$dataset),
+        method    = "auto",
+        se        = TRUE,
+        fullrange = FALSE,
+        level     = 0.95
+      )
+    } +
     
-    #coord_trans(y="log10") +
     labs(x = NULL, y = y_axis()) +
     theme_minimal() +
     theme(
-      text=element_text(family="Rubik"), #family_lato
-      panel.grid = element_blank(),
-      plot.margin = margin(10,50,0,0),
-      plot.background = element_rect(fill='white',color='white'),
-      panel.background = element_rect(fill='white',color='white'),
-      axis.ticks = element_blank(),
-      axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0), face = "bold", size = 12, color="#4D4C4C"),
-      axis.text.x = element_text(size = 14, face = "bold"),
-      axis.text.y = element_text(size = 13, face = "bold"),
-      legend.position = "none"
+      text             = element_text(family = "Rubik"),
+      panel.grid       = element_blank(),
+      plot.margin      = margin(10, 50, 0, 0),
+      plot.background  = element_rect(fill = "white", color = "white"),
+      panel.background = element_rect(fill = "white", color = "white"),
+      axis.ticks       = element_blank(),
+      axis.title.y     = element_text(
+        margin = margin(t = 0, r = 20, b = 0, l = 0),
+        face   = "bold",
+        size   = 12,
+        color  = "#4D4C4C"
+      ),
+      axis.text.x      = element_text(size = 14, face = "bold"),
+      axis.text.y      = element_text(size = 13, face = "bold"),
+      legend.position  = "none"
     ) +
     
-    scale_colour_manual(values=compare_palette_values(), name = "colour_compare") +
-    scale_fill_manual(values=compare_palette_values(), name = "colour_compare")  +
-
-    coord_cartesian(clip = "off") +
-
-    scale_y_continuous(labels=scales::label_number(scale_cut = append(scales::cut_short_scale(), 1, 1)), #limits = c(0, NA),
-                       trans=if(input$log_scale){scales::pseudo_log_trans(base = 10)} else {trend="identity"}
-                       ) 
+    scale_colour_manual(values = compare_palette_values(), name = "colour_compare") +
+    scale_fill_manual(values   = compare_palette_values(), name = "colour_compare") +
     
+    coord_cartesian(clip = "off") +
+    
+    scale_y_continuous(
+      labels = scales::label_number(
+        scale_cut = append(scales::cut_short_scale(), 1, 1)
+      ),
+      trans = if (input$log_scale) {
+        scales::pseudo_log_trans(base = 10)
+      } else {
+        "identity"
+      }
+    )
 })
 
 
