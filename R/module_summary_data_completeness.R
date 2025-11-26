@@ -237,50 +237,74 @@ dataCompletenessServer <- function(id, dataset_summary, nation_summary) {
 
           })
       
-      completeness_plot = reactive({ ggplot(data=(plot_data()),
-                                                     aes(
-                                                       if(input$order_complete=="alpha"){
-                                                         #x=forcats::fct_rev(reorder(column_name,column_name))
-                                                         x=forcats::fct_rev(reorder(column_name,column_alpha_order))
-                                                       } else if (input$order_complete=="position"){
-                                                         x=forcats::fct_rev(reorder(column_name,position)) 
-                                                         } 
-                                                       else {x=reorder(column_name, desc(value_name_order))}, 
-                                                     y=completeness,
-                                                     fill = column_name,
-                                                     tooltip = completeness_tooltip,
-                                                     data_id = column_name)) +
-          geom_bar_interactive(stat="identity"
-                               , size = 0.35
-                               , width=0.9
-                               ) +
-          coord_flip(clip = 'off')  +
-          labs(x=""
-               ,y=""
-               ) +
-          scale_fill_manual(values = alpha(colour_values(),0.9)) +
-          scale_y_continuous(
-                             labels = function(i) {return(paste0(i,"%"))}) +
-        
+      completeness_plot <- reactive({
+        ggplot(
+          data = plot_data()
+        ) +
+          # 1) Non-interactive bars
+          geom_col(
+            aes(
+              x = {
+                if (input$order_complete == "alpha") {
+                  forcats::fct_rev(reorder(column_name, column_alpha_order))
+                } else if (input$order_complete == "position") {
+                  forcats::fct_rev(reorder(column_name, position))
+                } else {
+                  reorder(column_name, desc(value_name_order))
+                }
+              },
+              y    = completeness,
+              fill = column_name
+            ),
+            width     = 0.9,
+            linewidth = 0.35
+          ) +
+          
+          # 2) Invisible interactive “hitboxes” for tooltips / hover
+          geom_point_interactive(
+            aes(
+              x       = {
+                if (input$order_complete == "alpha") {
+                  forcats::fct_rev(reorder(column_name, column_alpha_order))
+                } else if (input$order_complete == "position") {
+                  forcats::fct_rev(reorder(column_name, position))
+                } else {
+                  reorder(column_name, desc(value_name_order))
+                }
+              },
+              y       = completeness,
+              tooltip = completeness_tooltip,
+              data_id = column_name
+            ),
+            size  = 10,      # big enough to cover most of the bar
+            alpha = 0.001,   # effectively invisible but still hoverable
+            stroke = 0
+          ) +
+          
+          coord_flip(clip = "off") +
+          labs(x = "", y = "") +
+          scale_fill_manual(values = alpha(colour_values(), 0.9)) +
+          scale_y_continuous(labels = function(i) paste0(i, "%")) +
           theme(
-            text=element_text(family="Rubik"), #family_lato
-            plot.subtitle = element_markdown(size = 11, lineheight = 1.2),
+            text           = element_text(family = "Rubik"),
+            plot.subtitle  = element_markdown(size = 11, lineheight = 1.2),
             legend.position = "none",
-            plot.title.position = 'plot', #align to outer margin; applies to subtitle too
-            #panel.grid.minor = element_blank(),
-            panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank(),
-            plot.background = element_rect(fill='white',color='white'),
-            panel.background = element_rect(fill='white',color='white'),
-            axis.ticks.y = element_blank(),
-            axis.text.x = element_text(size = 6, face = "bold"),
-            axis.text.y = element_text(size = if(nrow(completeness_test_data())>=20){3.5}else{4.5}, hjust = 1,face = "bold"),
+            plot.title.position = "plot",
+            panel.grid.major   = element_blank(),
+            panel.grid.minor   = element_blank(),
+            plot.background    = element_rect(fill = "white", color = "white"),
+            panel.background   = element_rect(fill = "white", color = "white"),
+            axis.ticks.y       = element_blank(),
+            axis.text.x        = element_text(size = 6, face = "bold"),
+            axis.text.y        = element_text(
+              size  = if (nrow(completeness_test_data()) >= 20) 3.5 else 4.5,
+              hjust = 1,
+              face  = "bold"
+            ),
             axis.ticks.x = element_blank(),
-            plot.margin = margin(0,0,0,0)
-          ) 
+            plot.margin  = margin(0, 0, 0, 0)
+          )
       })
-      
-  
       
       output$completeness_plot_girafe = renderGirafe({
         ggiraph::girafe(ggobj = completeness_plot(),
