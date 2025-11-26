@@ -171,8 +171,8 @@ aboutUI<- function(id){
   <p>
     For additional information see our
     <a href="https://bhfdatasciencecentre.org/publication-and-dissemination-policy/" target="_blank" rel="noopener">
-      Publication and Dissemination Policy
-    </a>.
+      Publication and Dissemination Policy.
+    </a>
   </p>
             <p>DOI: <br> <a href="https://zenodo.org/badge/latestdoi/693238306" target = "_blank"><img src="https://zenodo.org/badge/693238306.svg" alt="DOI"></a></p>
           </div>
