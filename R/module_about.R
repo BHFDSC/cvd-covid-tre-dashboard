@@ -1,15 +1,15 @@
 aboutUI<- function(id){
   ns <- NS(id)
-
+  
   
   #<img src="beating_heart.png" alt="BHF Beating Heart of Data" style="margin-top:-14.5%;margin-bottom:0px !important;margin-left:0px !important;margin-right:0px !important;padding:0px!important;border:0px!important;">
   tagList(
     
-
     
     
-         
-         HTML('
+    
+    
+    HTML('
               
           <div class="aboutpage">
               <div class="div1welcome">  
@@ -153,13 +153,28 @@ aboutUI<- function(id){
                 How can I cite the dashboard?
               </h2>
               <span class="arrow-icon">
+                
                 <img src="https://raw.githubusercontent.com/Romerof/FAQ-accordion-card/main/images/icon-arrow-down.svg">
               </span>
             </label>
           </div>
 
           <div class="faq-accordion-content">
-            <p>Please share, cite or link the Dataset Summary Dashboard using our DOI: <br> <a href="https://zenodo.org/badge/latestdoi/693238306" target = "_blank"><img src="https://zenodo.org/badge/693238306.svg" alt="DOI"></a></p>
+  <p>
+    Please cite all uses of this tool, e.g.<br>
+    “Data sources and variable coverage for this project were scoped using the Dataset Summary Dashboard
+    (British Heart Foundation Data Science Centre at Health Data Research UK), available at
+    <a href="https://bhfdatasciencecentre.org/dashboard/" target="_blank" rel="noopener">
+      https://bhfdatasciencecentre.org/dashboard/
+    </a>, accessed 29 July 2025.”
+  </p>
+  <p>
+    For additional information see our
+    <a href="https://bhfdatasciencecentre.org/publication-and-dissemination-policy/" target="_blank" rel="noopener">
+      Publication and Dissemination Policy
+    </a>.
+  </p>
+            <p>DOI: <br> <a href="https://zenodo.org/badge/latestdoi/693238306" target = "_blank"><img src="https://zenodo.org/badge/693238306.svg" alt="DOI"></a></p>
           </div>
 
 
@@ -449,7 +464,7 @@ function toggleAccordion() {
 items.forEach(item => item.addEventListener('click', toggleAccordion));")
       
     }
-    
+
   )
   
 }

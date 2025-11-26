@@ -578,37 +578,71 @@ tags$script(
           need(nrow(coverage_data_filtered()) >0, message = FALSE)
         )
         
+        # ggplot(
+        #   data = coverage_data_filtered(),
+        #   aes(x = .data$date_format,
+        #       if(input$log_scale_summary){y=(.data$N)} else {y=.data$N},
+        #       color = .data$Type,
+        #       #data_id = .data$Type,
+        #       group = .data$Type
+        #   )
+        # ) +
+        #  
+        #   geom_line_interactive(size = 2.5,
+        #                         alpha = if(input$trend_line){1} else {1},
+        #                         aes(
+        #                           data_id = .data$dataset
+        #                         )) +
+        #   
+        # 
+        #   
+        #   geom_point_interactive(
+        #     aes(tooltip = .data$N_tooltip_date),
+        #     alpha = if(input$trend_line){1} else {1},
+        #     fill = "white",
+        #     size = 2.5,
+        #     stroke = 1.5,
+        #     shape = 20) +
+        #   
+        # 
+        #   
+        #   {if(input$trend_line)geom_smooth_interactive(aes(fill = .data$Type,
+        #                                                    tooltip = .data$N_tooltip_date), method="auto", se=TRUE, fullrange=FALSE, level=0.95)} +
+
+        
         ggplot(
           data = coverage_data_filtered(),
-          aes(x = .data$date_format,
-              if(input$log_scale_summary){y=(.data$N)} else {y=.data$N},
-              color = .data$Type,
-              #data_id = .data$Type,
-              group = .data$Type
+          aes(
+            x = .data$date_format,
+            y = .data$N,
+            color = .data$Type,
+            group = .data$Type
           )
         ) +
-         
-          geom_line_interactive(size = 2.5,
-                                alpha = if(input$trend_line){1} else {1},
-                                aes(
-                                  data_id = .data$dataset
-                                )) +
+          # 1) Plain line (no interactive geom)
+          geom_line(
+            size  = 2.5,
+            alpha = 1
+          ) +
           
-       
-          
+          # 2) Keep interactive points for tooltips
           geom_point_interactive(
             aes(tooltip = .data$N_tooltip_date),
-            alpha = if(input$trend_line){1} else {1},
-            fill = "white",
-            size = 2.5,
+            alpha = if (input$trend_line) 1 else 1,
+            fill  = "white",
+            size  = 2.5,
             stroke = 1.5,
-            shape = 20) +
+            shape = 20
+          ) +
           
-       
+          # 3) Plain smooth (no interactive geom) if trend line on
+          { if (input$trend_line)
+            geom_smooth(
+              aes(fill = .data$Type),
+              method = "auto", se = TRUE, fullrange = FALSE, level = 0.95
+            )
+          } +
           
-          {if(input$trend_line)geom_smooth_interactive(aes(fill = .data$Type,
-                                                           tooltip = .data$N_tooltip_date), method="auto", se=TRUE, fullrange=FALSE, level=0.95)} +
-
         labs(x = NULL, y = y_axis()) +
           theme_minimal() +
           theme(
@@ -625,7 +659,7 @@ tags$script(
           ) +
           coord_cartesian(clip = "off") +
 
-          
+        
           scale_colour_manual(values=summary_coverage_palette, name = "colour_summary") +
           scale_fill_manual(values=summary_coverage_palette, name = "colour_summary")  +
           
@@ -635,6 +669,8 @@ tags$script(
       
           #{if(input$log_scale_summary)scale_y_continuous(labels = scales::label_number_si()) else {scale_y_continuous(labels = scales::label_number_si())}} #, limits = c(0, NA)
       })
+      
+      # observe({print(summary_coverage_palette)})
       
 
       y_nudge = reactive({(
