@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  justify-content: flex-start; /* Align items at the start (left) */
+  align-items: flex-start; /* Align items at the top */
+  height: 100vh;
+  padding: 20px; /* Add padding for spacing */
+}
+
+.side-panel {
+  text-align: left; /* Align text to the left */
+  margin-right: 20px; /* Add margin for spacing between items */
+}
+
+.barplot-container {
+  text-align: left; /* Align text to the left */
+  margin-top: 0; /* Remove top margin to shift it further to the top */
+}
+
+/* Additional CSS styles as needed */
